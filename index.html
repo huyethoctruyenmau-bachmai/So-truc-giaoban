@@ -1,799 +1,1187 @@
 <!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Sổ trực điện tử - Phòng Truyền máu</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>Sổ trực - Giao ban Phòng Truyền máu</title>
   <style>
-    :root {
-      --primary: #6d1731;
-      --primary-2: #8b2344;
-      --primary-3: #b84868;
-      --bg: #fff7f9;
-      --card: #ffffff;
-      --text: #26151b;
-      --muted: #7b6770;
-      --line: #ead3dc;
-      --ok: #0f766e;
-      --warn: #a16207;
-      --danger: #b91c1c;
-      --shadow: 0 10px 30px rgba(109, 23, 49, .12);
-      --radius: 18px;
+    :root{
+      --wine:#7b113a;
+      --wine-2:#9f174d;
+      --wine-dark:#4a071f;
+      --bg:#f8f1f4;
+      --card:#ffffff;
+      --text:#23141b;
+      --muted:#76616c;
+      --line:#ead7df;
+      --ok:#087443;
+      --warn:#a26300;
+      --danger:#b42318;
+      --shadow:0 8px 24px rgba(76,7,31,.11);
+      --radius:18px;
+      --header-h:64px;
+      --tabbar-h:72px;
     }
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: linear-gradient(180deg, #fff7f9 0%, #fff 48%, #fff7f9 100%);
-      color: var(--text);
-      -webkit-text-size-adjust: 100%;
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);background:var(--bg);overscroll-behavior:none}
+    body{touch-action:manipulation}
+    button,input,select,textarea{font:inherit}
+    button{border:0;cursor:pointer}
+    .hidden{display:none!important}
+    .app-shell{height:100%;display:flex;flex-direction:column}
+    .topbar{
+      height:var(--header-h);min-height:var(--header-h);position:fixed;left:0;right:0;top:0;z-index:20;
+      background:linear-gradient(135deg,var(--wine-dark),var(--wine));color:white;box-shadow:0 4px 18px rgba(0,0,0,.16);
+      display:flex;align-items:center;justify-content:space-between;padding:10px 16px;padding-top:max(10px,env(safe-area-inset-top));
     }
-    button, input, select, textarea { font: inherit; }
-    button { cursor: pointer; }
-    .hidden { display: none !important; }
-    .app { min-height: 100%; display: flex; flex-direction: column; }
-    .topbar {
-      position: sticky; top: 0; z-index: 20;
-      background: linear-gradient(135deg, var(--primary), var(--primary-2));
-      color: #fff;
-      padding: 12px 16px;
-      box-shadow: var(--shadow);
+    .brand{display:flex;align-items:center;gap:10px;min-width:0}
+    .brand-icon{width:40px;height:40px;border-radius:14px;background:#fff1f6;color:var(--wine);display:grid;place-items:center;font-size:22px;font-weight:900}
+    .brand-title{font-weight:800;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .brand-sub{font-size:12px;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .userbox{text-align:right;font-size:12px;line-height:1.25;max-width:42vw}
+    .userbox strong{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .logout-btn{margin-top:2px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;padding:5px 9px;border-radius:999px;font-size:12px}
+    .main{
+      position:fixed;top:var(--header-h);bottom:var(--tabbar-h);left:0;right:0;overflow:auto;
+      padding:14px 14px 24px;
+      -webkit-overflow-scrolling:touch;
     }
-    .topbar-inner {
-      max-width: 1180px; margin: 0 auto;
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    .content-wide{width:100%;max-width:none;margin:0 auto}
+    .tabbar{
+      height:var(--tabbar-h);position:fixed;left:0;right:0;bottom:0;z-index:20;
+      background:rgba(255,255,255,.96);border-top:1px solid var(--line);box-shadow:0 -4px 18px rgba(74,7,31,.10);
+      display:grid;grid-template-columns:repeat(5,1fr);padding:5px 5px max(5px,env(safe-area-inset-bottom));
     }
-    .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
-    .logo {
-      width: 40px; height: 40px; border-radius: 12px;
-      background: rgba(255,255,255,.16);
-      display: grid; place-items: center;
-      font-weight: 900; letter-spacing: -.04em;
-      border: 1px solid rgba(255,255,255,.28);
+    .tab-btn{background:transparent;color:var(--muted);border-radius:14px;padding:6px 2px;display:flex;flex-direction:column;gap:3px;align-items:center;justify-content:center;font-size:11px}
+    .tab-btn .ico{font-size:21px;line-height:1}
+    .tab-btn.active{background:#fff0f5;color:var(--wine);font-weight:800}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;margin-bottom:12px}
+    .section-title{font-size:16px;font-weight:900;color:var(--wine-dark);margin:0 0 10px}
+    .sub-title{font-size:14px;font-weight:800;color:var(--wine);margin:12px 0 8px}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:10px}
+    .col-12{grid-column:span 12}.col-8{grid-column:span 8}.col-6{grid-column:span 6}.col-4{grid-column:span 4}.col-3{grid-column:span 3}
+    label{display:block;font-weight:750;font-size:13px;margin:0 0 5px;color:#4c2332}
+    input,select,textarea{
+      width:100%;border:1px solid #e2c8d3;background:#fff;color:var(--text);border-radius:13px;padding:10px 11px;
+      outline:none;min-height:42px;
     }
-    .brand-title { font-weight: 800; line-height: 1.1; }
-    .brand-sub { font-size: 12px; opacity: .88; margin-top: 2px; }
-    .userbox { display: flex; align-items: center; gap: 8px; font-size: 13px; }
-    .logout-btn, .ghost-btn {
-      border: 1px solid rgba(255,255,255,.35);
-      background: rgba(255,255,255,.12);
-      color: #fff;
-      border-radius: 999px;
-      padding: 8px 12px;
+    textarea{resize:none;overflow:hidden;line-height:1.35;min-height:42px}
+    input:focus,select:focus,textarea:focus{border-color:var(--wine-2);box-shadow:0 0 0 3px rgba(159,23,77,.12)}
+    input[readonly]{background:#f8eef2;color:#674b58}
+    .btn-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+    .btn{border-radius:13px;min-height:42px;padding:10px 14px;font-weight:850;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+    .btn.primary{background:var(--wine);color:#fff}
+    .btn.secondary{background:#f5e5ec;color:var(--wine-dark)}
+    .btn.ghost{background:#fff;border:1px solid var(--line);color:var(--wine)}
+    .btn.ok{background:var(--ok);color:#fff}
+    .btn.warn{background:var(--warn);color:#fff}
+    .btn.danger{background:var(--danger);color:#fff}
+    .btn:disabled{opacity:.55;cursor:not-allowed}
+    .pill{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:850}
+    .pill.ok{background:#e8f7ef;color:var(--ok)}.pill.warn{background:#fff5e5;color:var(--warn)}.pill.danger{background:#feeceb;color:var(--danger)}.pill.muted{background:#f2e7ec;color:#6e5360}
+    .list-card{border:1px solid var(--line);background:#fff;border-radius:16px;padding:12px;margin:10px 0}
+    .list-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .list-title{font-weight:900;color:var(--wine-dark);font-size:15px}
+    .meta{font-size:12px;color:var(--muted);line-height:1.45}
+    .empty,.loading{padding:18px;text-align:center;color:var(--muted);background:#fff;border:1px dashed #dec0cc;border-radius:16px}
+    .loading:before{content:"";display:inline-block;width:17px;height:17px;border-radius:50%;border:3px solid #ead0da;border-top-color:var(--wine);animation:spin .75s linear infinite;margin-right:8px;vertical-align:-4px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .staff-list{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
+    .staff-chip{background:#fff0f5;color:var(--wine-dark);border:1px solid #e8c8d5;border-radius:999px;padding:6px 9px;font-size:13px;display:inline-flex;gap:6px;align-items:center}
+    .staff-chip button{background:transparent;color:var(--danger);font-weight:900;padding:0}
+    .modal{
+      position:fixed;inset:0;z-index:50;background:rgba(24,4,12,.56);display:flex;align-items:flex-end;justify-content:center;
     }
-    .layout { width: 100%; max-width: 1180px; margin: 0 auto; padding: 16px; flex: 1; }
-    .tabs {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
-      margin-bottom: 16px;
+    .modal-card{width:100%;max-height:92vh;overflow:auto;background:#fff;border-radius:24px 24px 0 0;padding:14px;box-shadow:0 -8px 30px rgba(0,0,0,.25)}
+    .modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;position:sticky;top:-14px;background:#fff;padding:8px 0 10px;z-index:2;border-bottom:1px solid var(--line)}
+    .modal-title{font-size:18px;font-weight:950;color:var(--wine-dark)}
+    .close-btn{width:38px;height:38px;border-radius:50%;background:#f4e4eb;color:var(--wine-dark);font-weight:900}
+    .full-modal{align-items:stretch}
+    .full-modal .modal-card{max-width:none;height:100vh;max-height:100vh;border-radius:0;padding-top:max(14px,env(safe-area-inset-top));padding-bottom:max(18px,env(safe-area-inset-bottom))}
+    .login-screen{min-height:100%;display:grid;place-items:center;padding:24px;background:linear-gradient(145deg,#4a071f,#7b113a 45%,#f8f1f4 45%)}
+    .login-card{width:100%;max-width:420px;background:#fff;border-radius:26px;padding:22px;box-shadow:0 18px 50px rgba(0,0,0,.22)}
+    .login-logo{width:64px;height:64px;border-radius:22px;background:#fff0f5;color:var(--wine);display:grid;place-items:center;font-size:34px;font-weight:900;margin-bottom:10px}
+    .toast{
+      position:fixed;left:50%;bottom:calc(var(--tabbar-h) + 14px);transform:translateX(-50%);z-index:100;
+      background:#2a111a;color:white;border-radius:999px;padding:10px 14px;box-shadow:0 8px 25px rgba(0,0,0,.2);max-width:92vw;font-size:13px
     }
-    .tab-btn {
-      border: 1px solid var(--line);
-      background: #fff;
-      color: var(--primary);
-      border-radius: 16px;
-      padding: 12px 10px;
-      font-weight: 800;
-      box-shadow: 0 4px 14px rgba(109, 23, 49, .06);
+    .two-col-text{white-space:pre-wrap;line-height:1.45}
+    .report-day{background:#fff8fb;border:1px solid var(--line);border-radius:14px;padding:10px;margin:8px 0}
+    a.btn{text-decoration:none}
+    @media (max-width:760px){
+      :root{--header-h:66px;--tabbar-h:76px}
+      .brand-title{font-size:15px}.brand-sub{font-size:11px}
+      .main{padding:10px}
+      .card{padding:12px;border-radius:16px}
+      .col-8,.col-6,.col-4,.col-3{grid-column:span 12}
+      .btn{width:100%}
+      .list-head{flex-direction:column}
+      .userbox{max-width:38vw}
+      .tab-btn{font-size:10px}
     }
-    .tab-btn.active {
-      background: var(--primary);
-      color: #fff;
-      border-color: var(--primary);
-    }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 16px;
-      margin-bottom: 14px;
-    }
-    .card h2, .card h3 { margin: 0 0 12px; color: var(--primary); }
-    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-    label { display: block; font-size: 13px; color: var(--muted); font-weight: 700; margin-bottom: 5px; }
-    input, select, textarea {
-      width: 100%;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 11px 12px;
-      background: #fff;
-      color: var(--text);
-      outline: none;
-    }
-    textarea { min-height: 96px; resize: vertical; }
-    input:focus, select:focus, textarea:focus { border-color: var(--primary-3); box-shadow: 0 0 0 3px rgba(184,72,104,.16); }
-    .actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 12px; }
-    .btn {
-      border: 0;
-      background: var(--primary);
-      color: #fff;
-      border-radius: 14px;
-      padding: 11px 15px;
-      font-weight: 800;
-      min-height: 42px;
-    }
-    .btn.secondary { background: #f4e3ea; color: var(--primary); border: 1px solid var(--line); }
-    .btn.ok { background: var(--ok); }
-    .btn.warn { background: var(--warn); }
-    .btn.danger { background: var(--danger); }
-    .btn:disabled { opacity: .55; cursor: not-allowed; }
-    .hint { font-size: 13px; color: var(--muted); line-height: 1.5; }
-    .badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 5px 9px; border-radius: 999px;
-      background: #f4e3ea; color: var(--primary); font-size: 12px; font-weight: 800;
-    }
-    .badge.ok { background: #dff7f4; color: var(--ok); }
-    .badge.warn { background: #fff1cf; color: var(--warn); }
-    .badge.danger { background: #fee2e2; color: var(--danger); }
-    .list { display: grid; gap: 10px; }
-    .item {
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 12px;
-      background: #fff;
-    }
-    .item-head { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
-    .item-title { font-weight: 900; color: var(--primary); }
-    .item-meta { color: var(--muted); font-size: 13px; margin-top: 3px; line-height: 1.4; }
-    .kv { display: grid; grid-template-columns: 180px 1fr; gap: 8px; padding: 6px 0; border-bottom: 1px dashed var(--line); }
-    .kv b { color: var(--primary); }
-    .login-wrap { min-height: 100dvh; display: grid; place-items: center; padding: 18px; }
-    .login-card { width: 100%; max-width: 430px; }
-    .login-title { text-align: center; color: var(--primary); margin-bottom: 14px; }
-    .alert {
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: #fff;
-      padding: 11px 12px;
-      margin: 10px 0;
-      color: var(--muted);
-    }
-    .alert.error { border-color: #fecaca; color: var(--danger); background: #fff5f5; }
-    .alert.ok { border-color: #a7f3d0; color: var(--ok); background: #f0fdfa; }
-    dialog {
-      width: min(860px, calc(100% - 22px));
-      border: 0;
-      border-radius: 20px;
-      padding: 0;
-      box-shadow: 0 24px 80px rgba(0,0,0,.25);
-    }
-    dialog::backdrop { background: rgba(38,21,27,.45); }
-    .modal-head {
-      display: flex; justify-content: space-between; align-items: center; gap: 12px;
-      padding: 14px 16px; background: var(--primary); color: #fff;
-    }
-    .modal-body { padding: 16px; max-height: 78dvh; overflow: auto; }
-    .close-x { background: rgba(255,255,255,.16); color: #fff; border: 1px solid rgba(255,255,255,.35); border-radius: 12px; padding: 8px 10px; }
-    .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.55); border-top-color: #fff; border-radius: 50%; display: inline-block; animation: spin .8s linear infinite; vertical-align: -3px; margin-right: 6px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @media (max-width: 760px) {
-      .layout { padding: 12px; padding-bottom: 88px; }
-      .tabs {
-        position: fixed; z-index: 25; left: 0; right: 0; bottom: 0;
-        background: rgba(255,247,249,.96); backdrop-filter: blur(10px);
-        padding: 8px; margin: 0; gap: 7px;
-        border-top: 1px solid var(--line);
-      }
-      .tab-btn { font-size: 12px; padding: 9px 5px; border-radius: 13px; }
-      .grid, .grid-3 { grid-template-columns: 1fr; }
-      .topbar-inner { align-items: flex-start; }
-      .brand-title { font-size: 15px; }
-      .brand-sub { display: none; }
-      .userbox { flex-direction: column; align-items: flex-end; gap: 5px; }
-      .kv { grid-template-columns: 1fr; }
-      .item-head { flex-direction: column; }
+    @media (min-width:900px){
+      .main{padding:18px 22px 28px}
+      .filter-grid .col-3{grid-column:span 3}
+      .modal-card{max-width:920px;border-radius:24px;margin-bottom:18px}
+      .full-modal .modal-card{max-width:none;margin:0;border-radius:0}
     }
   </style>
 </head>
 <body>
-  <div id="loginView" class="login-wrap">
-    <div class="card login-card">
-      <div class="login-title">
-        <div style="font-size:44px">🩸</div>
-        <h1 style="margin:6px 0 4px">Sổ trực điện tử</h1>
-        <div class="hint">Phòng Truyền máu - tone đỏ mận</div>
+  <div id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <div class="login-logo">🩸</div>
+      <h1 style="margin:0;color:var(--wine-dark);font-size:24px">Sổ trực điện tử</h1>
+      <p style="margin:4px 0 18px;color:var(--muted)">Phòng Truyền máu - Bàn giao - Giao ban</p>
+      <div class="grid">
+        <div class="col-12">
+          <label>Mã nhân viên</label>
+          <input id="loginMa" autocomplete="username" placeholder="Nhập mã nhân viên">
+        </div>
+        <div class="col-12">
+          <label>Mật khẩu</label>
+          <input id="loginPw" type="password" autocomplete="current-password" placeholder="Nhập mật khẩu">
+        </div>
       </div>
-      <div id="apiWarning" class="alert error hidden">Chưa cấu hình API_URL trong file index.html.</div>
-      <div class="alert">Tài khoản thử sau khi chạy setup(): <b>admin</b> / <b>123456</b></div>
-      <div>
-        <label>Mã nhân viên</label>
-        <input id="loginMa" autocomplete="username" placeholder="VD: admin" />
-      </div>
-      <div style="margin-top:10px">
-        <label>Mật khẩu</label>
-        <input id="loginMk" type="password" autocomplete="current-password" placeholder="Nhập mật khẩu" />
-      </div>
-      <div class="actions">
-        <button class="btn" id="loginBtn">Đăng nhập</button>
-      </div>
-      <div id="loginMsg"></div>
+      <button id="loginBtn" class="btn primary" style="width:100%;margin-top:14px">Đăng nhập</button>
+      <p class="meta" style="margin-top:12px">App dùng GitHub Pages gọi Google Apps Script API, không dùng google.script.run.</p>
     </div>
   </div>
 
-  <div id="appView" class="app hidden">
+  <div id="app" class="app-shell hidden">
     <header class="topbar">
-      <div class="topbar-inner">
-        <div class="brand">
-          <div class="logo">TM</div>
-          <div>
-            <div class="brand-title">Sổ trực điện tử - Phòng Truyền máu</div>
-            <div class="brand-sub">Báo cáo / Bàn giao thường trực · Giao ban · PDF</div>
-          </div>
+      <div class="brand">
+        <div class="brand-icon">🩸</div>
+        <div>
+          <div class="brand-title">Sổ trực - Giao ban</div>
+          <div class="brand-sub">Phòng Truyền máu</div>
         </div>
-        <div class="userbox">
-          <span id="userLabel"></span>
-          <button class="logout-btn" id="logoutBtn">Đăng xuất</button>
-        </div>
+      </div>
+      <div class="userbox">
+        <strong id="userName">...</strong>
+        <span id="userDept">...</span><br>
+        <button id="logoutBtn" class="logout-btn">Đăng xuất</button>
       </div>
     </header>
 
-    <main class="layout">
-      <nav class="tabs">
-        <button class="tab-btn active" data-tab="create">Tạo phiếu</button>
-        <button class="tab-btn" data-tab="tickets">DS phiếu</button>
-        <button class="tab-btn" data-tab="meeting">Giao ban</button>
-        <button class="tab-btn" data-tab="search">Tra cứu/PDF</button>
-      </nav>
-
-      <section id="tab-create" class="tab-panel"></section>
-      <section id="tab-tickets" class="tab-panel hidden"></section>
-      <section id="tab-meeting" class="tab-panel hidden"></section>
-      <section id="tab-search" class="tab-panel hidden"></section>
+    <main id="main" class="main">
+      <div class="content-wide">
+        <section id="tab-create" class="tab-panel"></section>
+        <section id="tab-list" class="tab-panel hidden"></section>
+        <section id="tab-meeting" class="tab-panel hidden"></section>
+        <section id="tab-pdf" class="tab-panel hidden"></section>
+        <section id="tab-settings" class="tab-panel hidden"></section>
+      </div>
     </main>
+
+    <nav class="tabbar">
+      <button class="tab-btn active" data-tab="create"><span class="ico">➕</span><span>Tạo phiếu</span></button>
+      <button class="tab-btn" data-tab="list"><span class="ico">📋</span><span>DS phiếu</span></button>
+      <button class="tab-btn" data-tab="meeting"><span class="ico">🗣️</span><span>Giao ban</span></button>
+      <button class="tab-btn" data-tab="pdf"><span class="ico">📄</span><span>PDF</span></button>
+      <button id="settingsTabBtn" class="tab-btn hidden" data-tab="settings"><span class="ico">⚙️</span><span>Cài đặt</span></button>
+    </nav>
   </div>
 
-  <dialog id="detailDialog">
-    <div class="modal-head">
-      <b id="modalTitle">Chi tiết</b>
-      <button class="close-x" onclick="detailDialog.close()">Đóng</button>
-    </div>
-    <div id="modalBody" class="modal-body"></div>
-  </dialog>
+  <datalist id="deptList"></datalist>
+  <datalist id="staffDatalist"></datalist>
+  <div id="modalRoot"></div>
+  <div id="toast" class="toast hidden"></div>
 
 <script>
-  // Dán link Web App /exec của Google Apps Script vào đây.
-  const API_URL = 'https://script.google.com/macros/s/AKfycbxLHKUczat2WOH1R4W_YVVsUeBAmEuJ-4EjOEWNuBYXvX0oL4Dr6OhyO8f4lHPfn-8Nmg/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbxLHKUczat2WOH1R4W_YVVsUeBAmEuJ-4EjOEWNuBYXvX0oL4Dr6OhyO8f4lHPfn-8Nmg/exec';
 
-  const state = {
-    token: localStorage.getItem('sotruc_token') || '',
-    user: JSON.parse(localStorage.getItem('sotruc_user') || 'null'),
-    staff: [],
-    tickets: [],
-    meetings: [],
-    activeTab: 'create'
+const LOAI_BAN_GIAO = 'Bàn giao thường trực';
+const LOAI_BAO_CAO = 'Báo cáo thường trực';
+const STATUS_CHUA = 'Chưa hoàn thành';
+const STATUS_DA = 'Đã hoàn thành';
+
+const state = {
+  token: localStorage.getItem('sotruc_token') || '',
+  user: null,
+  initLoaded: false,
+  personnel: [],
+  khoaPhong: [],
+  selectedStaff: [],
+  activeTab: 'create',
+  cache: {
+    phieu: { key:'', time:0, data:null },
+    giaoBan: { key:'', time:0, data:null }
+  },
+  currentGiaoBan: null,
+  currentReports: []
+};
+
+const $ = sel => document.querySelector(sel);
+const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+document.addEventListener('DOMContentLoaded', boot);
+
+async function boot(){
+  bindGlobalEvents();
+  renderAllTabsSkeleton();
+
+  if(state.token){
+    try{
+      const res = await api('checkSession', {}, {token: state.token});
+      state.user = res.data.user;
+      showApp();
+      await loadInitData();
+    }catch(err){
+      localStorage.removeItem('sotruc_token');
+      state.token = '';
+      showLogin();
+    }
+  }else{
+    showLogin();
+  }
+}
+
+function bindGlobalEvents(){
+  $('#loginBtn').addEventListener('click', login);
+  $('#loginPw').addEventListener('keydown', e => { if(e.key === 'Enter') login(); });
+  $('#logoutBtn').addEventListener('click', logout);
+  $$('.tab-btn').forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
+  document.addEventListener('input', e => {
+    if(e.target.matches('textarea')) autoGrow(e.target);
+  });
+}
+
+async function login(){
+  const maNhanVien = $('#loginMa').value.trim();
+  const matKhau = $('#loginPw').value;
+  if(!maNhanVien || !matKhau) return toast('Vui lòng nhập mã nhân viên và mật khẩu.');
+  withButton($('#loginBtn'), 'Đang đăng nhập...', async () => {
+    const res = await api('login', {maNhanVien, matKhau}, {noToken:true});
+    state.token = res.data.token;
+    state.user = res.data.user;
+    localStorage.setItem('sotruc_token', state.token);
+    showApp();
+    await loadInitData();
+    toast('Đăng nhập thành công');
+  });
+}
+
+async function logout(){
+  try{ await api('logout', {}); }catch(e){}
+  localStorage.removeItem('sotruc_token');
+  state.token = '';
+  state.user = null;
+  state.initLoaded = false;
+  showLogin();
+}
+
+function showLogin(){
+  $('#loginScreen').classList.remove('hidden');
+  $('#app').classList.add('hidden');
+}
+
+function showApp(){
+  $('#loginScreen').classList.add('hidden');
+  $('#app').classList.remove('hidden');
+  $('#userName').textContent = state.user?.tenNhanVien || '';
+  $('#userDept').textContent = [titleForPerson(state.user), state.user?.khoaPhong].filter(Boolean).join(' - ');
+  $('#settingsTabBtn').classList.toggle('hidden', !state.user?.isAdmin);
+  renderCreateTab();
+  renderSettingsTab();
+}
+
+async function loadInitData(){
+  if(state.initLoaded) return;
+  try{
+    const res = await api('getInitData', {});
+    state.user = res.data.user || state.user;
+    state.personnel = res.data.personnel || [];
+    state.khoaPhong = res.data.khoaPhong || [];
+    state.initLoaded = true;
+    refreshDatalists();
+    renderCreateTab();
+    setDefaultFilters();
+  }catch(err){
+    toast(err.message);
+  }
+}
+
+function refreshDatalists(){
+  $('#deptList').innerHTML = state.khoaPhong.map(x => `<option value="${esc(x)}"></option>`).join('');
+  $('#staffDatalist').innerHTML = state.personnel.map(p => {
+    const label = `${p.maNhanVien} - ${p.tenNhanVien}${titleForPerson(p) ? ' - ' + titleForPerson(p) : ''}`;
+    return `<option value="${esc(label)}"></option>`;
+  }).join('');
+}
+
+function setDefaultFilters(){
+  const dept = state.user?.khoaPhong || 'Phòng Truyền máu';
+  ['createDept','filterDept','gbDept','pdfDept'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el && !el.value) el.value = dept;
+  });
+}
+
+function renderAllTabsSkeleton(){
+  renderCreateTab();
+  renderListTab();
+  renderMeetingTab();
+  renderPdfTab();
+  renderSettingsTab();
+}
+
+function switchTab(tab){
+  state.activeTab = tab;
+  $$('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  $$('.tab-panel').forEach(p => p.classList.add('hidden'));
+  $(`#tab-${tab}`).classList.remove('hidden');
+  $('#main').scrollTop = 0;
+
+  if(tab === 'list') loadPhieuList(false);
+  if(tab === 'meeting') loadGiaoBanList(false);
+}
+
+/* ================= API ================= */
+
+async function api(action, payload={}, opts={}){
+  const token = opts.token || state.token || '';
+  const body = JSON.stringify({
+    action,
+    data: opts.noToken ? {payload} : {token, payload}
+  });
+
+  let response;
+  try{
+    response = await fetch(API_URL, {
+      method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body
+    });
+  }catch(err){
+    throw new Error('Không kết nối được API. Kiểm tra link Web App /exec và quyền triển khai.');
+  }
+
+  const text = await response.text();
+  let json;
+  try{ json = JSON.parse(text); }
+  catch(e){ throw new Error('API không trả JSON hợp lệ. Có thể Web App chưa triển khai đúng quyền Anyone.'); }
+
+  if(!json.ok) throw new Error(json.message || 'Có lỗi xảy ra.');
+  return json;
+}
+
+async function withButton(btn, busyText, fn){
+  const old = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = `<span class="loading-dot"></span>${busyText}`;
+  try{ await fn(); }
+  catch(err){ toast(err.message); }
+  finally{ btn.disabled = false; btn.innerHTML = old; }
+}
+
+/* ================= TẠO PHIẾU ================= */
+
+function renderCreateTab(){
+  const today = todayIso();
+  const now = toDatetimeLocal(new Date());
+  $('#tab-create').innerHTML = `
+    <div class="card">
+      <h2 class="section-title">Tạo phiếu</h2>
+      <div class="grid">
+        <div class="col-4">
+          <label>Loại phiếu</label>
+          <select id="createLoai">
+            <option>${LOAI_BAN_GIAO}</option>
+            <option>${LOAI_BAO_CAO}</option>
+          </select>
+        </div>
+        <div class="col-4">
+          <label>Ngày trực</label>
+          <input id="createDate" type="date" value="${today}">
+        </div>
+        <div class="col-4">
+          <label>Khoa/phòng</label>
+          <input id="createDept" list="deptList" value="${esc(state.user?.khoaPhong || '')}" placeholder="Chọn hoặc nhập khoa/phòng">
+        </div>
+        <div class="col-12">
+          <label>Người thực hiện</label>
+          <input readonly value="${esc(displayUser(state.user))}">
+        </div>
+      </div>
+    </div>
+
+    <div id="reportBlock" class="card hidden">
+      <h3 class="section-title">II. Báo cáo thường trực</h3>
+      <div class="grid">
+        <div class="col-8">
+          <label>Nhân viên phiên thường trực</label>
+          <input id="staffSearch" list="staffDatalist" placeholder="Gõ tên hoặc mã nhân viên">
+        </div>
+        <div class="col-4">
+          <label>&nbsp;</label>
+          <button id="addStaffBtn" class="btn secondary" type="button">Thêm nhân viên</button>
+        </div>
+        <div class="col-12"><div id="staffList" class="staff-list"></div></div>
+        <div class="col-12">
+          <label>Tình hình chung / số liệu trực</label>
+          <textarea id="soLieuTruc" placeholder="Nhập số liệu trực"></textarea>
+        </div>
+        <div class="col-12">
+          <label>Chuyên môn</label>
+          <textarea id="baoCaoChuyenMon" placeholder="Nhập nội dung chuyên môn"></textarea>
+        </div>
+        <div class="col-12">
+          <label>Vấn đề khác</label>
+          <textarea id="baoCaoVanDeKhac" placeholder="Không có gì đặc biệt"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 class="section-title">III. Bàn giao thường trực</h3>
+      <div class="grid">
+        <div class="col-12">
+          <label>Tài sản, dụng cụ, thiết bị y tế</label>
+          <textarea id="banGiaoTaiSan">Bình thường</textarea>
+        </div>
+        <div class="col-12">
+          <label>Chuyên môn</label>
+          <textarea id="banGiaoChuyenMon">Không có gì đặc biệt</textarea>
+        </div>
+        <div class="col-12">
+          <label>Vấn đề khác</label>
+          <textarea id="banGiaoVanDeKhac">Không có gì đặc biệt</textarea>
+        </div>
+        <div class="col-6">
+          <label>Thời gian bàn giao</label>
+          <input id="thoiGianBanGiao" type="datetime-local" value="${now}">
+        </div>
+      </div>
+      <div class="btn-row">
+        <button id="createBtn" class="btn primary">Tạo phiếu</button>
+      </div>
+      <p class="meta">Khi bấm Tạo phiếu, hệ thống hiểu rằng người thực hiện đã ký xác nhận nội dung phiếu.</p>
+    </div>
+  `;
+
+  state.selectedStaff = [];
+  $('#createLoai').addEventListener('change', () => {
+    $('#reportBlock').classList.toggle('hidden', $('#createLoai').value !== LOAI_BAO_CAO);
+  });
+  $('#addStaffBtn').addEventListener('click', addSelectedStaff);
+  $('#createBtn').addEventListener('click', submitCreatePhieu);
+  refreshStaffList();
+  setTimeout(() => $$('textarea').forEach(autoGrow), 0);
+}
+
+function addSelectedStaff(){
+  const raw = $('#staffSearch').value.trim();
+  if(!raw) return;
+  const ma = raw.split(' - ')[0].trim();
+  const person = state.personnel.find(p => norm(p.maNhanVien) === norm(ma) || raw.toLowerCase().includes((p.tenNhanVien||'').toLowerCase()));
+  if(!person) return toast('Không tìm thấy nhân viên trong danh sách.');
+  if(state.selectedStaff.some(x => x.maNhanVien === person.maNhanVien)) return toast('Nhân viên đã có trong danh sách.');
+  state.selectedStaff.push(person);
+  $('#staffSearch').value = '';
+  refreshStaffList();
+}
+
+function refreshStaffList(){
+  const box = $('#staffList');
+  if(!box) return;
+  box.innerHTML = state.selectedStaff.length ? state.selectedStaff.map(p => `
+    <span class="staff-chip">${esc(p.tenNhanVien)}${titleForPerson(p) ? ' - ' + esc(titleForPerson(p)) : ''}
+      <button type="button" onclick="removeStaff('${escAttr(p.maNhanVien)}')">×</button>
+    </span>
+  `).join('') : `<span class="meta">Chưa thêm nhân viên thường trực.</span>`;
+}
+
+window.removeStaff = function(ma){
+  state.selectedStaff = state.selectedStaff.filter(p => p.maNhanVien !== ma);
+  refreshStaffList();
+}
+
+async function submitCreatePhieu(){
+  const payload = {
+    loaiPhieu: $('#createLoai').value,
+    ngayTruc: $('#createDate').value,
+    khoaPhong: $('#createDept').value.trim(),
+    nhanVienThuongTruc: state.selectedStaff,
+    soLieuTruc: $('#soLieuTruc')?.value || '',
+    baoCaoChuyenMon: $('#baoCaoChuyenMon')?.value || '',
+    baoCaoVanDeKhac: $('#baoCaoVanDeKhac')?.value || '',
+    banGiaoTaiSan: $('#banGiaoTaiSan').value,
+    banGiaoChuyenMon: $('#banGiaoChuyenMon').value,
+    banGiaoVanDeKhac: $('#banGiaoVanDeKhac').value,
+    thoiGianBanGiao: fromDatetimeLocal($('#thoiGianBanGiao').value)
   };
 
-  const $ = (id) => document.getElementById(id);
-  const esc = (s) => String(s ?? '').replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
-  const today = () => new Date().toISOString().slice(0,10);
-  const nowTime = () => new Date().toTimeString().slice(0,5);
-
-  function apiConfigured() {
-    return API_URL && API_URL !== 'PASTE_WEB_APP_URL_HERE';
-  }
-
-  async function callApi(action, data = {}) {
-    if (!apiConfigured()) throw new Error('Chưa cấu hình API_URL trong index.html.');
-    const res = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action, data })
-    });
-    const json = await res.json();
-    if (!json.ok) throw new Error(json.message || 'Có lỗi xảy ra.');
-    return json;
-  }
-
-  function setMsg(el, text, type='') {
-    el.innerHTML = text ? `<div class="alert ${type}">${esc(text)}</div>` : '';
-  }
-
-  function setLoading(btn, isLoading, text) {
-    if (!btn) return;
-    if (isLoading) {
-      btn.dataset.old = btn.innerHTML;
-      btn.disabled = true;
-      btn.innerHTML = `<span class="spinner"></span>${text || 'Đang xử lý...'}`;
-    } else {
-      btn.disabled = false;
-      btn.innerHTML = btn.dataset.old || btn.innerHTML;
-    }
-  }
-
-  function staffOptions(selected='') {
-    const opts = ['<option value="">-- Chọn nhân viên --</option>'];
-    state.staff.forEach(s => {
-      const val = `${s.ma}|${s.ten}`;
-      opts.push(`<option value="${esc(val)}" ${val === selected ? 'selected' : ''}>${esc(s.ten)} - ${esc(s.ma)}</option>`);
-    });
-    return opts.join('');
-  }
-
-  function splitStaffValue(v) {
-    const [ma, ...rest] = String(v || '').split('|');
-    return { ma: ma || '', ten: rest.join('|') || '' };
-  }
-
-  async function login() {
-    const btn = $('loginBtn');
-    setLoading(btn, true, 'Đang đăng nhập...');
-    setMsg($('loginMsg'), '');
-    try {
-      const data = await callApi('login', { maNhanVien: $('loginMa').value, matKhau: $('loginMk').value });
-      state.token = data.token;
-      state.user = data.user;
-      localStorage.setItem('sotruc_token', state.token);
-      localStorage.setItem('sotruc_user', JSON.stringify(state.user));
-      await bootApp();
-    } catch (err) {
-      setMsg($('loginMsg'), err.message, 'error');
-    } finally {
-      setLoading(btn, false);
-    }
-  }
-
-  async function bootApp() {
-    if (!apiConfigured()) $('apiWarning').classList.remove('hidden');
-    if (!state.token) {
-      $('loginView').classList.remove('hidden');
-      $('appView').classList.add('hidden');
-      return;
-    }
-    try {
-      const init = await callApi('getInit', { token: state.token });
-      state.user = init.user;
-      state.staff = init.staff || [];
-      localStorage.setItem('sotruc_user', JSON.stringify(state.user));
-      $('userLabel').textContent = `${state.user.tenNhanVien} (${state.user.maNhanVien})`;
-      $('loginView').classList.add('hidden');
-      $('appView').classList.remove('hidden');
-      renderCreateTab();
-      await loadTickets();
-      await loadMeetings();
-    } catch (err) {
-      localStorage.removeItem('sotruc_token');
-      localStorage.removeItem('sotruc_user');
-      state.token = '';
-      state.user = null;
-      $('loginView').classList.remove('hidden');
-      $('appView').classList.add('hidden');
-      setMsg($('loginMsg'), err.message, 'error');
-    }
-  }
-
-  function logout() {
-    localStorage.removeItem('sotruc_token');
-    localStorage.removeItem('sotruc_user');
-    location.reload();
-  }
-
-  function switchTab(tab) {
-    state.activeTab = tab;
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
-    document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
-    $(`tab-${tab}`).classList.remove('hidden');
-    if (tab === 'tickets' || tab === 'search') loadTickets();
-    if (tab === 'meeting') loadMeetings();
-  }
-
-  function renderCreateTab() {
-    $('tab-create').innerHTML = `
-      <div class="card">
-        <h2>Tạo phiếu báo cáo / bàn giao thường trực</h2>
-        <div class="hint">Chọn loại phiếu. Nếu chọn “Báo cáo + bàn giao thường trực”, phần bàn giao sẽ sang DS phiếu để ký, phần báo cáo sẽ sang tab Giao ban.</div>
-      </div>
-
-      <form id="ticketForm" class="card">
-        <h3>I. Thông tin phiếu</h3>
-        <div class="grid">
-          <div>
-            <label>Loại phiếu</label>
-            <select id="loaiPhieu" required>
-              <option value="BAN_GIAO">Chỉ bàn giao thường trực</option>
-              <option value="BAO_CAO_BAN_GIAO">Báo cáo + bàn giao thường trực</option>
-            </select>
-          </div>
-          <div>
-            <label>Ngày trực</label>
-            <input id="ngayTruc" type="date" value="${today()}" required />
-          </div>
-          <div>
-            <label>Khoa/Phòng</label>
-            <input id="khoaPhong" value="${esc(state.user?.phongLamViec || 'Phòng Truyền máu')}" />
-          </div>
-          <div>
-            <label>Loại bàn giao</label>
-            <select id="loaiBanGiao">
-              <option>Giờ hành chính → Người trực</option>
-              <option>Người trực → Giờ hành chính</option>
-              <option>Người trực → Tua trực sau</option>
-              <option>Bàn giao khác</option>
-            </select>
-          </div>
-          <div>
-            <label>Người giao</label>
-            <select id="nguoiGiao">${staffOptions()}</select>
-          </div>
-          <div>
-            <label>Người nhận</label>
-            <select id="nguoiNhan">${staffOptions()}</select>
-          </div>
-        </div>
-
-        <div id="reportBlock" style="margin-top:16px" class="hidden">
-          <h3>II. Báo cáo thường trực</h3>
-          <div class="grid">
-            <div>
-              <label>Nhân viên phiên thường trực</label>
-              <input id="nhanVienPhienTruc" placeholder="VD: Nguyễn Văn A, Trần Thị B..." />
-            </div>
-            <div>
-              <label>Gợi ý thời gian trực</label>
-              <input id="thoiGianGoiY" value="Ngày ${today()}" />
-            </div>
-          </div>
-          <div class="grid" style="margin-top:12px">
-            <div>
-              <label>1. Tình hình chung</label>
-              <textarea id="tinhHinhChung" placeholder="Tóm tắt tình hình chung trong phiên trực..."></textarea>
-            </div>
-            <div>
-              <label>2. Chuyên môn</label>
-              <textarea id="baoCaoChuyenMon" placeholder="Nội dung chuyên môn, ca đáng lưu ý, kết quả báo động..."></textarea>
-            </div>
-            <div>
-              <label>Công việc đã xử lý</label>
-              <textarea id="congViecDaXuLy"></textarea>
-            </div>
-            <div>
-              <label>Công việc còn tồn / cần bàn giao</label>
-              <textarea id="congViecConTon"></textarea>
-            </div>
-          </div>
-          <div style="margin-top:12px">
-            <label>Đề xuất / kiến nghị</label>
-            <textarea id="deXuatKienNghi"></textarea>
-          </div>
-        </div>
-
-        <div style="margin-top:16px">
-          <h3>III. Nội dung bàn giao</h3>
-          <div class="grid">
-            <div>
-              <label>1. Tài sản, dụng cụ, thiết bị y tế</label>
-              <textarea id="banGiaoTaiSan" placeholder="VD: máy, tủ, dụng cụ, vật tư, tình trạng..."></textarea>
-            </div>
-            <div>
-              <label>2. Chuyên môn</label>
-              <textarea id="banGiaoChuyenMon" placeholder="VD: mẫu/kết quả tồn, việc cần theo dõi..."></textarea>
-            </div>
-          </div>
-          <div style="margin-top:12px">
-            <label>3. Vấn đề khác</label>
-            <textarea id="banGiaoVanDeKhac" placeholder="Nhân sự, CNTT, an ninh, điện nước, vấn đề khác..."></textarea>
-          </div>
-        </div>
-
-        <div class="actions">
-          <button class="btn" id="createBtn" type="submit">Tạo phiếu</button>
-          <button class="btn secondary" type="button" onclick="document.getElementById('ticketForm').reset(); document.getElementById('ngayTruc').value='${today()}'; toggleReportBlock();">Làm mới</button>
-        </div>
-        <div id="createMsg"></div>
-      </form>
-    `;
-
-    $('loaiPhieu').addEventListener('change', toggleReportBlock);
-    $('ticketForm').addEventListener('submit', submitTicket);
-    toggleReportBlock();
-  }
-
-  function toggleReportBlock() {
-    const show = $('loaiPhieu')?.value === 'BAO_CAO_BAN_GIAO';
-    $('reportBlock')?.classList.toggle('hidden', !show);
-  }
-
-  async function submitTicket(e) {
-    e.preventDefault();
-    const btn = $('createBtn');
-    const giao = splitStaffValue($('nguoiGiao').value);
-    const nhan = splitStaffValue($('nguoiNhan').value);
-    const payload = {
-      loaiPhieu: $('loaiPhieu').value,
-      ngayTruc: $('ngayTruc').value,
-      khoaPhong: $('khoaPhong').value,
-      loaiBanGiao: $('loaiBanGiao').value,
-      nguoiGiaoMa: giao.ma,
-      nguoiGiaoTen: giao.ten,
-      nguoiNhanMa: nhan.ma,
-      nguoiNhanTen: nhan.ten,
-      nhanVienPhienTruc: $('nhanVienPhienTruc')?.value || '',
-      tinhHinhChung: $('tinhHinhChung')?.value || '',
-      baoCaoChuyenMon: $('baoCaoChuyenMon')?.value || '',
-      congViecDaXuLy: $('congViecDaXuLy')?.value || '',
-      congViecConTon: $('congViecConTon')?.value || '',
-      deXuatKienNghi: $('deXuatKienNghi')?.value || '',
-      banGiaoTaiSan: $('banGiaoTaiSan').value,
-      banGiaoChuyenMon: $('banGiaoChuyenMon').value,
-      banGiaoVanDeKhac: $('banGiaoVanDeKhac').value
-    };
-    if (!payload.nguoiGiaoMa || !payload.nguoiNhanMa) {
-      setMsg($('createMsg'), 'Vui lòng chọn người giao và người nhận.', 'error');
-      return;
-    }
-    setLoading(btn, true, 'Đang tạo phiếu...');
-    try {
-      await callApi('createTicket', { token: state.token, payload });
-      setMsg($('createMsg'), 'Đã tạo phiếu. Vào tab DS phiếu để ký bàn giao. Nếu là báo cáo + bàn giao, tab Giao ban sẽ tự có dữ liệu.', 'ok');
-      await loadTickets();
-      await loadMeetings();
-    } catch (err) {
-      setMsg($('createMsg'), err.message, 'error');
-    } finally {
-      setLoading(btn, false);
-    }
-  }
-
-  async function loadTickets() {
-    try {
-      const data = await callApi('listTickets', { token: state.token });
-      state.tickets = data.tickets || [];
-      renderTicketsTab();
-      renderSearchTab();
-    } catch (err) {
-      $('tab-tickets').innerHTML = `<div class="alert error">${esc(err.message)}</div>`;
-    }
-  }
-
-  function statusBadge(status) {
-    const s = String(status || '');
-    let cls = '';
-    if (s.includes('PDF') || s.includes('ký đủ')) cls = 'ok';
-    else if (s.includes('Chờ')) cls = 'warn';
-    return `<span class="badge ${cls}">${esc(s || 'Chưa rõ')}</span>`;
-  }
-
-  function ticketTitle(t) {
-    return t.LoaiPhieu === 'BAO_CAO_BAN_GIAO' ? 'Báo cáo + bàn giao thường trực' : 'Chỉ bàn giao thường trực';
-  }
-
-  function renderTicketsTab() {
-    $('tab-tickets').innerHTML = `
-      <div class="card">
-        <h2>DS phiếu / Chờ ký bàn giao</h2>
-        <div class="hint">Người giao và người nhận vào đây để xem nội dung và ký xác nhận. Khi ký đủ, hệ thống tự xuất PDF.</div>
-        <div class="actions"><button class="btn secondary" onclick="loadTickets()">Tải lại</button></div>
-      </div>
-      <div class="list">${state.tickets.map(renderTicketItem).join('') || '<div class="card hint">Chưa có phiếu.</div>'}</div>
-    `;
-  }
-
-  function renderTicketItem(t) {
-    return `
-      <div class="item">
-        <div class="item-head">
-          <div>
-            <div class="item-title">${esc(ticketTitle(t))}</div>
-            <div class="item-meta">${esc(t.NgayTruc)} · ${esc(t.KhoaPhong)} · ${esc(t.LoaiBanGiao)}</div>
-            <div class="item-meta">Giao: ${esc(t.NguoiGiaoTen)} → Nhận: ${esc(t.NguoiNhanTen)}</div>
-          </div>
-          <div>${statusBadge(t.TrangThai)}</div>
-        </div>
-        <div class="actions">
-          <button class="btn secondary" onclick="showTicket('${esc(t.PhieuID)}')">Xem</button>
-          <button class="btn" onclick="signTicket('${esc(t.PhieuID)}','giao', this)">Người giao ký</button>
-          <button class="btn ok" onclick="signTicket('${esc(t.PhieuID)}','nhan', this)">Người nhận ký</button>
-          ${t.PdfUrl ? `<a class="btn secondary" href="${esc(t.PdfUrl)}" target="_blank" rel="noopener">Xem PDF</a>` : ''}
-        </div>
-      </div>
-    `;
-  }
-
-  function findTicket(id) { return state.tickets.find(t => String(t.PhieuID) === String(id)); }
-  function findMeeting(id) { return state.meetings.find(m => String(m.MeetingID) === String(id)); }
-
-  function showTicket(id) {
-    const t = findTicket(id);
-    if (!t) return;
-    $('modalTitle').textContent = 'Chi tiết phiếu bàn giao';
-    $('modalBody').innerHTML = `
-      ${kv('Mã phiếu', t.PhieuID)}
-      ${kv('Loại phiếu', ticketTitle(t))}
-      ${kv('Ngày trực', t.NgayTruc)}
-      ${kv('Khoa/Phòng', t.KhoaPhong)}
-      ${kv('Loại bàn giao', t.LoaiBanGiao)}
-      ${kv('Người giao', `${t.NguoiGiaoTen} (${t.NguoiGiaoMa})`)}
-      ${kv('Người nhận', `${t.NguoiNhanTen} (${t.NguoiNhanMa})`)}
-      <h3>Nội dung bàn giao</h3>
-      ${kv('1. Tài sản, dụng cụ, thiết bị y tế', t.BanGiaoTaiSan)}
-      ${kv('2. Chuyên môn', t.BanGiaoChuyenMon)}
-      ${kv('3. Vấn đề khác', t.BanGiaoVanDeKhac)}
-      ${t.LoaiPhieu === 'BAO_CAO_BAN_GIAO' ? `
-        <h3>Báo cáo thường trực</h3>
-        ${kv('Nhân viên phiên trực', t.NhanVienPhienTruc)}
-        ${kv('Tình hình chung', t.TinhHinhChung)}
-        ${kv('Chuyên môn', t.BaoCaoChuyenMon)}
-        ${kv('Công việc đã xử lý', t.CongViecDaXuLy)}
-        ${kv('Công việc còn tồn', t.CongViecConTon)}
-        ${kv('Đề xuất/kiến nghị', t.DeXuatKienNghi)}
-      ` : ''}
-      <h3>Xác nhận</h3>
-      ${kv('Người giao ký', `${t.GiaoKyTen || ''} ${t.GiaoKyLuc ? ' - ' + t.GiaoKyLuc : ''}`)}
-      ${kv('Người nhận ký', `${t.NhanKyTen || ''} ${t.NhanKyLuc ? ' - ' + t.NhanKyLuc : ''}`)}
-      ${t.PdfUrl ? `<div class="actions"><a class="btn" href="${esc(t.PdfUrl)}" target="_blank" rel="noopener">Mở PDF</a></div>` : ''}
-    `;
-    detailDialog.showModal();
-  }
-
-  function kv(k, v) {
-    return `<div class="kv"><b>${esc(k)}</b><div>${String(esc(v || '')).replace(/\n/g, '<br>')}</div></div>`;
-  }
-
-  async function signTicket(id, role, btn) {
-    if (!confirm(role === 'giao' ? 'Xác nhận ký với vai trò người giao?' : 'Xác nhận ký với vai trò người nhận?')) return;
-    setLoading(btn, true, 'Đang ký...');
-    try {
-      await callApi('signTicket', { token: state.token, phieuId: id, role });
-      await loadTickets();
-      alert('Đã ký xác nhận. Nếu phiếu đã đủ chữ ký, PDF sẽ được tạo tự động.');
-    } catch (err) {
-      alert(err.message);
-    } finally {
-      setLoading(btn, false);
-    }
-  }
-
-  async function loadMeetings() {
-    try {
-      const data = await callApi('listMeetings', { token: state.token });
-      state.meetings = data.meetings || [];
-      renderMeetingTab();
-    } catch (err) {
-      $('tab-meeting').innerHTML = `<div class="alert error">${esc(err.message)}</div>`;
-    }
-  }
-
-  function renderMeetingTab() {
-    $('tab-meeting').innerHTML = `
-      <div class="card">
-        <h2>Giao ban</h2>
-        <div class="hint">Tab này nhận phần báo cáo từ phiếu “Báo cáo + bàn giao thường trực”. Nhập kết luận/chỉ đạo, thư ký và chủ tọa ký để xuất PDF giao ban.</div>
-        <div class="actions"><button class="btn secondary" onclick="loadMeetings()">Tải lại</button></div>
-      </div>
-      <div class="list">${state.meetings.map(renderMeetingItem).join('') || '<div class="card hint">Chưa có báo cáo chờ giao ban.</div>'}</div>
-    `;
-  }
-
-  function renderMeetingItem(m) {
-    const p = m._phieu || {};
-    return `
-      <div class="item">
-        <div class="item-head">
-          <div>
-            <div class="item-title">Giao ban ngày ${esc(m.NgayGiaoBan || p.NgayTruc || '')}</div>
-            <div class="item-meta">Phiếu: ${esc(m.PhieuID)} · Trực: ${esc(p.NhanVienPhienTruc || '')}</div>
-            <div class="item-meta">${esc((p.TinhHinhChung || '').slice(0, 140))}${(p.TinhHinhChung || '').length > 140 ? '...' : ''}</div>
-          </div>
-          <div>${statusBadge(m.TrangThai)}</div>
-        </div>
-        <div class="actions">
-          <button class="btn secondary" onclick="openMeeting('${esc(m.MeetingID)}')">Mở giao ban</button>
-          ${m.PdfUrl ? `<a class="btn secondary" href="${esc(m.PdfUrl)}" target="_blank" rel="noopener">Xem PDF</a>` : ''}
-        </div>
-      </div>
-    `;
-  }
-
-  function openMeeting(id) {
-    const m = findMeeting(id);
-    if (!m) return;
-    $('modalTitle').textContent = 'Giao ban';
-    $('modalBody').innerHTML = `
-      <form id="meetingForm">
-        <input type="hidden" id="meetingId" value="${esc(m.MeetingID)}" />
-        <div class="grid">
-          <div><label>Ngày giao ban</label><input id="ngayGiaoBan" type="date" value="${esc(m.NgayGiaoBan || today())}" /></div>
-          <div><label>Giờ giao ban</label><input id="gioGiaoBan" type="time" value="${esc(m.GioGiaoBan || nowTime())}" /></div>
-          <div><label>Chủ tọa</label><input id="chuToa" value="${esc(m.ChuToa || '')}" /></div>
-          <div><label>Thư ký</label><input id="thuKy" value="${esc(m.ThuKy || '')}" /></div>
-        </div>
-        <div style="margin-top:12px"><label>Thành phần tham gia</label><textarea id="thanhPhan">${esc(m.ThanhPhan || '')}</textarea></div>
-        <h3>Nội dung báo cáo tự tổng hợp</h3>
-        <div class="alert">${esc(m.NoiDungTuDong || '').replace(/\n/g, '<br>')}</div>
-        <div><label>Kết luận / chỉ đạo của chủ tọa</label><textarea id="ketLuanChiDao">${esc(m.KetLuanChiDao || '')}</textarea></div>
-        <div style="margin-top:12px"><label>Nhiệm vụ sau giao ban</label><textarea id="nhiemVuSauGiaoBan">${esc(m.NhiemVuSauGiaoBan || '')}</textarea></div>
-        <div class="actions">
-          <button class="btn" type="submit">Lưu giao ban</button>
-          <button class="btn warn" type="button" onclick="signMeeting('${esc(m.MeetingID)}','thuky', this)">Thư ký ký</button>
-          <button class="btn ok" type="button" onclick="signMeeting('${esc(m.MeetingID)}','chutoa', this)">Chủ tọa ký</button>
-          ${m.PdfUrl ? `<a class="btn secondary" href="${esc(m.PdfUrl)}" target="_blank" rel="noopener">Mở PDF</a>` : ''}
-        </div>
-      </form>
-    `;
-    $('meetingForm').addEventListener('submit', saveMeeting);
-    detailDialog.showModal();
-  }
-
-  async function saveMeeting(e) {
-    e.preventDefault();
-    const payload = {
-      meetingId: $('meetingId').value,
-      ngayGiaoBan: $('ngayGiaoBan').value,
-      gioGiaoBan: $('gioGiaoBan').value,
-      chuToa: $('chuToa').value,
-      thuKy: $('thuKy').value,
-      thanhPhan: $('thanhPhan').value,
-      ketLuanChiDao: $('ketLuanChiDao').value,
-      nhiemVuSauGiaoBan: $('nhiemVuSauGiaoBan').value
-    };
-    try {
-      await callApi('saveMeeting', { token: state.token, payload });
-      await loadMeetings();
-      detailDialog.close();
-      alert('Đã lưu giao ban.');
-    } catch (err) {
-      alert(err.message);
-    }
-  }
-
-  async function signMeeting(id, role, btn) {
-    if (!confirm(role === 'thuky' ? 'Thư ký ký xác nhận?' : 'Chủ tọa ký xác nhận?')) return;
-    setLoading(btn, true, 'Đang ký...');
-    try {
-      await callApi('signMeeting', { token: state.token, meetingId: id, role });
-      await loadMeetings();
-      detailDialog.close();
-      alert('Đã ký giao ban. Nếu đủ chữ ký, PDF giao ban sẽ được tạo tự động.');
-    } catch (err) {
-      alert(err.message);
-    } finally {
-      setLoading(btn, false);
-    }
-  }
-
-  function renderSearchTab() {
-    const pdfItems = state.tickets.filter(t => t.PdfUrl);
-    $('tab-search').innerHTML = `
-      <div class="card">
-        <h2>Tra cứu / PDF</h2>
-        <div class="hint">Các phiếu đã ký đủ sẽ có PDF. Khi triển khai thật, ta sẽ bổ sung bộ lọc từ ngày - đến ngày, người giao, người nhận, loại phiếu.</div>
-        <div class="actions"><button class="btn secondary" onclick="loadTickets(); loadMeetings();">Tải lại</button></div>
-      </div>
-      <div class="card">
-        <h3>PDF phiếu bàn giao</h3>
-        <div class="list">${pdfItems.map(t => `
-          <div class="item">
-            <div class="item-title">${esc(ticketTitle(t))}</div>
-            <div class="item-meta">${esc(t.NgayTruc)} · ${esc(t.NguoiGiaoTen)} → ${esc(t.NguoiNhanTen)}</div>
-            <div class="actions"><a class="btn secondary" href="${esc(t.PdfUrl)}" target="_blank" rel="noopener">Xem PDF</a></div>
-          </div>
-        `).join('') || '<div class="hint">Chưa có PDF phiếu bàn giao.</div>'}</div>
-      </div>
-      <div class="card">
-        <h3>PDF giao ban</h3>
-        <div class="list">${state.meetings.filter(m => m.PdfUrl).map(m => `
-          <div class="item">
-            <div class="item-title">Giao ban ${esc(m.NgayGiaoBan)}</div>
-            <div class="item-meta">Chủ tọa: ${esc(m.ChuToa)} · Thư ký: ${esc(m.ThuKy)}</div>
-            <div class="actions"><a class="btn secondary" href="${esc(m.PdfUrl)}" target="_blank" rel="noopener">Xem PDF</a></div>
-          </div>
-        `).join('') || '<div class="hint">Chưa có PDF giao ban.</div>'}</div>
-      </div>
-    `;
-  }
-
-  document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.tab-btn');
-    if (btn) switchTab(btn.dataset.tab);
+  if(!payload.ngayTruc || !payload.khoaPhong) return toast('Vui lòng nhập ngày trực và khoa/phòng.');
+  withButton($('#createBtn'), 'Đang tạo phiếu...', async () => {
+    const res = await api('createPhieu', payload);
+    clearListCaches();
+    toast('Đã tạo phiếu');
+    showPhieuModal(res.data.phieu, {created:true});
+    renderCreateTab();
   });
-  $('loginBtn').addEventListener('click', login);
-  $('loginMk').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
-  $('logoutBtn').addEventListener('click', logout);
+}
 
-  if (!apiConfigured()) $('apiWarning').classList.remove('hidden');
-  bootApp();
+/* ================= DS PHIẾU ================= */
+
+function renderListTab(){
+  $('#tab-list').innerHTML = `
+    <div class="card">
+      <h2 class="section-title">Danh sách phiếu</h2>
+      <div class="grid filter-grid">
+        <div class="col-3"><label>Từ ngày</label><input id="filterFrom" type="date"></div>
+        <div class="col-3"><label>Đến ngày</label><input id="filterTo" type="date"></div>
+        <div class="col-3"><label>Khoa/phòng</label><input id="filterDept" list="deptList" placeholder="Khoa/phòng"></div>
+        <div class="col-3">
+          <label>Loại phiếu</label>
+          <select id="filterLoai">
+            <option>Tất cả</option>
+            <option>${LOAI_BAN_GIAO}</option>
+            <option>${LOAI_BAO_CAO}</option>
+          </select>
+        </div>
+        <div class="col-3">
+          <label>Trạng thái</label>
+          <select id="filterStatus">
+            <option>Tất cả</option><option>${STATUS_CHUA}</option><option>${STATUS_DA}</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button id="loadPhieuBtn" class="btn primary">Tải danh sách</button>
+      </div>
+    </div>
+    <div id="phieuListBox"></div>
+  `;
+  $('#loadPhieuBtn').addEventListener('click', () => loadPhieuList(true));
+  setDefaultDateRange('filterFrom','filterTo',1);
+}
+
+async function loadPhieuList(force){
+  const box = $('#phieuListBox');
+  if(!box) return;
+  const filters = getPhieuFilters();
+  const key = JSON.stringify(filters);
+  const fresh = state.cache.phieu.key === key && Date.now() - state.cache.phieu.time < 45000;
+  if(!force && fresh) return renderPhieuList(state.cache.phieu.data);
+
+  box.innerHTML = `<div class="loading">Đang tải danh sách phiếu...</div>`;
+  try{
+    const res = await api('getPhieuList', filters);
+    state.cache.phieu = {key, time:Date.now(), data:res.data.items};
+    renderPhieuList(res.data.items);
+  }catch(err){
+    box.innerHTML = `<div class="empty">${esc(err.message)}</div>`;
+  }
+}
+
+function getPhieuFilters(){
+  return {
+    fromDate: $('#filterFrom')?.value || addDaysIso(todayIso(), -1),
+    toDate: $('#filterTo')?.value || todayIso(),
+    khoaPhong: $('#filterDept')?.value || state.user?.khoaPhong || '',
+    loaiPhieu: $('#filterLoai')?.value || 'Tất cả',
+    trangThai: $('#filterStatus')?.value || 'Tất cả'
+  };
+}
+
+function renderPhieuList(items){
+  const box = $('#phieuListBox');
+  if(!items.length){
+    box.innerHTML = `<div class="empty">Không có phiếu phù hợp bộ lọc.</div>`;
+    return;
+  }
+  box.innerHTML = items.map(p => `
+    <div class="list-card">
+      <div class="list-head">
+        <div>
+          <div class="list-title">${esc(p.loaiPhieu)} - ${dateVi(p.ngayTruc)}</div>
+          <div class="meta">Mã: ${esc(p.phieuID)} · ${esc(p.khoaPhong)} · Người tạo: ${esc(p.nguoiThucHienTen || '')}</div>
+        </div>
+        ${statusPill(p.trangThaiBanGiao)}
+      </div>
+      <div class="meta" style="margin-top:8px">Bàn giao: ${shortText(p.banGiaoChuyenMon || p.banGiaoTaiSan, 120)}</div>
+      <div class="btn-row">
+        <button class="btn secondary" onclick="openPhieu('${escAttr(p.phieuID)}')">${p.canSignBanGiao ? 'Xem / Ký nhận' : 'Xem chi tiết'}</button>
+        ${p.canEdit ? `<button class="btn ghost" onclick="editPhieu('${escAttr(p.phieuID)}')">Sửa</button>` : ''}
+        ${p.canDelete ? `<button class="btn danger" onclick="deletePhieu('${escAttr(p.phieuID)}')">Xóa</button>` : ''}
+        ${p.pdfBanGiaoUrl ? `<a class="btn ok" target="_blank" href="${escAttr(p.pdfBanGiaoUrl)}">PDF bàn giao</a>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+window.openPhieu = async function(phieuID){
+  try{
+    const res = await api('getPhieuDetail', {phieuID});
+    showPhieuModal(res.data.phieu);
+  }catch(err){ toast(err.message); }
+}
+
+function showPhieuModal(p, opts={}){
+  const reportHtml = p.canSeeFull && p.loaiPhieuGoc === LOAI_BAO_CAO ? `
+    <h3 class="sub-title">II. Báo cáo thường trực</h3>
+    <div class="list-card">
+      <div><strong>Nhân viên thường trực</strong></div>
+      <div class="two-col-text">${esc((p.nhanVienThuongTruc||[]).map(n => `${n.tenNhanVien}${titleForPerson(n) ? ' - ' + titleForPerson(n) : ''}`).join('\n') || 'Chưa nhập')}</div>
+      <hr style="border:0;border-top:1px solid var(--line)">
+      <div><strong>Số liệu trực</strong></div><div class="two-col-text">${esc(p.soLieuTruc||'')}</div>
+      <div><strong>Chuyên môn</strong></div><div class="two-col-text">${esc(p.baoCaoChuyenMon||'')}</div>
+      <div><strong>Vấn đề khác</strong></div><div class="two-col-text">${esc(p.baoCaoVanDeKhac||'')}</div>
+    </div>
+  ` : '';
+
+  openModal(`
+    <div class="modal-card">
+      <div class="modal-head">
+        <div class="modal-title">${opts.created ? 'Đã tạo phiếu' : 'Chi tiết phiếu'}</div>
+        <button class="close-btn" onclick="closeModal()">×</button>
+      </div>
+      <h3 class="sub-title">I. Thông tin phiếu</h3>
+      <div class="list-card">
+        <div><strong>${esc(p.loaiPhieu)}</strong> ${statusPill(p.trangThaiBanGiao)}</div>
+        <div class="meta">Mã phiếu: ${esc(p.phieuID)}</div>
+        <div class="meta">Ngày trực: ${dateVi(p.ngayTruc)} · Khoa/phòng: ${esc(p.khoaPhong)}</div>
+        <div class="meta">Người thực hiện: ${esc(p.nguoiThucHienTen || '')}${p.nguoiThucHienChucDanh ? ' - ' + esc(p.nguoiThucHienChucDanh) : ''}</div>
+      </div>
+      ${reportHtml}
+      <h3 class="sub-title">III. Bàn giao thường trực</h3>
+      <div class="list-card">
+        <div><strong>Tài sản, dụng cụ, thiết bị y tế</strong></div><div class="two-col-text">${esc(p.banGiaoTaiSan||'')}</div>
+        <div><strong>Chuyên môn</strong></div><div class="two-col-text">${esc(p.banGiaoChuyenMon||'')}</div>
+        <div><strong>Vấn đề khác</strong></div><div class="two-col-text">${esc(p.banGiaoVanDeKhac||'')}</div>
+        <div class="meta">Thời gian bàn giao: ${dateTimeVi(p.thoiGianBanGiao)}</div>
+      </div>
+      ${p.trangThaiBanGiao === STATUS_DA ? `
+        <div class="list-card">
+          <strong>Đã ký nhận bàn giao</strong>
+          <div class="meta">Người nhận: ${esc(p.nguoiNhanTen || '')}${p.nguoiNhanChucDanh ? ' - ' + esc(p.nguoiNhanChucDanh) : ''}</div>
+          <div class="meta">Thời điểm ký: ${dateTimeVi(p.thoiDiemNhanKy)}</div>
+        </div>
+      ` : ''}
+      <div class="btn-row">
+        ${p.canSignBanGiao ? `<button class="btn ok" onclick="signBanGiao('${escAttr(p.phieuID)}')">Ký nhận bàn giao</button>` : ''}
+        ${p.pdfBanGiaoUrl ? `<a class="btn secondary" target="_blank" href="${escAttr(p.pdfBanGiaoUrl)}">Mở PDF bàn giao</a>` : ''}
+        <button class="btn ghost" onclick="closeModal()">Đóng</button>
+      </div>
+    </div>
+  `);
+}
+
+window.signBanGiao = async function(phieuID){
+  const ok = confirm('Sau khi ký nhận, phần bàn giao sẽ bị khóa và hệ thống sẽ xuất PDF bàn giao. Bạn xác nhận ký nhận bàn giao?');
+  if(!ok) return;
+  try{
+    const res = await api('signBanGiao', {phieuID});
+    clearListCaches();
+    toast('Đã ký nhận bàn giao');
+    showPhieuModal(res.data.phieu);
+  }catch(err){ toast(err.message); }
+}
+
+window.deletePhieu = async function(phieuID){
+  if(!confirm('Bạn chắc chắn muốn xóa phiếu này?')) return;
+  try{
+    await api('deletePhieu', {phieuID});
+    clearListCaches();
+    toast('Đã xóa phiếu');
+    loadPhieuList(true);
+  }catch(err){ toast(err.message); }
+}
+
+window.editPhieu = async function(phieuID){
+  try{
+    const res = await api('getPhieuDetail', {phieuID});
+    const p = res.data.phieu;
+    state.selectedStaff = p.nhanVienThuongTruc || [];
+    openModal(`
+      <div class="modal-card">
+        <div class="modal-head">
+          <div class="modal-title">Sửa phiếu</div>
+          <button class="close-btn" onclick="closeModal()">×</button>
+        </div>
+        <div class="grid">
+          <div class="col-6"><label>Ngày trực</label><input id="editDate" type="date" value="${escAttr(p.ngayTruc)}"></div>
+          <div class="col-6"><label>Khoa/phòng</label><input id="editDept" list="deptList" value="${escAttr(p.khoaPhong)}"></div>
+          ${p.loaiPhieuGoc === LOAI_BAO_CAO ? `
+            <div class="col-8"><label>Nhân viên thường trực</label><input id="editStaffSearch" list="staffDatalist"></div>
+            <div class="col-4"><label>&nbsp;</label><button class="btn secondary" onclick="addEditStaff()">Thêm</button></div>
+            <div class="col-12"><div id="editStaffList" class="staff-list"></div></div>
+            <div class="col-12"><label>Số liệu trực</label><textarea id="editSoLieu">${esc(p.soLieuTruc||'')}</textarea></div>
+            <div class="col-12"><label>Chuyên môn</label><textarea id="editBaoCaoCM">${esc(p.baoCaoChuyenMon||'')}</textarea></div>
+            <div class="col-12"><label>Vấn đề khác</label><textarea id="editBaoCaoKhac">${esc(p.baoCaoVanDeKhac||'')}</textarea></div>
+          ` : ''}
+          ${p.trangThaiBanGiao !== STATUS_DA ? `
+            <div class="col-12"><label>Bàn giao tài sản</label><textarea id="editBGTaiSan">${esc(p.banGiaoTaiSan||'')}</textarea></div>
+            <div class="col-12"><label>Bàn giao chuyên môn</label><textarea id="editBGCM">${esc(p.banGiaoChuyenMon||'')}</textarea></div>
+            <div class="col-12"><label>Bàn giao vấn đề khác</label><textarea id="editBGKhac">${esc(p.banGiaoVanDeKhac||'')}</textarea></div>
+            <div class="col-6"><label>Thời gian bàn giao</label><input id="editTGBG" type="datetime-local" value="${escAttr(toDatetimeLocal(p.thoiGianBanGiao))}"></div>
+          ` : `<div class="col-12"><div class="empty">Phần bàn giao đã ký nhận nên không được sửa.</div></div>`}
+        </div>
+        <div class="btn-row">
+          <button class="btn primary" onclick="saveEditPhieu('${escAttr(p.phieuID)}','${escAttr(p.loaiPhieuGoc)}','${escAttr(p.trangThaiBanGiao)}')">Lưu cập nhật</button>
+          <button class="btn ghost" onclick="closeModal()">Đóng</button>
+        </div>
+      </div>
+    `);
+    refreshEditStaffList();
+    setTimeout(() => $$('textarea').forEach(autoGrow), 0);
+  }catch(err){ toast(err.message); }
+}
+
+window.addEditStaff = function(){
+  const raw = $('#editStaffSearch').value.trim();
+  const ma = raw.split(' - ')[0].trim();
+  const person = state.personnel.find(p => norm(p.maNhanVien) === norm(ma) || raw.toLowerCase().includes((p.tenNhanVien||'').toLowerCase()));
+  if(!person) return toast('Không tìm thấy nhân viên.');
+  if(state.selectedStaff.some(x => x.maNhanVien === person.maNhanVien)) return toast('Nhân viên đã có.');
+  state.selectedStaff.push(person);
+  $('#editStaffSearch').value = '';
+  refreshEditStaffList();
+}
+
+function refreshEditStaffList(){
+  const box = $('#editStaffList');
+  if(!box) return;
+  box.innerHTML = state.selectedStaff.map(p => `
+    <span class="staff-chip">${esc(p.tenNhanVien)}${titleForPerson(p) ? ' - ' + esc(titleForPerson(p)) : ''}
+      <button onclick="removeEditStaff('${escAttr(p.maNhanVien)}')">×</button>
+    </span>
+  `).join('') || '<span class="meta">Chưa có nhân viên.</span>';
+}
+
+window.removeEditStaff = function(ma){
+  state.selectedStaff = state.selectedStaff.filter(p => p.maNhanVien !== ma);
+  refreshEditStaffList();
+}
+
+window.saveEditPhieu = async function(phieuID, loai, trangThaiBanGiao){
+  const payload = {
+    phieuID,
+    ngayTruc: $('#editDate').value,
+    khoaPhong: $('#editDept').value,
+    nhanVienThuongTruc: state.selectedStaff,
+    soLieuTruc: $('#editSoLieu')?.value || '',
+    baoCaoChuyenMon: $('#editBaoCaoCM')?.value || '',
+    baoCaoVanDeKhac: $('#editBaoCaoKhac')?.value || '',
+    banGiaoTaiSan: $('#editBGTaiSan')?.value || '',
+    banGiaoChuyenMon: $('#editBGCM')?.value || '',
+    banGiaoVanDeKhac: $('#editBGKhac')?.value || '',
+    thoiGianBanGiao: $('#editTGBG') ? fromDatetimeLocal($('#editTGBG').value) : ''
+  };
+  try{
+    const res = await api('updatePhieu', payload);
+    clearListCaches();
+    toast('Đã cập nhật phiếu');
+    showPhieuModal(res.data.phieu);
+  }catch(err){ toast(err.message); }
+}
+
+/* ================= GIAO BAN ================= */
+
+function renderMeetingTab(){
+  $('#tab-meeting').innerHTML = `
+    <div class="card">
+      <h2 class="section-title">Giao ban</h2>
+      <div class="grid filter-grid">
+        <div class="col-3"><label>Từ ngày</label><input id="gbFrom" type="date"></div>
+        <div class="col-3"><label>Đến ngày</label><input id="gbTo" type="date"></div>
+        <div class="col-3"><label>Khoa/phòng</label><input id="gbDept" list="deptList" placeholder="Khoa/phòng"></div>
+        <div class="col-3"><label>Trạng thái</label><select id="gbStatus"><option>Tất cả</option><option>${STATUS_CHUA}</option><option>${STATUS_DA}</option></select></div>
+        <div class="col-12"><label>Từ khóa</label><input id="gbKeyword" placeholder="Tìm người thực hiện, phòng, nội dung báo cáo/giao ban"></div>
+      </div>
+      <div class="btn-row">
+        <button id="loadGbBtn" class="btn primary">Tải danh sách giao ban</button>
+      </div>
+    </div>
+    <div id="giaoBanListBox"></div>
+  `;
+  $('#loadGbBtn').addEventListener('click', () => loadGiaoBanList(true));
+  setDefaultDateRange('gbFrom','gbTo',14);
+}
+
+async function loadGiaoBanList(force){
+  const box = $('#giaoBanListBox');
+  if(!box) return;
+  const filters = getGiaoBanFilters();
+  const key = JSON.stringify(filters);
+  const fresh = state.cache.giaoBan.key === key && Date.now() - state.cache.giaoBan.time < 45000;
+  if(!force && fresh) return renderGiaoBanList(state.cache.giaoBan.data);
+
+  box.innerHTML = `<div class="loading">Đang tải danh sách giao ban...</div>`;
+  try{
+    const res = await api('getGiaoBanList', filters);
+    state.cache.giaoBan = {key, time:Date.now(), data:res.data.items};
+    renderGiaoBanList(res.data.items);
+  }catch(err){
+    box.innerHTML = `<div class="empty">${esc(err.message)}</div>`;
+  }
+}
+
+function getGiaoBanFilters(){
+  return {
+    fromDate: $('#gbFrom')?.value || addDaysIso(todayIso(), -14),
+    toDate: $('#gbTo')?.value || todayIso(),
+    khoaPhong: $('#gbDept')?.value || state.user?.khoaPhong || '',
+    trangThai: $('#gbStatus')?.value || 'Tất cả',
+    keyword: $('#gbKeyword')?.value || ''
+  };
+}
+
+function renderGiaoBanList(items){
+  const box = $('#giaoBanListBox');
+  if(!items.length){
+    box.innerHTML = `<div class="empty">Không có phiên giao ban phù hợp. Nếu có báo cáo chưa giao ban, hệ thống sẽ hiện thẻ giao ban ngày hiện tại.</div>`;
+    return;
+  }
+  box.innerHTML = items.map(g => `
+    <div class="list-card">
+      <div class="list-head">
+        <div>
+          <div class="list-title">Giao ban ngày ${dateVi(g.ngayGiaoBan)}</div>
+          <div class="meta">${esc(g.khoaPhong)} · Báo cáo gộp: ${g.pendingCount || g.danhSachPhieuID.length || 0}</div>
+          <div class="meta">Khoảng báo cáo: ${dateVi(g.tuNgayBaoCao)} - ${dateVi(g.denNgayBaoCao)}</div>
+        </div>
+        ${statusPill(g.trangThai)}
+      </div>
+      <div class="btn-row">
+        <button class="btn secondary" onclick="openGiaoBan('${escAttr(g.giaoBanID)}','${escAttr(g.khoaPhong)}')">Mở giao ban</button>
+        ${g.pdfGiaoBanUrl ? `<a class="btn ok" target="_blank" href="${escAttr(g.pdfGiaoBanUrl)}">PDF giao ban</a>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+window.openGiaoBan = async function(giaoBanID, khoaPhong){
+  try{
+    const res = await api('openGiaoBan', {giaoBanID, khoaPhong});
+    state.currentGiaoBan = res.data.giaoBan;
+    state.currentReports = res.data.reports || [];
+    renderGiaoBanModal();
+  }catch(err){ toast(err.message); }
+}
+
+function renderGiaoBanModal(){
+  const g = state.currentGiaoBan;
+  const reportsHtml = state.currentReports.length ? state.currentReports.map(r => `
+    <div class="report-day">
+      <strong>Ngày ${dateVi(r.ngayTruc)} - ${esc(r.nguoiThucHienTen || '')}</strong>
+      <div class="meta">Nhân viên trực:</div>
+      <div class="two-col-text">${esc((r.nhanVienThuongTruc||[]).map(n => `${n.tenNhanVien}${titleForPerson(n) ? ' - ' + titleForPerson(n) : ''}`).join('\n') || 'Chưa nhập')}</div>
+      <div class="meta">Số liệu trực:</div><div class="two-col-text">${esc(r.soLieuTruc||'')}</div>
+      <div class="meta">Chuyên môn:</div><div class="two-col-text">${esc(r.baoCaoChuyenMon||'')}</div>
+      <div class="meta">Vấn đề khác:</div><div class="two-col-text">${esc(r.baoCaoVanDeKhac||'')}</div>
+    </div>
+  `).join('') : `<div class="empty">Chưa có báo cáo thường trực chưa giao ban.</div>`;
+
+  const isTM = norm(g.khoaPhong).includes('truyen mau');
+  openModal(`
+    <div class="modal full-modal">
+      <div class="modal-card">
+        <div class="modal-head">
+          <div>
+            <div class="modal-title">Giao ban ngày ${dateVi(g.ngayGiaoBan)}</div>
+            <div class="meta">${esc(g.khoaPhong)} · ${esc(g.trangThai)}</div>
+          </div>
+          <button class="close-btn" onclick="closeModal()">×</button>
+        </div>
+
+        <div class="card" style="box-shadow:none">
+          <div class="grid">
+            <div class="col-6">
+              <label>Thời gian giao ban</label>
+              <input id="gbTime" type="datetime-local" value="${escAttr(toDatetimeLocal(g.thoiGianGiaoBan || new Date()))}" ${g.daKhoa ? 'readonly' : ''}>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="box-shadow:none">
+          <h3 class="section-title">I. Nhân lực</h3>
+          <label>Nhân viên thường trực</label>
+          <div class="list-card two-col-text">${esc(g.nhanLucTongHop || summarizeReportsStaff(state.currentReports) || 'Chưa có dữ liệu')}</div>
+          <label>Nghỉ</label>
+          <textarea id="gbNghi" ${g.daKhoa ? 'readonly' : ''}>${esc(g.nghi || '')}</textarea>
+        </div>
+
+        <div class="card" style="box-shadow:none">
+          <h3 class="section-title">II. Báo cáo thường trực</h3>
+          ${reportsHtml}
+        </div>
+
+        <div class="card" style="box-shadow:none">
+          <h3 class="section-title">III. Nội dung giao ban khác</h3>
+          ${isTM ? `
+            <h4 class="sub-title">Kho máu</h4>
+            <div class="grid">
+              <div class="col-4"><label>KHC</label><input id="khoKHC" value="${escAttr(g.khoMauKHC || '')}" ${g.daKhoa ? 'readonly' : ''}></div>
+              <div class="col-4"><label>HTT</label><input id="khoHTT" value="${escAttr(g.khoMauHTT || '')}" ${g.daKhoa ? 'readonly' : ''}></div>
+              <div class="col-4"><label>Tủa</label><input id="khoTua" value="${escAttr(g.khoMauTua || '')}" ${g.daKhoa ? 'readonly' : ''}></div>
+              <div class="col-4"><label>KTC</label><input id="khoKTC" value="${escAttr(g.khoMauKTC || '')}" ${g.daKhoa ? 'readonly' : ''}></div>
+              <div class="col-8"><label>Khác</label><input id="khoKhac" value="${escAttr(g.khoMauKhac || '')}" ${g.daKhoa ? 'readonly' : ''}></div>
+              <div class="col-12"><label>Thông báo</label><textarea id="gbThongBao" ${g.daKhoa ? 'readonly' : ''}>${esc(g.thongBao || '')}</textarea></div>
+              <div class="col-12"><label>Nội dung khác</label><textarea id="gbNoiDungKhac" ${g.daKhoa ? 'readonly' : ''}>${esc(g.noiDungKhac || '')}</textarea></div>
+            </div>
+          ` : `
+            <label>Nội dung giao ban khác</label>
+            <textarea id="gbNoiDungGiaoBanKhac" ${g.daKhoa ? 'readonly' : ''}>${esc(g.noiDungGiaoBanKhac || '')}</textarea>
+          `}
+        </div>
+
+        ${g.trangThai === STATUS_DA ? `
+          <div class="card" style="box-shadow:none">
+            <h3 class="section-title">Xác nhận kết thúc giao ban</h3>
+            <div class="meta">Chủ trì: ${esc(g.chuTriTen || '')}${g.chuTriChucDanh ? ' - ' + esc(g.chuTriChucDanh) : ''}</div>
+            <div class="meta">Thời điểm ký: ${dateTimeVi(g.thoiDiemChuTriKy)}</div>
+            ${g.pdfGiaoBanUrl ? `<div class="btn-row"><a target="_blank" class="btn ok" href="${escAttr(g.pdfGiaoBanUrl)}">Mở PDF giao ban</a></div>` : ''}
+          </div>
+        ` : `
+          <div class="btn-row" style="padding-bottom:18px">
+            <button class="btn secondary" onclick="saveGiaoBanDraft()">Lưu nháp</button>
+            <button class="btn ok" onclick="finishGiaoBan()">Chủ trì ký xác nhận kết thúc giao ban</button>
+            <button class="btn ghost" onclick="closeModal()">Đóng</button>
+          </div>
+        `}
+      </div>
+    </div>
+  `, true);
+  setTimeout(() => $$('textarea').forEach(autoGrow), 0);
+}
+
+function collectGiaoBanPayload(){
+  const g = state.currentGiaoBan;
+  return {
+    giaoBanID: g.giaoBanID,
+    thoiGianGiaoBan: fromDatetimeLocal($('#gbTime').value),
+    nghi: $('#gbNghi')?.value || '',
+    khoMauKHC: $('#khoKHC')?.value || '',
+    khoMauHTT: $('#khoHTT')?.value || '',
+    khoMauTua: $('#khoTua')?.value || '',
+    khoMauKTC: $('#khoKTC')?.value || '',
+    khoMauKhac: $('#khoKhac')?.value || '',
+    thongBao: $('#gbThongBao')?.value || '',
+    noiDungKhac: $('#gbNoiDungKhac')?.value || '',
+    noiDungGiaoBanKhac: $('#gbNoiDungGiaoBanKhac')?.value || ''
+  };
+}
+
+window.saveGiaoBanDraft = async function(){
+  try{
+    const res = await api('saveGiaoBanDraft', collectGiaoBanPayload());
+    state.currentGiaoBan = res.data.giaoBan;
+    clearListCaches();
+    toast('Đã lưu nháp giao ban');
+    renderGiaoBanModal();
+  }catch(err){ toast(err.message); }
+}
+
+window.finishGiaoBan = async function(){
+  const ok = confirm('Sau khi xác nhận, phiên giao ban sẽ hoàn thành, các báo cáo được gộp sẽ bị khóa, người tạo phiếu không thể sửa/xóa báo cáo và hệ thống sẽ xuất PDF giao ban. Bạn xác nhận ký kết thúc giao ban?');
+  if(!ok) return;
+  try{
+    const res = await api('finishGiaoBan', collectGiaoBanPayload());
+    state.currentGiaoBan = res.data.giaoBan;
+    clearListCaches();
+    toast('Đã ký kết thúc giao ban');
+    renderGiaoBanModal();
+  }catch(err){ toast(err.message); }
+}
+
+/* ================= PDF ================= */
+
+function renderPdfTab(){
+  $('#tab-pdf').innerHTML = `
+    <div class="card">
+      <h2 class="section-title">Tra cứu / PDF</h2>
+      <div class="grid filter-grid">
+        <div class="col-3"><label>Từ ngày</label><input id="pdfFrom" type="date"></div>
+        <div class="col-3"><label>Đến ngày</label><input id="pdfTo" type="date"></div>
+        <div class="col-3"><label>Khoa/phòng</label><input id="pdfDept" list="deptList" placeholder="Khoa/phòng"></div>
+        <div class="col-3"><label>Loại hồ sơ</label><select id="pdfType"><option>Tất cả</option><option>Bàn giao</option><option>Giao ban</option></select></div>
+      </div>
+      <div class="btn-row">
+        <button id="loadPdfBtn" class="btn primary">Tra cứu PDF</button>
+      </div>
+      <p class="meta">Hồ sơ đã hoàn thành ưu tiên mở PDF đã xuất, không dựng lại biểu mẫu từ Sheet.</p>
+    </div>
+    <div id="pdfListBox"></div>
+  `;
+  $('#loadPdfBtn').addEventListener('click', loadPdfList);
+  setDefaultDateRange('pdfFrom','pdfTo',30);
+}
+
+async function loadPdfList(){
+  const box = $('#pdfListBox');
+  box.innerHTML = `<div class="loading">Đang tải hồ sơ PDF...</div>`;
+  try{
+    const res = await api('searchPdf', {
+      fromDate: $('#pdfFrom').value,
+      toDate: $('#pdfTo').value,
+      khoaPhong: $('#pdfDept').value,
+      loaiHoSo: $('#pdfType').value
+    });
+    const items = res.data.items || [];
+    if(!items.length){
+      box.innerHTML = `<div class="empty">Không có PDF phù hợp.</div>`;
+      return;
+    }
+    box.innerHTML = items.map(x => `
+      <div class="list-card">
+        <div class="list-head">
+          <div>
+            <div class="list-title">${esc(x.title)}</div>
+            <div class="meta">${esc(x.type)} · ${esc(x.khoaPhong)} · ${esc(x.nguoiTao || '')}</div>
+          </div>
+          <span class="pill ok">PDF</span>
+        </div>
+        <div class="btn-row"><a class="btn secondary" target="_blank" href="${escAttr(x.url)}">Mở PDF</a></div>
+      </div>
+    `).join('');
+  }catch(err){
+    box.innerHTML = `<div class="empty">${esc(err.message)}</div>`;
+  }
+}
+
+/* ================= SETTINGS ================= */
+
+function renderSettingsTab(){
+  $('#tab-settings').innerHTML = `
+    <div class="card">
+      <h2 class="section-title">Cài đặt</h2>
+      <p class="meta">Tab này dành cho quản trị về sau. Bản hiện tại tự tạo các sheet SESSION, PHIEU, GIAO_BAN, LOG trong trang tính cấu hình.</p>
+      <div class="list-card">
+        <strong>API đang dùng</strong>
+        <div class="meta" style="word-break:break-all">${esc(API_URL)}</div>
+      </div>
+      <div class="list-card">
+        <strong>Cấu trúc nhân sự cần có trong sheet DATA</strong>
+        <div class="two-col-text meta">Mã nhân viên · Họ tên · Chức danh · Khoa/phòng · Mật khẩu · Quyền/Role · Trạng thái</div>
+      </div>
+    </div>
+  `;
+}
+
+/* ================= MODAL / UTILS ================= */
+
+function openModal(inner, alreadyWrapped){
+  $('#modalRoot').innerHTML = alreadyWrapped ? inner : `<div class="modal">${inner}</div>`;
+}
+
+window.closeModal = function(){
+  $('#modalRoot').innerHTML = '';
+}
+
+function toast(msg){
+  const el = $('#toast');
+  el.textContent = msg;
+  el.classList.remove('hidden');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => el.classList.add('hidden'), 3500);
+}
+
+function statusPill(status){
+  const s = status || STATUS_CHUA;
+  if(s === STATUS_DA) return `<span class="pill ok">${s}</span>`;
+  if(s === STATUS_CHUA) return `<span class="pill warn">${s}</span>`;
+  return `<span class="pill muted">${esc(s)}</span>`;
+}
+
+function titleForPerson(u){
+  if(!u) return '';
+  return u.chucDanhHienThi || u.chucVu || u.chucDanh || '';
+}
+
+function displayUser(u){
+  if(!u) return '';
+  return [u.tenNhanVien, titleForPerson(u), u.khoaPhong].filter(Boolean).join(' - ');
+}
+
+function clearListCaches(){
+  state.cache.phieu = {key:'', time:0, data:null};
+  state.cache.giaoBan = {key:'', time:0, data:null};
+}
+
+function autoGrow(el){
+  el.style.height = 'auto';
+  el.style.height = Math.max(42, el.scrollHeight + 2) + 'px';
+}
+
+function setDefaultDateRange(fromId,toId,daysBack){
+  const from = document.getElementById(fromId);
+  const to = document.getElementById(toId);
+  if(from && !from.value) from.value = addDaysIso(todayIso(), -daysBack);
+  if(to && !to.value) to.value = todayIso();
+}
+
+function summarizeReportsStaff(reports){
+  const groups = {};
+  (reports||[]).forEach(r => {
+    const day = dateVi(r.ngayTruc);
+    groups[day] = groups[day] || [];
+    (r.nhanVienThuongTruc||[]).forEach(n => {
+      const t = `${n.tenNhanVien}${titleForPerson(n) ? ' - ' + titleForPerson(n) : ''}`;
+      if(!groups[day].includes(t)) groups[day].push(t);
+    });
+  });
+  return Object.keys(groups).sort().map(day => `${day}:\n- ${groups[day].join('\n- ') || 'Chưa nhập'}`).join('\n\n');
+}
+
+function todayIso(){
+  const d = new Date();
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+}
+
+function addDaysIso(iso, days){
+  const [y,m,d] = iso.split('-').map(Number);
+  const dt = new Date(y, m-1, d);
+  dt.setDate(dt.getDate()+days);
+  return `${dt.getFullYear()}-${pad(dt.getMonth()+1)}-${pad(dt.getDate())}`;
+}
+
+function pad(n){ return String(n).padStart(2,'0'); }
+
+function dateVi(iso){
+  if(!iso) return '';
+  const s = String(iso).slice(0,10);
+  const m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  return m ? `${m[3]}/${m[2]}/${m[1]}` : s;
+}
+
+function dateTimeVi(value){
+  if(!value) return '';
+  const s = String(value);
+  const m = s.match(/^(\d{4})-(\d{2})-(\d{2})[T ]?(\d{2})?:?(\d{2})?/);
+  return m ? `${m[4]||'00'}:${m[5]||'00'} ${m[3]}/${m[2]}/${m[1]}` : s;
+}
+
+function toDatetimeLocal(value){
+  if(!value) return '';
+  if(value instanceof Date){
+    return `${value.getFullYear()}-${pad(value.getMonth()+1)}-${pad(value.getDate())}T${pad(value.getHours())}:${pad(value.getMinutes())}`;
+  }
+  const s = String(value);
+  const m = s.match(/^(\d{4})-(\d{2})-(\d{2})[T ]?(\d{2})?:?(\d{2})?/);
+  if(m) return `${m[1]}-${m[2]}-${m[3]}T${m[4]||'00'}:${m[5]||'00'}`;
+  return '';
+}
+
+function fromDatetimeLocal(v){
+  return v ? v.replace('T',' ') + ':00' : '';
+}
+
+function shortText(s, max){
+  const t = String(s || '').replace(/\s+/g,' ').trim();
+  return esc(t.length > max ? t.slice(0,max) + '...' : t);
+}
+
+function norm(s){
+  return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').trim();
+}
+
+function esc(s){
+  return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+}
+
+function escAttr(s){ return esc(s).replace(/`/g,'&#096;'); }
 </script>
 </body>
 </html>
