@@ -4,9 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <title>Sổ trực - Giao ban Phòng Truyền máu</title>
-  <link rel="icon" type="image/png" href="ICON_SO_TRUC_GIAO%20BAN.png">
-  <link rel="apple-touch-icon" href="ICON_SO_TRUC_GIAO%20BAN.png">
-  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="32x32" href="./ICON_SO_TRUC_GIAO%20BAN.png?v=08.200526">
+  <link rel="shortcut icon" type="image/png" href="./ICON_SO_TRUC_GIAO%20BAN.png?v=08.200526">
+  <link rel="apple-touch-icon" sizes="180x180" href="./ICON_SO_TRUC_GIAO%20BAN.png?v=08.200526">
+  <link rel="manifest" href="./manifest.json?v=08.200526">
+  <meta name="msapplication-TileImage" content="./ICON_SO_TRUC_GIAO%20BAN.png?v=08.200526">
   <meta name="theme-color" content="#7b113a">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -54,7 +56,7 @@
       background:linear-gradient(135deg,var(--wine-dark),var(--wine));color:white;box-shadow:0 4px 18px rgba(0,0,0,.16);
       display:flex;align-items:center;justify-content:space-between;padding:10px 16px;padding-top:max(10px,env(safe-area-inset-top));
     }
-    .brand{display:flex;align-items:center;gap:10px;min-width:0}
+    .brand{display:flex;align-items:center;gap:10px;min-width:0;overflow:visible}
     .brand-icon{width:42px;height:42px;border-radius:50%;background:#fff;display:grid;place-items:center;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.12);flex:0 0 auto;position:relative}
     .logo-frame{position:relative}
     .logo-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .12s ease}
@@ -62,8 +64,8 @@
     .logo-loaded .logo-fallback{display:none}
     .logo-fallback{position:absolute;inset:0;display:grid;place-items:center;color:#7b113a;font-weight:800;font-size:13px;line-height:1;text-align:center;background:#fff}
     .login-logo .logo-fallback{font-size:18px}
-    .brand-title{font-family:"Segoe UI",Roboto,Arial,"Noto Sans",Tahoma,sans-serif;font-weight:700;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:0}
-    .brand-sub{font-size:12.5px;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .brand-title{font-family:"Segoe UI",Roboto,Arial,"Noto Sans",Tahoma,sans-serif;font-weight:700;font-size:16px;line-height:1.35;padding-top:2px;white-space:nowrap;overflow:visible;text-overflow:clip;letter-spacing:0}
+    .brand-sub{font-size:12.5px;line-height:1.25;opacity:.85;white-space:nowrap;overflow:visible;text-overflow:clip}
     .userbox{display:flex;align-items:center;gap:6px;justify-content:flex-end;text-align:right;line-height:1.15;max-width:46vw;align-self:flex-start;margin-top:0}
     .userbox strong{display:block;font-size:12.5px;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .logout-icon{width:30px;height:30px;min-width:30px;border-radius:50%;display:grid;place-items:center;border:0;background:transparent;color:#fff;cursor:pointer;padding:0}.logout-icon:hover{background:rgba(255,255,255,.14)}.logout-icon svg{width:20px;height:20px;stroke:currentColor}
@@ -145,9 +147,9 @@
     .login-screen{min-height:100%;display:grid;place-items:center;padding:24px;background:linear-gradient(145deg,#4a071f,#7b113a 45%,#f8f1f4 45%)}
     .login-card{width:100%;max-width:420px;background:#fff;border-radius:26px;padding:22px;box-shadow:0 18px 50px rgba(0,0,0,.22);text-align:center}
     .login-logo{width:76px;height:76px;border-radius:50%;background:#fff;display:grid;place-items:center;overflow:hidden;margin:0 auto 12px;box-shadow:0 2px 10px rgba(0,0,0,.12);position:relative}
-    .login-hospital{font-family:"Segoe UI",Roboto,Arial,"Noto Sans",Tahoma,sans-serif;margin:0 0 5px;color:#1a73e8;font-size:15px;font-weight:600;text-align:center;letter-spacing:0}
-    .login-center{font-family:"Segoe UI",Roboto,Arial,"Noto Sans",Tahoma,sans-serif;margin:0 0 5px;color:var(--wine);font-size:18px;font-weight:700;text-align:center;letter-spacing:0}
-    .login-title{font-family:"Segoe UI",Roboto,Arial,"Noto Sans",Tahoma,sans-serif;margin:0 0 16px;color:var(--wine-dark);font-size:25px;font-weight:800;text-align:center;letter-spacing:0}
+    .login-hospital{font-family:"Segoe UI",Roboto,Arial,"Noto Sans",Tahoma,sans-serif;margin:0 0 5px;color:#1a73e8;font-size:15px;font-weight:600;text-align:center;letter-spacing:0;line-height:1.35}
+    .login-center{font-family:"Segoe UI",Roboto,Arial,"Noto Sans",Tahoma,sans-serif;margin:0 0 5px;color:var(--wine);font-size:18px;font-weight:700;text-align:center;letter-spacing:0;line-height:1.35}
+    .login-title{font-family:"Segoe UI",Roboto,Arial,"Noto Sans",Tahoma,sans-serif;margin:0 0 16px;color:var(--wine-dark);font-size:25px;font-weight:800;text-align:center;letter-spacing:0;line-height:1.35}
     .login-version{margin:12px 0 0;color:var(--g-muted);font-size:13px;text-align:center;line-height:1.4}
     .toast{
       position:fixed;left:50%;bottom:calc(var(--tabbar-h) + 14px);transform:translateX(-50%);z-index:100;
@@ -199,7 +201,7 @@
 
   <div id="loginScreen" class="login-screen hidden">
     <div class="login-card">
-      <div class="login-logo logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="LOGO%20TRON%20BVBM.png" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
+      <div class="login-logo logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=08.200526" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
       <p class="login-hospital">B&#7879;nh vi&#7879;n B&#7841;ch Mai</p>
       <p class="login-center">Trung t&#226;m Huy&#7871;t h&#7885;c v&#224; Truy&#7873;n m&#225;u</p>
       <h1 class="login-title">S&#7893; Tr&#7921;c - Giao ban</h1>
@@ -214,14 +216,14 @@
         </div>
       </div>
       <button id="loginBtn" class="btn primary" style="width:100%;margin-top:14px">Đăng nhập</button>
-      <p class="login-version">Version: 07.200526</p>
+      <p class="login-version">Version: 08.200526</p>
     </div>
   </div>
 
   <div id="app" class="app-shell hidden">
     <header class="topbar">
       <div class="brand">
-        <div class="brand-icon logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="LOGO%20TRON%20BVBM.png" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
+        <div class="brand-icon logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=08.200526" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
         <div>
           <div id="brandTitle" class="brand-title">Trung t&#226;m Huy&#7871;t h&#7885;c v&#224; Truy&#7873;n m&#225;u</div>
           <div id="brandSub" class="brand-sub">Khoa</div>
@@ -250,7 +252,7 @@
       <button class="tab-btn" data-tab="pdf"><span class="ico">📄</span><span>PDF</span></button>
       <button id="settingsTabBtn" class="tab-btn hidden" data-tab="settings"><span class="ico">⚙️</span><span>Cài đặt</span></button>
     </nav>
-    <div class="app-version">Version: 07.200526</div>
+    <div class="app-version">Version: 08.200526</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -406,7 +408,7 @@ function showApp(){
   $('#loginScreen').classList.add('hidden');
   $('#app').classList.remove('hidden');
   $('#userName').textContent = state.user?.tenNhanVien || 'Đang khôi phục phiên';
-  $('#brandTitle').textContent = 'Trung t\u00e2m Huy\u1ebft h\u1ecdc v\u00e0 Truy\u1ec1n m\u00e1u';
+  $('#brandTitle').innerHTML = 'Trung t&#226;m Huy&#7871;t h&#7885;c v&#224; Truy&#7873;n m&#225;u';
   $('#brandSub').textContent = 'Khoa ' + (state.user?.khoaPhong || '');
   $('#settingsTabBtn').classList.toggle('hidden', !state.user?.isAdmin);
   renderCreateTab();
