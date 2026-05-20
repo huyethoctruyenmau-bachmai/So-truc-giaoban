@@ -47,7 +47,8 @@
       display:flex;align-items:center;justify-content:space-between;padding:10px 16px;padding-top:max(10px,env(safe-area-inset-top));
     }
     .brand{display:flex;align-items:center;gap:10px;min-width:0}
-    .brand-icon{width:40px;height:40px;border-radius:14px;background:#fff1f6;color:var(--wine);display:grid;place-items:center;font-size:22px;font-weight:700}
+    .brand-icon{width:42px;height:42px;border-radius:50%;background:#fff;display:grid;place-items:center;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.12);flex:0 0 auto}
+    .brand-icon img,.login-logo img{width:100%;height:100%;object-fit:contain;display:block}
     .brand-title{font-weight:700;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .brand-sub{font-size:12.5px;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .userbox{display:flex;align-items:center;gap:6px;justify-content:flex-end;text-align:right;line-height:1.15;max-width:46vw;align-self:flex-start;margin-top:0}
@@ -64,8 +65,8 @@
       background:rgba(255,255,255,.96);border-top:1px solid var(--line);box-shadow:0 -4px 18px rgba(74,7,31,.10);
       display:grid;grid-template-columns:repeat(5,1fr);padding:5px 5px max(5px,env(safe-area-inset-bottom));
     }
-    .tab-btn{background:transparent;color:var(--muted);border-radius:14px;padding:6px 2px;display:flex;flex-direction:column;gap:3px;align-items:center;justify-content:center;font-size:11px}
-    .tab-btn .ico{font-size:21px;line-height:1}
+    .tab-btn{background:transparent;color:var(--muted);border-radius:14px;padding:6px 2px;display:flex;flex-direction:column;gap:3px;align-items:center;justify-content:center;font-size:12.5px}
+    .tab-btn .ico{font-size:22px;line-height:1}
     .tab-btn.active{background:#fff0f5;color:var(--wine);font-weight:700}
     .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;margin-bottom:12px}
     .section-title{font-size:20px;font-weight:700;color:var(--wine-dark);margin:0 0 10px}
@@ -127,10 +128,14 @@
     .boot-logo{width:48px;height:48px;border-radius:12px;background:#e8f0fe;color:var(--g-blue);display:grid;place-items:center;margin:0 auto 12px;font-size:24px;font-weight:800}
     .boot-title{font-size:18px;font-weight:700;margin:0 0 6px;color:var(--g-text)}
     .boot-sub{font-size:13px;color:var(--g-muted);margin:0}
-    .version-badge{display:inline-flex;align-items:center;gap:4px;margin-top:4px;border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:2px 7px;font-size:10px;line-height:14px;opacity:.95}
+    .app-version{position:fixed;right:12px;bottom:calc(var(--tabbar-h) + 5px);z-index:19;color:var(--g-muted);font-size:11.5px;line-height:1;background:transparent;padding:0;text-align:right;pointer-events:none}
     .login-screen{min-height:100%;display:grid;place-items:center;padding:24px;background:linear-gradient(145deg,#4a071f,#7b113a 45%,#f8f1f4 45%)}
-    .login-card{width:100%;max-width:420px;background:#fff;border-radius:26px;padding:22px;box-shadow:0 18px 50px rgba(0,0,0,.22)}
-    .login-logo{width:64px;height:64px;border-radius:22px;background:#fff0f5;color:var(--wine);display:grid;place-items:center;font-size:34px;font-weight:900;margin-bottom:10px}
+    .login-card{width:100%;max-width:420px;background:#fff;border-radius:26px;padding:22px;box-shadow:0 18px 50px rgba(0,0,0,.22);text-align:center}
+    .login-logo{width:76px;height:76px;border-radius:50%;background:#fff;display:grid;place-items:center;overflow:hidden;margin:0 auto 12px;box-shadow:0 2px 10px rgba(0,0,0,.12)}
+    .login-hospital{margin:0 0 5px;color:#1a73e8;font-size:15px;font-weight:600;text-align:center}
+    .login-center{margin:0 0 5px;color:var(--wine);font-size:18px;font-weight:700;text-align:center}
+    .login-title{margin:0 0 16px;color:var(--wine-dark);font-size:25px;font-weight:800;text-align:center}
+    .login-version{margin:12px 0 0;color:var(--g-muted);font-size:13px;text-align:center;line-height:1.4}
     .toast{
       position:fixed;left:50%;bottom:calc(var(--tabbar-h) + 14px);transform:translateX(-50%);z-index:100;
       background:#2a111a;color:white;border-radius:999px;padding:10px 14px;box-shadow:0 8px 25px rgba(0,0,0,.2);max-width:92vw;font-size:13px
@@ -160,7 +165,7 @@
       .btn{width:100%;min-height:38px}
       .list-head{flex-direction:column}
       .userbox{max-width:38vw}
-      .tab-btn{font-size:10px}
+      .tab-btn{font-size:12px}
     }
     @media (min-width:900px){
       .main{padding:18px 22px 28px}
@@ -181,11 +186,10 @@
 
   <div id="loginScreen" class="login-screen hidden">
     <div class="login-card">
-      <div class="login-logo">🩸</div>
-      <p style="margin:0 0 4px;color:var(--muted);font-size:14px">Bệnh viện Bạch Mai</p>
-      <p style="margin:0 0 4px;color:var(--wine-dark);font-size:17px;font-weight:700">Trung tâm Huyết học và Truyền máu</p>
-      <h1 style="margin:0;color:var(--wine-dark);font-size:25px">Sổ Trực - Giao ban</h1>
-      <p style="margin:6px 0 18px;color:var(--muted);font-size:13px">Version: 03.200526</p>
+      <div class="login-logo"><img src="https://i.postimg.cc/15TP5D8v/LOGO-TRON-BVBM.png" alt="Logo Bệnh viện Bạch Mai"></div>
+      <p class="login-hospital">Bệnh viện Bạch Mai</p>
+      <p class="login-center">Trung tâm Huyết học và Truyền máu</p>
+      <h1 class="login-title">Sổ Trực - Giao ban</h1>
       <div class="grid">
         <div class="col-12">
           <label>Mã nhân viên</label>
@@ -197,17 +201,17 @@
         </div>
       </div>
       <button id="loginBtn" class="btn primary" style="width:100%;margin-top:14px">Đăng nhập</button>
-      <p class="meta" style="margin-top:12px">App dùng GitHub Pages gọi Google Apps Script API, không dùng google.script.run.</p>
+      <p class="login-version">Version: 05.200526</p>
     </div>
   </div>
 
   <div id="app" class="app-shell hidden">
     <header class="topbar">
       <div class="brand">
-        <div class="brand-icon">🩸</div>
+        <div class="brand-icon"><img src="https://i.postimg.cc/15TP5D8v/LOGO-TRON-BVBM.png" alt="Logo Bệnh viện Bạch Mai"></div>
         <div>
           <div id="brandTitle" class="brand-title">Trung tâm Huyết học và Truyền máu</div>
-          <div id="brandSub" class="brand-sub">Khoa</div><div class="version-badge">Version: 03.200526</div>
+          <div id="brandSub" class="brand-sub">Khoa</div>
         </div>
       </div>
       <div class="userbox">
@@ -233,6 +237,7 @@
       <button class="tab-btn" data-tab="pdf"><span class="ico">📄</span><span>PDF</span></button>
       <button id="settingsTabBtn" class="tab-btn hidden" data-tab="settings"><span class="ico">⚙️</span><span>Cài đặt</span></button>
     </nav>
+    <div class="app-version">Version: 05.200526</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -240,7 +245,7 @@
   <div id="toast" class="toast hidden"></div>
 
 <script>
-const APP_VERSION = '03.200526';
+const APP_VERSION = '05.200526';
 const API_URL = 'https://script.google.com/macros/s/AKfycbxLHKUczat2WOH1R4W_YVVsUeBAmEuJ-4EjOEWNuBYXvX0oL4Dr6OhyO8f4lHPfn-8Nmg/exec';
 
 const LOAI_BAN_GIAO = 'Bàn giao thường trực';
