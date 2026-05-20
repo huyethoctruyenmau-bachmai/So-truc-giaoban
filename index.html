@@ -121,6 +121,14 @@
     .close-btn:hover{background:#f1f3f4}
     .full-modal{align-items:stretch}
     .full-modal .modal-card{max-width:none;height:100vh;max-height:100vh;border-radius:0;padding-top:max(14px,env(safe-area-inset-top));padding-bottom:max(18px,env(safe-area-inset-bottom))}
+
+    .boot-screen{min-height:100%;display:grid;place-items:center;padding:24px;background:#f8f1f4;color:var(--g-text)}
+    .boot-box{width:min(420px,92vw);background:#fff;border:1px solid var(--g-line);border-radius:8px;box-shadow:0 1px 2px rgba(60,64,67,.3),0 1px 3px 1px rgba(60,64,67,.15);padding:22px;text-align:center}
+    .boot-logo{width:48px;height:48px;border-radius:12px;background:#e8f0fe;color:var(--g-blue);display:grid;place-items:center;margin:0 auto 12px;font-size:24px;font-weight:800}
+    .boot-title{font-size:18px;font-weight:700;margin:0 0 6px;color:var(--g-text)}
+    .boot-sub{font-size:13px;color:var(--g-muted);margin:0}
+    .version-badge{display:inline-flex;align-items:center;gap:4px;margin-top:4px;border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:2px 7px;font-size:10px;line-height:14px;opacity:.95}
+    .update-test-ribbon{position:fixed;top:calc(var(--header-h) + 8px);right:10px;z-index:60;background:#e8f0fe;color:#174ea6;border:1px solid #aecbfa;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:700;box-shadow:0 1px 3px rgba(60,64,67,.25)}
     .login-screen{min-height:100%;display:grid;place-items:center;padding:24px;background:linear-gradient(145deg,#4a071f,#7b113a 45%,#f8f1f4 45%)}
     .login-card{width:100%;max-width:420px;background:#fff;border-radius:26px;padding:22px;box-shadow:0 18px 50px rgba(0,0,0,.22)}
     .login-logo{width:64px;height:64px;border-radius:22px;background:#fff0f5;color:var(--wine);display:grid;place-items:center;font-size:34px;font-weight:900;margin-bottom:10px}
@@ -155,7 +163,15 @@
   </style>
 </head>
 <body>
-  <div id="loginScreen" class="login-screen">
+  <div id="bootScreen" class="boot-screen">
+    <div class="boot-box">
+      <div class="boot-logo">✓</div>
+      <p class="boot-title">Đang mở Sổ trực điện tử</p>
+      <p class="boot-sub">Phiên bản kiểm tra cập nhật: UI-AUTH-CHECK-2026-05-20-01</p>
+    </div>
+  </div>
+
+  <div id="loginScreen" class="login-screen hidden">
     <div class="login-card">
       <div class="login-logo">🩸</div>
       <h1 style="margin:0;color:var(--wine-dark);font-size:24px">Sổ trực điện tử</h1>
@@ -181,7 +197,7 @@
         <div class="brand-icon">🩸</div>
         <div>
           <div class="brand-title">Sổ trực - Giao ban</div>
-          <div class="brand-sub">Phòng Truyền máu</div>
+          <div class="brand-sub">Phòng Truyền máu</div><div class="version-badge">Bản cập nhật: UI-AUTH-CHECK-2026-05-20-01</div>
         </div>
       </div>
       <div class="userbox">
@@ -210,12 +226,14 @@
     </nav>
   </div>
 
+  <div id="updateRibbon" class="update-test-ribbon hidden">Đã nạp bản mới: UI-AUTH-CHECK-2026-05-20-01</div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
   <div id="modalRoot"></div>
   <div id="toast" class="toast hidden"></div>
 
 <script>
+const APP_VERSION = 'UI-AUTH-CHECK-2026-05-20-01';
 const API_URL = 'https://script.google.com/macros/s/AKfycbxLHKUczat2WOH1R4W_YVVsUeBAmEuJ-4EjOEWNuBYXvX0oL4Dr6OhyO8f4lHPfn-8Nmg/exec';
 
 const LOAI_BAN_GIAO = 'Bàn giao thường trực';
@@ -224,8 +242,8 @@ const STATUS_CHUA = 'Chưa hoàn thành';
 const STATUS_DA = 'Đã hoàn thành';
 
 const state = {
-  token: localStorage.getItem('sotruc_token') || '',
-  user: null,
+  token: localStorage.getItem('sotruc_token') || sessionStorage.getItem('sotruc_token') || '',
+  user: readStoredUser(),
   initLoaded: false,
   personnel: [],
   khoaPhong: [],
@@ -242,25 +260,79 @@ const state = {
 const $ = sel => document.querySelector(sel);
 const $$ = sel => Array.from(document.querySelectorAll(sel));
 
+function readStoredUser(){
+  try{
+    return JSON.parse(localStorage.getItem('sotruc_user') || sessionStorage.getItem('sotruc_user') || 'null');
+  }catch(e){
+    return null;
+  }
+}
+
+function storeSession(token, user){
+  localStorage.setItem('sotruc_token', token);
+  localStorage.setItem('sotruc_user', JSON.stringify(user || {}));
+  sessionStorage.setItem('sotruc_token', token);
+  sessionStorage.setItem('sotruc_user', JSON.stringify(user || {}));
+}
+
+function clearStoredSession(){
+  localStorage.removeItem('sotruc_token');
+  localStorage.removeItem('sotruc_user');
+  sessionStorage.removeItem('sotruc_token');
+  sessionStorage.removeItem('sotruc_user');
+}
+
 document.addEventListener('DOMContentLoaded', boot);
 
 async function boot(){
   bindGlobalEvents();
   renderAllTabsSkeleton();
 
+  // Nguyên tắc mới: khi trang vừa mở, KHÔNG BAO GIỜ hiện màn hình đăng nhập trước.
+  // Nếu còn token, mở app ngay bằng user đã lưu, rồi kiểm tra phiên ở nền.
   if(state.token){
+    if(state.user){
+      showApp();
+      loadInitData();
+      checkSessionInBackground();
+      return;
+    }
     try{
       const res = await api('checkSession', {}, {token: state.token});
       state.user = res.data.user;
+      storeSession(state.token, state.user);
       showApp();
       await loadInitData();
     }catch(err){
-      localStorage.removeItem('sotruc_token');
+      clearStoredSession();
       state.token = '';
+      state.user = null;
       showLogin();
     }
-  }else{
-    showLogin();
+    return;
+  }
+
+  showLogin();
+}
+
+async function checkSessionInBackground(){
+  try{
+    const res = await api('checkSession', {}, {token: state.token});
+    state.user = res.data.user || state.user;
+    storeSession(state.token, state.user);
+    showApp();
+  }catch(err){
+    // Nếu API lỗi mạng tạm thời thì không đẩy người dùng về đăng nhập ngay.
+    // Chỉ xóa phiên khi backend trả lỗi phiên rõ ràng.
+    const msg = String(err.message || '');
+    if(/phiên|hết hiệu lực|đăng nhập lại|không hợp lệ/i.test(msg)){
+      clearStoredSession();
+      state.token = '';
+      state.user = null;
+      showLogin();
+    }else{
+      toast('Không kiểm tra được phiên, app vẫn giữ màn hình hiện tại.');
+    }
   }
 }
 
@@ -282,7 +354,7 @@ async function login(){
     const res = await api('login', {maNhanVien, matKhau}, {noToken:true});
     state.token = res.data.token;
     state.user = res.data.user;
-    localStorage.setItem('sotruc_token', state.token);
+    storeSession(state.token, state.user);
     showApp();
     await loadInitData();
     toast('Đăng nhập thành công');
@@ -291,7 +363,7 @@ async function login(){
 
 async function logout(){
   try{ await api('logout', {}); }catch(e){}
-  localStorage.removeItem('sotruc_token');
+  clearStoredSession();
   state.token = '';
   state.user = null;
   state.initLoaded = false;
@@ -299,14 +371,18 @@ async function logout(){
 }
 
 function showLogin(){
+  $('#bootScreen').classList.add('hidden');
   $('#loginScreen').classList.remove('hidden');
   $('#app').classList.add('hidden');
+  $('#updateRibbon').classList.add('hidden');
 }
 
 function showApp(){
+  $('#bootScreen').classList.add('hidden');
   $('#loginScreen').classList.add('hidden');
   $('#app').classList.remove('hidden');
-  $('#userName').textContent = state.user?.tenNhanVien || '';
+  $('#updateRibbon').classList.remove('hidden');
+  $('#userName').textContent = state.user?.tenNhanVien || 'Đang khôi phục phiên';
   $('#userDept').textContent = [state.user?.chucDanh, state.user?.khoaPhong].filter(Boolean).join(' - ');
   $('#settingsTabBtn').classList.toggle('hidden', !state.user?.isAdmin);
   renderCreateTab();
@@ -318,6 +394,7 @@ async function loadInitData(){
   try{
     const res = await api('getInitData', {});
     state.user = res.data.user || state.user;
+    if(state.token && state.user) storeSession(state.token, state.user);
     state.personnel = res.data.personnel || [];
     state.khoaPhong = res.data.khoaPhong || [];
     state.initLoaded = true;
