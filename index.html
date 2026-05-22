@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <title>Sổ trực - Giao ban Phòng Truyền máu</title>
-  <link rel="icon" type="image/png" sizes="64x64" href="./APP_ICON_SO_TRUC_64.png?v=12.220526-TM-EQ-QTY">
-  <link rel="shortcut icon" type="image/png" href="./APP_ICON_SO_TRUC_64.png?v=12.220526-TM-EQ-QTY">
-  <link rel="apple-touch-icon" sizes="180x180" href="./APP_ICON_SO_TRUC_180.png?v=12.220526-TM-EQ-QTY">
-  <link rel="manifest" href="./manifest.json?v=12.220526-TM-EQ-QTY">
-  <meta name="msapplication-TileImage" content="./APP_ICON_SO_TRUC_192.png?v=12.220526-TM-EQ-QTY">
+  <link rel="icon" type="image/png" sizes="64x64" href="./APP_ICON_SO_TRUC_64.png?v=13.220526-TM-UI-TABLE">
+  <link rel="shortcut icon" type="image/png" href="./APP_ICON_SO_TRUC_64.png?v=13.220526-TM-UI-TABLE">
+  <link rel="apple-touch-icon" sizes="180x180" href="./APP_ICON_SO_TRUC_180.png?v=13.220526-TM-UI-TABLE">
+  <link rel="manifest" href="./manifest.json?v=13.220526-TM-UI-TABLE">
+  <meta name="msapplication-TileImage" content="./APP_ICON_SO_TRUC_192.png?v=13.220526-TM-UI-TABLE">
   <meta name="theme-color" content="#7b113a">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -133,14 +133,27 @@
     .staff-list{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
     .staff-chip{background:#fff0f5;color:var(--wine-dark);border:1px solid #e8c8d5;border-radius:999px;padding:6px 9px;font-size:13px;display:inline-flex;gap:6px;align-items:center}
     .staff-chip button{background:transparent;color:var(--danger);font-weight:700;padding:0}
+    .equal-control{height:38px;min-height:38px}
+    .staff-picker{position:relative}
+    .staff-input-row{display:grid;grid-template-columns:minmax(0,1fr) 42px;gap:6px;align-items:stretch}
+    .staff-add-btn{width:42px!important;min-width:42px;min-height:38px!important;padding:0!important;border-radius:8px;font-size:24px;line-height:1}
+    .staff-suggest{position:absolute;left:0;right:48px;top:calc(100% + 4px);z-index:30;background:#fff;border:1px solid var(--g-line);border-radius:12px;box-shadow:0 8px 22px rgba(60,64,67,.18);overflow:hidden;max-height:238px;overflow-y:auto}
+    .staff-suggest.hidden{display:none!important}
+    .staff-suggest button{width:100%;border:0;background:#fff;text-align:left;padding:9px 11px;border-bottom:1px solid #f1f3f4;color:var(--g-text);font-size:14px;line-height:1.35}
+    .staff-suggest button:last-child{border-bottom:0}
+    .staff-suggest button:hover,.staff-suggest button.active{background:#f8fbff}
+    .staff-suggest .staff-code{font-weight:700;color:var(--wine-dark)}
+    .staff-suggest .staff-role{color:var(--g-muted);font-size:12.5px}
 
     .tm-report-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;margin-top:2px}
     .tm-report-group{grid-column:span 12;border:1px solid var(--g-line);border-radius:10px;background:#fff;padding:10px}
     .tm-report-title{font-weight:700;color:var(--wine-dark);margin-bottom:8px}
     .tm-inline-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+    .tm-inline-grid.phat-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
     .tm-total{background:var(--g-readonly);font-weight:700;color:var(--wine-dark)}
     .tm-equip-wrap{overflow:auto;border:1px solid var(--g-line);border-radius:12px;background:#fff}
     .tm-equip-table{width:100%;border-collapse:collapse;min-width:760px;font-size:14px}
+    .tm-create-equipment-table{min-width:640px}
     .tm-equip-table th,.tm-equip-table td{border-bottom:1px solid var(--g-line);border-right:1px solid var(--g-line);padding:7px 8px;vertical-align:middle;text-align:left}
     .tm-equip-table th:last-child,.tm-equip-table td:last-child{border-right:0}
     .tm-equip-table tr:last-child td{border-bottom:0}
@@ -153,8 +166,11 @@
     .tm-equip-table input[type="text"],.tm-equip-table select{min-height:30px;padding:3px 6px}
     .tm-equip-table input[type="radio"]{width:18px;min-height:18px;box-shadow:none}
     .tm-equip-table .action{width:72px;text-align:center}
-    .tm-equip-table .eq-name-input{min-width:220px}
+    .tm-equip-table .eq-name-cell{min-width:220px}
+    .tm-equip-table .eq-name-input{min-width:180px}
     .tm-equip-table .unit-input{min-width:72px;text-align:center}
+    .manual-eq-inline{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px;align-items:center}
+    .manual-eq-inline .btn{min-height:30px;padding:0 10px}
     .tm-view-table{min-width:680px}
     .locked-chip{padding-right:10px}
     .modal{
@@ -208,11 +224,14 @@
       #tab-list .filter-grid > div,#tab-meeting .filter-grid > div{grid-column:auto!important;min-width:0}
       .date-pair{grid-column:auto!important}
       .btn{width:100%;min-height:38px}
+      .staff-add-btn{width:42px!important;min-width:42px!important}
       .list-head{flex-direction:column}
       .userbox{max-width:38vw}
       .tab-btn{font-size:12px}.tab-btn .ico{font-size:20px}
       .tm-inline-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .tm-inline-grid.phat-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
       .tm-equip-table{font-size:13px;min-width:680px}
+      .tm-create-equipment-table{min-width:620px}
     }
     @media (min-width:900px){
       .main{padding:18px 22px 28px}
@@ -233,7 +252,7 @@
 
   <div id="loginScreen" class="login-screen hidden">
     <div class="login-card">
-      <div class="login-logo logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=12.220526-TM-EQ-QTY" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
+      <div class="login-logo logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=13.220526-TM-UI-TABLE" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
       <p class="login-hospital">B&#7879;nh vi&#7879;n B&#7841;ch Mai</p>
       <p class="login-center">Trung t&#226;m Huy&#7871;t h&#7885;c v&#224; Truy&#7873;n m&#225;u</p>
       <h1 class="login-title">S&#7893; Tr&#7921;c - Giao ban</h1>
@@ -248,14 +267,14 @@
         </div>
       </div>
       <button id="loginBtn" class="btn primary" style="width:100%;margin-top:14px">Đăng nhập</button>
-      <p class="login-version">Version: 12.220526-TM-EQ-QTY</p>
+      <p class="login-version">Version: 13.220526-TM-UI-TABLE</p>
     </div>
   </div>
 
   <div id="app" class="app-shell hidden">
     <header class="topbar">
       <div class="brand">
-        <div class="brand-icon logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=12.220526-TM-EQ-QTY" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
+        <div class="brand-icon logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=13.220526-TM-UI-TABLE" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
         <div>
           <div id="brandTitle" class="brand-title">Trung t&#226;m Huy&#7871;t h&#7885;c v&#224; Truy&#7873;n m&#225;u</div>
           <div id="brandSub" class="brand-sub">Khoa</div>
@@ -284,7 +303,7 @@
       <button class="tab-btn" data-tab="pdf"><span class="ico">📄</span><span>PDF</span></button>
       <button id="settingsTabBtn" class="tab-btn hidden" data-tab="settings"><span class="ico">⚙️</span><span>Cài đặt</span></button>
     </nav>
-    <div class="app-version">Version: 12.220526-TM-EQ-QTY</div>
+    <div class="app-version">Version: 13.220526-TM-UI-TABLE</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -292,7 +311,7 @@
   <div id="toast" class="toast hidden"></div>
 
 <script>
-const APP_VERSION = '12.220526-TM-EQ-QTY';
+const APP_VERSION = '13.220526-TM-UI-TABLE';
 const API_URL = 'https://script.google.com/macros/s/AKfycbxLHKUczat2WOH1R4W_YVVsUeBAmEuJ-4EjOEWNuBYXvX0oL4Dr6OhyO8f4lHPfn-8Nmg/exec';
 
 const LOAI_BAN_GIAO = 'Bàn giao thường trực';
@@ -325,6 +344,7 @@ const state = {
   khoaPhong: [],
   tmEquipmentConfig: defaultTmEquipmentConfig(),
   selectedStaff: [],
+  selectedStaffCandidate: null,
   activeTab: 'create',
   cache: {
     phieu: { key:'', time:0, data:null },
@@ -571,24 +591,24 @@ function renderCreateTab(){
     <div class="card">
       <h2 class="section-title">I. Thông tin phiếu</h2>
       <div class="grid">
-        <div class="col-4">
+        <div class="col-3">
           <label>Loại phiếu</label>
-          <select id="createLoai">
+          <select id="createLoai" class="equal-control">
             <option>${LOAI_BAN_GIAO}</option>
             <option>${LOAI_BAO_CAO}</option>
           </select>
         </div>
-        <div class="col-4">
+        <div class="col-3">
           <label>Ngày trực</label>
-          <input id="createDate" type="date" value="${today}">
+          <input id="createDate" class="equal-control" type="date" value="${today}">
         </div>
-        <div class="col-4">
+        <div class="col-3">
           <label>Khoa/phòng</label>
-          <select id="createDept">${deptOptions(state.user?.khoaPhong || '')}</select>
+          <select id="createDept" class="equal-control">${deptOptions(state.user?.khoaPhong || '')}</select>
         </div>
-        <div class="col-12">
+        <div class="col-3">
           <label>Người thực hiện</label>
-          <input readonly value="${esc(displayUser(state.user))}">
+          <input class="equal-control" readonly value="${esc(displayUser(state.user))}">
         </div>
       </div>
     </div>
@@ -596,13 +616,15 @@ function renderCreateTab(){
     <div id="reportBlock" class="card hidden">
       <h3 class="section-title">II. Báo cáo thường trực</h3>
       <div class="grid">
-        <div class="col-8">
+        <div class="col-12">
           <label>2.1 Nhân viên phiên thường trực</label>
-          <input id="staffSearch" list="staffDatalist" placeholder="Gõ tên hoặc mã nhân viên">
-        </div>
-        <div class="col-4">
-          <label>&nbsp;</label>
-          <button id="addStaffBtn" class="btn secondary" type="button">Thêm nhân viên</button>
+          <div class="staff-picker">
+            <div class="staff-input-row">
+              <input id="staffSearch" autocomplete="off" placeholder="Gõ tên hoặc mã nhân viên">
+              <button id="addStaffBtn" class="btn secondary staff-add-btn" type="button" title="Thêm nhân viên" aria-label="Thêm nhân viên">+</button>
+            </div>
+            <div id="staffSuggestBox" class="staff-suggest hidden"></div>
+          </div>
         </div>
         <div class="col-12"><div id="staffList" class="staff-list"></div></div>
         <div class="col-12">
@@ -635,9 +657,9 @@ function renderCreateTab(){
           <label id="handoverLabel3">2.3 Vấn đề khác</label>
           <textarea id="banGiaoVanDeKhac">Không có gì đặc biệt</textarea>
         </div>
-        <div class="col-6">
+        <div class="col-3">
           <label id="handoverLabel4">2.4 Thời gian bàn giao</label>
-          <input id="thoiGianBanGiao" type="datetime-local" value="${now}">
+          <input id="thoiGianBanGiao" class="equal-control" type="datetime-local" value="${now}">
         </div>
       </div>
       <div class="btn-row">
@@ -648,9 +670,15 @@ function renderCreateTab(){
   `;
 
   state.selectedStaff = [];
+  state.selectedStaffCandidate = null;
   $('#createLoai').addEventListener('change', updateCreateFormNumbering);
   $('#createDept').addEventListener('change', updateCreateFormNumbering);
   $('#addStaffBtn').addEventListener('click', addSelectedStaff);
+  $('#staffSearch').addEventListener('input', handleStaffSearchInput);
+  $('#staffSearch').addEventListener('focus', handleStaffSearchInput);
+  $('#staffSearch').addEventListener('keydown', handleStaffSearchKeydown);
+  document.removeEventListener('click', closeStaffSuggestOnOutsideClick);
+  document.addEventListener('click', closeStaffSuggestOnOutsideClick);
   $('#createBtn').addEventListener('click', submitCreatePhieu);
   updateCreateFormNumbering();
   refreshStaffList();
@@ -685,15 +713,78 @@ function ensureLoginUserInStaff(){
   });
 }
 
+function handleStaffSearchInput(){
+  const input = $('#staffSearch');
+  const box = $('#staffSuggestBox');
+  if(!input || !box) return;
+  const q = norm(input.value);
+  state.selectedStaffCandidate = null;
+  if(!q){
+    box.classList.add('hidden');
+    box.innerHTML = '';
+    return;
+  }
+  const matched = state.personnel.filter(p => {
+    const hay = norm([p.maNhanVien, p.tenNhanVien, p.chucDanh, p.chucVu].filter(Boolean).join(' '));
+    return hay.includes(q);
+  }).slice(0, 8);
+  if(!matched.length){
+    box.innerHTML = `<button type="button" disabled>Không tìm thấy nhân viên phù hợp</button>`;
+    box.classList.remove('hidden');
+    return;
+  }
+  box.innerHTML = matched.map((p, idx) => `
+    <button type="button" class="staff-suggest-item ${idx === 0 ? 'active' : ''}" data-ma="${escAttr(p.maNhanVien)}" onclick="chooseStaffSuggestion('${escAttr(p.maNhanVien)}')">
+      <span class="staff-code">${esc(p.maNhanVien || '')}</span> - ${esc(p.tenNhanVien || '')}
+      ${p.chucDanh ? `<div class="staff-role">${esc(p.chucDanh)}</div>` : ''}
+    </button>
+  `).join('');
+  box.classList.remove('hidden');
+}
+
+function handleStaffSearchKeydown(e){
+  if(e.key === 'Enter'){
+    e.preventDefault();
+    const first = $('#staffSuggestBox .staff-suggest-item');
+    if(first && !state.selectedStaffCandidate) chooseStaffSuggestion(first.dataset.ma);
+    addSelectedStaff();
+  }
+  if(e.key === 'Escape') $('#staffSuggestBox')?.classList.add('hidden');
+}
+
+function closeStaffSuggestOnOutsideClick(e){
+  const picker = e.target.closest('.staff-picker');
+  if(!picker) $('#staffSuggestBox')?.classList.add('hidden');
+}
+
+window.chooseStaffSuggestion = function(ma){
+  const person = state.personnel.find(p => norm(p.maNhanVien) === norm(ma));
+  if(!person) return;
+  state.selectedStaffCandidate = person;
+  const input = $('#staffSearch');
+  if(input) input.value = person.tenNhanVien || '';
+  $('#staffSuggestBox')?.classList.add('hidden');
+}
+
+function findStaffFromInput(raw){
+  if(state.selectedStaffCandidate) return state.selectedStaffCandidate;
+  const q = norm(raw);
+  if(!q) return null;
+  return state.personnel.find(p => norm(p.maNhanVien) === q)
+    || state.personnel.find(p => norm(p.tenNhanVien) === q)
+    || state.personnel.find(p => norm([p.maNhanVien, p.tenNhanVien, p.chucDanh].filter(Boolean).join(' ')).includes(q));
+}
+
 function addSelectedStaff(){
   const raw = $('#staffSearch').value.trim();
   if(!raw) return;
-  const ma = raw.split(' - ')[0].trim();
-  const person = state.personnel.find(p => norm(p.maNhanVien) === norm(ma) || raw.toLowerCase().includes((p.tenNhanVien||'').toLowerCase()));
-  if(!person) return toast('Không tìm thấy nhân viên trong danh sách.');
+  const person = findStaffFromInput(raw);
+  if(!person) return toast('Không tìm thấy nhân viên trong danh sách. Vui lòng chọn từ gợi ý.');
   if(state.selectedStaff.some(x => x.maNhanVien === person.maNhanVien)) return toast('Nhân viên đã có trong danh sách.');
   state.selectedStaff.push(person);
+  state.selectedStaffCandidate = null;
   $('#staffSearch').value = '';
+  $('#staffSuggestBox')?.classList.add('hidden');
   refreshStaffList();
 }
 
@@ -723,7 +814,7 @@ function renderSoLieuTrucInput(isTM){
     <div class="tm-report-grid">
       <div class="tm-report-group">
         <div class="tm-report-title">Phát máu</div>
-        <div class="tm-inline-grid">
+        <div class="tm-inline-grid phat-grid">
           <div><label>KHC</label><input id="tmPhatKHC" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
           <div><label>CP</label><input id="tmPhatCP" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
           <div><label>Tổng số</label><input id="tmPhatTong" class="tm-total" readonly value="0"></div>
@@ -744,7 +835,7 @@ function renderSoLieuTrucInput(isTM){
           <div><label>Nhóm máu</label><input id="tmXNhomMau" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
           <div><label>Rh(D)</label><input id="tmXRhD" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
           <div><label>SLKTBT</label><input id="tmXSLKTBT" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
-          <div><label>ĐDKTBT</label><input id="tmXDDKTBT" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
+          <div><label>Khác</label><input id="tmXKhac" type="text" placeholder="Tên XN khác nếu có"></div>
         </div>
       </div>
     </div>
@@ -770,14 +861,13 @@ function renderBanGiaoTaiSanInput(isTM){
   const rows = getTmEquipmentConfig().map((it, idx) => renderTmCreateEquipmentRow(it, idx, false)).join('');
   box.innerHTML = `
     <div class="tm-equip-wrap">
-      <table class="tm-equip-table">
+      <table class="tm-equip-table tm-create-equipment-table">
         <thead>
           <tr>
             <th rowspan="2">Stt</th>
             <th rowspan="2">Trang thiết bị, dụng cụ, hóa chất</th>
             <th rowspan="2">Đơn vị</th>
             <th colspan="2">Số lượng</th>
-            <th rowspan="2"></th>
           </tr>
           <tr><th>HĐ BT</th><th>Hỏng</th></tr>
         </thead>
@@ -797,7 +887,7 @@ function renderTmCreateEquipmentRow(it, idx, manual){
   const name = it.name || '';
   const unit = it.unit || '';
   const nameCell = manual
-    ? `<input class="tm-eq-name-input" type="text" placeholder="Nhập tên thiết bị" value="${escAttr(name)}">`
+    ? `<div class="manual-eq-inline"><input class="tm-eq-name-input" type="text" placeholder="Nhập tên thiết bị" value="${escAttr(name)}"><button type="button" class="btn danger" onclick="removeTmEquipmentRow(this)">Xóa</button></div>`
     : `<span class="tm-eq-name-text">${esc(name)}</span>`;
   const unitCell = manual
     ? `<input class="tm-eq-unit-input unit-input" type="text" placeholder="Đơn vị" value="${escAttr(unit || 'Cái')}">`
@@ -805,11 +895,10 @@ function renderTmCreateEquipmentRow(it, idx, manual){
   return `
     <tr class="tm-eq-row" data-id="${escAttr(id)}" data-manual="${manual ? '1' : '0'}">
       <td class="stt">${idx + 1}</td>
-      <td>${nameCell}</td>
+      <td class="eq-name-cell">${nameCell}</td>
       <td class="unit">${unitCell}</td>
       <td class="qty"><input class="tm-eq-ok-qty" type="number" min="0" step="1" inputmode="numeric" value="${escAttr(it.okQty ?? '')}"></td>
       <td class="qty"><input class="tm-eq-broken-qty" type="number" min="0" step="1" inputmode="numeric" value="${escAttr(it.brokenQty ?? '')}"></td>
-      <td class="action">${manual ? `<button type="button" class="btn danger" style="min-height:30px;padding:0 10px" onclick="removeTmEquipmentRow(this)">Xóa</button>` : ''}</td>
     </tr>
   `;
 }
@@ -864,7 +953,7 @@ function collectSoLieuTruc(){
     `- Nhóm máu: ${getIntValue('tmXNhomMau')}`,
     `- Rh(D): ${getIntValue('tmXRhD')}`,
     `- SLKTBT: ${getIntValue('tmXSLKTBT')}`,
-    `- ĐDKTBT: ${getIntValue('tmXDDKTBT')}`
+    `- Khác: ${($('#tmXKhac')?.value || '').trim()}`
   ].join('\n');
 }
 
