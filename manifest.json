@@ -2,21 +2,21 @@
   "name": "Sổ trực - Giao ban Phòng Truyền máu",
   "short_name": "Sổ trực",
   "description": "Webapp Sổ trực - Giao ban nội bộ Trung tâm Huyết học và Truyền máu.",
-  "start_url": "./index.html?v=09.200526",
+  "start_url": "./index.html?v=20.220526-TM-SAFE-HEADER",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#ffffff",
-  "theme_color": "#7b113a",
+  "background_color": "#4a071f",
+  "theme_color": "#4a071f",
   "icons": [
     {
-      "src": "./APP_ICON_SO_TRUC_192.png?v=09.200526",
+      "src": "./APP_ICON_SO_TRUC_192.png?v=20.220526-TM-SAFE-HEADER",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./APP_ICON_SO_TRUC_512.png?v=09.200526",
+      "src": "./APP_ICON_SO_TRUC_512.png?v=20.220526-TM-SAFE-HEADER",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
