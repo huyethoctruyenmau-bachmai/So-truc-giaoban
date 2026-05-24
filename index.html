@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <title>Sổ trực - Giao ban Phòng Truyền máu</title>
-  <link rel="icon" type="image/png" sizes="64x64" href="./APP_ICON_SO_TRUC_64.png?v=56.220526-TM-HEADER-GRADIENT-KEEP-V55-TABBAR">
-  <link rel="shortcut icon" type="image/png" href="./APP_ICON_SO_TRUC_64.png?v=56.220526-TM-HEADER-GRADIENT-KEEP-V55-TABBAR">
-  <link rel="apple-touch-icon" sizes="180x180" href="./APP_ICON_SO_TRUC_180.png?v=56.220526-TM-HEADER-GRADIENT-KEEP-V55-TABBAR">
-  <link rel="manifest" href="./manifest.json?v=56.220526-TM-HEADER-GRADIENT-KEEP-V55-TABBAR">
-  <meta name="msapplication-TileImage" content="./APP_ICON_SO_TRUC_192.png?v=56.220526-TM-HEADER-GRADIENT-KEEP-V55-TABBAR">
+  <link rel="icon" type="image/png" sizes="64x64" href="./APP_ICON_SO_TRUC_64.png?v=56.220526-TM-GRADIENT-NO-TABBAR-PUSH">
+  <link rel="shortcut icon" type="image/png" href="./APP_ICON_SO_TRUC_64.png?v=56.220526-TM-GRADIENT-NO-TABBAR-PUSH">
+  <link rel="apple-touch-icon" sizes="180x180" href="./APP_ICON_SO_TRUC_180.png?v=56.220526-TM-GRADIENT-NO-TABBAR-PUSH">
+  <link rel="manifest" href="./manifest.json?v=56.220526-TM-GRADIENT-NO-TABBAR-PUSH">
+  <meta name="msapplication-TileImage" content="./APP_ICON_SO_TRUC_192.png?v=56.220526-TM-GRADIENT-NO-TABBAR-PUSH">
   <meta name="theme-color" content="#7b113a">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -44,14 +44,16 @@
       --button-h:34px;
       --safe-top:env(safe-area-inset-top,0px);
       --safe-bottom:env(safe-area-inset-bottom,0px);
+      --tabbar-safe-pad:min(env(safe-area-inset-bottom,0px),14px);
       --header-content-h:58px;
       --tabbar-content-h:56px;
       --header-h:calc(var(--header-content-h) + var(--safe-top));
-      --tabbar-h:calc(var(--tabbar-content-h) + var(--safe-bottom));
+      --tabbar-h:var(--tabbar-content-h);
     }
     *{box-sizing:border-box}
     html{height:100%;margin:0;background:var(--bg)}
     body{height:100%;margin:0;font-family:"Segoe UI",Roboto,Arial,"Noto Sans",Tahoma,sans-serif;color:var(--text);background:var(--bg);overscroll-behavior:none;font-size:16px;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+    body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:var(--safe-bottom);z-index:19;background:rgba(255,255,255,.98);pointer-events:none}
     body{touch-action:manipulation}
     button,input,select,textarea{font:inherit}
     button{border:0;cursor:pointer}
@@ -93,7 +95,7 @@
       height:var(--tabbar-h);position:fixed;left:0;right:0;bottom:0;z-index:20;
       background:rgba(255,255,255,.98);border-top:1px solid var(--line);box-shadow:0 -4px 18px rgba(74,7,31,.10);
       display:grid;grid-template-columns:repeat(5,1fr);
-      padding:3px 5px var(--safe-bottom) 5px;
+      padding:3px 5px var(--tabbar-safe-pad) 5px;
     }
     .tab-btn{background:transparent;color:var(--muted);border-radius:12px;padding:2px 2px;display:flex;flex-direction:column;gap:1px;align-items:center;justify-content:center;font-size:12.5px;min-height:0}
     .tab-btn .ico{font-size:20px;line-height:1}
@@ -410,7 +412,7 @@
 
   <div id="loginScreen" class="login-screen hidden">
     <div class="login-card">
-      <div class="login-logo logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=56.220526-TM-HEADER-GRADIENT-KEEP-V55-TABBAR" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
+      <div class="login-logo logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=56.220526-TM-GRADIENT-NO-TABBAR-PUSH" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
       <p class="login-hospital">B&#7879;nh vi&#7879;n B&#7841;ch Mai</p>
       <p class="login-center">Trung t&#226;m Huy&#7871;t h&#7885;c v&#224; Truy&#7873;n m&#225;u</p>
       <h1 class="login-title">S&#7893; Tr&#7921;c - Giao ban</h1>
@@ -425,14 +427,14 @@
         </div>
       </div>
       <button id="loginBtn" class="btn primary" style="width:100%;margin-top:14px">Đăng nhập</button>
-      <p class="login-version">Version: 56.220526-TM-HEADER-GRADIENT-KEEP-V55-TABBAR</p>
+      <p class="login-version">Version: 56.220526-TM-GRADIENT-NO-TABBAR-PUSH</p>
     </div>
   </div>
 
   <div id="app" class="app-shell hidden">
     <header class="topbar">
       <div class="brand">
-        <div class="brand-icon logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=56.220526-TM-HEADER-GRADIENT-KEEP-V55-TABBAR" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
+        <div class="brand-icon logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=56.220526-TM-GRADIENT-NO-TABBAR-PUSH" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
         <div>
           <div id="brandTitle" class="brand-title">Trung t&#226;m Huy&#7871;t h&#7885;c v&#224; Truy&#7873;n m&#225;u</div>
           <div id="brandSub" class="brand-sub">Khoa</div>
@@ -461,7 +463,7 @@
       <button class="tab-btn" data-tab="pdf"><span class="ico">📄</span><span>PDF</span></button>
       <button id="settingsTabBtn" class="tab-btn hidden" data-tab="settings"><span class="ico">⚙️</span><span>Cài đặt</span></button>
     </nav>
-    <div class="app-version">Version: 56.220526-TM-HEADER-GRADIENT-KEEP-V55-TABBAR</div>
+    <div class="app-version">Version: 56.220526-TM-GRADIENT-NO-TABBAR-PUSH</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -469,7 +471,7 @@
   <div id="toast" class="toast hidden"></div>
 
 <script>
-const APP_VERSION = '56.220526-TM-HEADER-GRADIENT-KEEP-V55-TABBAR';
+const APP_VERSION = '56.220526-TM-GRADIENT-NO-TABBAR-PUSH';
 const API_URL = 'https://script.google.com/macros/s/AKfycbxLHKUczat2WOH1R4W_YVVsUeBAmEuJ-4EjOEWNuBYXvX0oL4Dr6OhyO8f4lHPfn-8Nmg/exec';
 
 const LOAI_BAN_GIAO = 'Bàn giao thường trực';
