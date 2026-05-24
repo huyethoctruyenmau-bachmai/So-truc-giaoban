@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <title>Sổ trực - Giao ban Phòng Truyền máu</title>
-  <link rel="icon" type="image/png" sizes="64x64" href="./APP_ICON_SO_TRUC_64.png?v=60.220526-TM-GIAO-BAN-2-LOAI">
-  <link rel="shortcut icon" type="image/png" href="./APP_ICON_SO_TRUC_64.png?v=60.220526-TM-GIAO-BAN-2-LOAI">
-  <link rel="apple-touch-icon" sizes="180x180" href="./APP_ICON_SO_TRUC_180.png?v=60.220526-TM-GIAO-BAN-2-LOAI">
-  <link rel="manifest" href="./manifest.json?v=60.220526-TM-GIAO-BAN-2-LOAI">
-  <meta name="msapplication-TileImage" content="./APP_ICON_SO_TRUC_192.png?v=60.220526-TM-GIAO-BAN-2-LOAI">
+  <link rel="icon" type="image/png" sizes="64x64" href="./APP_ICON_SO_TRUC_64.png?v=61.220526-TM-GIAO-BAN-UX-PERSIST-PDF">
+  <link rel="shortcut icon" type="image/png" href="./APP_ICON_SO_TRUC_64.png?v=61.220526-TM-GIAO-BAN-UX-PERSIST-PDF">
+  <link rel="apple-touch-icon" sizes="180x180" href="./APP_ICON_SO_TRUC_180.png?v=61.220526-TM-GIAO-BAN-UX-PERSIST-PDF">
+  <link rel="manifest" href="./manifest.json?v=61.220526-TM-GIAO-BAN-UX-PERSIST-PDF">
+  <meta name="msapplication-TileImage" content="./APP_ICON_SO_TRUC_192.png?v=61.220526-TM-GIAO-BAN-UX-PERSIST-PDF">
   <meta name="theme-color" content="#580824">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -404,6 +404,11 @@
       }
     }
 
+  
+    .gb-create-choice{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px}
+    .gb-pdf-frame{width:100%;height:calc(100dvh - 150px);min-height:420px;border:1px solid var(--g-line);border-radius:12px;background:#fff}
+    .pdf-inline-actions{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-bottom:10px;flex-wrap:wrap}
+
   </style>
 </head>
 <body>
@@ -417,7 +422,7 @@
 
   <div id="loginScreen" class="login-screen hidden">
     <div class="login-card">
-      <div class="login-logo logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=60.220526-TM-GIAO-BAN-2-LOAI" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
+      <div class="login-logo logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=61.220526-TM-GIAO-BAN-UX-PERSIST-PDF" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
       <p class="login-hospital">B&#7879;nh vi&#7879;n B&#7841;ch Mai</p>
       <p class="login-center">Trung t&#226;m Huy&#7871;t h&#7885;c v&#224; Truy&#7873;n m&#225;u</p>
       <h1 class="login-title">S&#7893; Tr&#7921;c - Giao ban</h1>
@@ -432,14 +437,14 @@
         </div>
       </div>
       <button id="loginBtn" class="btn primary" style="width:100%;margin-top:14px">Đăng nhập</button>
-      <p class="login-version">Version: 60.220526-TM-GIAO-BAN-2-LOAI</p>
+      <p class="login-version">Version: 61.220526-TM-GIAO-BAN-UX-PERSIST-PDF</p>
     </div>
   </div>
 
   <div id="app" class="app-shell hidden">
     <header class="topbar">
       <div class="brand">
-        <div class="brand-icon logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=60.220526-TM-GIAO-BAN-2-LOAI" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
+        <div class="brand-icon logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=61.220526-TM-GIAO-BAN-UX-PERSIST-PDF" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
         <div>
           <div id="brandTitle" class="brand-title">Trung t&#226;m Huy&#7871;t h&#7885;c v&#224; Truy&#7873;n m&#225;u</div>
           <div id="brandSub" class="brand-sub">Khoa</div>
@@ -468,7 +473,7 @@
       <button class="tab-btn" data-tab="pdf"><span class="ico">📄</span><span>PDF</span></button>
       <button id="settingsTabBtn" class="tab-btn hidden" data-tab="settings"><span class="ico">⚙️</span><span>Cài đặt</span></button>
     </nav>
-    <div class="app-version">Version: 60.220526-TM-GIAO-BAN-2-LOAI</div>
+    <div class="app-version">Version: 61.220526-TM-GIAO-BAN-UX-PERSIST-PDF</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -476,7 +481,7 @@
   <div id="toast" class="toast hidden"></div>
 
 <script>
-const APP_VERSION = '60.220526-TM-GIAO-BAN-2-LOAI';
+const APP_VERSION = '61.220526-TM-GIAO-BAN-UX-PERSIST-PDF';
 const API_URL = 'https://script.google.com/macros/s/AKfycbxLHKUczat2WOH1R4W_YVVsUeBAmEuJ-4EjOEWNuBYXvX0oL4Dr6OhyO8f4lHPfn-8Nmg/exec';
 
 const LOAI_BAN_GIAO = 'Bàn giao thường trực';
@@ -519,6 +524,8 @@ const state = {
   },
   currentGiaoBan: null,
   currentReports: [],
+  pendingCreateGiaoBanPayload: null,
+  refreshGiaoBanListOnClose: false,
   sessionGuard: 0,
   isLoggingOut: false
 };
@@ -1789,21 +1796,21 @@ function renderMeetingTab(){
         <div class="col-3">
           <label>Loại giao ban</label>
           <select id="gbLoai" class="equal-control">
+            <option>Tất cả</option>
             <option>${LOAI_GIAO_BAN_THUONG_TRUC}</option>
             <option>${LOAI_GIAO_BAN_DOT_XUAT}</option>
-            <option>Tất cả</option>
           </select>
         </div>
         <div class="col-3"><label>Trạng thái</label><select id="gbStatus" class="equal-control"><option>${STATUS_CHUA}</option><option>Tất cả</option><option>${STATUS_DA}</option></select></div>
-        <div class="col-3 filter-action"><button id="createGbBtn" class="btn ok">Tạo phiên giao ban</button></div>
         <div class="col-3 filter-action"><button id="loadGbBtn" class="btn primary">Xem danh sách</button></div>
+        <div class="col-3 filter-action"><button id="createGbBtn" class="btn ok">Tạo phiên giao ban</button></div>
       </div>
-      <p class="meta">Nút Tạo phiên giao ban dùng khoa/phòng và loại giao ban đang chọn. Giao ban thường trực sẽ gộp báo cáo chưa giao ban trong 15 ngày gần nhất, không phụ thuộc bộ lọc ngày.</p>
+      <p class="meta">Tạo phiên giao ban sẽ mở hộp thoại chọn khoa/phòng và loại giao ban. Nếu không lưu nháp hoặc ký kết thúc thì phiên mới chưa được ghi nhận.</p>
     </div>
     <div id="giaoBanListBox"></div>
   `;
-  $('#createGbBtn').addEventListener('click', () => withButton($('#createGbBtn'), 'Đang tạo...', () => createGiaoBanSession(false)));
   $('#loadGbBtn').addEventListener('click', () => withButton($('#loadGbBtn'), 'Đang tải...', () => loadGiaoBanList(true)));
+  $('#createGbBtn').addEventListener('click', openCreateGiaoBanDialog);
   setDefaultDateRange('gbFrom','gbTo',14);
 }
 
@@ -1847,10 +1854,17 @@ function renderGiaoBanList(items, note=''){
     const loai = g.loaiGiaoBan || LOAI_GIAO_BAN_THUONG_TRUC;
     const title = `${loai} - ${formatDeptPlain(g.khoaPhong)} - ${dateTimeVi(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan)}`;
     const isDotXuat = loai === LOAI_GIAO_BAN_DOT_XUAT;
+    const creator = g.nguoiTaoTen ? `<div class="meta">Người tạo phiên: ${esc(g.nguoiTaoTen)}${g.nguoiTaoChucDanh ? ' - ' + esc(g.nguoiTaoChucDanh) : ''}</div>` : '';
     const metaHtml = isDotXuat
-      ? `<div class="meta">Lý do: ${esc(g.lyDoGiaoBan || 'Chưa nhập')}</div>`
-      : `<div class="meta">Báo cáo gộp: ${g.pendingCount || g.danhSachPhieuID.length || 0}</div><div class="meta">Khoảng báo cáo: ${dateVi(g.tuNgayBaoCao)} - ${dateVi(g.denNgayBaoCao)}</div>`;
+      ? `${creator}<div class="meta">Lý do: ${esc(g.lyDoGiaoBan || 'Chưa nhập')}</div>`
+      : `${creator}<div class="meta">Báo cáo gộp: ${g.pendingCount || g.danhSachPhieuID.length || 0}</div><div class="meta">Khoảng báo cáo: ${dateVi(g.tuNgayBaoCao)} - ${dateVi(g.denNgayBaoCao)}</div>`;
     const deleteBtn = g.canDelete ? `<button class="app-icon-btn delete" onclick="deleteGiaoBan('${escAttr(g.giaoBanID)}', this)" title="Xóa phiên giao ban" aria-label="Xóa phiên giao ban">${iconTrash()}</button>` : '';
+    const done = g.trangThai === STATUS_DA;
+    const pdfBtn = g.pdfGiaoBanUrl ? `<button class="btn ok" onclick="openGiaoBanPdf('${escAttr(g.pdfGiaoBanUrl)}','${escAttr(title)}')">Xem PDF</button>` : '';
+    const pdfDownload = g.pdfGiaoBanUrl ? `<a class="app-icon-btn" href="${escAttr(toPdfDownloadUrl(g.pdfGiaoBanUrl))}" target="_blank" title="Tải PDF" aria-label="Tải PDF">${iconDownload()}</a>` : '';
+    const mainActions = done
+      ? `${pdfBtn}${g.pdfGiaoBanUrl ? '' : '<span class="meta">Chưa có file PDF đã ký.</span>'}`
+      : `<button class="btn secondary" onclick="openGiaoBan('${escAttr(g.giaoBanID)}','${escAttr(g.khoaPhong)}', this)">Mở giao ban</button>`;
     return `
       <div class="list-card phieu-card">
         <div class="list-head">
@@ -1861,11 +1875,8 @@ function renderGiaoBanList(items, note=''){
           ${statusPill(g.trangThai)}
         </div>
         <div class="phieu-actions">
-          <div class="phieu-main-actions">
-            <button class="btn secondary" onclick="openGiaoBan('${escAttr(g.giaoBanID)}','${escAttr(g.khoaPhong)}', this)">Mở giao ban</button>
-            ${g.pdfGiaoBanUrl ? `<a class="btn ok" target="_blank" href="${escAttr(g.pdfGiaoBanUrl)}">PDF giao ban</a>` : ''}
-          </div>
-          <div class="phieu-icon-actions">${deleteBtn}</div>
+          <div class="phieu-main-actions">${mainActions}</div>
+          <div class="phieu-icon-actions">${pdfDownload}${deleteBtn}</div>
         </div>
       </div>`;
   }).join('');
@@ -1882,22 +1893,60 @@ window.openGiaoBan = async function(giaoBanID, khoaPhong, btn){
   try{ await task(); }catch(err){ toast(err.message); }
 }
 
-async function createGiaoBanSession(forceCreate, btn){
+function openCreateGiaoBanDialog(){
+  openModal(`
+    <div class="modal-card">
+      <div class="modal-head">
+        <div class="modal-title">Tạo phiên giao ban</div>
+        <button class="close-btn" onclick="closeModal()">×</button>
+      </div>
+      <div class="gb-create-choice">
+        <div>
+          <label>Khoa/Phòng</label>
+          <select id="createGbDept" class="equal-control">${deptOptions(state.user?.khoaPhong || '')}</select>
+        </div>
+        <div>
+          <label>Loại giao ban</label>
+          <select id="createGbLoai" class="equal-control">
+            <option value="">Chọn loại</option>
+            <option value="${LOAI_GIAO_BAN_THUONG_TRUC}">${LOAI_GIAO_BAN_THUONG_TRUC}</option>
+            <option value="${LOAI_GIAO_BAN_DOT_XUAT}">${LOAI_GIAO_BAN_DOT_XUAT}</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn primary" onclick="createGiaoBanFromDialog(false, this)">Tạo phiên giao ban</button>
+      </div>
+      <p class="meta">Phiên mới chỉ được ghi nhận khi bạn bấm Lưu nháp hoặc Ký kết thúc giao ban.</p>
+    </div>
+  `);
+}
+
+window.createGiaoBanFromDialog = async function(forceCreate, btn){
+  const dept = $('#createGbDept')?.value || state.user?.khoaPhong || '';
+  const loai = $('#createGbLoai')?.value || '';
+  if(!loai) return toast('Vui lòng chọn loại giao ban.');
   const payload = {
-    khoaPhong: $('#gbDept')?.value || state.user?.khoaPhong || '',
-    loaiGiaoBan: $('#gbLoai')?.value === 'Tất cả' ? LOAI_GIAO_BAN_THUONG_TRUC : ($('#gbLoai')?.value || LOAI_GIAO_BAN_THUONG_TRUC),
+    khoaPhong: dept,
+    loaiGiaoBan: loai,
     thoiGianMoGiaoBan: hanoiNowIso(),
     forceCreate: !!forceCreate
   };
-  const res = await api('createGiaoBan', payload);
-  if(res.data?.needChoice){
-    showGiaoBanChoiceDialog(res.data.openSessions || [], payload);
-    return;
-  }
-  state.currentGiaoBan = res.data.giaoBan;
-  state.currentReports = res.data.reports || [];
-  clearListCaches();
-  renderGiaoBanModal();
+  state.pendingCreateGiaoBanPayload = payload;
+  const task = async () => {
+    const res = await api('createGiaoBan', payload);
+    if(res.data?.needChoice){
+      showGiaoBanChoiceDialog(res.data.openSessions || [], payload);
+      return;
+    }
+    state.currentGiaoBan = res.data.giaoBan;
+    state.currentReports = res.data.reports || [];
+    closeModal();
+    clearListCaches();
+    renderGiaoBanModal();
+  };
+  if(btn) return withButton(btn, 'Đang tạo...', task);
+  try{ await task(); }catch(err){ toast(err.message); }
 }
 
 function showGiaoBanChoiceDialog(sessions, payload){
@@ -1932,9 +1981,16 @@ window.openSelectedOldGiaoBan = function(){
 }
 
 window.forceCreateGiaoBanFromChoice = async function(btn){
+  const payload = state.pendingCreateGiaoBanPayload;
+  if(!payload) return toast('Không còn thông tin tạo phiên giao ban.');
+  payload.forceCreate = true;
   const task = async () => {
+    const res = await api('createGiaoBan', payload);
+    state.currentGiaoBan = res.data.giaoBan;
+    state.currentReports = res.data.reports || [];
     closeModal();
-    await createGiaoBanSession(true);
+    clearListCaches();
+    renderGiaoBanModal();
   };
   if(btn) return withButton(btn, 'Đang tạo...', task);
   try{ await task(); }catch(err){ toast(err.message); }
@@ -2071,7 +2127,7 @@ function renderGiaoBanModal(){
         <div class="modal-head">
           <div>
             <div class="modal-title">${esc(loai)} ngày ${dateVi(g.ngayGiaoBan)}</div>
-            <div class="meta">${esc(g.khoaPhong)} · ${esc(g.trangThai)}</div>
+            <div class="meta">${esc(g.khoaPhong)} · ${esc(g.trangThai)}${g.nguoiTaoTen ? ' · Người tạo phiên: ' + esc(g.nguoiTaoTen) : ''}</div>
           </div>
           <button class="close-btn" onclick="closeModal()">×</button>
         </div>
@@ -2132,7 +2188,7 @@ function renderGiaoBanDotXuatModal(){
         <div class="modal-head">
           <div>
             <div class="modal-title">${esc(LOAI_GIAO_BAN_DOT_XUAT)} ngày ${dateVi(g.ngayGiaoBan)}</div>
-            <div class="meta">${esc(g.khoaPhong)} · ${esc(g.trangThai)}</div>
+            <div class="meta">${esc(g.khoaPhong)} · ${esc(g.trangThai)}${g.nguoiTaoTen ? ' · Người tạo phiên: ' + esc(g.nguoiTaoTen) : ''}</div>
           </div>
           <button class="close-btn" onclick="closeModal()">×</button>
         </div>
@@ -2168,10 +2224,10 @@ function renderGiaoBanDotXuatModal(){
 function renderGiaoBanFinishBlock(g){
   return g.trangThai === STATUS_DA ? `
     <div class="card" style="box-shadow:none">
-      <h3 class="section-title">Xác nhận kết thúc giao ban</h3>
+      <h3 class="section-title">File giao ban đã ký</h3>
       <div class="meta">Chủ trì: ${esc(g.chuTriTen || g.nguoiChuTriTuDo || '')}${g.chuTriChucDanh ? ' - ' + esc(g.chuTriChucDanh) : ''}</div>
       <div class="meta">Thời điểm ký: ${dateTimeVi(g.thoiDiemChuTriKy)}</div>
-      ${g.pdfGiaoBanUrl ? `<div class="btn-row"><a target="_blank" class="btn ok" href="${escAttr(g.pdfGiaoBanUrl)}">Mở PDF giao ban</a></div>` : ''}
+      ${g.pdfGiaoBanUrl ? `<div class="btn-row"><button class="btn ok" onclick="openGiaoBanPdf('${escAttr(g.pdfGiaoBanUrl)}','${escAttr((g.loaiGiaoBan || '') + ' - ' + formatDeptPlain(g.khoaPhong || '') + ' - ' + dateTimeVi(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || ''))}')">Xem PDF đã ký</button><a class="app-icon-btn" href="${escAttr(toPdfDownloadUrl(g.pdfGiaoBanUrl))}" target="_blank" title="Tải PDF" aria-label="Tải PDF">${iconDownload()}</a></div>` : '<div class="empty">Chưa có file PDF đã ký.</div>'}
     </div>
   ` : `
     <div class="btn-row sign-bottom-small">
@@ -2185,6 +2241,9 @@ function collectGiaoBanPayload(){
   const g = state.currentGiaoBan;
   const payload = {
     giaoBanID: g.giaoBanID,
+    isVirtual: !!g.isVirtual,
+    ngayGiaoBan: g.ngayGiaoBan || todayIso(),
+    danhSachPhieuID: (state.currentReports || []).map(r => r.phieuID).filter(Boolean).join(','),
     loaiGiaoBan: g.loaiGiaoBan || LOAI_GIAO_BAN_THUONG_TRUC,
     thoiGianGiaoBan: fromDatetimeLocal($('#gbTime').value),
     nghi: $('#gbNghi')?.value || '',
@@ -2210,6 +2269,7 @@ window.saveGiaoBanDraft = async function(btn){
   const task = async () => {
     const res = await api('saveGiaoBanDraft', collectGiaoBanPayload());
     state.currentGiaoBan = res.data.giaoBan;
+    state.refreshGiaoBanListOnClose = true;
     clearListCaches();
     toast('Đã lưu nháp giao ban');
     renderGiaoBanModal();
@@ -2232,7 +2292,8 @@ window.finishGiaoBan = async function(btn){
     state.currentGiaoBan = res.data.giaoBan;
     clearListCaches();
     toast('Đã ký kết thúc giao ban');
-    renderGiaoBanModal();
+    closeModal();
+    await loadGiaoBanList(true);
   };
   if(btn) return withButton(btn, 'Đang ký...', task);
   try{ await task(); }catch(err){ toast(err.message); }
@@ -2412,6 +2473,47 @@ async function saveTmEquipmentConfig(btn){
 
 
 
+
+
+function iconDownload(){
+  return '<svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>';
+}
+
+function extractDriveId(url){
+  const s = String(url || '');
+  let m = s.match(/[?&]id=([^&]+)/);
+  if(m) return decodeURIComponent(m[1]);
+  m = s.match(/\/d\/([^/]+)/);
+  return m ? decodeURIComponent(m[1]) : '';
+}
+
+function toPdfPreviewUrl(url){
+  const id = extractDriveId(url);
+  return id ? `https://drive.google.com/file/d/${encodeURIComponent(id)}/preview` : url;
+}
+
+function toPdfDownloadUrl(url){
+  const id = extractDriveId(url);
+  return id ? `https://drive.google.com/uc?export=download&id=${encodeURIComponent(id)}` : url;
+}
+
+window.openGiaoBanPdf = function(url, title='PDF giao ban'){
+  openModal(`
+    <div class="modal full-modal">
+      <div class="modal-card">
+        <div class="modal-head">
+          <div class="modal-title">${esc(title)}</div>
+          <button class="close-btn" onclick="closeModal()">×</button>
+        </div>
+        <div class="pdf-inline-actions">
+          <a class="btn secondary" href="${escAttr(toPdfDownloadUrl(url))}" target="_blank">${iconDownload()} Tải PDF</a>
+        </div>
+        <iframe class="gb-pdf-frame" src="${escAttr(toPdfPreviewUrl(url))}" allow="autoplay"></iframe>
+      </div>
+    </div>
+  `, true);
+}
+
 function iconEdit(){
   return '<svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
 }
@@ -2554,6 +2656,10 @@ function openModal(inner, alreadyWrapped){
 
 window.closeModal = function(){
   $('#modalRoot').innerHTML = '';
+  if(state.refreshGiaoBanListOnClose){
+    state.refreshGiaoBanListOnClose = false;
+    if(state.activeTab === 'meeting') loadGiaoBanList(true);
+  }
 }
 
 function toast(msg){
