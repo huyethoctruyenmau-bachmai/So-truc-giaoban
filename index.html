@@ -4,22 +4,21 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <title>Sổ trực - Giao ban Phòng Truyền máu</title>
-  <link rel="icon" type="image/png" sizes="64x64" href="./APP_ICON_SO_TRUC_64.png?v=21.220526-TM-UNIFIED-HEADER">
-  <link rel="shortcut icon" type="image/png" href="./APP_ICON_SO_TRUC_64.png?v=21.220526-TM-UNIFIED-HEADER">
-  <link rel="apple-touch-icon" sizes="180x180" href="./APP_ICON_SO_TRUC_180.png?v=21.220526-TM-UNIFIED-HEADER">
-  <link rel="manifest" href="./manifest.json?v=21.220526-TM-UNIFIED-HEADER">
-  <meta name="msapplication-TileImage" content="./APP_ICON_SO_TRUC_192.png?v=21.220526-TM-UNIFIED-HEADER">
+  <link rel="icon" type="image/png" sizes="64x64" href="./APP_ICON_SO_TRUC_64.png?v=16.220526-TM-BTN-DEPT">
+  <link rel="shortcut icon" type="image/png" href="./APP_ICON_SO_TRUC_64.png?v=16.220526-TM-BTN-DEPT">
+  <link rel="apple-touch-icon" sizes="180x180" href="./APP_ICON_SO_TRUC_180.png?v=16.220526-TM-BTN-DEPT">
+  <link rel="manifest" href="./manifest.json?v=16.220526-TM-BTN-DEPT">
+  <meta name="msapplication-TileImage" content="./APP_ICON_SO_TRUC_192.png?v=16.220526-TM-BTN-DEPT">
   <meta name="theme-color" content="#7b113a">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Sổ trực">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <style>
     :root{
       --wine:#7b113a;
       --wine-2:#9f174d;
       --wine-dark:#4a071f;
-      --header-solid:#7b113a;
       --bg:#f8f1f4;
       --card:#ffffff;
       --text:#23141b;
@@ -49,18 +48,16 @@
       --tabbar-h:calc(var(--tabbar-content-h) + var(--safe-bottom));
     }
     *{box-sizing:border-box}
-    html{height:100%;margin:0;background:var(--header-solid)}
-    body{height:100%;margin:0;font-family:"Segoe UI",Roboto,Arial,"Noto Sans",Tahoma,sans-serif;color:var(--text);background:linear-gradient(to bottom,var(--header-solid) 0,var(--header-solid) var(--header-h),var(--bg) var(--header-h),var(--bg) 100%);overscroll-behavior:none;font-size:16px;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+    html,body{height:100%;margin:0;font-family:"Segoe UI",Roboto,Arial,"Noto Sans",Tahoma,sans-serif;color:var(--text);background:var(--bg);overscroll-behavior:none;font-size:16px;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
     body{touch-action:manipulation}
     button,input,select,textarea{font:inherit}
     button{border:0;cursor:pointer}
     button,input,select,textarea{-webkit-tap-highlight-color:transparent}
     .hidden{display:none!important}
     .app-shell{height:100%;display:flex;flex-direction:column}
-    body::before{content:"";position:fixed;left:0;right:0;top:0;height:max(var(--safe-top),1px);z-index:21;background:var(--header-solid);pointer-events:none}
     .topbar{
       height:var(--header-h);min-height:var(--header-h);position:fixed;left:0;right:0;top:0;z-index:20;
-      background:var(--header-solid);color:white;box-shadow:0 4px 18px rgba(0,0,0,.16);
+      background:linear-gradient(135deg,var(--wine-dark),var(--wine));color:white;box-shadow:0 4px 18px rgba(0,0,0,.16);
       display:flex;align-items:center;justify-content:space-between;
       padding:var(--safe-top) 12px 0 12px;
     }
@@ -74,9 +71,9 @@
     .login-logo .logo-fallback{font-size:18px}
     .brand-title{font-family:"Segoe UI",Roboto,Arial,"Noto Sans",Tahoma,sans-serif;font-weight:700;font-size:16px;line-height:1.35;padding-top:2px;white-space:nowrap;overflow:visible;text-overflow:clip;letter-spacing:0}
     .brand-sub{font-size:12.5px;line-height:1.25;opacity:.85;white-space:nowrap;overflow:visible;text-overflow:clip}
-    .userbox{position:absolute;right:12px;bottom:5px;display:flex;align-items:center;gap:5px;justify-content:flex-end;text-align:right;line-height:1.15;max-width:46vw}
+    .userbox{display:flex;align-items:center;gap:6px;justify-content:flex-end;text-align:right;line-height:1.15;max-width:46vw;align-self:flex-start;margin-top:0}
     .userbox strong{display:block;font-size:12.5px;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .logout-icon{width:28px;height:28px;min-width:28px;border-radius:50%;display:grid;place-items:center;border:0;background:transparent;color:#fff;cursor:pointer;padding:0}.logout-icon:hover{background:rgba(255,255,255,.14)}.logout-icon svg{width:19px;height:19px;stroke:currentColor}
+    .logout-icon{width:30px;height:30px;min-width:30px;border-radius:50%;display:grid;place-items:center;border:0;background:transparent;color:#fff;cursor:pointer;padding:0}.logout-icon:hover{background:rgba(255,255,255,.14)}.logout-icon svg{width:20px;height:20px;stroke:currentColor}
     .main{
       position:fixed;top:var(--header-h);bottom:var(--tabbar-h);left:0;right:0;overflow:auto;
       padding:12px 14px 14px;
@@ -215,22 +212,15 @@
     .filter-action .btn{width:100%;height:38px;min-height:38px;padding:0 10px}
 
     .phieu-card{position:relative;padding-top:14px}
-    .phieu-card .list-head{padding-right:0}
-    .phieu-actions{display:flex;gap:8px;margin-top:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-    .phieu-main-actions,.phieu-icon-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .phieu-card .list-head{padding-right:78px}
+    .card-actions{position:absolute;top:8px;right:8px;display:flex;gap:2px;align-items:center;z-index:2}
+    .icon-btn{width:32px;height:32px;min-width:32px;border:0;background:transparent;color:var(--g-muted);border-radius:50%;display:grid;place-items:center;padding:0;font-size:18px;line-height:1;box-shadow:none}
+    .icon-btn:hover{background:#f8f1f4;color:var(--wine)}
+    .icon-btn.delete:hover{background:#feeceb;color:var(--g-danger)}
+    .phieu-actions{display:flex;gap:8px;margin-top:12px;align-items:center;justify-content:flex-start;flex-wrap:wrap}
     .phieu-actions.single{display:flex}
     .phieu-actions .btn{width:auto!important;min-width:0;min-height:32px;height:32px;padding:0 13px;font-size:13.5px;border-radius:4px;flex:0 0 auto}
-    .app-icon-btn{width:32px;height:32px;min-width:32px;border:0;background:transparent;color:var(--g-muted);border-radius:50%;display:grid;place-items:center;padding:0;line-height:1;box-shadow:none}
-    .app-icon-btn svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-    .app-icon-btn:hover{background:#f8f1f4;color:var(--wine)}
-    .app-icon-btn.delete:hover{background:#feeceb;color:var(--g-danger)}
     .modal-card .btn-row .btn{width:auto!important;min-width:0;min-height:32px;height:32px;padding:0 14px;font-size:13.5px;border-radius:4px;flex:0 0 auto}
-    .confirm-modal{position:fixed;inset:0;z-index:120;background:rgba(24,4,12,.56);display:flex;align-items:center;justify-content:center;padding:16px}
-    .confirm-card{width:min(420px,94vw);background:#fff;border-radius:18px;padding:18px;box-shadow:0 12px 36px rgba(0,0,0,.28);border:1px solid var(--line)}
-    .confirm-title{font-size:18px;font-weight:800;color:var(--wine-dark);margin:0 0 8px}
-    .confirm-message{font-size:14.5px;line-height:1.5;color:var(--g-text);margin:0;white-space:pre-wrap}
-    .confirm-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px;flex-wrap:wrap}
-    .confirm-actions .btn{width:auto!important;min-height:34px;height:34px;padding:0 16px}
 
     #tab-list .filter-grid{grid-template-columns:repeat(6,minmax(0,1fr));}
     #tab-list .filter-grid > div{grid-column:auto!important;min-width:0;}
@@ -257,7 +247,7 @@
       .list-head{flex-direction:column}
       .phieu-card .list-head{flex-direction:row}
       .phieu-card .list-title{font-size:16px}
-      .userbox{max-width:38vw;right:10px;bottom:4px}
+      .userbox{max-width:38vw}
       .tab-btn{font-size:12px}.tab-btn .ico{font-size:20px}
       .tm-inline-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
       .tm-inline-grid.phat-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -283,7 +273,7 @@
 
   <div id="loginScreen" class="login-screen hidden">
     <div class="login-card">
-      <div class="login-logo logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=21.220526-TM-UNIFIED-HEADER" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
+      <div class="login-logo logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=16.220526-TM-BTN-DEPT" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
       <p class="login-hospital">B&#7879;nh vi&#7879;n B&#7841;ch Mai</p>
       <p class="login-center">Trung t&#226;m Huy&#7871;t h&#7885;c v&#224; Truy&#7873;n m&#225;u</p>
       <h1 class="login-title">S&#7893; Tr&#7921;c - Giao ban</h1>
@@ -298,14 +288,14 @@
         </div>
       </div>
       <button id="loginBtn" class="btn primary" style="width:100%;margin-top:14px">Đăng nhập</button>
-      <p class="login-version">Version: 21.220526-TM-UNIFIED-HEADER</p>
+      <p class="login-version">Version: 16.220526-TM-BTN-DEPT</p>
     </div>
   </div>
 
   <div id="app" class="app-shell hidden">
     <header class="topbar">
       <div class="brand">
-        <div class="brand-icon logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=21.220526-TM-UNIFIED-HEADER" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
+        <div class="brand-icon logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=16.220526-TM-BTN-DEPT" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
         <div>
           <div id="brandTitle" class="brand-title">Trung t&#226;m Huy&#7871;t h&#7885;c v&#224; Truy&#7873;n m&#225;u</div>
           <div id="brandSub" class="brand-sub">Khoa</div>
@@ -334,7 +324,7 @@
       <button class="tab-btn" data-tab="pdf"><span class="ico">📄</span><span>PDF</span></button>
       <button id="settingsTabBtn" class="tab-btn hidden" data-tab="settings"><span class="ico">⚙️</span><span>Cài đặt</span></button>
     </nav>
-    <div class="app-version">Version: 21.220526-TM-UNIFIED-HEADER</div>
+    <div class="app-version">Version: 16.220526-TM-BTN-DEPT</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -342,7 +332,7 @@
   <div id="toast" class="toast hidden"></div>
 
 <script>
-const APP_VERSION = '21.220526-TM-UNIFIED-HEADER';
+const APP_VERSION = '16.220526-TM-BTN-DEPT';
 const API_URL = 'https://script.google.com/macros/s/AKfycbxLHKUczat2WOH1R4W_YVVsUeBAmEuJ-4EjOEWNuBYXvX0oL4Dr6OhyO8f4lHPfn-8Nmg/exec';
 
 const LOAI_BAN_GIAO = 'Bàn giao thường trực';
@@ -585,6 +575,8 @@ function switchTab(tab){
   $(`#tab-${tab}`).classList.remove('hidden');
   $('#main').scrollTop = 0;
 
+  if(tab === 'list') loadPhieuList(false);
+  if(tab === 'meeting') loadGiaoBanList(false);
 }
 
 /* ================= API ================= */
@@ -1090,9 +1082,15 @@ async function loadPhieuList(force){
   box.innerHTML = `<div class="loading">Đang tải danh sách phiếu...</div>`;
   try{
     const res = await api('getPhieuList', filters);
-    const items = res.data.items || [];
-    state.cache.phieu = {key, time:Date.now(), data:items, note:''};
-    renderPhieuList(items, '');
+    let items = res.data.items || [];
+    let note = '';
+    if(!items.length){
+      const wide = await api('getPhieuList', {fromDate:'', toDate:'', khoaPhong:'', loaiPhieu:'Tất cả', trangThai:'Tất cả'});
+      items = (wide.data.items || []).slice(0, 50);
+      if(items.length) note = 'Không có phiếu đúng bộ lọc hiện tại. App đang hiển thị 50 phiếu gần nhất để kiểm tra lại ngày/phòng.';
+    }
+    state.cache.phieu = {key, time:Date.now(), data:items, note};
+    renderPhieuList(items, note);
   }catch(err){
     box.innerHTML = `<div class="empty">${esc(err.message)}</div>`;
   }
@@ -1118,7 +1116,7 @@ function renderPhieuList(items, note=''){
   box.innerHTML = noteHtml + items.map(p => {
     const isDone = p.trangThaiBanGiao === STATUS_DA;
     const handoverNo = p.loaiPhieuGoc === LOAI_BAO_CAO ? '3' : '2';
-    const title = `Bàn giao thường trực - ${formatKhoaTitle(p.khoaPhong)} - ${dateTimeVi(p.thoiGianBanGiao)}`;
+    const title = `Bàn giao thường trực Khoa ${p.khoaPhong || ''} ${dateTimeVi(p.thoiGianBanGiao)}`;
     const detailHtml = !isDone ? `
       <div class="phieu-inline">
         <div class="field-row"><span class="field-name">${handoverNo}.1 Tài sản, dụng cụ, thiết bị y tế</span><div class="field-value">${renderBanGiaoTaiSanValue(p.banGiaoTaiSan)}</div></div>
@@ -1126,11 +1124,20 @@ function renderPhieuList(items, note=''){
         <div class="field-row"><span class="field-name">${handoverNo}.3 Vấn đề khác</span><div class="field-value">${esc(p.banGiaoVanDeKhac || '')}</div></div>
         <div class="field-row"><span class="field-name">${handoverNo}.4 Thời gian bàn giao</span><div class="field-value">${dateTimeVi(p.thoiGianBanGiao)}</div></div>
       </div>` : '';
-    const signBtn = p.canSignBanGiao ? `<button class="btn ok" onclick="signBanGiao('${escAttr(p.phieuID)}', this)">Ký nhận bàn giao</button>` : '';
-    const editBtn = p.canEdit ? `<button class="app-icon-btn" onclick="editPhieu('${escAttr(p.phieuID)}', this)" title="Sửa phiếu" aria-label="Sửa phiếu">${iconEdit()}</button>` : '';
-    const deleteBtn = p.canDelete ? `<button class="app-icon-btn delete" onclick="deletePhieu('${escAttr(p.phieuID)}', this)" title="Xóa phiếu" aria-label="Xóa phiếu">${iconTrash()}</button>` : '';
+    const bottomActions = p.canSignBanGiao ? `
+      <div class="phieu-actions">
+        <button class="btn ok" onclick="signBanGiao('${escAttr(p.phieuID)}', this)">Ký nhận bàn giao</button>
+        <button class="btn secondary" onclick="openPhieu('${escAttr(p.phieuID)}', this)">Xem chi tiết</button>
+      </div>` : `
+      <div class="phieu-actions single">
+        <button class="btn secondary" onclick="openPhieu('${escAttr(p.phieuID)}', this)">Xem chi tiết</button>
+      </div>`;
     return `
       <div class="list-card phieu-card">
+        <div class="card-actions">
+          ${p.canEdit ? `<button class="icon-btn" onclick="editPhieu('${escAttr(p.phieuID)}', this)" title="Sửa phiếu" aria-label="Sửa phiếu">✎</button>` : ''}
+          ${p.canDelete ? `<button class="icon-btn delete" onclick="deletePhieu('${escAttr(p.phieuID)}', this)" title="Xóa phiếu" aria-label="Xóa phiếu">🗑</button>` : ''}
+        </div>
         <div class="list-head">
           <div>
             <div class="list-title">${esc(title)}</div>
@@ -1139,13 +1146,7 @@ function renderPhieuList(items, note=''){
           ${statusPill(p.trangThaiBanGiao)}
         </div>
         ${detailHtml}
-        <div class="phieu-actions">
-          <div class="phieu-main-actions">
-            ${signBtn}
-            <button class="btn secondary" onclick="openPhieu('${escAttr(p.phieuID)}', this)">Xem chi tiết</button>
-          </div>
-          <div class="phieu-icon-actions">${editBtn}${deleteBtn}</div>
-        </div>
+        ${bottomActions}
       </div>`;
   }).join('');
 }
@@ -1209,14 +1210,7 @@ function showPhieuModal(p, opts={}){
 }
 
 window.signBanGiao = async function(phieuID, btn){
-  const ok = await showConfirmDialog({
-    title:'Xác nhận ký nhận bàn giao',
-    message:'Bạn có muốn ký nhận bàn giao phiếu này không?\nSau khi ký, nội dung bàn giao sẽ không sửa được nữa.',
-    confirmText:'Ký nhận',
-    cancelText:'Hủy',
-    danger:false
-  });
-  if(!ok) return;
+  if(!confirm('Bạn có muốn ký nhận bàn giao phiếu này không? Sau khi ký, nội dung bàn giao sẽ không sửa được nữa.')) return;
   const task = async () => {
     const res = await api('signBanGiao', {phieuID});
     clearListCaches();
@@ -1228,14 +1222,7 @@ window.signBanGiao = async function(phieuID, btn){
 }
 
 window.deletePhieu = async function(phieuID, btn){
-  const ok = await showConfirmDialog({
-    title:'Xác nhận xóa phiếu',
-    message:'Bạn chắc chắn muốn xóa phiếu này?\nThao tác này không thể hoàn tác.',
-    confirmText:'Xóa phiếu',
-    cancelText:'Hủy',
-    danger:true
-  });
-  if(!ok) return;
+  if(!confirm('Bạn chắc chắn muốn xóa phiếu này?')) return;
   const task = async () => {
     await api('deletePhieu', {phieuID});
     clearListCaches();
@@ -1251,71 +1238,37 @@ window.editPhieu = async function(phieuID, btn){
     const res = await api('getPhieuDetail', {phieuID});
     const p = res.data.phieu;
     state.selectedStaff = p.nhanVienThuongTruc || [];
-    state.editStaffCandidate = null;
     if(p.loaiPhieuGoc === LOAI_BAO_CAO) ensureLoginUserInStaff();
-    const isReport = p.loaiPhieuGoc === LOAI_BAO_CAO;
-    const handoverNo = isReport ? '3' : '2';
     openModal(`
       <div class="modal-card">
         <div class="modal-head">
           <div class="modal-title">Sửa phiếu</div>
           <button class="close-btn" onclick="closeModal()">×</button>
         </div>
-
-        <div class="card" style="box-shadow:none">
-          <h3 class="section-title">I. Thông tin phiếu</h3>
-          <div class="grid">
-            <div class="col-3"><label>Loại phiếu</label><input class="equal-control" readonly value="${escAttr(p.loaiPhieuGoc || p.loaiPhieu || '')}"></div>
-            <div class="col-3"><label>Ngày trực</label><input id="editDate" class="equal-control" type="date" value="${escAttr(p.ngayTruc)}"></div>
-            <div class="col-3"><label>Khoa/phòng</label><select id="editDept" class="equal-control">${deptOptions(p.khoaPhong)}</select></div>
-            <div class="col-3"><label>Người thực hiện</label><input class="equal-control" readonly value="${escAttr([p.nguoiThucHienTen, p.nguoiThucHienChucDanh, p.khoaPhong].filter(Boolean).join(' - '))}"></div>
-          </div>
+        <div class="grid">
+          <div class="col-6"><label>Ngày trực</label><input id="editDate" type="date" value="${escAttr(p.ngayTruc)}"></div>
+          <div class="col-6"><label>Khoa/phòng</label><select id="editDept">${deptOptions(p.khoaPhong)}</select></div>
+          ${p.loaiPhieuGoc === LOAI_BAO_CAO ? `
+            <div class="col-8"><label>Nhân viên thường trực</label><input id="editStaffSearch" list="staffDatalist"></div>
+            <div class="col-4"><label>&nbsp;</label><button class="btn secondary" onclick="addEditStaff()">Thêm</button></div>
+            <div class="col-12"><div id="editStaffList" class="staff-list"></div></div>
+            <div class="col-12"><label>Số liệu trực</label><textarea id="editSoLieu">${esc(p.soLieuTruc||'')}</textarea></div>
+            <div class="col-12"><label>Chuyên môn</label><textarea id="editBaoCaoCM">${esc(p.baoCaoChuyenMon||'')}</textarea></div>
+            <div class="col-12"><label>Vấn đề khác</label><textarea id="editBaoCaoKhac">${esc(p.baoCaoVanDeKhac||'')}</textarea></div>
+          ` : ''}
+          ${p.trangThaiBanGiao !== STATUS_DA ? `
+            <div class="col-12"><label>Bàn giao tài sản</label><textarea id="editBGTaiSan">${esc(p.banGiaoTaiSan||'')}</textarea></div>
+            <div class="col-12"><label>Bàn giao chuyên môn</label><textarea id="editBGCM">${esc(p.banGiaoChuyenMon||'')}</textarea></div>
+            <div class="col-12"><label>Bàn giao vấn đề khác</label><textarea id="editBGKhac">${esc(p.banGiaoVanDeKhac||'')}</textarea></div>
+            <div class="col-6"><label>3.4 Thời gian bàn giao</label><input id="editTGBG" type="datetime-local" value="${escAttr(toDatetimeLocal(p.thoiGianBanGiao))}"></div>
+          ` : `<div class="col-12"><div class="empty">Phần bàn giao đã ký nhận nên không được sửa.</div></div>`}
         </div>
-
-        ${isReport ? `
-          <div class="card" style="box-shadow:none">
-            <h3 class="section-title">II. Báo cáo thường trực</h3>
-            <div class="grid">
-              <div class="col-12">
-                <label>2.1 Nhân viên phiên thường trực</label>
-                <div class="staff-picker">
-                  <div class="staff-input-row">
-                    <input id="editStaffSearch" autocomplete="off" placeholder="Gõ tên hoặc mã nhân viên">
-                    <button id="editAddStaffBtn" class="btn secondary staff-add-btn" type="button" title="Thêm nhân viên" aria-label="Thêm nhân viên">+</button>
-                  </div>
-                  <div id="editStaffSuggestBox" class="staff-suggest hidden"></div>
-                </div>
-              </div>
-              <div class="col-12"><div id="editStaffList" class="staff-list"></div></div>
-              <div class="col-12">
-                <label>2.2 Tình hình chung / số liệu trực</label>
-                <div id="editSoLieuTrucBox">${renderEditSoLieuTrucInput(p)}</div>
-              </div>
-              <div class="col-12"><label>2.3 Chuyên môn</label><textarea id="editBaoCaoCM">${esc(p.baoCaoChuyenMon||'')}</textarea></div>
-              <div class="col-12"><label>2.4 Vấn đề khác</label><textarea id="editBaoCaoKhac">${esc(p.baoCaoVanDeKhac||'')}</textarea></div>
-            </div>
-          </div>
-        ` : ''}
-
-        <div class="card" style="box-shadow:none">
-          <h3 class="section-title">${isReport ? 'III' : 'II'}. Bàn giao thường trực</h3>
-          <div class="grid">
-            ${p.trangThaiBanGiao !== STATUS_DA ? `
-              <div class="col-12"><label>${handoverNo}.1 Tài sản, dụng cụ, thiết bị y tế</label><div id="editBanGiaoTaiSanBox">${renderEditBanGiaoTaiSanInput(p)}</div></div>
-              <div class="col-12"><label>${handoverNo}.2 Chuyên môn</label><textarea id="editBGCM">${esc(p.banGiaoChuyenMon||'')}</textarea></div>
-              <div class="col-12"><label>${handoverNo}.3 Vấn đề khác</label><textarea id="editBGKhac">${esc(p.banGiaoVanDeKhac||'')}</textarea></div>
-              <div class="col-3"><label>${handoverNo}.4 Thời gian bàn giao</label><input id="editTGBG" class="equal-control" type="datetime-local" value="${escAttr(toDatetimeLocal(p.thoiGianBanGiao))}"></div>
-            ` : `<div class="col-12"><div class="empty">Phần bàn giao đã ký nhận nên không được sửa. Nếu là phiếu Báo cáo thường trực, bạn vẫn có thể sửa phần báo cáo phía trên cho đến khi kết thúc giao ban.</div></div>`}
-          </div>
-        </div>
-
         <div class="btn-row">
-          <button class="btn primary" onclick="saveEditPhieu('${escAttr(p.phieuID)}', this)">Lưu cập nhật</button>
+          <button class="btn primary" onclick="saveEditPhieu('${escAttr(p.phieuID)}','${escAttr(p.loaiPhieuGoc)}','${escAttr(p.trangThaiBanGiao)}', this)">Lưu cập nhật</button>
           <button class="btn secondary" onclick="closeModal()">Đóng</button>
         </div>
       </div>
     `);
-    bindEditPhieuFormEvents();
     refreshEditStaffList();
     setTimeout(() => $$('textarea').forEach(autoGrow), 0);
   };
@@ -1323,95 +1276,25 @@ window.editPhieu = async function(phieuID, btn){
   try{ await task(); }catch(err){ toast(err.message); }
 }
 
-function bindEditPhieuFormEvents(){
-  $('#editAddStaffBtn')?.addEventListener('click', addEditStaff);
-  $('#editStaffSearch')?.addEventListener('input', handleEditStaffSearchInput);
-  $('#editStaffSearch')?.addEventListener('focus', handleEditStaffSearchInput);
-  $('#editStaffSearch')?.addEventListener('keydown', handleEditStaffSearchKeydown);
-  ['editTmPhatKHC','editTmPhatCP'].forEach(id => $('#'+id)?.addEventListener('input', updateEditTmPhatTong));
-  $$(`#editSoLieuTrucBox input[type="number"]`).forEach(el => el.addEventListener('input', () => cleanIntegerInput(el)));
-  $$(`#editBanGiaoTaiSanBox input[type="number"]`).forEach(el => el.addEventListener('input', () => cleanIntegerInput(el)));
-  updateEditTmPhatTong();
-  refreshEditTmEquipmentStt();
-}
-
-function handleEditStaffSearchInput(){
-  const input = $('#editStaffSearch');
-  const box = $('#editStaffSuggestBox');
-  if(!input || !box) return;
-  const q = norm(input.value);
-  state.editStaffCandidate = null;
-  if(!q){
-    box.classList.add('hidden');
-    box.innerHTML = '';
-    return;
-  }
-  const matched = state.personnel.filter(p => {
-    const hay = norm([p.maNhanVien, p.tenNhanVien, p.chucDanh, p.chucVu].filter(Boolean).join(' '));
-    return hay.includes(q);
-  }).slice(0, 8);
-  if(!matched.length){
-    box.innerHTML = `<button type="button" disabled>Không tìm thấy nhân viên phù hợp</button>`;
-    box.classList.remove('hidden');
-    return;
-  }
-  box.innerHTML = matched.map((p, idx) => `
-    <button type="button" class="staff-suggest-item ${idx === 0 ? 'active' : ''}" data-ma="${escAttr(p.maNhanVien)}" onclick="chooseEditStaffSuggestion('${escAttr(p.maNhanVien)}')">
-      <span class="staff-code">${esc(p.maNhanVien || '')}</span> - ${esc(p.tenNhanVien || '')}
-      ${p.chucDanh ? `<div class="staff-role">${esc(p.chucDanh)}</div>` : ''}
-    </button>
-  `).join('');
-  box.classList.remove('hidden');
-}
-
-function handleEditStaffSearchKeydown(e){
-  if(e.key === 'Enter'){
-    e.preventDefault();
-    const first = $('#editStaffSuggestBox .staff-suggest-item');
-    if(first && !state.editStaffCandidate) chooseEditStaffSuggestion(first.dataset.ma);
-    addEditStaff();
-  }
-  if(e.key === 'Escape') $('#editStaffSuggestBox')?.classList.add('hidden');
-}
-
-window.chooseEditStaffSuggestion = function(ma){
-  const person = state.personnel.find(p => norm(p.maNhanVien) === norm(ma));
-  if(!person) return;
-  state.editStaffCandidate = person;
-  const input = $('#editStaffSearch');
-  if(input) input.value = person.tenNhanVien || '';
-  $('#editStaffSuggestBox')?.classList.add('hidden');
-}
-
-function findStaffFromEditInput(raw){
-  if(state.editStaffCandidate) return state.editStaffCandidate;
-  const q = norm(raw);
-  if(!q) return null;
-  return state.personnel.find(p => norm(p.maNhanVien) === q)
-    || state.personnel.find(p => norm(p.tenNhanVien) === q)
-    || state.personnel.find(p => norm([p.maNhanVien, p.tenNhanVien, p.chucDanh].filter(Boolean).join(' ')).includes(q));
-}
-
 window.addEditStaff = function(){
-  const raw = $('#editStaffSearch')?.value?.trim() || '';
-  if(!raw) return;
-  const person = findStaffFromEditInput(raw);
-  if(!person) return toast('Không tìm thấy nhân viên. Vui lòng chọn từ gợi ý.');
+  const raw = $('#editStaffSearch').value.trim();
+  const ma = raw.split(' - ')[0].trim();
+  const person = state.personnel.find(p => norm(p.maNhanVien) === norm(ma) || raw.toLowerCase().includes((p.tenNhanVien||'').toLowerCase()));
+  if(!person) return toast('Không tìm thấy nhân viên.');
   if(state.selectedStaff.some(x => x.maNhanVien === person.maNhanVien)) return toast('Nhân viên đã có.');
   state.selectedStaff.push(person);
-  state.editStaffCandidate = null;
   $('#editStaffSearch').value = '';
-  $('#editStaffSuggestBox')?.classList.add('hidden');
   refreshEditStaffList();
 }
 
 function refreshEditStaffList(){
   const box = $('#editStaffList');
   if(!box) return;
-  box.innerHTML = state.selectedStaff.map(p => {
-    const locked = state.user?.maNhanVien && p.maNhanVien === state.user.maNhanVien;
-    return `<span class="staff-chip ${locked ? 'locked-chip' : ''}">${esc(p.tenNhanVien || '')}${locked ? ' <span class="meta">(mặc định)</span>' : ''}${locked ? '' : `<button onclick="removeEditStaff('${escAttr(p.maNhanVien)}')">×</button>`}</span>`;
-  }).join('') || '<span class="meta">Chưa có nhân viên.</span>';
+  box.innerHTML = state.selectedStaff.map(p => `
+    <span class="staff-chip">${esc(p.tenNhanVien)}
+      <button onclick="removeEditStaff('${escAttr(p.maNhanVien)}')">×</button>
+    </span>
+  `).join('') || '<span class="meta">Chưa có nhân viên.</span>';
 }
 
 window.removeEditStaff = function(ma){
@@ -1420,187 +1303,16 @@ window.removeEditStaff = function(ma){
   refreshEditStaffList();
 }
 
-function parseTmReportText(text){
-  const data = {phatKHC:'0', phatCP:'0', tonKHC:'0', tonHTT:'0', tonTua:'0', tonKTC:'0', xNhomMau:'0', xRhD:'0', xSLKTBT:'0', xKhac:''};
-  let section = '';
-  String(text || '').split(/\n+/).map(s => s.trim()).filter(Boolean).forEach(line => {
-    const n = norm(line.replace(/:$/, ''));
-    if(n === 'phat mau'){ section = 'phat'; return; }
-    if(n === 'mau ton'){ section = 'ton'; return; }
-    if(n.includes('xet nghiem')){ section = 'xn'; return; }
-    const m = line.match(/^[-–]?\s*([^:]+):\s*(.*)$/);
-    if(!m) return;
-    const label = norm(m[1]);
-    const val = m[2].trim();
-    if(section === 'phat' && label === 'khc') data.phatKHC = sanitizeIntText(val) || '0';
-    if(section === 'phat' && label === 'cp') data.phatCP = sanitizeIntText(val) || '0';
-    if(section === 'ton' && label === 'khc') data.tonKHC = sanitizeIntText(val) || '0';
-    if(section === 'ton' && label === 'htt') data.tonHTT = sanitizeIntText(val) || '0';
-    if(section === 'ton' && label === 'tua') data.tonTua = sanitizeIntText(val) || '0';
-    if(section === 'ton' && label === 'ktc') data.tonKTC = sanitizeIntText(val) || '0';
-    if(section === 'xn' && label === 'nhom mau') data.xNhomMau = sanitizeIntText(val) || '0';
-    if(section === 'xn' && (label === 'rh d' || label === 'rh')) data.xRhD = sanitizeIntText(val) || '0';
-    if(section === 'xn' && label === 'slktbt') data.xSLKTBT = sanitizeIntText(val) || '0';
-    if(section === 'xn' && label === 'khac') data.xKhac = val;
-  });
-  return data;
-}
-
-function renderEditSoLieuTrucInput(p){
-  const isTM = isTruyenMauDept(p.khoaPhong || '');
-  if(!isTM) return `<textarea id="editSoLieu" placeholder="Nhập số liệu trực">${esc(p.soLieuTruc||'')}</textarea>`;
-  const d = parseTmReportText(p.soLieuTruc || '');
-  const tong = (parseInt(d.phatKHC || 0, 10) || 0) + (parseInt(d.phatCP || 0, 10) || 0);
-  return `
-    <div class="tm-report-grid">
-      <div class="tm-report-group">
-        <div class="tm-report-title">Phát máu</div>
-        <div class="tm-inline-grid phat-grid">
-          <div><label>KHC</label><input id="editTmPhatKHC" type="number" min="0" step="1" inputmode="numeric" value="${escAttr(d.phatKHC)}"></div>
-          <div><label>CP</label><input id="editTmPhatCP" type="number" min="0" step="1" inputmode="numeric" value="${escAttr(d.phatCP)}"></div>
-          <div><label>Tổng số</label><input id="editTmPhatTong" class="tm-total" readonly value="${tong}"></div>
-        </div>
-      </div>
-      <div class="tm-report-group">
-        <div class="tm-report-title">Máu tồn</div>
-        <div class="tm-inline-grid">
-          <div><label>KHC</label><input id="editTmTonKHC" type="number" min="0" step="1" inputmode="numeric" value="${escAttr(d.tonKHC)}"></div>
-          <div><label>HTT</label><input id="editTmTonHTT" type="number" min="0" step="1" inputmode="numeric" value="${escAttr(d.tonHTT)}"></div>
-          <div><label>Tủa</label><input id="editTmTonTua" type="number" min="0" step="1" inputmode="numeric" value="${escAttr(d.tonTua)}"></div>
-          <div><label>KTC</label><input id="editTmTonKTC" type="number" min="0" step="1" inputmode="numeric" value="${escAttr(d.tonKTC)}"></div>
-        </div>
-      </div>
-      <div class="tm-report-group">
-        <div class="tm-report-title">Các xét nghiệm khác</div>
-        <div class="tm-inline-grid">
-          <div><label>Nhóm máu</label><input id="editTmXNhomMau" type="number" min="0" step="1" inputmode="numeric" value="${escAttr(d.xNhomMau)}"></div>
-          <div><label>Rh(D)</label><input id="editTmXRhD" type="number" min="0" step="1" inputmode="numeric" value="${escAttr(d.xRhD)}"></div>
-          <div><label>SLKTBT</label><input id="editTmXSLKTBT" type="number" min="0" step="1" inputmode="numeric" value="${escAttr(d.xSLKTBT)}"></div>
-          <div><label>Khác</label><input id="editTmXKhac" type="text" placeholder="Tên XN khác nếu có" value="${escAttr(d.xKhac)}"></div>
-        </div>
-      </div>
-    </div>`;
-}
-
-function updateEditTmPhatTong(){
-  const el = $('#editTmPhatTong');
-  if(el) el.value = getIntValue('editTmPhatKHC') + getIntValue('editTmPhatCP');
-}
-
-function collectEditSoLieuTruc(){
-  if(!$('#editTmPhatKHC')) return $('#editSoLieu')?.value || '';
-  const khc = getIntValue('editTmPhatKHC');
-  const cp = getIntValue('editTmPhatCP');
-  return [
-    'Phát máu:',
-    `- KHC: ${khc}`,
-    `- CP: ${cp}`,
-    `- Tổng số: ${khc + cp}`,
-    'Máu tồn:',
-    `- KHC: ${getIntValue('editTmTonKHC')}`,
-    `- HTT: ${getIntValue('editTmTonHTT')}`,
-    `- Tủa: ${getIntValue('editTmTonTua')}`,
-    `- KTC: ${getIntValue('editTmTonKTC')}`,
-    'Các xét nghiệm khác:',
-    `- Nhóm máu: ${getIntValue('editTmXNhomMau')}`,
-    `- Rh(D): ${getIntValue('editTmXRhD')}`,
-    `- SLKTBT: ${getIntValue('editTmXSLKTBT')}`,
-    `- Khác: ${($('#editTmXKhac')?.value || '').trim()}`
-  ].join('\n');
-}
-
-function renderEditBanGiaoTaiSanInput(p){
-  if(!isTruyenMauDept(p.khoaPhong || '')) return `<textarea id="editBGTaiSan">${esc(p.banGiaoTaiSan||'')}</textarea>`;
-  const parsed = parseTmHandover(p.banGiaoTaiSan);
-  const items = parsed && parsed.length ? parsed : getTmEquipmentConfig();
-  const rows = items.map((it, idx) => renderEditTmEquipmentRow(it, idx, !!it.manual)).join('');
-  return `
-    <div class="tm-equip-wrap">
-      <table class="tm-equip-table tm-create-equipment-table">
-        <thead>
-          <tr><th rowspan="2">Stt</th><th rowspan="2">Trang thiết bị, dụng cụ, hóa chất</th><th rowspan="2">Đơn vị</th><th colspan="2">Số lượng</th></tr>
-          <tr><th>HĐ BT</th><th>Hỏng</th></tr>
-        </thead>
-        <tbody id="editTmEquipmentBody">${rows}</tbody>
-      </table>
-    </div>
-    <div class="btn-row"><button class="btn secondary" type="button" onclick="addEditManualTmEquipmentRow()">Thêm thiết bị phát sinh</button></div>
-  `;
-}
-
-function renderEditTmEquipmentRow(it, idx, manual){
-  const id = it.id || makeLocalId('edit_manual_eq');
-  const name = it.name || '';
-  const unit = it.unit || 'Cái';
-  const nameCell = manual
-    ? `<div class="manual-eq-inline"><input class="tm-eq-name-input" type="text" placeholder="Nhập tên thiết bị" value="${escAttr(name)}"><button type="button" class="btn danger" onclick="removeEditTmEquipmentRow(this)">Xóa</button></div>`
-    : `<span class="tm-eq-name-text">${esc(name)}</span>`;
-  const unitCell = manual
-    ? `<input class="tm-eq-unit-input unit-input" type="text" placeholder="Đơn vị" value="${escAttr(unit)}">`
-    : `<span class="tm-eq-unit-text">${esc(unit)}</span>`;
-  return `
-    <tr class="tm-eq-row" data-id="${escAttr(id)}" data-manual="${manual ? '1' : '0'}">
-      <td class="stt">${idx + 1}</td>
-      <td class="eq-name-cell">${nameCell}</td>
-      <td class="unit">${unitCell}</td>
-      <td class="qty"><input class="tm-eq-ok-qty" type="number" min="0" step="1" inputmode="numeric" value="${escAttr(it.okQty ?? '')}"></td>
-      <td class="qty"><input class="tm-eq-broken-qty" type="number" min="0" step="1" inputmode="numeric" value="${escAttr(it.brokenQty ?? '')}"></td>
-    </tr>`;
-}
-
-window.addEditManualTmEquipmentRow = function(){
-  const body = $('#editTmEquipmentBody');
-  if(!body) return;
-  const item = {id: makeLocalId('edit_manual_eq'), name:'', unit:'Cái', okQty:'', brokenQty:''};
-  body.insertAdjacentHTML('beforeend', renderEditTmEquipmentRow(item, body.children.length, true));
-  const newRow = body.querySelector('tr:last-child');
-  newRow?.querySelectorAll('input[type="number"]').forEach(el => el.addEventListener('input', () => cleanIntegerInput(el)));
-  refreshEditTmEquipmentStt();
-  newRow?.querySelector('.tm-eq-name-input')?.focus();
-}
-
-window.removeEditTmEquipmentRow = function(btn){
-  const row = btn.closest('tr');
-  if(row) row.remove();
-  refreshEditTmEquipmentStt();
-}
-
-function refreshEditTmEquipmentStt(){
-  $$('#editTmEquipmentBody .tm-eq-row').forEach((row, idx) => {
-    const stt = row.querySelector('.stt');
-    if(stt) stt.textContent = idx + 1;
-  });
-}
-
-function collectEditBanGiaoTaiSan(){
-  if(!$('#editTmEquipmentBody')) return $('#editBGTaiSan')?.value || '';
-  const items = $$('#editTmEquipmentBody .tm-eq-row').map((row, idx) => {
-    const id = row.dataset.id || makeLocalId('edit_eq');
-    const name = row.querySelector('.tm-eq-name-input')?.value?.trim() || row.querySelector('.tm-eq-name-text')?.textContent?.trim() || '';
-    const unit = row.querySelector('.tm-eq-unit-input')?.value?.trim() || row.querySelector('.tm-eq-unit-text')?.textContent?.trim() || '';
-    return {
-      stt: idx + 1,
-      id,
-      name,
-      unit,
-      okQty: getInputInt(row.querySelector('.tm-eq-ok-qty')),
-      brokenQty: getInputInt(row.querySelector('.tm-eq-broken-qty')),
-      manual: row.dataset.manual === '1'
-    };
-  }).filter(it => it.name);
-  return JSON.stringify({type:'TM_EQUIPMENT_HANDOVER_V2', items});
-}
-
-window.saveEditPhieu = async function(phieuID, btn){
+window.saveEditPhieu = async function(phieuID, loai, trangThaiBanGiao, btn){
   const payload = {
     phieuID,
     ngayTruc: $('#editDate').value,
     khoaPhong: $('#editDept').value,
     nhanVienThuongTruc: state.selectedStaff,
-    soLieuTruc: collectEditSoLieuTruc(),
+    soLieuTruc: $('#editSoLieu')?.value || '',
     baoCaoChuyenMon: $('#editBaoCaoCM')?.value || '',
     baoCaoVanDeKhac: $('#editBaoCaoKhac')?.value || '',
-    banGiaoTaiSan: collectEditBanGiaoTaiSan(),
+    banGiaoTaiSan: $('#editBGTaiSan')?.value || '',
     banGiaoChuyenMon: $('#editBGCM')?.value || '',
     banGiaoVanDeKhac: $('#editBGKhac')?.value || '',
     thoiGianBanGiao: $('#editTGBG') ? fromDatetimeLocal($('#editTGBG').value) : ''
@@ -1648,9 +1360,15 @@ async function loadGiaoBanList(force){
   box.innerHTML = `<div class="loading">Đang tải danh sách giao ban...</div>`;
   try{
     const res = await api('getGiaoBanList', filters);
-    const items = res.data.items || [];
-    state.cache.giaoBan = {key, time:Date.now(), data:items, note:''};
-    renderGiaoBanList(items, '');
+    let items = res.data.items || [];
+    let note = '';
+    if(!items.length){
+      const wide = await api('getGiaoBanList', {fromDate:'', toDate:'', khoaPhong:'', trangThai:'Tất cả'});
+      items = (wide.data.items || []).slice(0, 50);
+      if(items.length) note = 'Không có phiên giao ban đúng bộ lọc hiện tại. App đang hiển thị các phiên gần nhất để kiểm tra lại ngày/phòng.';
+    }
+    state.cache.giaoBan = {key, time:Date.now(), data:items, note};
+    renderGiaoBanList(items, note);
   }catch(err){
     box.innerHTML = `<div class="empty">${esc(err.message)}</div>`;
   }
@@ -1676,8 +1394,8 @@ function renderGiaoBanList(items, note=''){
     <div class="list-card">
       <div class="list-head">
         <div>
-          <div class="list-title">Giao ban - ${esc(formatKhoaTitle(g.khoaPhong))} - ${dateVi(g.ngayGiaoBan)}</div>
-          <div class="meta">Báo cáo gộp: ${g.pendingCount || g.danhSachPhieuID.length || 0}</div>
+          <div class="list-title">Giao ban ngày ${dateVi(g.ngayGiaoBan)}</div>
+          <div class="meta">${esc(g.khoaPhong)} · Báo cáo gộp: ${g.pendingCount || g.danhSachPhieuID.length || 0}</div>
           <div class="meta">Khoảng báo cáo: ${dateVi(g.tuNgayBaoCao)} - ${dateVi(g.denNgayBaoCao)}</div>
         </div>
         ${statusPill(g.trangThai)}
@@ -2006,43 +1724,6 @@ async function saveTmEquipmentConfig(btn){
 /* ================= MODAL / UTILS ================= */
 
 
-
-function iconEdit(){
-  return '<svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
-}
-
-function iconTrash(){
-  return '<svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>';
-}
-
-function showConfirmDialog({title='Xác nhận', message='', confirmText='Xác nhận', cancelText='Hủy', danger=false}={}){
-  return new Promise(resolve => {
-    let root = document.getElementById('confirmRoot');
-    if(!root){
-      root = document.createElement('div');
-      root.id = 'confirmRoot';
-      document.body.appendChild(root);
-    }
-    root.innerHTML = `
-      <div class="confirm-modal" role="dialog" aria-modal="true">
-        <div class="confirm-card">
-          <h3 class="confirm-title">${esc(title)}</h3>
-          <p class="confirm-message">${esc(message)}</p>
-          <div class="confirm-actions">
-            <button type="button" class="btn secondary" data-confirm="0">${esc(cancelText)}</button>
-            <button type="button" class="btn ${danger ? 'danger' : 'ok'}" data-confirm="1">${esc(confirmText)}</button>
-          </div>
-        </div>
-      </div>`;
-    const done = val => { root.innerHTML = ''; resolve(val); };
-    root.querySelector('[data-confirm="0"]').addEventListener('click', () => done(false));
-    root.querySelector('[data-confirm="1"]').addEventListener('click', () => done(true));
-    root.querySelector('.confirm-modal').addEventListener('click', e => {
-      if(e.target.classList.contains('confirm-modal')) done(false);
-    });
-  });
-}
-
 function isTruyenMauDept(value){
   return norm(value).includes('truyen mau');
 }
@@ -2185,12 +1866,6 @@ function statusPill(status){
 function displayUser(u){
   if(!u) return '';
   return [u.tenNhanVien, u.chucDanh, u.khoaPhong].filter(Boolean).join(' - ');
-}
-
-function formatKhoaTitle(khoaPhong){
-  const t = String(khoaPhong || '').trim();
-  if(!t) return '';
-  return /^(khoa|phòng|phong)\b/i.test(t) ? t : 'Khoa ' + t;
 }
 
 function clearListCaches(){
