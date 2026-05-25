@@ -2373,43 +2373,43 @@ function renderGiaoBanModal(){
           </div>
         </div>
 
-        <div class="card" style="box-shadow:none;padding-top:10px;padding-bottom:10px">
-          <h3 class="section-title" style="margin-bottom:0">B. Nội dung giao ban</h3>
-        </div>
-
         <div class="card" style="box-shadow:none">
-          <h3 class="section-title">I. Nhân lực</h3>
-          <div class="gb-sub-label">1. Nhân viên thường trực</div>
-          <div class="list-card two-col-text">${esc(g.nhanLucTongHop || summarizeReportsStaff(sortedReports) || 'Chưa có dữ liệu')}</div>
-          <label class="gb-sub-label" for="gbNghi">2. Nghỉ</label>
-          <textarea id="gbNghi" ${g.daKhoa ? 'readonly' : ''}>${esc(g.nghi || '')}</textarea>
-        </div>
+          <h3 class="section-title">B. Nội dung giao ban</h3>
 
-        <div class="card" style="box-shadow:none">
-          <h3 class="section-title">II. Báo cáo thường trực</h3>
-          ${reportsHtml}
-        </div>
+          <div class="gb-inner-section" style="margin-top:8px">
+            <h3 class="sub-title">I. Nhân lực</h3>
+            <div class="gb-sub-label">1. Nhân viên thường trực</div>
+            <div class="list-card two-col-text">${esc(g.nhanLucTongHop || summarizeReportsStaff(sortedReports) || 'Chưa có dữ liệu')}</div>
+            <label class="gb-sub-label" for="gbNghi">2. Nghỉ</label>
+            <textarea id="gbNghi" ${g.daKhoa ? 'readonly' : ''}>${esc(g.nghi || '')}</textarea>
+          </div>
 
-        <div class="card" style="box-shadow:none">
-          <h3 class="section-title">III. Nội dung giao ban khác</h3>
-          ${isTM ? `
-            <div class="gb-sub-label">1. Kho máu</div>
-            ${latestMauTon ? `<div class="kho-auto-note">Tự lấy từ báo cáo trực gần nhất ngày ${dateVi(latestMauTon.sourceDate)}. Có thể sửa lại nếu cần.</div>` : ''}
-            <div class="kho-compact-grid">
-              <div><label>KHC</label><input id="khoKHC" value="${escAttr(preferSavedOrLatest(g.khoMauKHC, latestMauTon?.khc))}" ${g.daKhoa ? 'readonly' : ''}></div>
-              <div><label>HTT</label><input id="khoHTT" value="${escAttr(preferSavedOrLatest(g.khoMauHTT, latestMauTon?.htt))}" ${g.daKhoa ? 'readonly' : ''}></div>
-              <div><label>Tủa</label><input id="khoTua" value="${escAttr(preferSavedOrLatest(g.khoMauTua, latestMauTon?.tua))}" ${g.daKhoa ? 'readonly' : ''}></div>
-              <div><label>KTC</label><input id="khoKTC" value="${escAttr(preferSavedOrLatest(g.khoMauKTC, latestMauTon?.ktc))}" ${g.daKhoa ? 'readonly' : ''}></div>
-              <div class="kho-other"><label>Khác</label><textarea id="khoKhac" ${g.daKhoa ? 'readonly' : ''}>${esc(g.khoMauKhac || '')}</textarea></div>
-            </div>
-            <div class="grid" style="margin-top:10px">
-              <div class="col-12"><label class="gb-sub-label" for="gbThongBao">2. Thông báo</label><textarea id="gbThongBao" ${g.daKhoa ? 'readonly' : ''}>${esc(g.thongBao || '')}</textarea></div>
-              <div class="col-12"><label class="gb-sub-label" for="gbNoiDungKhac">3. Nội dung khác</label><textarea id="gbNoiDungKhac" ${g.daKhoa ? 'readonly' : ''}>${esc(g.noiDungKhac || '')}</textarea></div>
-            </div>
-          ` : `
-            <label class="gb-sub-label" for="gbNoiDungGiaoBanKhac">Nội dung giao ban khác</label>
-            <textarea id="gbNoiDungGiaoBanKhac" ${g.daKhoa ? 'readonly' : ''}>${esc(g.noiDungGiaoBanKhac || '')}</textarea>
-          `}
+          <div class="gb-inner-section" style="border-top:1px solid var(--line);padding-top:10px;margin-top:12px">
+            <h3 class="sub-title">II. Báo cáo thường trực</h3>
+            ${reportsHtml}
+          </div>
+
+          <div class="gb-inner-section" style="border-top:1px solid var(--line);padding-top:10px;margin-top:12px">
+            <h3 class="sub-title">III. Nội dung giao ban khác</h3>
+            ${isTM ? `
+              <div class="gb-sub-label">1. Kho máu</div>
+              ${latestMauTon ? `<div class="kho-auto-note">Tự lấy từ báo cáo trực gần nhất ngày ${dateVi(latestMauTon.sourceDate)}. Có thể sửa lại nếu cần.</div>` : ''}
+              <div class="kho-compact-grid">
+                <div><label>KHC</label><input id="khoKHC" value="${escAttr(preferSavedOrLatest(g.khoMauKHC, latestMauTon?.khc))}" ${g.daKhoa ? 'readonly' : ''}></div>
+                <div><label>HTT</label><input id="khoHTT" value="${escAttr(preferSavedOrLatest(g.khoMauHTT, latestMauTon?.htt))}" ${g.daKhoa ? 'readonly' : ''}></div>
+                <div><label>Tủa</label><input id="khoTua" value="${escAttr(preferSavedOrLatest(g.khoMauTua, latestMauTon?.tua))}" ${g.daKhoa ? 'readonly' : ''}></div>
+                <div><label>KTC</label><input id="khoKTC" value="${escAttr(preferSavedOrLatest(g.khoMauKTC, latestMauTon?.ktc))}" ${g.daKhoa ? 'readonly' : ''}></div>
+                <div class="kho-other"><label>Khác</label><textarea id="khoKhac" ${g.daKhoa ? 'readonly' : ''}>${esc(g.khoMauKhac || '')}</textarea></div>
+              </div>
+              <div class="grid" style="margin-top:10px">
+                <div class="col-12"><label class="gb-sub-label" for="gbThongBao">2. Thông báo</label><textarea id="gbThongBao" ${g.daKhoa ? 'readonly' : ''}>${esc(g.thongBao || '')}</textarea></div>
+                <div class="col-12"><label class="gb-sub-label" for="gbNoiDungKhac">3. Nội dung khác</label><textarea id="gbNoiDungKhac" ${g.daKhoa ? 'readonly' : ''}>${esc(g.noiDungKhac || '')}</textarea></div>
+              </div>
+            ` : `
+              <label class="gb-sub-label" for="gbNoiDungGiaoBanKhac">Nội dung giao ban khác</label>
+              <textarea id="gbNoiDungGiaoBanKhac" ${g.daKhoa ? 'readonly' : ''}>${esc(g.noiDungGiaoBanKhac || '')}</textarea>
+            `}
+          </div>
         </div>
 
         <div class="card" style="box-shadow:none">
@@ -2445,14 +2445,19 @@ function renderGiaoBanDotXuatModal(){
             <div class="col-3"><label>Thư ký</label><input class="equal-control" readonly value="${escAttr(g.nguoiTaoTen || state.user?.tenNhanVien || '')}"></div>
             <div class="col-3"><label>Chủ trì giao ban</label><input id="gbChuTriInput" class="equal-control" list="staffDatalist" value="${escAttr(g.chuTriTen || g.nguoiChuTriTuDo || g.nguoiTaoTen || state.user?.tenNhanVien || '')}" ${g.daKhoa ? 'readonly' : ''} onblur="normalizeChairInput();syncSignModeWithChair()" onchange="normalizeChairInput();syncSignModeWithChair()" oninput="syncSignModeWithChair()"></div>
             <div class="col-12"><label>Thành phần tham dự</label><textarea id="gbThanhPhanThamDu" ${g.daKhoa ? 'readonly' : ''}>${esc(g.thanhPhanThamDu || '')}</textarea></div>
-            <div class="col-12"><label>I. Lý do</label><textarea id="gbLyDoGiaoBan" ${g.daKhoa ? 'readonly' : ''}>${esc(g.lyDoGiaoBan || '')}</textarea></div>
           </div>
         </div>
 
         <div class="card" style="box-shadow:none">
           <h3 class="section-title">B. Nội dung cuộc họp</h3>
-          <label class="gb-sub-label" for="gbNoiDungDotXuat">II. Nội dung</label>
-          <textarea id="gbNoiDungDotXuat" ${g.daKhoa ? 'readonly' : ''}>${esc(g.noiDungDotXuat || '')}</textarea>
+          <div class="gb-inner-section" style="margin-top:8px">
+            <label class="gb-sub-label" for="gbLyDoGiaoBan">I. Lý do</label>
+            <textarea id="gbLyDoGiaoBan" ${g.daKhoa ? 'readonly' : ''}>${esc(g.lyDoGiaoBan || '')}</textarea>
+          </div>
+          <div class="gb-inner-section" style="border-top:1px solid var(--line);padding-top:10px;margin-top:12px">
+            <label class="gb-sub-label" for="gbNoiDungDotXuat">II. Nội dung</label>
+            <textarea id="gbNoiDungDotXuat" ${g.daKhoa ? 'readonly' : ''}>${esc(g.noiDungDotXuat || '')}</textarea>
+          </div>
         </div>
 
         <div class="card" style="box-shadow:none">
