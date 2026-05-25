@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta id="viewportMeta" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <title>Sổ trực - Giao ban Phòng Truyền máu</title>
-  <link rel="icon" type="image/png" sizes="64x64" href="./APP_ICON_SO_TRUC_64.png?v=73.220526-TM-TEMPLATE-LINE-SPACING-15">
-  <link rel="shortcut icon" type="image/png" href="./APP_ICON_SO_TRUC_64.png?v=73.220526-TM-TEMPLATE-LINE-SPACING-15">
-  <link rel="apple-touch-icon" sizes="180x180" href="./APP_ICON_SO_TRUC_180.png?v=73.220526-TM-TEMPLATE-LINE-SPACING-15">
-  <link rel="manifest" href="./manifest.json?v=73.220526-TM-TEMPLATE-LINE-SPACING-15">
-  <meta name="msapplication-TileImage" content="./APP_ICON_SO_TRUC_192.png?v=73.220526-TM-TEMPLATE-LINE-SPACING-15">
+  <link rel="icon" type="image/png" sizes="64x64" href="./APP_ICON_SO_TRUC_64.png?v=74.220526-TM-GIAO-BAN-PDF-STRUCTURE-PREVIEW">
+  <link rel="shortcut icon" type="image/png" href="./APP_ICON_SO_TRUC_64.png?v=74.220526-TM-GIAO-BAN-PDF-STRUCTURE-PREVIEW">
+  <link rel="apple-touch-icon" sizes="180x180" href="./APP_ICON_SO_TRUC_180.png?v=74.220526-TM-GIAO-BAN-PDF-STRUCTURE-PREVIEW">
+  <link rel="manifest" href="./manifest.json?v=74.220526-TM-GIAO-BAN-PDF-STRUCTURE-PREVIEW">
+  <meta name="msapplication-TileImage" content="./APP_ICON_SO_TRUC_192.png?v=74.220526-TM-GIAO-BAN-PDF-STRUCTURE-PREVIEW">
   <meta name="theme-color" content="#580824">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -469,6 +469,17 @@
     .signature-pad-note{font-size:12.5px;color:var(--muted);line-height:1.35;padding:8px 10px;border-top:1px solid var(--g-line)}
     @media (max-width:760px){.template-config-grid,.global-template-grid{grid-template-columns:1fr}.format-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.signature-pad{height:170px}}
 
+
+    .gb-pdf-preview{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:14px;line-height:1.45;color:var(--g-text)}
+    .gb-pdf-preview div{margin:2px 0}.gb-pv-head{font-weight:800;text-transform:uppercase;margin-top:8px!important;color:var(--wine-dark)}
+    .gb-pv-roman{font-weight:700;margin-top:8px!important;color:var(--text)}
+    .gb-pv-num{font-weight:700;font-style:italic;margin-top:6px!important;color:var(--text)}
+    .gb-pv-sub{font-style:italic;font-weight:400;margin-top:5px!important;color:var(--text)}
+    .gb-pv-detail{margin-left:0.5cm!important;white-space:pre-wrap;color:var(--text)}
+    .gb-pv-detail.compact{white-space:normal}.gb-pv-detail.compact div{margin:1px 0}
+    .gb-preview-card .section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+    .gb-preview-refresh{min-height:30px!important;height:30px!important;padding:0 10px!important;font-size:12.5px!important}
+
   </style>
 </head>
 <body>
@@ -482,7 +493,7 @@
 
   <div id="loginScreen" class="login-screen hidden">
     <div class="login-card">
-      <div class="login-logo logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=73.220526-TM-TEMPLATE-LINE-SPACING-15" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
+      <div class="login-logo logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=74.220526-TM-GIAO-BAN-PDF-STRUCTURE-PREVIEW" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
       <p class="login-hospital">B&#7879;nh vi&#7879;n B&#7841;ch Mai</p>
       <p class="login-center">Trung t&#226;m Huy&#7871;t h&#7885;c v&#224; Truy&#7873;n m&#225;u</p>
       <h1 class="login-title">S&#7893; Tr&#7921;c - Giao ban</h1>
@@ -497,14 +508,14 @@
         </div>
       </div>
       <button id="loginBtn" class="btn primary" style="width:100%;margin-top:14px">Đăng nhập</button>
-      <p class="login-version">Version: 73.220526-TM-TEMPLATE-LINE-SPACING-15</p>
+      <p class="login-version">Version: 74.220526-TM-GIAO-BAN-PDF-STRUCTURE-PREVIEW</p>
     </div>
   </div>
 
   <div id="app" class="app-shell hidden">
     <header class="topbar">
       <div class="brand">
-        <div class="brand-icon logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=73.220526-TM-TEMPLATE-LINE-SPACING-15" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
+        <div class="brand-icon logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=74.220526-TM-GIAO-BAN-PDF-STRUCTURE-PREVIEW" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
         <div>
           <div id="brandTitle" class="brand-title">Trung t&#226;m Huy&#7871;t h&#7885;c v&#224; Truy&#7873;n m&#225;u</div>
           <div id="brandSub" class="brand-sub">Khoa</div>
@@ -533,7 +544,7 @@
       <button class="tab-btn" data-tab="pdf"><span class="ico">📄</span><span>PDF</span></button>
       <button id="settingsTabBtn" class="tab-btn hidden" data-tab="settings"><span class="ico">⚙️</span><span>Cài đặt</span></button>
     </nav>
-    <div class="app-version">Version: 73.220526-TM-TEMPLATE-LINE-SPACING-15</div>
+    <div class="app-version">Version: 74.220526-TM-GIAO-BAN-PDF-STRUCTURE-PREVIEW</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -541,7 +552,7 @@
   <div id="toast" class="toast hidden"></div>
 
 <script>
-const APP_VERSION = '73.220526-TM-TEMPLATE-LINE-SPACING-15';
+const APP_VERSION = '74.220526-TM-GIAO-BAN-PDF-STRUCTURE-PREVIEW';
 const API_URL = 'https://script.google.com/macros/s/AKfycbxLHKUczat2WOH1R4W_YVVsUeBAmEuJ-4EjOEWNuBYXvX0oL4Dr6OhyO8f4lHPfn-8Nmg/exec';
 
 const LOAI_BAN_GIAO = 'Bàn giao thường trực';
@@ -2186,6 +2197,125 @@ function sortReportsByDateAsc(reports){
   });
 }
 
+
+function renderGiaoBanStructuredPreviewBlock(isDotXuat){
+  return `
+    <div class="card gb-preview-card" style="box-shadow:none">
+      <h3 class="section-title">Xem trước cấu trúc PDF <button type="button" class="btn secondary gb-preview-refresh" onclick="refreshGiaoBanStructuredPreview()">Cập nhật xem trước</button></h3>
+      <div id="gbStructuredPreview" class="gb-pdf-preview">${renderGiaoBanStructuredPreviewHtml(!!isDotXuat)}</div>
+      <p class="meta">Phần này giúp kiểm tra nhanh cấu trúc mục/tiểu mục trong app trước khi xuất PDF.</p>
+    </div>
+  `;
+}
+
+function pvText(value){
+  const s = String(value ?? '').trim();
+  return s || 'Chưa nhập';
+}
+function pvHtml(value){ return esc(pvText(value)).replace(/\n/g,'<br>'); }
+function pvCompactText(parts){ return parts.filter(x => x && String(x.value ?? '').trim() !== '').map(x => `${x.label}: ${x.value}`).join('     '); }
+function pvLine(cls, html){ return `<div class="${cls}">${html}</div>`; }
+function getGiaoBanPreviewSnapshot(isDotXuat){
+  const g = state.currentGiaoBan || {};
+  const sortedReports = sortReportsByDateAsc(state.currentReports || []);
+  const isTM = norm(g.khoaPhong || '').includes('truyen mau');
+  return {
+    isDotXuat: !!isDotXuat,
+    isTM,
+    loaiGiaoBan: g.loaiGiaoBan || LOAI_GIAO_BAN_THUONG_TRUC,
+    thoiGian: dateTimeVi(fromDatetimeLocal($('#gbTime')?.value || '') || g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || hanoiNowIso()),
+    khoaPhong: $('#gbDotDept')?.value || g.khoaPhong || state.user?.khoaPhong || '',
+    thuKy: g.nguoiTaoTen || state.user?.tenNhanVien || '',
+    chuTri: $('#gbChuTriInput')?.value || g.chuTriTen || g.nguoiChuTriTuDo || g.nguoiTaoTen || state.user?.tenNhanVien || '',
+    thanhPhanThamDu: $('#gbThanhPhanThamDu')?.value || g.thanhPhanThamDu || '',
+    lyDoGiaoBan: $('#gbLyDoGiaoBan')?.value || g.lyDoGiaoBan || '',
+    noiDungDotXuat: $('#gbNoiDungDotXuat')?.value || g.noiDungDotXuat || '',
+    nghi: $('#gbNghi')?.value || g.nghi || '',
+    nhanLuc: g.nhanLucTongHop || summarizeReportsStaff(sortedReports) || '',
+    reports: sortedReports,
+    khoMau: pvCompactText([
+      {label:'KHC', value:$('#khoKHC')?.value || g.khoMauKHC || ''},
+      {label:'HTT', value:$('#khoHTT')?.value || g.khoMauHTT || ''},
+      {label:'Tủa', value:$('#khoTua')?.value || g.khoMauTua || ''},
+      {label:'KTC', value:$('#khoKTC')?.value || g.khoMauKTC || ''}
+    ]),
+    khoMauKhac: $('#khoKhac')?.value || g.khoMauKhac || '',
+    thongBao: $('#gbThongBao')?.value || g.thongBao || '',
+    noiDungKhac: $('#gbNoiDungKhac')?.value || g.noiDungKhac || '',
+    noiDungGiaoBanKhac: $('#gbNoiDungGiaoBanKhac')?.value || g.noiDungGiaoBanKhac || '',
+    ketLuan: $('#gbKetLuan')?.value || g.ketLuan || ''
+  };
+}
+
+function renderGiaoBanStructuredPreviewHtml(isDotXuat){
+  const d = getGiaoBanPreviewSnapshot(isDotXuat);
+  if(d.isDotXuat){
+    return [
+      pvLine('gb-pv-head','A. PHẦN HÀNH CHÍNH:'),
+      pvLine('gb-pv-detail', `- Thời gian: ${esc(d.thoiGian)}<br>- Khoa/Phòng: ${esc(d.khoaPhong)}<br>- Thành phần tham dự: ${pvHtml(d.thanhPhanThamDu)}<br>- Chủ trì giao ban: ${esc(pvText(d.chuTri))}<br>- Thư ký: ${esc(pvText(d.thuKy))}`),
+      pvLine('gb-pv-head','B. NỘI DUNG CUỘC HỌP:'),
+      pvLine('gb-pv-roman','I. Lý do'),
+      pvLine('gb-pv-detail', pvHtml(d.lyDoGiaoBan)),
+      pvLine('gb-pv-roman','II. Nội dung'),
+      pvLine('gb-pv-detail', pvHtml(d.noiDungDotXuat)),
+      pvLine('gb-pv-head','C. KẾT LUẬN:'),
+      pvLine('gb-pv-detail', pvHtml(d.ketLuan))
+    ].join('');
+  }
+  const reports = d.reports.length ? d.reports.map((r, idx) => [
+    pvLine('gb-pv-num', `${idx + 1}. Ngày ${dateVi(r.ngayTruc)}`),
+    pvLine('gb-pv-sub','1.1. Nhân viên trực'),
+    pvLine('gb-pv-detail', pvHtml(renderStaffNameList(r.nhanVienThuongTruc) || 'Chưa nhập')),
+    pvLine('gb-pv-sub','1.2. Dữ liệu trực'),
+    pvLine('gb-pv-detail compact', formatSoLieuTrucCompact(r.soLieuTruc || 'Chưa nhập')),
+    pvLine('gb-pv-sub','1.3. Chuyên môn'),
+    pvLine('gb-pv-detail', pvHtml(r.baoCaoChuyenMon || '')),
+    pvLine('gb-pv-sub','1.4. Vấn đề khác'),
+    pvLine('gb-pv-detail', pvHtml(r.baoCaoVanDeKhac || ''))
+  ].join('')).join('') : pvLine('gb-pv-detail','Chưa có báo cáo thường trực chưa giao ban.');
+  const other = d.isTM ? [
+    pvLine('gb-pv-num','1. Kho máu'),
+    pvLine('gb-pv-detail', pvHtml([d.khoMau, d.khoMauKhac && norm(d.khoMauKhac) !== 'khong co' ? 'Khác: ' + d.khoMauKhac : ''].filter(Boolean).join('\n'))),
+    pvLine('gb-pv-num','2. Thông báo'),
+    pvLine('gb-pv-detail', pvHtml(d.thongBao)),
+    pvLine('gb-pv-num','3. Nội dung khác'),
+    pvLine('gb-pv-detail', pvHtml(d.noiDungKhac))
+  ].join('') : pvLine('gb-pv-detail', pvHtml(d.noiDungGiaoBanKhac));
+  return [
+    pvLine('gb-pv-head','A. PHẦN HÀNH CHÍNH:'),
+    pvLine('gb-pv-detail', `- Thời gian: ${esc(d.thoiGian)}<br>- Khoa/Phòng: ${esc(d.khoaPhong)}<br>- Thư ký: ${esc(pvText(d.thuKy))}<br>- Chủ trì giao ban: ${esc(pvText(d.chuTri))}`),
+    pvLine('gb-pv-head','B. NỘI DUNG GIAO BAN:'),
+    pvLine('gb-pv-roman','I. Nhân lực'),
+    pvLine('gb-pv-num','1. Nhân viên thường trực'),
+    pvLine('gb-pv-detail', pvHtml(d.nhanLuc)),
+    pvLine('gb-pv-num','2. Nghỉ'),
+    pvLine('gb-pv-detail', pvHtml(d.nghi)),
+    pvLine('gb-pv-roman','II. Báo cáo thường trực'),
+    reports,
+    pvLine('gb-pv-roman','III. Nội dung giao ban khác'),
+    other,
+    pvLine('gb-pv-head','C. KẾT LUẬN:'),
+    pvLine('gb-pv-detail', pvHtml(d.ketLuan))
+  ].join('');
+}
+
+function refreshGiaoBanStructuredPreview(){
+  const box = $('#gbStructuredPreview');
+  if(!box || !state.currentGiaoBan) return;
+  box.innerHTML = renderGiaoBanStructuredPreviewHtml((state.currentGiaoBan.loaiGiaoBan || '') === LOAI_GIAO_BAN_DOT_XUAT);
+}
+
+function bindGiaoBanPreviewAutoRefresh(){
+  const root = $('#modalRoot');
+  if(!root) return;
+  root.querySelectorAll('#gbNghi,#gbThongBao,#gbNoiDungKhac,#gbNoiDungGiaoBanKhac,#gbKetLuan,#gbChuTriInput,#gbThanhPhanThamDu,#gbLyDoGiaoBan,#gbNoiDungDotXuat,#khoKHC,#khoHTT,#khoTua,#khoKTC,#khoKhac,#gbDotDept').forEach(el => {
+    el.removeEventListener('input', refreshGiaoBanStructuredPreview);
+    el.removeEventListener('change', refreshGiaoBanStructuredPreview);
+    el.addEventListener('input', refreshGiaoBanStructuredPreview);
+    el.addEventListener('change', refreshGiaoBanStructuredPreview);
+  });
+}
+
 function renderGiaoBanModal(){
   const g = state.currentGiaoBan;
   const loai = g.loaiGiaoBan || LOAI_GIAO_BAN_THUONG_TRUC;
@@ -2196,10 +2326,10 @@ function renderGiaoBanModal(){
   const reportsHtml = sortedReports.length ? sortedReports.map(r => `
     <div class="report-day">
       <div class="report-day-title">Ngày ${dateVi(r.ngayTruc)}</div>
-      <div class="report-item"><div class="report-label">1. Nhân viên trực</div><div class="report-value">${esc(renderStaffNameList(r.nhanVienThuongTruc) || 'Chưa nhập')}</div></div>
-      <div class="report-item"><div class="report-label">2. Số liệu trực</div><div class="report-compact-value">${formatSoLieuTrucCompact(r.soLieuTruc)}</div></div>
-      <div class="report-item"><div class="report-label">3. Chuyên môn</div><div class="report-value">${esc(r.baoCaoChuyenMon || '')}</div></div>
-      <div class="report-item"><div class="report-label">4. Vấn đề khác</div><div class="report-value">${esc(r.baoCaoVanDeKhac || '')}</div></div>
+      <div class="report-item"><div class="report-label">1.1. Nhân viên trực</div><div class="report-value">${esc(renderStaffNameList(r.nhanVienThuongTruc) || 'Chưa nhập')}</div></div>
+      <div class="report-item"><div class="report-label">1.2. Dữ liệu trực</div><div class="report-compact-value">${formatSoLieuTrucCompact(r.soLieuTruc)}</div></div>
+      <div class="report-item"><div class="report-label">1.3. Chuyên môn</div><div class="report-value">${esc(r.baoCaoChuyenMon || '')}</div></div>
+      <div class="report-item"><div class="report-label">1.4. Vấn đề khác</div><div class="report-value">${esc(r.baoCaoVanDeKhac || '')}</div></div>
     </div>
   `).join('') : `<div class="empty">Chưa có báo cáo thường trực chưa giao ban.</div>`;
 
@@ -2233,11 +2363,15 @@ function renderGiaoBanModal(){
           </div>
         </div>
 
+        <div class="card" style="box-shadow:none;padding-top:10px;padding-bottom:10px">
+          <h3 class="section-title" style="margin-bottom:0">B. Nội dung giao ban</h3>
+        </div>
+
         <div class="card" style="box-shadow:none">
           <h3 class="section-title">I. Nhân lực</h3>
-          <div class="gb-sub-label">1.1 Nhân viên thường trực</div>
+          <div class="gb-sub-label">1. Nhân viên thường trực</div>
           <div class="list-card two-col-text">${esc(g.nhanLucTongHop || summarizeReportsStaff(sortedReports) || 'Chưa có dữ liệu')}</div>
-          <label class="gb-sub-label" for="gbNghi">1.2 Nghỉ</label>
+          <label class="gb-sub-label" for="gbNghi">2. Nghỉ</label>
           <textarea id="gbNghi" ${g.daKhoa ? 'readonly' : ''}>${esc(g.nghi || '')}</textarea>
         </div>
 
@@ -2249,7 +2383,7 @@ function renderGiaoBanModal(){
         <div class="card" style="box-shadow:none">
           <h3 class="section-title">III. Nội dung giao ban khác</h3>
           ${isTM ? `
-            <div class="gb-sub-label">3.1 Kho máu</div>
+            <div class="gb-sub-label">1. Kho máu</div>
             ${latestMauTon ? `<div class="kho-auto-note">Tự lấy từ báo cáo trực gần nhất ngày ${dateVi(latestMauTon.sourceDate)}. Có thể sửa lại nếu cần.</div>` : ''}
             <div class="kho-compact-grid">
               <div><label>KHC</label><input id="khoKHC" value="${escAttr(preferSavedOrLatest(g.khoMauKHC, latestMauTon?.khc))}" ${g.daKhoa ? 'readonly' : ''}></div>
@@ -2259,11 +2393,11 @@ function renderGiaoBanModal(){
               <div class="kho-other"><label>Khác</label><textarea id="khoKhac" ${g.daKhoa ? 'readonly' : ''}>${esc(g.khoMauKhac || '')}</textarea></div>
             </div>
             <div class="grid" style="margin-top:10px">
-              <div class="col-12"><label class="gb-sub-label" for="gbThongBao">3.2 Thông báo</label><textarea id="gbThongBao" ${g.daKhoa ? 'readonly' : ''}>${esc(g.thongBao || '')}</textarea></div>
-              <div class="col-12"><label class="gb-sub-label" for="gbNoiDungKhac">3.3 Nội dung khác</label><textarea id="gbNoiDungKhac" ${g.daKhoa ? 'readonly' : ''}>${esc(g.noiDungKhac || '')}</textarea></div>
+              <div class="col-12"><label class="gb-sub-label" for="gbThongBao">2. Thông báo</label><textarea id="gbThongBao" ${g.daKhoa ? 'readonly' : ''}>${esc(g.thongBao || '')}</textarea></div>
+              <div class="col-12"><label class="gb-sub-label" for="gbNoiDungKhac">3. Nội dung khác</label><textarea id="gbNoiDungKhac" ${g.daKhoa ? 'readonly' : ''}>${esc(g.noiDungKhac || '')}</textarea></div>
             </div>
           ` : `
-            <label class="gb-sub-label" for="gbNoiDungGiaoBanKhac">3.1 Nội dung giao ban khác</label>
+            <label class="gb-sub-label" for="gbNoiDungGiaoBanKhac">Nội dung giao ban khác</label>
             <textarea id="gbNoiDungGiaoBanKhac" ${g.daKhoa ? 'readonly' : ''}>${esc(g.noiDungGiaoBanKhac || '')}</textarea>
           `}
         </div>
@@ -2273,11 +2407,13 @@ function renderGiaoBanModal(){
           <textarea id="gbKetLuan" ${g.daKhoa ? 'readonly' : ''}>${esc(g.ketLuan || '')}</textarea>
         </div>
 
+        ${renderGiaoBanStructuredPreviewBlock(false)}
+
         ${renderGiaoBanFinishBlock(g)}
       </div>
     </div>
   `, true);
-  setTimeout(() => { $$('textarea').forEach(autoGrow); setupSignaturePad(); }, 0);
+  setTimeout(() => { $$('textarea').forEach(autoGrow); setupSignaturePad(); bindGiaoBanPreviewAutoRefresh(); refreshGiaoBanStructuredPreview(); }, 0);
 }
 
 function renderGiaoBanDotXuatModal(){
@@ -2294,19 +2430,20 @@ function renderGiaoBanDotXuatModal(){
         </div>
 
         <div class="card" style="box-shadow:none">
-          <h3 class="section-title">I. Thông tin phiên giao ban</h3>
+          <h3 class="section-title">A. Phần hành chính</h3>
           <div class="grid">
             <div class="col-3"><label>Thời gian giao ban</label><div class="gb-time-row"><div id="gbTimeText" class="report-value">${dateTimeVi(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || hanoiNowIso())}</div>${g.trangThai !== STATUS_DA && !g.daKhoa ? `<button class="gb-time-refresh-icon" type="button" onclick="updateGiaoBanTimeNow()" title="Cập nhật thời gian hiện tại" aria-label="Cập nhật thời gian hiện tại"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></button>` : ''}</div><input id="gbTime" type="hidden" value="${escAttr(toDatetimeLocal(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || hanoiNowIso()))}"></div>
             <div class="col-3"><label>Khoa/phòng</label><select id="gbDotDept" class="equal-control" ${g.daKhoa ? 'disabled' : ''}>${deptOptions(g.khoaPhong || state.user?.khoaPhong || '')}</select></div>
             <div class="col-3"><label>Thư ký</label><input class="equal-control" readonly value="${escAttr(g.nguoiTaoTen || state.user?.tenNhanVien || '')}"></div>
             <div class="col-3"><label>Chủ trì giao ban</label><input id="gbChuTriInput" class="equal-control" list="staffDatalist" value="${escAttr(g.chuTriTen || g.nguoiChuTriTuDo || g.nguoiTaoTen || state.user?.tenNhanVien || '')}" ${g.daKhoa ? 'readonly' : ''}></div>
             <div class="col-12"><label>Thành phần tham dự</label><textarea id="gbThanhPhanThamDu" ${g.daKhoa ? 'readonly' : ''}>${esc(g.thanhPhanThamDu || '')}</textarea></div>
-            <div class="col-12"><label>Lý do giao ban</label><textarea id="gbLyDoGiaoBan" ${g.daKhoa ? 'readonly' : ''}>${esc(g.lyDoGiaoBan || '')}</textarea></div>
+            <div class="col-12"><label>I. Lý do</label><textarea id="gbLyDoGiaoBan" ${g.daKhoa ? 'readonly' : ''}>${esc(g.lyDoGiaoBan || '')}</textarea></div>
           </div>
         </div>
 
         <div class="card" style="box-shadow:none">
-          <h3 class="section-title">II. Nội dung giao ban</h3>
+          <h3 class="section-title">B. Nội dung cuộc họp</h3>
+          <label class="gb-sub-label" for="gbNoiDungDotXuat">II. Nội dung</label>
           <textarea id="gbNoiDungDotXuat" ${g.daKhoa ? 'readonly' : ''}>${esc(g.noiDungDotXuat || '')}</textarea>
         </div>
 
@@ -2315,11 +2452,13 @@ function renderGiaoBanDotXuatModal(){
           <textarea id="gbKetLuan" ${g.daKhoa ? 'readonly' : ''}>${esc(g.ketLuan || '')}</textarea>
         </div>
 
+        ${renderGiaoBanStructuredPreviewBlock(true)}
+
         ${renderGiaoBanFinishBlock(g)}
       </div>
     </div>
   `, true);
-  setTimeout(() => { $$('textarea').forEach(autoGrow); setupSignaturePad(); }, 0);
+  setTimeout(() => { $$('textarea').forEach(autoGrow); setupSignaturePad(); bindGiaoBanPreviewAutoRefresh(); refreshGiaoBanStructuredPreview(); }, 0);
 }
 
 function renderGiaoBanFinishBlock(g){
