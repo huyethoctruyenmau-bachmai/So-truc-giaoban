@@ -468,7 +468,17 @@
     .signature-pad-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid var(--g-line);background:#fff8fb}
     .signature-pad{width:100%;height:190px;display:block;background:#fff;touch-action:none}
     .signature-pad-note{font-size:12.5px;color:var(--muted);line-height:1.35;padding:8px 10px;border-top:1px solid var(--g-line)}
-    @media (max-width:760px){.template-config-grid,.global-template-grid{grid-template-columns:1fr}.format-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.signature-pad{height:170px}}
+    .signature-full-modal{position:fixed;inset:0;z-index:220;background:#fff;display:flex;flex-direction:column;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px);overscroll-behavior:contain}
+    .signature-full-head{height:52px;min-height:52px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 12px;border-bottom:1px solid var(--line);background:#fff}
+    .signature-full-title{font-size:18px;font-weight:800;color:var(--wine-dark);line-height:1.25}
+    .signature-full-body{flex:1;min-height:0;background:#f4f5f7;padding:10px;display:flex;flex-direction:column}
+    .signature-full-canvas-wrap{flex:1;min-height:300px;border:1px solid var(--g-line);border-radius:16px;background:#fff;overflow:hidden;box-shadow:0 4px 14px rgba(60,64,67,.12)}
+    .signature-full-pad{width:100%;height:100%;display:block;background:#fff;touch-action:none;cursor:crosshair}
+    .signature-full-chair{padding:10px 14px 4px;text-align:center;font-size:16px;line-height:1.35;color:var(--g-text);background:#fff}
+    .signature-full-chair strong{color:var(--wine-dark);font-weight:800}
+    .signature-full-actions{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:10px 12px max(12px,env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid var(--line)}
+    .signature-full-actions .btn{min-height:40px;height:40px}
+    @media (max-width:760px){.template-config-grid,.global-template-grid{grid-template-columns:1fr}.format-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.signature-pad{height:170px}.signature-full-head{height:50px;min-height:50px}.signature-full-body{padding:8px}.signature-full-canvas-wrap{min-height:360px}.signature-full-actions .btn{width:auto;flex:1}}
 
 
     .gb-pdf-preview{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:14px;line-height:1.45;color:var(--g-text)}
@@ -601,7 +611,7 @@ const state = {
   pdfTemplateConfig: null,
   pdfContentTemplates: null,
   pdfTemplateVariables: [],
-  signaturePad: {drawing:false, canvas:null, ctx:null, hasInk:false},
+  signaturePad: {drawing:false, canvas:null, ctx:null, hasInk:false, dataUrl:'', lastPoint:null},
   selectedStaff: [],
   selectedStaffCandidate: null,
   activeTab: 'create',
@@ -2490,17 +2500,12 @@ function renderGiaoBanFinishBlock(g){
           <label class="sign-option sign-option-manual"><input type="radio" name="gbHinhThucKy" value="Ký tay trực tiếp trên màn hình" ${g.hinhThucKy === 'Ký tay trực tiếp trên màn hình' ? 'checked' : ''} onchange="toggleSignaturePad()"><span><strong>Ký tay trực tiếp trên màn hình</strong><br><span class="meta">Có thể ký bằng ngón tay, bút cảm ứng, laptop cảm ứng hoặc chuột.</span></span></label>
         </div>
         <div id="signaturePadBox" class="signature-pad-wrap hidden">
-          <div class="signature-pad-head">
-            <strong>Chữ ký chủ trì</strong>
-            <button type="button" class="btn secondary" style="min-height:30px;height:30px;padding:0 10px" onclick="clearSignaturePad()">Xóa ký</button>
-          </div>
-          <canvas id="signaturePad" class="signature-pad"></canvas>
-          <div class="signature-pad-note">Ký trực tiếp trong khung này trước khi bấm hoàn tất. Nếu để trống, PDF vẫn xuất nhưng không có ảnh chữ ký.</div>
+          <div class="signature-pad-note">Sau khi bấm <strong>Ký xác nhận</strong>, hệ thống sẽ mở bảng ký toàn màn hình để chủ trì ký trực tiếp.</div>
         </div>
       </div>
       <div class="btn-row sign-bottom-small">
         <button class="btn secondary" onclick="saveGiaoBanDraft(this)">Lưu nháp</button>
-        <button class="btn ok" onclick="finishGiaoBan(this)">Hoàn tất và xuất PDF</button>
+        <button class="btn ok" onclick="finishGiaoBan(this)">Ký xác nhận</button>
       </div>
     </div>
   `;
@@ -2583,36 +2588,7 @@ function getSelectedHinhThucKy(){
 }
 
 function setupSignaturePad(){
-  const canvas = document.getElementById('signaturePad');
-  if(!canvas) return;
-  state.signaturePad.canvas = canvas;
-  const rect = canvas.getBoundingClientRect();
-  const ratio = window.devicePixelRatio || 1;
-  canvas.width = Math.max(1, Math.floor(rect.width * ratio));
-  canvas.height = Math.max(1, Math.floor(rect.height * ratio));
-  const ctx = canvas.getContext('2d');
-  ctx.setTransform(ratio,0,0,ratio,0,0);
-  ctx.lineWidth = 2.2;
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-  state.signaturePad.ctx = ctx;
-  canvas.onpointerdown = e => {
-    state.signaturePad.drawing = true;
-    canvas.setPointerCapture(e.pointerId);
-    const p = getCanvasPoint(e, canvas);
-    ctx.beginPath();
-    ctx.moveTo(p.x, p.y);
-  };
-  canvas.onpointermove = e => {
-    if(!state.signaturePad.drawing) return;
-    const p = getCanvasPoint(e, canvas);
-    ctx.lineTo(p.x, p.y);
-    ctx.stroke();
-    state.signaturePad.hasInk = true;
-  };
-  const stop = e => { state.signaturePad.drawing = false; };
-  canvas.onpointerup = stop;
-  canvas.onpointercancel = stop;
+  // Khung ký trực tiếp hiện được mở full màn hình khi bấm Ký xác nhận.
   toggleSignaturePad();
 }
 
@@ -2624,24 +2600,127 @@ function getCanvasPoint(e, canvas){
 window.toggleSignaturePad = function(){
   const box = document.getElementById('signaturePadBox');
   if(!box) return;
-  box.classList.toggle('hidden', getSelectedHinhThucKy() !== 'Ký tay trực tiếp trên màn hình');
-}
-
-window.clearSignaturePad = function(){
-  const canvas = state.signaturePad.canvas;
-  const ctx = state.signaturePad.ctx;
-  if(canvas && ctx){
-    const r = canvas.getBoundingClientRect();
-    ctx.clearRect(0,0,r.width,r.height);
+  box.classList.toggle('hidden', getSelectedHinhThucKy() !== HINH_THUC_KY_TAY);
+  if(getSelectedHinhThucKy() !== HINH_THUC_KY_TAY){
+    state.signaturePad.dataUrl = '';
     state.signaturePad.hasInk = false;
   }
 }
 
+function openFullSignatureModal(triggerBtn){
+  normalizeChairInput();
+  const chairName = getChairSecretaryNames().chuTri || 'Chủ trì giao ban';
+  closeFullSignatureModal();
+  state.signaturePad.dataUrl = '';
+  state.signaturePad.hasInk = false;
+  document.body.insertAdjacentHTML('beforeend', `
+    <div id="fullSignatureModal" class="signature-full-modal">
+      <div class="signature-full-head">
+        <div class="signature-full-title">Ký thủ công</div>
+        <button class="close-btn" type="button" onclick="closeFullSignatureModal()" aria-label="Đóng">×</button>
+      </div>
+      <div class="signature-full-body">
+        <div class="signature-full-canvas-wrap">
+          <canvas id="fullSignaturePad" class="signature-full-pad"></canvas>
+        </div>
+      </div>
+      <div class="signature-full-chair">Chủ trì giao ban: <strong>${esc(chairName)}</strong></div>
+      <div class="signature-full-actions">
+        <button type="button" class="btn secondary" onclick="clearSignaturePad()">Xóa ký</button>
+        <button type="button" class="btn ok" onclick="confirmFullSignatureAndFinish(this)">Xác nhận</button>
+      </div>
+    </div>
+  `);
+  document.body.style.overflow = 'hidden';
+  setTimeout(setupFullSignaturePad, 30);
+}
+
+window.closeFullSignatureModal = function(){
+  const modal = document.getElementById('fullSignatureModal');
+  if(modal) modal.remove();
+  document.body.style.overflow = '';
+  state.signaturePad.drawing = false;
+  state.signaturePad.canvas = null;
+  state.signaturePad.ctx = null;
+  state.signaturePad.lastPoint = null;
+}
+
+function setupFullSignaturePad(){
+  const canvas = document.getElementById('fullSignaturePad');
+  if(!canvas) return;
+  state.signaturePad.canvas = canvas;
+  const rect = canvas.getBoundingClientRect();
+  const ratio = window.devicePixelRatio || 1;
+  canvas.width = Math.max(1, Math.floor(rect.width * ratio));
+  canvas.height = Math.max(1, Math.floor(rect.height * ratio));
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(ratio,0,0,ratio,0,0);
+  ctx.lineWidth = 2.4;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.strokeStyle = '#111';
+  state.signaturePad.ctx = ctx;
+  state.signaturePad.hasInk = false;
+  state.signaturePad.lastPoint = null;
+
+  const startDraw = e => {
+    e.preventDefault();
+    state.signaturePad.drawing = true;
+    state.signaturePad.hasInk = true;
+    state.signaturePad.lastPoint = getCanvasPoint(e, canvas);
+    try{ canvas.setPointerCapture(e.pointerId); }catch(_e){}
+    ctx.beginPath();
+    ctx.moveTo(state.signaturePad.lastPoint.x, state.signaturePad.lastPoint.y);
+  };
+  const moveDraw = e => {
+    if(!state.signaturePad.drawing) return;
+    e.preventDefault();
+    const p = getCanvasPoint(e, canvas);
+    const last = state.signaturePad.lastPoint || p;
+    const mid = {x:(last.x + p.x)/2, y:(last.y + p.y)/2};
+    ctx.quadraticCurveTo(last.x, last.y, mid.x, mid.y);
+    ctx.stroke();
+    state.signaturePad.lastPoint = p;
+  };
+  const endDraw = e => {
+    if(!state.signaturePad.drawing) return;
+    e.preventDefault();
+    state.signaturePad.drawing = false;
+    state.signaturePad.lastPoint = null;
+  };
+
+  canvas.onpointerdown = startDraw;
+  canvas.onpointermove = moveDraw;
+  canvas.onpointerup = endDraw;
+  canvas.onpointercancel = endDraw;
+  canvas.onpointerleave = endDraw;
+}
+
+window.clearSignaturePad = function(){
+  const canvas = state.signaturePad.canvas || document.getElementById('fullSignaturePad');
+  const ctx = state.signaturePad.ctx;
+  if(canvas && ctx){
+    const r = canvas.getBoundingClientRect();
+    ctx.clearRect(0,0,r.width,r.height);
+  }
+  state.signaturePad.hasInk = false;
+  state.signaturePad.dataUrl = '';
+  state.signaturePad.lastPoint = null;
+}
+
 function getSignatureDataUrl(){
-  if(getSelectedHinhThucKy() !== 'Ký tay trực tiếp trên màn hình') return '';
-  const canvas = state.signaturePad.canvas;
-  if(!canvas || !state.signaturePad.hasInk) return '';
-  return canvas.toDataURL('image/png');
+  if(getSelectedHinhThucKy() !== HINH_THUC_KY_TAY) return '';
+  return state.signaturePad.dataUrl || '';
+}
+
+window.confirmFullSignatureAndFinish = async function(btn){
+  const canvas = state.signaturePad.canvas || document.getElementById('fullSignaturePad');
+  if(!canvas || !state.signaturePad.hasInk){
+    toast('Vui lòng ký trong khung trước khi xác nhận.');
+    return;
+  }
+  state.signaturePad.dataUrl = canvas.toDataURL('image/png');
+  await submitFinishGiaoBan(btn);
 }
 
 function collectGiaoBanPayload(){
@@ -2694,20 +2773,32 @@ window.saveGiaoBanDraft = async function(btn){
 }
 
 window.finishGiaoBan = async function(btn){
+  normalizeChairInput();
+  syncSignModeWithChair();
+  if(getSelectedHinhThucKy() === HINH_THUC_KY_TAY){
+    openFullSignatureModal(btn);
+    return;
+  }
   const ok = await showConfirmDialog({
     title:'Xác nhận kết thúc giao ban',
     message:'Sau khi xác nhận, phiên giao ban sẽ hoàn thành và hệ thống sẽ xuất PDF giao ban. Với giao ban thường trực, các báo cáo được gộp sẽ bị khóa.\nBạn xác nhận ký kết thúc giao ban?',
-    confirmText:'Ký kết thúc',
+    confirmText:'Ký xác nhận',
     cancelText:'Hủy',
     danger:false
   });
   if(!ok) return;
+  await submitFinishGiaoBan(btn);
+}
+
+async function submitFinishGiaoBan(btn){
   const task = async () => {
     const res = await api('finishGiaoBan', collectGiaoBanPayload());
     state.currentGiaoBan = res.data.giaoBan;
     clearListCaches();
     toast('Đã ký kết thúc giao ban');
+    closeFullSignatureModal();
     closeModal();
+    switchTab('meeting');
     await loadGiaoBanList(true);
   };
   if(btn) return withButton(btn, 'Đang ký...', task);
