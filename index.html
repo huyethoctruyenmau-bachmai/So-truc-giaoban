@@ -563,7 +563,7 @@
   <div id="toast" class="toast hidden"></div>
 
 <script>
-const APP_VERSION = '74.220526-TM-GIAO-BAN-PDF-STRUCTURE-PREVIEW';
+const APP_VERSION = '75.220526-TM-SIGNATURE-SQUARE-FIX';
 const API_URL = 'https://script.google.com/macros/s/AKfycbxLHKUczat2WOH1R4W_YVVsUeBAmEuJ-4EjOEWNuBYXvX0oL4Dr6OhyO8f4lHPfn-8Nmg/exec';
 
 const LOAI_BAN_GIAO = 'Bàn giao thường trực';
@@ -2713,13 +2713,53 @@ function getSignatureDataUrl(){
   return state.signaturePad.dataUrl || '';
 }
 
+
+function exportSignatureSquareDataUrl(canvas){
+  const size = 600;
+  const padding = 72;
+  const srcW = canvas.width;
+  const srcH = canvas.height;
+  const srcCtx = canvas.getContext('2d');
+  const imgData = srcCtx.getImageData(0, 0, srcW, srcH);
+  const data = imgData.data;
+  let minX = srcW, minY = srcH, maxX = -1, maxY = -1;
+  for(let y=0; y<srcH; y++){
+    for(let x=0; x<srcW; x++){
+      const i = (y * srcW + x) * 4;
+      const a = data[i + 3];
+      if(a > 10){
+        minX = Math.min(minX, x);
+        minY = Math.min(minY, y);
+        maxX = Math.max(maxX, x);
+        maxY = Math.max(maxY, y);
+      }
+    }
+  }
+  if(maxX < minX || maxY < minY) return canvas.toDataURL('image/png');
+  const cropW = Math.max(1, maxX - minX + 1);
+  const cropH = Math.max(1, maxY - minY + 1);
+  const out = document.createElement('canvas');
+  out.width = size;
+  out.height = size;
+  const outCtx = out.getContext('2d');
+  outCtx.clearRect(0,0,size,size);
+  const maxBox = size - padding * 2;
+  const scale = Math.min(maxBox / cropW, maxBox / cropH);
+  const drawW = cropW * scale;
+  const drawH = cropH * scale;
+  const dx = (size - drawW) / 2;
+  const dy = (size - drawH) / 2;
+  outCtx.drawImage(canvas, minX, minY, cropW, cropH, dx, dy, drawW, drawH);
+  return out.toDataURL('image/png');
+}
+
 window.confirmFullSignatureAndFinish = async function(btn){
   const canvas = state.signaturePad.canvas || document.getElementById('fullSignaturePad');
   if(!canvas || !state.signaturePad.hasInk){
     toast('Vui lòng ký trong khung trước khi xác nhận.');
     return;
   }
-  state.signaturePad.dataUrl = canvas.toDataURL('image/png');
+  state.signaturePad.dataUrl = exportSignatureSquareDataUrl(canvas);
   await submitFinishGiaoBan(btn);
 }
 
