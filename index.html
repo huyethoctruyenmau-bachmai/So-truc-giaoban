@@ -2495,11 +2495,14 @@ function renderGiaoBanFinishBlock(g){
       </div>`;
   }
 
-  if(isBienBanHopLoai(g.loaiGiaoBan)){
-    const thuKySigned = !!(g.thoiDiemThuKyKy || g.chuKyThuKyFileId);
+  const sameSecretaryChair = isSecretarySameChair();
+  const thuKySigned = !!(g.thoiDiemThuKyKy || g.chuKyThuKyFileId);
+  const title = isBienBanHopLoai(g.loaiGiaoBan) ? 'Hoàn tất / ký biên bản họp' : 'Hoàn tất / ký giao ban';
+
+  if(!sameSecretaryChair){
     return `
       <div class="card" style="box-shadow:none">
-        <h3 class="section-title">Hoàn tất / ký biên bản họp</h3>
+        <h3 class="section-title">${title}</h3>
         <div class="sign-step-box">
           <div class="sign-step-title">1. Thư ký ký xác nhận</div>
           <div class="sign-step-status">${thuKySigned ? 'Đã ký: ' + dateTimeVi(g.thoiDiemThuKyKy) : 'Chưa ký. Thư ký cần ký trước để mở bước chủ trì ký.'}</div>
@@ -2518,7 +2521,7 @@ function renderGiaoBanFinishBlock(g){
 
   return `
     <div class="card" style="box-shadow:none">
-      <h3 class="section-title">Hoàn tất / ký giao ban</h3>
+      <h3 class="section-title">${title}</h3>
       <div class="sign-mode-box">
         <label>Hình thức ký</label>
         <div class="sign-options">
@@ -2567,6 +2570,11 @@ function getChairSecretaryNames(){
   const chuTriRaw = $('#gbChuTriInput')?.value || g.chuTriTen || g.nguoiChuTriTuDo || thuKy || '';
   const chuTri = resolveChairFromInput(chuTriRaw).tenNhanVien || cleanChairDisplayName(chuTriRaw);
   return {thuKy, chuTri};
+}
+
+function isSecretarySameChair(){
+  const {thuKy, chuTri} = getChairSecretaryNames();
+  return eqText(thuKy, chuTri);
 }
 
 function cleanChairDisplayName(raw){
@@ -2645,8 +2653,7 @@ function getSignatureRoleTitle(role){
 window.openFullSignatureForRole = function(role, btn){
   normalizeChairInput();
   const g = state.currentGiaoBan || {};
-  const isBB = isBienBanHopLoai(g.loaiGiaoBan);
-  if(role === 'chuTri' && isBB && !(g.thoiDiemThuKyKy || g.chuKyThuKyFileId)){
+  if(role === 'chuTri' && !isSecretarySameChair() && !(g.thoiDiemThuKyKy || g.chuKyThuKyFileId)){
     toast('Thư ký cần ký xác nhận trước khi chủ trì ký.');
     return;
   }
