@@ -412,6 +412,7 @@
   
     .gb-time-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
     .gb-time-row .report-value{margin:0}
+    .gb-time-row input.equal-control{flex:1;min-width:0}
     .gb-time-refresh-icon{
       width:30px;height:30px;min-width:30px;border:0;border-radius:50%;
       background:#fff;color:var(--g-blue);display:inline-grid;place-items:center;
@@ -560,9 +561,18 @@ const LOAI_BAO_CAO = 'Báo cáo thường trực';
 const STATUS_CHUA = 'Chưa hoàn thành';
 const STATUS_DA = 'Đã hoàn thành';
 const LOAI_GIAO_BAN_THUONG_TRUC = 'Giao ban thường trực';
-const LOAI_GIAO_BAN_DOT_XUAT = 'Giao ban đột xuất';
+const LOAI_GIAO_BAN_DOT_XUAT = 'Biên bản họp';
+const LOAI_GIAO_BAN_DOT_XUAT_CU = 'Giao ban đột xuất';
 const HINH_THUC_KY_HE_THONG = 'Ký xác nhận trên hệ thống';
 const HINH_THUC_KY_TAY = 'Ký tay trực tiếp trên màn hình';
+
+function eqText(a,b){
+  return norm(a) === norm(b);
+}
+
+function isBienBanHopLoai(loai){
+  return eqText(loai, LOAI_GIAO_BAN_DOT_XUAT) || eqText(loai, LOAI_GIAO_BAN_DOT_XUAT_CU);
+}
 
 
 const TM_EQUIPMENT_DEFAULTS = [
@@ -1943,7 +1953,7 @@ function renderGiaoBanList(items, note=''){
   box.innerHTML = noteHtml + items.map(g => {
     const loai = g.loaiGiaoBan || LOAI_GIAO_BAN_THUONG_TRUC;
     const title = `${loai} - ${formatDeptPlain(g.khoaPhong)} - ${dateTimeVi(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan)}`;
-    const isDotXuat = loai === LOAI_GIAO_BAN_DOT_XUAT;
+    const isDotXuat = isBienBanHopLoai(loai);
     const creator = g.nguoiTaoTen ? `<div class="meta">Người tạo phiên: ${esc(g.nguoiTaoTen)}${g.createdAt ? ' · Tạo lúc: ' + dateTimeVi(g.createdAt) : ''}</div>` : '';
     const metaHtml = isDotXuat
       ? `${creator}<div class="meta">Lý do: ${esc(g.lyDoGiaoBan || 'Chưa nhập')}</div>`
@@ -2302,7 +2312,7 @@ function renderGiaoBanStructuredPreviewHtml(isDotXuat){
 function refreshGiaoBanStructuredPreview(){
   const box = $('#gbStructuredPreview');
   if(!box || !state.currentGiaoBan) return;
-  box.innerHTML = renderGiaoBanStructuredPreviewHtml((state.currentGiaoBan.loaiGiaoBan || '') === LOAI_GIAO_BAN_DOT_XUAT);
+  box.innerHTML = renderGiaoBanStructuredPreviewHtml(isBienBanHopLoai(state.currentGiaoBan.loaiGiaoBan || ''));
 }
 
 function bindGiaoBanPreviewAutoRefresh(){
@@ -2319,7 +2329,7 @@ function bindGiaoBanPreviewAutoRefresh(){
 function renderGiaoBanModal(){
   const g = state.currentGiaoBan;
   const loai = g.loaiGiaoBan || LOAI_GIAO_BAN_THUONG_TRUC;
-  const isDotXuat = loai === LOAI_GIAO_BAN_DOT_XUAT;
+  const isDotXuat = isBienBanHopLoai(loai);
   if(isDotXuat) return renderGiaoBanDotXuatModal();
 
   const sortedReports = sortReportsByDateAsc(state.currentReports);
@@ -2352,14 +2362,14 @@ function renderGiaoBanModal(){
             <div class="col-3">
               <label>Thời gian giao ban</label>
               <div class="gb-time-row">
-                <div id="gbTimeText" class="report-value">${dateTimeVi(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || hanoiNowIso())}</div>
+                <input id="gbTimeDisplay" class="equal-control" readonly value="${escAttr(dateTimeVi(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || hanoiNowIso()))}">
                 ${g.trangThai !== STATUS_DA && !g.daKhoa ? `<button class="gb-time-refresh-icon" type="button" onclick="updateGiaoBanTimeNow()" title="Cập nhật thời gian hiện tại" aria-label="Cập nhật thời gian hiện tại"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></button>` : ''}
               </div>
               <input id="gbTime" type="hidden" value="${escAttr(toDatetimeLocal(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || hanoiNowIso()))}">
             </div>
             <div class="col-3"><label>Khoa/phòng</label><input class="equal-control" readonly value="${escAttr(g.khoaPhong || '')}"></div>
             <div class="col-3"><label>Thư ký</label><input class="equal-control" readonly value="${escAttr(g.nguoiTaoTen || state.user?.tenNhanVien || '')}"></div>
-            <div class="col-3"><label>Chủ trì giao ban</label><input id="gbChuTriInput" class="equal-control" list="staffDatalist" value="${escAttr(g.chuTriTen || g.nguoiChuTriTuDo || g.nguoiTaoTen || state.user?.tenNhanVien || '')}" ${g.daKhoa ? 'readonly' : ''}></div>
+            <div class="col-3"><label>Chủ trì giao ban</label><input id="gbChuTriInput" class="equal-control" list="staffDatalist" value="${escAttr(g.chuTriTen || g.nguoiChuTriTuDo || g.nguoiTaoTen || state.user?.tenNhanVien || '')}" ${g.daKhoa ? 'readonly' : ''} onblur="normalizeChairInput();syncSignModeWithChair()" onchange="normalizeChairInput();syncSignModeWithChair()" oninput="syncSignModeWithChair()"></div>
           </div>
         </div>
 
@@ -2407,13 +2417,11 @@ function renderGiaoBanModal(){
           <textarea id="gbKetLuan" ${g.daKhoa ? 'readonly' : ''}>${esc(g.ketLuan || '')}</textarea>
         </div>
 
-        ${renderGiaoBanStructuredPreviewBlock(false)}
-
         ${renderGiaoBanFinishBlock(g)}
       </div>
     </div>
   `, true);
-  setTimeout(() => { $$('textarea').forEach(autoGrow); setupSignaturePad(); bindGiaoBanPreviewAutoRefresh(); refreshGiaoBanStructuredPreview(); }, 0);
+  setTimeout(() => { $$('textarea').forEach(autoGrow); setupSignaturePad(); normalizeChairInput(); syncSignModeWithChair(); }, 0);
 }
 
 function renderGiaoBanDotXuatModal(){
@@ -2432,10 +2440,10 @@ function renderGiaoBanDotXuatModal(){
         <div class="card" style="box-shadow:none">
           <h3 class="section-title">A. Phần hành chính</h3>
           <div class="grid">
-            <div class="col-3"><label>Thời gian giao ban</label><div class="gb-time-row"><div id="gbTimeText" class="report-value">${dateTimeVi(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || hanoiNowIso())}</div>${g.trangThai !== STATUS_DA && !g.daKhoa ? `<button class="gb-time-refresh-icon" type="button" onclick="updateGiaoBanTimeNow()" title="Cập nhật thời gian hiện tại" aria-label="Cập nhật thời gian hiện tại"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></button>` : ''}</div><input id="gbTime" type="hidden" value="${escAttr(toDatetimeLocal(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || hanoiNowIso()))}"></div>
+            <div class="col-3"><label>Thời gian giao ban</label><div class="gb-time-row"><input id="gbTimeDisplay" class="equal-control" readonly value="${escAttr(dateTimeVi(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || hanoiNowIso()))}">${g.trangThai !== STATUS_DA && !g.daKhoa ? `<button class="gb-time-refresh-icon" type="button" onclick="updateGiaoBanTimeNow()" title="Cập nhật thời gian hiện tại" aria-label="Cập nhật thời gian hiện tại"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></button>` : ''}</div><input id="gbTime" type="hidden" value="${escAttr(toDatetimeLocal(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || hanoiNowIso()))}"></div>
             <div class="col-3"><label>Khoa/phòng</label><select id="gbDotDept" class="equal-control" ${g.daKhoa ? 'disabled' : ''}>${deptOptions(g.khoaPhong || state.user?.khoaPhong || '')}</select></div>
             <div class="col-3"><label>Thư ký</label><input class="equal-control" readonly value="${escAttr(g.nguoiTaoTen || state.user?.tenNhanVien || '')}"></div>
-            <div class="col-3"><label>Chủ trì giao ban</label><input id="gbChuTriInput" class="equal-control" list="staffDatalist" value="${escAttr(g.chuTriTen || g.nguoiChuTriTuDo || g.nguoiTaoTen || state.user?.tenNhanVien || '')}" ${g.daKhoa ? 'readonly' : ''}></div>
+            <div class="col-3"><label>Chủ trì giao ban</label><input id="gbChuTriInput" class="equal-control" list="staffDatalist" value="${escAttr(g.chuTriTen || g.nguoiChuTriTuDo || g.nguoiTaoTen || state.user?.tenNhanVien || '')}" ${g.daKhoa ? 'readonly' : ''} onblur="normalizeChairInput();syncSignModeWithChair()" onchange="normalizeChairInput();syncSignModeWithChair()" oninput="syncSignModeWithChair()"></div>
             <div class="col-12"><label>Thành phần tham dự</label><textarea id="gbThanhPhanThamDu" ${g.daKhoa ? 'readonly' : ''}>${esc(g.thanhPhanThamDu || '')}</textarea></div>
             <div class="col-12"><label>I. Lý do</label><textarea id="gbLyDoGiaoBan" ${g.daKhoa ? 'readonly' : ''}>${esc(g.lyDoGiaoBan || '')}</textarea></div>
           </div>
@@ -2452,20 +2460,18 @@ function renderGiaoBanDotXuatModal(){
           <textarea id="gbKetLuan" ${g.daKhoa ? 'readonly' : ''}>${esc(g.ketLuan || '')}</textarea>
         </div>
 
-        ${renderGiaoBanStructuredPreviewBlock(true)}
-
         ${renderGiaoBanFinishBlock(g)}
       </div>
     </div>
   `, true);
-  setTimeout(() => { $$('textarea').forEach(autoGrow); setupSignaturePad(); bindGiaoBanPreviewAutoRefresh(); refreshGiaoBanStructuredPreview(); }, 0);
+  setTimeout(() => { $$('textarea').forEach(autoGrow); setupSignaturePad(); normalizeChairInput(); syncSignModeWithChair(); }, 0);
 }
 
 function renderGiaoBanFinishBlock(g){
   return g.trangThai === STATUS_DA ? `
     <div class="card" style="box-shadow:none">
       <h3 class="section-title">File giao ban đã ký</h3>
-      <div class="meta">Chủ trì: ${esc(g.chuTriTen || g.nguoiChuTriTuDo || '')}${g.chuTriChucDanh ? ' - ' + esc(g.chuTriChucDanh) : ''}</div>
+      <div class="meta">Chủ trì: ${esc(g.chuTriTen || g.nguoiChuTriTuDo || '')}</div>
       <div class="meta">Thời điểm ký: ${dateTimeVi(g.thoiDiemChuTriKy)}</div>
       ${g.pdfGiaoBanUrl ? `<div class="btn-row"><button class="btn ok" onclick="openGiaoBanPdf('${escAttr(g.pdfGiaoBanUrl)}','${escAttr((g.loaiGiaoBan || '') + ' - ' + formatDeptPlain(g.khoaPhong || '') + ' - ' + dateTimeVi(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || ''))}')">Xem PDF đã ký</button><a class="app-icon-btn" href="${escAttr(toPdfDownloadUrl(g.pdfGiaoBanUrl))}" target="_blank" title="Tải PDF" aria-label="Tải PDF">${iconDownload()}</a></div>` : '<div class="empty">Chưa có file PDF đã ký.</div>'}
     </div>
@@ -2475,8 +2481,8 @@ function renderGiaoBanFinishBlock(g){
       <div class="sign-mode-box">
         <label>Hình thức ký</label>
         <div class="sign-options">
-          <label class="sign-option"><input type="radio" name="gbHinhThucKy" value="Ký xác nhận trên hệ thống" ${g.hinhThucKy !== 'Ký tay trực tiếp trên màn hình' ? 'checked' : ''} onchange="toggleSignaturePad()"><span><strong>Ký xác nhận trên hệ thống</strong><br><span class="meta">Không cần vẽ chữ ký, PDF ghi nhận chủ trì đã xác nhận trên hệ thống.</span></span></label>
-          <label class="sign-option"><input type="radio" name="gbHinhThucKy" value="Ký tay trực tiếp trên màn hình" ${g.hinhThucKy === 'Ký tay trực tiếp trên màn hình' ? 'checked' : ''} onchange="toggleSignaturePad()"><span><strong>Ký tay trực tiếp trên màn hình</strong><br><span class="meta">Có thể ký bằng ngón tay, bút cảm ứng, laptop cảm ứng hoặc chuột.</span></span></label>
+          <label class="sign-option sign-option-system"><input type="radio" name="gbHinhThucKy" value="Ký xác nhận trên hệ thống" ${g.hinhThucKy !== 'Ký tay trực tiếp trên màn hình' ? 'checked' : ''} onchange="toggleSignaturePad()"><span><strong>Ký xác nhận trên hệ thống</strong><br><span class="meta">Không cần vẽ chữ ký, PDF ghi nhận chủ trì đã xác nhận trên hệ thống.</span></span></label>
+          <label class="sign-option sign-option-manual"><input type="radio" name="gbHinhThucKy" value="Ký tay trực tiếp trên màn hình" ${g.hinhThucKy === 'Ký tay trực tiếp trên màn hình' ? 'checked' : ''} onchange="toggleSignaturePad()"><span><strong>Ký tay trực tiếp trên màn hình</strong><br><span class="meta">Có thể ký bằng ngón tay, bút cảm ứng, laptop cảm ứng hoặc chuột.</span></span></label>
         </div>
         <div id="signaturePadBox" class="signature-pad-wrap hidden">
           <div class="signature-pad-head">
@@ -2498,9 +2504,9 @@ function renderGiaoBanFinishBlock(g){
 window.updateGiaoBanTimeNow = function(){
   const now = hanoiNowIso();
   const hidden = $('#gbTime');
-  const text = $('#gbTimeText');
+  const text = $('#gbTimeDisplay') || $('#gbTimeText');
   if(hidden) hidden.value = toDatetimeLocal(now);
-  if(text) text.textContent = dateTimeVi(now);
+  if(text){ if('value' in text) text.value = dateTimeVi(now); else text.textContent = dateTimeVi(now); }
   if(state.currentGiaoBan){
     state.currentGiaoBan.thoiGianGiaoBan = now;
     state.currentGiaoBan.thoiGianGiaoBanHienThi = now;
@@ -2520,6 +2526,51 @@ function resolveChairFromInput(raw){
     || state.personnel.find(p => q.includes(norm(p.maNhanVien)) || q.includes(norm(p.tenNhanVien)));
   if(person) return {maNhanVien:person.maNhanVien || '', tenNhanVien:person.tenNhanVien || '', chucDanh:person.chucDanh || person.chucDanhHienThi || ''};
   return {maNhanVien:'', tenNhanVien:s, chucDanh:''};
+}
+
+
+function getChairSecretaryNames(){
+  const g = state.currentGiaoBan || {};
+  const thuKy = g.nguoiTaoTen || state.user?.tenNhanVien || '';
+  const chuTriRaw = $('#gbChuTriInput')?.value || g.chuTriTen || g.nguoiChuTriTuDo || thuKy || '';
+  const chuTri = resolveChairFromInput(chuTriRaw).tenNhanVien || cleanChairDisplayName(chuTriRaw);
+  return {thuKy, chuTri};
+}
+
+function cleanChairDisplayName(raw){
+  const s = String(raw || '').trim();
+  if(!s) return '';
+  const q = norm(s);
+  const person = state.personnel.find(p => norm(p.maNhanVien) === q)
+    || state.personnel.find(p => norm(p.tenNhanVien) === q)
+    || state.personnel.find(p => norm([p.maNhanVien, p.tenNhanVien, p.chucDanh].filter(Boolean).join(' ')) === q)
+    || state.personnel.find(p => q.includes(norm(p.maNhanVien)) || q.includes(norm(p.tenNhanVien)));
+  if(person) return person.tenNhanVien || '';
+  const parts = s.split(/\s+-\s+/).map(x => x.trim()).filter(Boolean);
+  if(parts.length >= 2 && /\d/.test(parts[0])) return parts[1];
+  return s;
+}
+
+window.normalizeChairInput = function(){
+  const input = $('#gbChuTriInput');
+  if(!input || input.readOnly) return;
+  const name = cleanChairDisplayName(input.value);
+  if(name && input.value !== name) input.value = name;
+}
+
+window.syncSignModeWithChair = function(){
+  const systemLabel = document.querySelector('.sign-option-system');
+  const systemInput = document.querySelector('input[name="gbHinhThucKy"][value="Ký xác nhận trên hệ thống"]');
+  const manualInput = document.querySelector('input[name="gbHinhThucKy"][value="Ký tay trực tiếp trên màn hình"]');
+  if(!systemLabel || !systemInput || !manualInput) return;
+  const {thuKy, chuTri} = getChairSecretaryNames();
+  const same = eqText(thuKy, chuTri);
+  systemLabel.classList.toggle('hidden', !same);
+  systemInput.disabled = !same;
+  if(!same){
+    manualInput.checked = true;
+  }
+  toggleSignaturePad();
 }
 
 function getSelectedHinhThucKy(){
@@ -2589,6 +2640,8 @@ function getSignatureDataUrl(){
 }
 
 function collectGiaoBanPayload(){
+  normalizeChairInput();
+  syncSignModeWithChair();
   const g = state.currentGiaoBan;
   const chuTri = resolveChairFromInput($('#gbChuTriInput')?.value || g.chuTriTen || g.nguoiChuTriTuDo || g.nguoiTaoTen || state.user?.tenNhanVien || '');
   const payload = {
@@ -2735,7 +2788,7 @@ function renderSettingsTab(){
       <p class="meta">Upload file Word mẫu, sau đó dùng bảng biến bên dưới để khai báo vị trí cần chèn dữ liệu. Có thể dùng một biến khối <b>{{APP_NOI_DUNG_GIAO_BAN}}</b> hoặc các biến chi tiết.</p>
       <div class="template-config-grid">
         ${renderPdfTemplateBox('BM04', 'Mẫu Giao ban thường trực')}
-        ${renderPdfTemplateBox('BM06', 'Mẫu Biên bản họp / Giao ban đột xuất')}
+        ${renderPdfTemplateBox('BM06', 'Mẫu Biên bản họp')}
       </div>
       <p class="meta" style="margin-top:10px">Cần bật Drive API nâng cao trong Apps Script: Dịch vụ/Services → thêm Drive API.</p>
     </div>
@@ -2749,7 +2802,7 @@ function renderSettingsTab(){
           <textarea id="pdfContentBM04">${esc(state.pdfContentTemplates?.bm04 || '')}</textarea>
         </div>
         <div class="global-template-box">
-          <label>Nội dung toàn cục - Biên bản họp / Giao ban đột xuất</label>
+          <label>Nội dung toàn cục - Biên bản họp</label>
           <textarea id="pdfContentBM06">${esc(state.pdfContentTemplates?.bm06 || '')}</textarea>
         </div>
       </div>
