@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta id="viewportMeta" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <title>Sổ trực - Giao ban Phòng Truyền máu</title>
-  <link rel="icon" type="image/png" sizes="64x64" href="./APP_ICON_SO_TRUC_64.png?v=68.220526-TM-PDF-VIEWER-ZOOM">
-  <link rel="shortcut icon" type="image/png" href="./APP_ICON_SO_TRUC_64.png?v=68.220526-TM-PDF-VIEWER-ZOOM">
-  <link rel="apple-touch-icon" sizes="180x180" href="./APP_ICON_SO_TRUC_180.png?v=68.220526-TM-PDF-VIEWER-ZOOM">
-  <link rel="manifest" href="./manifest.json?v=68.220526-TM-PDF-VIEWER-ZOOM">
-  <meta name="msapplication-TileImage" content="./APP_ICON_SO_TRUC_192.png?v=68.220526-TM-PDF-VIEWER-ZOOM">
+  <link rel="icon" type="image/png" sizes="64x64" href="./APP_ICON_SO_TRUC_64.png?v=69.220526-TM-UPLOAD-PDF-TEMPLATE-SIGN">
+  <link rel="shortcut icon" type="image/png" href="./APP_ICON_SO_TRUC_64.png?v=69.220526-TM-UPLOAD-PDF-TEMPLATE-SIGN">
+  <link rel="apple-touch-icon" sizes="180x180" href="./APP_ICON_SO_TRUC_180.png?v=69.220526-TM-UPLOAD-PDF-TEMPLATE-SIGN">
+  <link rel="manifest" href="./manifest.json?v=69.220526-TM-UPLOAD-PDF-TEMPLATE-SIGN">
+  <meta name="msapplication-TileImage" content="./APP_ICON_SO_TRUC_192.png?v=69.220526-TM-UPLOAD-PDF-TEMPLATE-SIGN">
   <meta name="theme-color" content="#580824">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -452,6 +452,22 @@
       .pdf-icon-btn{width:36px;height:36px}
     }
 
+
+    .template-config-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .template-box{border:1px solid var(--g-line);border-radius:14px;background:#fff;padding:12px}
+    .template-status{font-size:13px;color:var(--muted);line-height:1.45;margin-top:8px;word-break:break-word}
+    .template-file{margin-top:8px}
+    .template-file input[type="file"]{height:auto;min-height:38px;padding:7px 8px;background:#fff}
+    .sign-mode-box{border:1px solid var(--g-line);border-radius:14px;background:#fff;padding:12px;margin-top:12px}
+    .sign-options{display:grid;gap:8px;margin-top:8px}
+    .sign-option{display:flex;gap:8px;align-items:flex-start;border:1px solid var(--g-line);border-radius:10px;padding:8px;background:#fff}
+    .sign-option input{width:18px;min-height:18px;box-shadow:none;flex:0 0 auto;margin-top:2px}
+    .signature-pad-wrap{margin-top:10px;border:1px solid var(--g-line);border-radius:14px;background:#fff;overflow:hidden}
+    .signature-pad-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid var(--g-line);background:#fff8fb}
+    .signature-pad{width:100%;height:190px;display:block;background:#fff;touch-action:none}
+    .signature-pad-note{font-size:12.5px;color:var(--muted);line-height:1.35;padding:8px 10px;border-top:1px solid var(--g-line)}
+    @media (max-width:760px){.template-config-grid{grid-template-columns:1fr}.signature-pad{height:170px}}
+
   </style>
 </head>
 <body>
@@ -465,7 +481,7 @@
 
   <div id="loginScreen" class="login-screen hidden">
     <div class="login-card">
-      <div class="login-logo logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=68.220526-TM-PDF-VIEWER-ZOOM" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
+      <div class="login-logo logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=69.220526-TM-UPLOAD-PDF-TEMPLATE-SIGN" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
       <p class="login-hospital">B&#7879;nh vi&#7879;n B&#7841;ch Mai</p>
       <p class="login-center">Trung t&#226;m Huy&#7871;t h&#7885;c v&#224; Truy&#7873;n m&#225;u</p>
       <h1 class="login-title">S&#7893; Tr&#7921;c - Giao ban</h1>
@@ -480,14 +496,14 @@
         </div>
       </div>
       <button id="loginBtn" class="btn primary" style="width:100%;margin-top:14px">Đăng nhập</button>
-      <p class="login-version">Version: 68.220526-TM-PDF-VIEWER-ZOOM</p>
+      <p class="login-version">Version: 69.220526-TM-UPLOAD-PDF-TEMPLATE-SIGN</p>
     </div>
   </div>
 
   <div id="app" class="app-shell hidden">
     <header class="topbar">
       <div class="brand">
-        <div class="brand-icon logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=68.220526-TM-PDF-VIEWER-ZOOM" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
+        <div class="brand-icon logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=69.220526-TM-UPLOAD-PDF-TEMPLATE-SIGN" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
         <div>
           <div id="brandTitle" class="brand-title">Trung t&#226;m Huy&#7871;t h&#7885;c v&#224; Truy&#7873;n m&#225;u</div>
           <div id="brandSub" class="brand-sub">Khoa</div>
@@ -516,7 +532,7 @@
       <button class="tab-btn" data-tab="pdf"><span class="ico">📄</span><span>PDF</span></button>
       <button id="settingsTabBtn" class="tab-btn hidden" data-tab="settings"><span class="ico">⚙️</span><span>Cài đặt</span></button>
     </nav>
-    <div class="app-version">Version: 68.220526-TM-PDF-VIEWER-ZOOM</div>
+    <div class="app-version">Version: 69.220526-TM-UPLOAD-PDF-TEMPLATE-SIGN</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -524,7 +540,7 @@
   <div id="toast" class="toast hidden"></div>
 
 <script>
-const APP_VERSION = '68.220526-TM-PDF-VIEWER-ZOOM';
+const APP_VERSION = '69.220526-TM-UPLOAD-PDF-TEMPLATE-SIGN';
 const API_URL = 'https://script.google.com/macros/s/AKfycbxLHKUczat2WOH1R4W_YVVsUeBAmEuJ-4EjOEWNuBYXvX0oL4Dr6OhyO8f4lHPfn-8Nmg/exec';
 
 const LOAI_BAN_GIAO = 'Bàn giao thường trực';
@@ -533,6 +549,8 @@ const STATUS_CHUA = 'Chưa hoàn thành';
 const STATUS_DA = 'Đã hoàn thành';
 const LOAI_GIAO_BAN_THUONG_TRUC = 'Giao ban thường trực';
 const LOAI_GIAO_BAN_DOT_XUAT = 'Giao ban đột xuất';
+const HINH_THUC_KY_HE_THONG = 'Ký xác nhận trên hệ thống';
+const HINH_THUC_KY_TAY = 'Ký tay trực tiếp trên màn hình';
 
 
 const TM_EQUIPMENT_DEFAULTS = [
@@ -558,6 +576,8 @@ const state = {
   personnel: [],
   khoaPhong: [],
   tmEquipmentConfig: defaultTmEquipmentConfig(),
+  pdfTemplateConfig: null,
+  signaturePad: {drawing:false, canvas:null, ctx:null, hasInk:false},
   selectedStaff: [],
   selectedStaffCandidate: null,
   activeTab: 'create',
@@ -734,6 +754,7 @@ async function loadInitData(){
     state.personnel = res.data.personnel || [];
     state.khoaPhong = res.data.khoaPhong || [];
     state.tmEquipmentConfig = normalizeTmEquipmentConfig(res.data.tmEquipmentConfig || []);
+    state.pdfTemplateConfig = res.data.pdfTemplateConfig || null;
     state.initLoaded = true;
     refreshDatalists();
     renderCreateTab();
@@ -2181,12 +2202,20 @@ function renderGiaoBanModal(){
         </div>
 
         <div class="card" style="box-shadow:none">
-          <div class="gb-sub-label">Thời gian giao ban</div>
-          <div class="gb-time-row">
-            <div id="gbTimeText" class="report-value">${dateTimeVi(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || hanoiNowIso())}</div>
-            ${g.trangThai !== STATUS_DA && !g.daKhoa ? `<button class="gb-time-refresh-icon" type="button" onclick="updateGiaoBanTimeNow()" title="Cập nhật thời gian hiện tại" aria-label="Cập nhật thời gian hiện tại"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></button>` : ''}
+          <h3 class="section-title">A. Phần hành chính</h3>
+          <div class="grid">
+            <div class="col-3">
+              <label>Thời gian giao ban</label>
+              <div class="gb-time-row">
+                <div id="gbTimeText" class="report-value">${dateTimeVi(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || hanoiNowIso())}</div>
+                ${g.trangThai !== STATUS_DA && !g.daKhoa ? `<button class="gb-time-refresh-icon" type="button" onclick="updateGiaoBanTimeNow()" title="Cập nhật thời gian hiện tại" aria-label="Cập nhật thời gian hiện tại"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></button>` : ''}
+              </div>
+              <input id="gbTime" type="hidden" value="${escAttr(toDatetimeLocal(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || hanoiNowIso()))}">
+            </div>
+            <div class="col-3"><label>Khoa/phòng</label><input class="equal-control" readonly value="${escAttr(g.khoaPhong || '')}"></div>
+            <div class="col-3"><label>Thư ký</label><input class="equal-control" readonly value="${escAttr(g.nguoiTaoTen || state.user?.tenNhanVien || '')}"></div>
+            <div class="col-3"><label>Chủ trì giao ban</label><input id="gbChuTriInput" class="equal-control" list="staffDatalist" value="${escAttr(g.chuTriTen || g.nguoiChuTriTuDo || g.nguoiTaoTen || state.user?.tenNhanVien || '')}" ${g.daKhoa ? 'readonly' : ''}></div>
           </div>
-          <input id="gbTime" type="hidden" value="${escAttr(toDatetimeLocal(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || hanoiNowIso()))}">
         </div>
 
         <div class="card" style="box-shadow:none">
@@ -2224,11 +2253,16 @@ function renderGiaoBanModal(){
           `}
         </div>
 
+        <div class="card" style="box-shadow:none">
+          <h3 class="section-title">C. Kết luận</h3>
+          <textarea id="gbKetLuan" ${g.daKhoa ? 'readonly' : ''}>${esc(g.ketLuan || '')}</textarea>
+        </div>
+
         ${renderGiaoBanFinishBlock(g)}
       </div>
     </div>
   `, true);
-  setTimeout(() => $$('textarea').forEach(autoGrow), 0);
+  setTimeout(() => { $$('textarea').forEach(autoGrow); setupSignaturePad(); }, 0);
 }
 
 function renderGiaoBanDotXuatModal(){
@@ -2249,7 +2283,8 @@ function renderGiaoBanDotXuatModal(){
           <div class="grid">
             <div class="col-3"><label>Thời gian giao ban</label><div class="gb-time-row"><div id="gbTimeText" class="report-value">${dateTimeVi(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || hanoiNowIso())}</div>${g.trangThai !== STATUS_DA && !g.daKhoa ? `<button class="gb-time-refresh-icon" type="button" onclick="updateGiaoBanTimeNow()" title="Cập nhật thời gian hiện tại" aria-label="Cập nhật thời gian hiện tại"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></button>` : ''}</div><input id="gbTime" type="hidden" value="${escAttr(toDatetimeLocal(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || hanoiNowIso()))}"></div>
             <div class="col-3"><label>Khoa/phòng</label><select id="gbDotDept" class="equal-control" ${g.daKhoa ? 'disabled' : ''}>${deptOptions(g.khoaPhong || state.user?.khoaPhong || '')}</select></div>
-            <div class="col-6"><label>Người chủ trì</label><input id="gbNguoiChuTriTuDo" class="equal-control" value="${escAttr(g.nguoiChuTriTuDo || state.user?.tenNhanVien || '')}" ${g.daKhoa ? 'readonly' : ''}></div>
+            <div class="col-3"><label>Thư ký</label><input class="equal-control" readonly value="${escAttr(g.nguoiTaoTen || state.user?.tenNhanVien || '')}"></div>
+            <div class="col-3"><label>Chủ trì giao ban</label><input id="gbChuTriInput" class="equal-control" list="staffDatalist" value="${escAttr(g.chuTriTen || g.nguoiChuTriTuDo || g.nguoiTaoTen || state.user?.tenNhanVien || '')}" ${g.daKhoa ? 'readonly' : ''}></div>
             <div class="col-12"><label>Thành phần tham dự</label><textarea id="gbThanhPhanThamDu" ${g.daKhoa ? 'readonly' : ''}>${esc(g.thanhPhanThamDu || '')}</textarea></div>
             <div class="col-12"><label>Lý do giao ban</label><textarea id="gbLyDoGiaoBan" ${g.daKhoa ? 'readonly' : ''}>${esc(g.lyDoGiaoBan || '')}</textarea></div>
           </div>
@@ -2261,7 +2296,7 @@ function renderGiaoBanDotXuatModal(){
         </div>
 
         <div class="card" style="box-shadow:none">
-          <h3 class="section-title">III. Kết luận</h3>
+          <h3 class="section-title">C. Kết luận</h3>
           <textarea id="gbKetLuan" ${g.daKhoa ? 'readonly' : ''}>${esc(g.ketLuan || '')}</textarea>
         </div>
 
@@ -2269,7 +2304,7 @@ function renderGiaoBanDotXuatModal(){
       </div>
     </div>
   `, true);
-  setTimeout(() => $$('textarea').forEach(autoGrow), 0);
+  setTimeout(() => { $$('textarea').forEach(autoGrow); setupSignaturePad(); }, 0);
 }
 
 function renderGiaoBanFinishBlock(g){
@@ -2281,9 +2316,27 @@ function renderGiaoBanFinishBlock(g){
       ${g.pdfGiaoBanUrl ? `<div class="btn-row"><button class="btn ok" onclick="openGiaoBanPdf('${escAttr(g.pdfGiaoBanUrl)}','${escAttr((g.loaiGiaoBan || '') + ' - ' + formatDeptPlain(g.khoaPhong || '') + ' - ' + dateTimeVi(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || ''))}')">Xem PDF đã ký</button><a class="app-icon-btn" href="${escAttr(toPdfDownloadUrl(g.pdfGiaoBanUrl))}" target="_blank" title="Tải PDF" aria-label="Tải PDF">${iconDownload()}</a></div>` : '<div class="empty">Chưa có file PDF đã ký.</div>'}
     </div>
   ` : `
-    <div class="btn-row sign-bottom-small">
-      <button class="btn secondary" onclick="saveGiaoBanDraft(this)">Lưu nháp</button>
-      <button class="btn ok" onclick="finishGiaoBan(this)">Chủ trì ký xác nhận kết thúc giao ban</button>
+    <div class="card" style="box-shadow:none">
+      <h3 class="section-title">Hoàn tất / ký giao ban</h3>
+      <div class="sign-mode-box">
+        <label>Hình thức ký</label>
+        <div class="sign-options">
+          <label class="sign-option"><input type="radio" name="gbHinhThucKy" value="Ký xác nhận trên hệ thống" ${g.hinhThucKy !== 'Ký tay trực tiếp trên màn hình' ? 'checked' : ''} onchange="toggleSignaturePad()"><span><strong>Ký xác nhận trên hệ thống</strong><br><span class="meta">Không cần vẽ chữ ký, PDF ghi nhận chủ trì đã xác nhận trên hệ thống.</span></span></label>
+          <label class="sign-option"><input type="radio" name="gbHinhThucKy" value="Ký tay trực tiếp trên màn hình" ${g.hinhThucKy === 'Ký tay trực tiếp trên màn hình' ? 'checked' : ''} onchange="toggleSignaturePad()"><span><strong>Ký tay trực tiếp trên màn hình</strong><br><span class="meta">Có thể ký bằng ngón tay, bút cảm ứng, laptop cảm ứng hoặc chuột.</span></span></label>
+        </div>
+        <div id="signaturePadBox" class="signature-pad-wrap hidden">
+          <div class="signature-pad-head">
+            <strong>Chữ ký chủ trì</strong>
+            <button type="button" class="btn secondary" style="min-height:30px;height:30px;padding:0 10px" onclick="clearSignaturePad()">Xóa ký</button>
+          </div>
+          <canvas id="signaturePad" class="signature-pad"></canvas>
+          <div class="signature-pad-note">Ký trực tiếp trong khung này trước khi bấm hoàn tất. Nếu để trống, PDF vẫn xuất nhưng không có ảnh chữ ký.</div>
+        </div>
+      </div>
+      <div class="btn-row sign-bottom-small">
+        <button class="btn secondary" onclick="saveGiaoBanDraft(this)">Lưu nháp</button>
+        <button class="btn ok" onclick="finishGiaoBan(this)">Hoàn tất và xuất PDF</button>
+      </div>
     </div>
   `;
 }
@@ -2302,8 +2355,88 @@ window.updateGiaoBanTimeNow = function(){
   toast('Đã cập nhật thời gian giao ban theo thời điểm hiện tại.');
 }
 
+
+function resolveChairFromInput(raw){
+  const s = String(raw || '').trim();
+  if(!s) return {maNhanVien:'', tenNhanVien:'', chucDanh:''};
+  const q = norm(s);
+  const person = state.personnel.find(p => norm(p.maNhanVien) === q)
+    || state.personnel.find(p => norm(p.tenNhanVien) === q)
+    || state.personnel.find(p => norm([p.maNhanVien, p.tenNhanVien, p.chucDanh].filter(Boolean).join(' ')) === q)
+    || state.personnel.find(p => q.includes(norm(p.maNhanVien)) || q.includes(norm(p.tenNhanVien)));
+  if(person) return {maNhanVien:person.maNhanVien || '', tenNhanVien:person.tenNhanVien || '', chucDanh:person.chucDanh || person.chucDanhHienThi || ''};
+  return {maNhanVien:'', tenNhanVien:s, chucDanh:''};
+}
+
+function getSelectedHinhThucKy(){
+  return document.querySelector('input[name="gbHinhThucKy"]:checked')?.value || 'Ký xác nhận trên hệ thống';
+}
+
+function setupSignaturePad(){
+  const canvas = document.getElementById('signaturePad');
+  if(!canvas) return;
+  state.signaturePad.canvas = canvas;
+  const rect = canvas.getBoundingClientRect();
+  const ratio = window.devicePixelRatio || 1;
+  canvas.width = Math.max(1, Math.floor(rect.width * ratio));
+  canvas.height = Math.max(1, Math.floor(rect.height * ratio));
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(ratio,0,0,ratio,0,0);
+  ctx.lineWidth = 2.2;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  state.signaturePad.ctx = ctx;
+  canvas.onpointerdown = e => {
+    state.signaturePad.drawing = true;
+    canvas.setPointerCapture(e.pointerId);
+    const p = getCanvasPoint(e, canvas);
+    ctx.beginPath();
+    ctx.moveTo(p.x, p.y);
+  };
+  canvas.onpointermove = e => {
+    if(!state.signaturePad.drawing) return;
+    const p = getCanvasPoint(e, canvas);
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+    state.signaturePad.hasInk = true;
+  };
+  const stop = e => { state.signaturePad.drawing = false; };
+  canvas.onpointerup = stop;
+  canvas.onpointercancel = stop;
+  toggleSignaturePad();
+}
+
+function getCanvasPoint(e, canvas){
+  const r = canvas.getBoundingClientRect();
+  return {x:e.clientX - r.left, y:e.clientY - r.top};
+}
+
+window.toggleSignaturePad = function(){
+  const box = document.getElementById('signaturePadBox');
+  if(!box) return;
+  box.classList.toggle('hidden', getSelectedHinhThucKy() !== 'Ký tay trực tiếp trên màn hình');
+}
+
+window.clearSignaturePad = function(){
+  const canvas = state.signaturePad.canvas;
+  const ctx = state.signaturePad.ctx;
+  if(canvas && ctx){
+    const r = canvas.getBoundingClientRect();
+    ctx.clearRect(0,0,r.width,r.height);
+    state.signaturePad.hasInk = false;
+  }
+}
+
+function getSignatureDataUrl(){
+  if(getSelectedHinhThucKy() !== 'Ký tay trực tiếp trên màn hình') return '';
+  const canvas = state.signaturePad.canvas;
+  if(!canvas || !state.signaturePad.hasInk) return '';
+  return canvas.toDataURL('image/png');
+}
+
 function collectGiaoBanPayload(){
   const g = state.currentGiaoBan;
+  const chuTri = resolveChairFromInput($('#gbChuTriInput')?.value || g.chuTriTen || g.nguoiChuTriTuDo || g.nguoiTaoTen || state.user?.tenNhanVien || '');
   const payload = {
     giaoBanID: g.giaoBanID,
     isVirtual: !!g.isVirtual,
@@ -2321,7 +2454,12 @@ function collectGiaoBanPayload(){
     noiDungKhac: $('#gbNoiDungKhac')?.value || '',
     noiDungGiaoBanKhac: $('#gbNoiDungGiaoBanKhac')?.value || '',
     khoaPhong: $('#gbDotDept')?.value || g.khoaPhong || '',
-    nguoiChuTriTuDo: $('#gbNguoiChuTriTuDo')?.value || '',
+    chuTriMa: chuTri.maNhanVien || '',
+    chuTriTen: chuTri.tenNhanVien || '',
+    chuTriChucDanh: chuTri.chucDanh || '',
+    nguoiChuTriTuDo: chuTri.tenNhanVien || '',
+    hinhThucKy: getSelectedHinhThucKy(),
+    chuKyChuTriDataUrl: getSignatureDataUrl(),
     thanhPhanThamDu: $('#gbThanhPhanThamDu')?.value || '',
     lyDoGiaoBan: $('#gbLyDoGiaoBan')?.value || '',
     noiDungDotXuat: $('#gbNoiDungDotXuat')?.value || '',
@@ -2437,6 +2575,17 @@ function renderSettingsTab(){
       </div>
     </div>
 
+
+    <div class="card">
+      <h2 class="section-title">Cấu hình mẫu PDF giao ban</h2>
+      <p class="meta">Admin upload trực tiếp file Word mẫu. Backend sẽ chuyển sang Google Docs template và dùng khi hoàn tất/xuất PDF giao ban. Nếu mẫu chưa gắn biến, hệ thống vẫn dựng nội dung theo đúng đề mục BM04/BM06 trên khung trang của mẫu.</p>
+      <div class="template-config-grid">
+        ${renderPdfTemplateBox('BM04', 'Mẫu BM04 - Giao ban thường trực')}
+        ${renderPdfTemplateBox('BM06', 'Mẫu BM06 - Biên bản họp / giao ban đột xuất')}
+      </div>
+      <p class="meta" style="margin-top:10px">Lưu ý: cần bật Drive API nâng cao trong Apps Script: Dịch vụ/Services → thêm Drive API.</p>
+    </div>
+
     <div class="card">
       <h2 class="section-title">Cấu hình trang thiết bị Truyền máu</h2>
       <p class="meta">Admin có thể thêm thiết bị mới, sửa tên, đơn vị, số lượng HĐ BT mặc định và số lượng Hỏng mặc định. Cấu hình này sẽ tự điền vào mục bàn giao tài sản khi ô Khoa/phòng đang chọn có chứa chữ “Truyền máu”.</p>
@@ -2454,6 +2603,65 @@ function renderSettingsTab(){
     </div>
   `;
   bindSettingsEquipmentEvents();
+  bindPdfTemplateEvents();
+}
+
+
+function renderPdfTemplateBox(type, title){
+  const key = String(type || '').toLowerCase();
+  const cfg = state.pdfTemplateConfig?.[key] || {};
+  const name = cfg.name || '';
+  const status = cfg.docId ? `Đã cấu hình: ${esc(name || cfg.docId)}` : 'Chưa cấu hình mẫu.';
+  return `
+    <div class="template-box">
+      <strong>${esc(title)}</strong>
+      <div class="template-status" id="tplStatus${escAttr(type)}">${status}</div>
+      <div class="template-file"><input id="tplFile${escAttr(type)}" type="file" accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"></div>
+      <div class="btn-row" style="margin-top:10px">
+        <button id="uploadTpl${escAttr(type)}" class="btn primary" type="button">Upload ${esc(type)}</button>
+        <button id="testTpl${escAttr(type)}" class="btn secondary" type="button">Kiểm tra mẫu</button>
+      </div>
+    </div>`;
+}
+
+function bindPdfTemplateEvents(){
+  ['BM04','BM06'].forEach(type => {
+    document.getElementById('uploadTpl' + type)?.addEventListener('click', () => uploadPdfTemplate(type, document.getElementById('uploadTpl' + type)));
+    document.getElementById('testTpl' + type)?.addEventListener('click', () => testPdfTemplate(type, document.getElementById('testTpl' + type)));
+  });
+}
+
+function readFileAsDataUrl(file){
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || ''));
+    reader.onerror = () => reject(new Error('Không đọc được file.'));
+    reader.readAsDataURL(file);
+  });
+}
+
+async function uploadPdfTemplate(type, btn){
+  const input = document.getElementById('tplFile' + type);
+  const file = input?.files?.[0];
+  if(!file) return toast('Vui lòng chọn file Word mẫu ' + type + '.');
+  if(!/\.(doc|docx)$/i.test(file.name)) return toast('Chỉ nhận file Word .doc hoặc .docx.');
+  await withButton(btn, 'Đang upload...', async () => {
+    const dataUrl = await readFileAsDataUrl(file);
+    const res = await api('uploadPdfTemplate', {templateType:type, fileName:file.name, mimeType:file.type || 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', base64:dataUrl});
+    state.pdfTemplateConfig = res.data.config;
+    renderSettingsTab();
+    const missing = res.data.check?.missing || [];
+    toast(missing.length ? `Đã upload ${type}. Mẫu chưa có ${missing.length} biến, hệ thống sẽ dùng khung mặc định nếu cần.` : `Đã upload mẫu ${type}.`);
+  });
+}
+
+async function testPdfTemplate(type, btn){
+  await withButton(btn, 'Đang kiểm tra...', async () => {
+    const res = await api('testPdfTemplate', {templateType:type});
+    const check = res.data.check || {};
+    const missing = check.missing || [];
+    toast(missing.length ? `Mẫu ${type} mở được nhưng thiếu ${missing.length} biến.` : `Mẫu ${type} hợp lệ.`);
+  });
 }
 
 function renderSettingEquipmentRow(it, idx){
