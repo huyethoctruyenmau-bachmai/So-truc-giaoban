@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta id="viewportMeta" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <title>Sổ trực - Giao ban Phòng Truyền máu</title>
-  <link rel="icon" type="image/png" sizes="64x64" href="./APP_ICON_SO_TRUC_64.png?v=85.050626-ACCOUNT-LOGIN-LOADING">
-  <link rel="shortcut icon" type="image/png" href="./APP_ICON_SO_TRUC_64.png?v=85.050626-ACCOUNT-LOGIN-LOADING">
-  <link rel="apple-touch-icon" sizes="180x180" href="./APP_ICON_SO_TRUC_180.png?v=85.050626-ACCOUNT-LOGIN-LOADING">
-  <link rel="manifest" href="./manifest.json?v=85.050626-ACCOUNT-LOGIN-LOADING">
-  <meta name="msapplication-TileImage" content="./APP_ICON_SO_TRUC_192.png?v=85.050626-ACCOUNT-LOGIN-LOADING">
+  <link rel="icon" type="image/png" sizes="64x64" href="./APP_ICON_SO_TRUC_64.png?v=86.050626-ACCOUNT-RESPONSIVE-FORGOT-LOADING">
+  <link rel="shortcut icon" type="image/png" href="./APP_ICON_SO_TRUC_64.png?v=86.050626-ACCOUNT-RESPONSIVE-FORGOT-LOADING">
+  <link rel="apple-touch-icon" sizes="180x180" href="./APP_ICON_SO_TRUC_180.png?v=86.050626-ACCOUNT-RESPONSIVE-FORGOT-LOADING">
+  <link rel="manifest" href="./manifest.json?v=86.050626-ACCOUNT-RESPONSIVE-FORGOT-LOADING">
+  <meta name="msapplication-TileImage" content="./APP_ICON_SO_TRUC_192.png?v=86.050626-ACCOUNT-RESPONSIVE-FORGOT-LOADING">
   <meta name="theme-color" content="#580824">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -201,25 +201,25 @@
     .boot-title{font-size:18px;font-weight:700;margin:0 0 6px;color:var(--g-text)}
     .boot-sub{font-size:13px;color:var(--g-muted);margin:0}
     .app-version{position:fixed;right:12px;bottom:calc(var(--tabbar-h) + 5px);z-index:19;color:var(--g-muted);font-size:11.5px;line-height:1;background:transparent;padding:0;text-align:right;pointer-events:none}
-    .login-screen{min-height:100%;display:grid;place-items:center;padding:24px;background:linear-gradient(145deg,#3f0619,#580824 45%,#f8f1f4 45%)}
-    .login-card{width:100%;max-width:420px;background:#fff;border-radius:26px;padding:22px;box-shadow:0 18px 50px rgba(0,0,0,.22);text-align:center}
+    .login-screen{min-height:100%;display:grid;place-items:center;padding:24px 24px 104px;background:linear-gradient(145deg,#3f0619,#580824 45%,#f8f1f4 45%);position:relative;overflow:hidden}
+    .login-card{width:100%;max-width:420px;background:#fff;border-radius:26px;padding:22px;box-shadow:0 18px 50px rgba(0,0,0,.22);text-align:center;position:relative;z-index:1}
     .login-logo{width:76px;height:76px;border-radius:50%;background:#fff;display:grid;place-items:center;overflow:hidden;margin:0 auto 12px;box-shadow:0 2px 10px rgba(0,0,0,.12);position:relative}
     .login-hospital{font-family:"Segoe UI",Roboto,Arial,"Noto Sans",Tahoma,sans-serif;margin:0 0 5px;color:#1a73e8;font-size:15px;font-weight:600;text-align:center;letter-spacing:0;line-height:1.35}
     .login-center{font-family:"Segoe UI",Roboto,Arial,"Noto Sans",Tahoma,sans-serif;margin:0 0 5px;color:var(--wine);font-size:18px;font-weight:700;text-align:center;letter-spacing:0;line-height:1.35}
     .login-title{font-family:"Segoe UI",Roboto,Arial,"Noto Sans",Tahoma,sans-serif;margin:0 0 16px;color:var(--wine-dark);font-size:25px;font-weight:800;text-align:center;letter-spacing:0;line-height:1.35}
     .login-version{margin:12px 0 0;color:var(--g-muted);font-size:13px;text-align:center;line-height:1.4}
     .login-links{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:13px;font-size:13.5px;line-height:1.4}
-    .login-links a{color:var(--g-blue);text-decoration:none;font-weight:600}.login-links a:hover{text-decoration:underline}.login-links .forgot-link{color:var(--g-danger)}
-    .login-author{margin-top:16px;padding-top:12px;border-top:1px solid var(--line);font-size:12.5px;line-height:1.45;color:var(--g-muted);text-align:center}.login-author p{margin:3px 0}.login-author strong{color:#5f3b49}
+    .login-links a{color:var(--g-blue);text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:6px}.login-links a:hover{text-decoration:underline}.login-links .forgot-link{color:var(--g-danger)}
+    .login-author{position:absolute;left:0;right:0;bottom:18px;z-index:0;text-align:center;padding:0 15px;color:#666;font-size:13.5px;line-height:1.6}.login-author p{margin:3px 0}.login-author strong{color:#666;font-size:14.5px}
     .password-wrap{position:relative}.password-wrap input{padding-right:42px}.password-toggle{position:absolute;right:1px;top:1px;bottom:1px;width:38px;display:grid;place-items:center;border:0;background:transparent;color:#777;font-size:16px;cursor:pointer;border-radius:0 4px 4px 0}.password-toggle:hover{background:#f1f3f4;color:#333}
-    .login-loading-overlay{position:fixed;inset:0;z-index:180;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;color:var(--g-text)}
-    .login-loading-logo{position:relative;width:168px;height:168px;border-radius:24px;overflow:hidden;margin-bottom:18px;background:#fff;box-shadow:0 10px 30px rgba(0,0,0,.10)}
-    .login-loading-logo img{width:100%;height:100%;object-fit:contain;display:block;padding:8px}.login-loading-logo::after{content:"";position:absolute;inset:0;left:-150%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-24deg);animation:shimmer 2.2s infinite}
-    .login-loading-text{font-size:19px;font-weight:800;color:var(--wine-dark);margin:0 0 8px}.login-loading-progress{font-size:24px;font-weight:800;color:var(--g-blue);min-height:28px}.login-loading-sub{font-size:13px;color:var(--g-muted);margin-top:6px}
-    @keyframes shimmer{100%{left:150%}}
-    .account-header{display:flex;align-items:flex-start;gap:12px;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:12px}.account-avatar{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:#fff0f5;color:var(--wine);font-size:28px;flex:0 0 auto}.account-title{margin:0;color:var(--wine-dark);font-size:21px;line-height:1.25}.account-sub{margin:4px 0 0;color:var(--muted);font-size:13px}.account-info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.account-info-item{border:1px solid var(--line);background:#fffafb;border-radius:12px;padding:10px}.account-info-label{font-size:13px;color:var(--muted);font-weight:700;margin-bottom:3px}.account-info-value{font-size:15.5px;color:var(--text);font-weight:600;word-break:break-word}.account-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.account-setup-panel{margin-top:12px}.account-setup-content{margin-top:10px}.account-setup-content>.card:first-child{margin-top:0}
+    .login-loading-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background-color:#ffffff;display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:9999;transition:opacity .3s ease;text-align:center;color:#202124;background-image:radial-gradient(circle at 15% 50%,rgba(0,91,170,.1) 0%,rgba(0,91,170,0) 25%),radial-gradient(circle at 85% 30%,rgba(32,201,151,.1) 0%,rgba(32,201,151,0) 20%),radial-gradient(circle at 25% 80%,rgba(0,91,170,.05) 0%,rgba(0,91,170,0) 20%);animation:float-particles 20s linear infinite}
+    .login-loading-logo{position:relative;width:300px;height:300px;margin-bottom:25px;overflow:hidden;border-radius:15px;background:#fff}
+    .login-loading-logo img{width:100%;height:100%;display:block;object-fit:contain}.login-loading-logo::after{content:"";position:absolute;top:0;left:-150%;width:100%;height:100%;background:linear-gradient(to right,transparent 0%,rgba(255,255,255,.4) 50%,transparent 100%);transform:skewX(-25deg);animation:shimmer-fixed 2.5s infinite cubic-bezier(.4,0,.2,1)}
+    .login-loading-text{font-size:20px;font-weight:bold;color:#333;margin:0 0 10px}.login-loading-progress{font-size:24px;font-weight:bold;color:#005baa;min-height:28px}.login-loading-sub{font-size:13px;color:#5f6368;margin-top:6px}
+    @keyframes shimmer-fixed{100%{left:150%}}@keyframes float-particles{0%{background-position:0% 0%}100%{background-position:100% 200%}}
+    .account-layout{display:grid;grid-template-columns:280px minmax(0,1fr);gap:12px;align-items:start}.account-menu-card{position:sticky;top:0}.account-menu{display:flex;flex-direction:column;gap:10px}.account-menu-btn{width:100%;min-height:48px;justify-content:flex-start;background:linear-gradient(135deg,#f8f1f4 0%,#fff 100%);color:var(--wine-dark);border:1px solid var(--line);border-radius:10px;font-weight:700}.account-menu-btn.active,.account-menu-btn:hover{background:linear-gradient(135deg,var(--wine) 0%,var(--wine-2) 100%);color:#fff;border-color:transparent}.account-content-card{min-height:260px}.account-header{display:flex;align-items:flex-start;gap:12px;border-bottom:3px solid #f8f1f4;padding-bottom:14px;margin-bottom:14px}.account-avatar{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:#fff0f5;color:var(--wine);font-size:30px;flex:0 0 auto}.account-title{margin:0;color:var(--wine-dark);font-size:21px;line-height:1.25}.account-sub{margin:4px 0 0;color:var(--muted);font-size:13px}.account-info-grid{display:grid;grid-template-columns:1fr;gap:12px}.account-info-item{margin-bottom:0;padding:15px;background:linear-gradient(135deg,#fffafb 0%,#f8f1f4 100%);border-radius:10px;border:1px solid var(--line);border-left:4px solid var(--wine);transition:all .3s ease}.account-info-label{display:flex;align-items:flex-start;font-weight:bold;color:#5f4a55;margin-bottom:6px;font-size:14px}.account-info-label .info-ico{margin-right:8px;color:var(--wine);width:20px;text-align:left;flex:0 0 auto}.account-info-value{font-size:16px;color:var(--g-text);font-weight:600;margin-left:28px;word-break:break-word}.account-action-form{max-width:760px}.account-setup-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}.account-setup-btn{min-height:46px;border-radius:10px;justify-content:flex-start;background:#fff;color:var(--wine-dark);border:1px solid var(--line);font-weight:700}.account-setup-btn:hover,.account-setup-btn.active{background:#fff0f5;color:var(--wine);border-color:#e8c8d5}.account-setup-content{margin-top:12px}.account-author{display:none;text-align:center;margin:18px 0 6px;color:var(--g-muted);font-size:12.5px;line-height:1.45}
     .modal-small{max-width:520px}.modal-small h3{margin:0 0 12px;color:var(--wine-dark)}.modal-note{font-size:13px;color:var(--muted);line-height:1.45;margin:6px 0 0}
-    @media(max-width:700px){.account-info-grid{grid-template-columns:1fr}.login-card{padding:20px}.login-loading-logo{width:140px;height:140px}}
+    @media(max-width:760px){.login-screen{padding:18px 18px 112px}.login-card{padding:20px}.login-loading-logo{width:300px;height:300px}.account-layout{display:block}.account-menu-card{position:static}.account-menu{gap:8px}.account-menu-btn{min-height:46px}.account-content-card{margin-top:12px}.account-setup-buttons{grid-template-columns:1fr}.account-info-grid{grid-template-columns:1fr}.login-author{font-size:12.5px;bottom:14px}}
     .toast{
       position:fixed;left:50%;bottom:calc(var(--tabbar-h) + 14px);transform:translateX(-50%);z-index:100;
       background:#2a111a;color:white;border-radius:999px;padding:10px 14px;box-shadow:0 8px 25px rgba(0,0,0,.2);max-width:92vw;font-size:13px
@@ -686,7 +686,7 @@
 <body>
   <div id="bootScreen" class="boot-screen">
     <div class="boot-box">
-      <div class="login-logo logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=85.050626-ACCOUNT-LOGIN-LOADING" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
+      <div class="login-logo logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=86.050626-ACCOUNT-RESPONSIVE-FORGOT-LOADING" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
       <p class="boot-title">Đang mở Sổ trực điện tử</p>
       <p class="boot-sub">Đang khôi phục phiên đăng nhập</p>
     </div>
@@ -694,7 +694,7 @@
 
   <div id="loginScreen" class="login-screen hidden">
     <div class="login-card">
-      <div class="login-logo logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=85.050626-ACCOUNT-LOGIN-LOADING" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
+      <div class="login-logo logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=86.050626-ACCOUNT-RESPONSIVE-FORGOT-LOADING" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
       <p class="login-hospital">B&#7879;nh vi&#7879;n B&#7841;ch Mai</p>
       <p class="login-center">Trung t&#226;m Huy&#7871;t h&#7885;c v&#224; Truy&#7873;n m&#225;u</p>
       <h1 class="login-title">S&#7893; Tr&#7921;c - Giao ban</h1>
@@ -717,17 +717,17 @@
         <span style="color:#c8b8c1">|</span>
         <a href="#" id="forgotPasswordLink" class="forgot-link">Quên mật khẩu?</a>
       </div>
-      <div class="login-author">
-        <p><strong>PHẦN MỀM SỔ TRỰC - GIAO BAN</strong></p>
-        <p>Developed by Nguyễn Văn Chính</p>
-        <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
-      </div>
-      <p class="login-version">Version: 85.050626-ACCOUNT-LOGIN-LOADING</p>
+      <p class="login-version">Version: 86.050626-ACCOUNT-RESPONSIVE-FORGOT-LOADING</p>
+    </div>
+    <div class="login-author">
+      <p><strong>PHẦN MỀM SỔ TRỰC - GIAO BAN</strong></p>
+      <p>Developed by Nguyễn Văn Chính</p>
+      <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
     </div>
   </div>
 
   <div id="loginLoadingOverlay" class="login-loading-overlay hidden">
-    <div class="login-loading-logo"><img src="./LOGO%20TRON%20BVBM.png?v=85.050626-ACCOUNT-LOGIN-LOADING" alt="Logo Bệnh viện Bạch Mai"></div>
+    <div class="login-loading-logo"><img src="./LOGO%20TRON%20BVBM.png?v=86.050626-ACCOUNT-RESPONSIVE-FORGOT-LOADING" alt="Logo Bệnh viện Bạch Mai"></div>
     <p class="login-loading-text" id="loginLoadingText">Đang tải dữ liệu...</p>
     <div class="login-loading-progress" id="loginLoadingProgress">0%</div>
     <div class="login-loading-sub">Vui lòng chờ trong giây lát</div>
@@ -736,7 +736,7 @@
   <div id="app" class="app-shell hidden">
     <header class="topbar">
       <div class="brand">
-        <div class="brand-icon logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=85.050626-ACCOUNT-LOGIN-LOADING" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
+        <div class="brand-icon logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=86.050626-ACCOUNT-RESPONSIVE-FORGOT-LOADING" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
         <div>
           <div id="brandTitle" class="brand-title">Trung t&#226;m Huy&#7871;t h&#7885;c v&#224; Truy&#7873;n m&#225;u</div>
           <div id="brandSub" class="brand-sub">Khoa</div>
@@ -766,7 +766,7 @@
       <button class="tab-btn" data-tab="pdf"><span class="ico">📄</span><span>PDF</span></button>
       <button id="accountTabBtn" class="tab-btn" data-tab="account"><span class="ico">👤</span><span>Tài khoản</span></button>
     </nav>
-    <div class="app-version">Version: 85.050626-ACCOUNT-LOGIN-LOADING</div>
+    <div class="app-version">Version: 86.050626-ACCOUNT-RESPONSIVE-FORGOT-LOADING</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -774,7 +774,7 @@
   <div id="toast" class="toast hidden"></div>
 
 <script>
-const APP_VERSION = 'INDEX-85.050626-ACCOUNT-LOGIN-LOADING';
+const APP_VERSION = 'INDEX-86.050626-ACCOUNT-RESPONSIVE-FORGOT-LOADING';
 
 function canOpenAdminSettings(){
   return !!(state.user && (state.user.isAdmin || String(state.user.chucVu || '').trim()));
@@ -831,6 +831,8 @@ const state = {
   accountInfo: null,
   accountOptions: {listPhongBan: [], listViTriTruc: [], listChucDanh: []},
   accountSetupOpen: false,
+  accountView: 'info',
+  accountSetupSection: '',
   afterProfileSignRole: '',
   pendingThuKySignatureDataUrl: '',
   pendingThuKySignatureAt: '',
@@ -967,8 +969,8 @@ function bindGlobalEvents(){
   $('#loginPw').addEventListener('keydown', e => { if(e.key === 'Enter') login(); });
   $('#loginMa').addEventListener('keydown', e => { if(e.key === 'Enter') $('#loginPw').focus(); });
   $('#loginPwToggle')?.addEventListener('click', () => togglePasswordInput('loginPw', 'loginPwToggle'));
-  $('#registerAccountLink')?.addEventListener('click', e => { e.preventDefault(); openRegisterAccountModal(); });
-  $('#forgotPasswordLink')?.addEventListener('click', e => { e.preventDefault(); openForgotPasswordModal(); });
+  $('#registerAccountLink')?.addEventListener('click', e => { e.preventDefault(); withInlineBusy(e.currentTarget, 'Đang kiểm tra...', openRegisterAccountModal); });
+  $('#forgotPasswordLink')?.addEventListener('click', e => { e.preventDefault(); withInlineBusy(e.currentTarget, 'Đang mở...', openForgotPasswordModal); });
   $('#logoutBtn').addEventListener('click', logout);
   $$('.tab-btn').forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
   document.addEventListener('input', e => {
@@ -980,7 +982,12 @@ async function login(){
   const maNhanVien = $('#loginMa').value.trim();
   const matKhau = $('#loginPw').value;
   if(!maNhanVien || !matKhau) return toast('Vui lòng nhập mã nhân viên và mật khẩu.');
-  await withButton($('#loginBtn'), 'Đang đăng nhập...', async () => {
+  const btn = $('#loginBtn');
+  const old = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = `<span class="loading-dot"></span>Đang đăng nhập...`;
+  showLoginLoading(3, 'Đang đăng nhập...');
+  try{
     const res = await api('login', {maNhanVien, matKhau}, {noToken:true});
     state.isLoggingOut = false;
     state.sessionGuard++;
@@ -993,7 +1000,13 @@ async function login(){
     await loadInitData({fromLogin:true});
     showLoginLoading(100, 'Hoàn tất');
     setTimeout(hideLoginLoading, 350);
-  });
+  }catch(err){
+    hideLoginLoading();
+    toast(err.message);
+  }finally{
+    btn.disabled = false;
+    btn.innerHTML = old;
+  }
 }
 
 async function logout(){
@@ -1164,6 +1177,17 @@ async function withButton(btn, busyText, fn){
   try{ await fn(); }
   catch(err){ toast(err.message); }
   finally{ btn.disabled = false; btn.innerHTML = old; }
+}
+
+async function withInlineBusy(el, busyText, fn){
+  if(!el) return fn();
+  const old = el.innerHTML;
+  el.style.pointerEvents = 'none';
+  el.style.opacity = '.65';
+  el.innerHTML = `<span class="loading-dot" style="border-color:#d2e3fc;border-top-color:currentColor"></span>${busyText}`;
+  try{ await fn(); }
+  catch(err){ toast(err.message); }
+  finally{ el.style.pointerEvents = ''; el.style.opacity = ''; el.innerHTML = old; }
 }
 
 /* ================= TẠO PHIẾU ================= */
@@ -3437,53 +3461,196 @@ function renderAccountTab(){
   if(!root) return;
   const info = accountInfoFallback();
   const isAdmin = !!(state.user?.isAdmin || info.isAdmin);
+  const view = state.accountView || 'info';
   root.innerHTML = `
-    <div class="card">
-      <div class="account-header">
-        <div class="account-avatar">👤</div>
-        <div>
-          <h2 class="account-title">THÔNG TIN TÀI KHOẢN</h2>
-          <p class="account-sub">Thông tin lấy từ dữ liệu nhân sự dùng chung của Trung tâm.</p>
+    <div class="account-layout">
+      <div class="card account-menu-card">
+        <div class="account-header">
+          <div class="account-avatar">👤</div>
+          <div>
+            <h2 class="account-title">TÀI KHOẢN</h2>
+            <p class="account-sub">${esc(info.tenNhanVien || '')}</p>
+          </div>
+        </div>
+        <div class="account-menu">
+          ${accountMenuButton('info', '👤', 'Thông tin tài khoản', view)}
+          ${accountMenuButton('edit', '✏️', 'Sửa thông tin tài khoản', view)}
+          ${accountMenuButton('password', '🔑', isAdmin ? 'Đổi / reset mật khẩu' : 'Đổi mật khẩu', view)}
+          ${accountMenuButton('setup', '⚙️', 'Setup cấu hình', view)}
+          <button class="account-menu-btn" type="button" onclick="logout()">🚪 Đăng xuất</button>
         </div>
       </div>
-      <div class="account-info-grid">
-        ${accountInfoItem('Tên nhân viên', info.tenNhanVien)}
-        ${accountInfoItem('Mã nhân viên', info.maNhanVien)}
-        ${accountInfoItem('Ngày sinh', info.ngaySinh || 'Chưa cập nhật')}
-        ${accountInfoItem('Email', info.email || 'Chưa cập nhật')}
-        ${accountInfoItem('Chức danh', info.chucDanh || info.chucDanhHienThi || 'Chưa cập nhật')}
-        ${accountInfoItem('Khoa/phòng', info.khoaPhong || info.phongLamViec || 'Chưa cập nhật')}
-        ${accountInfoItem('Vị trí trực', info.viTriTruc || 'Chưa cập nhật')}
-        ${accountInfoItem('Quyền', isAdmin ? 'Admin' : (info.chucVu ? 'Có chức vụ' : 'Người dùng'))}
+      <div class="card account-content-card" id="accountContentPane">
+        ${renderAccountPanelContent(view, info, isAdmin)}
       </div>
-      <div class="account-actions">
-        <button class="btn primary" type="button" onclick="openEditAccountModal()">Sửa thông tin tài khoản</button>
-        <button class="btn secondary" type="button" onclick="openChangePasswordModal()">Đổi mật khẩu</button>
-        ${isAdmin ? '<button class="btn secondary" type="button" onclick="openResetPasswordModal()">Reset mật khẩu (Admin)</button>' : ''}
-        <button class="btn secondary" type="button" onclick="toggleAccountSetup()">Setup cấu hình</button>
-        <button class="btn danger" type="button" onclick="logout()">Đăng xuất</button>
-      </div>
-      ${!state.accountInfo ? '<p class="meta" style="margin-top:10px">Đang tải thông tin tài khoản chi tiết...</p>' : ''}
     </div>
-    <div id="accountSetupPanel" class="account-setup-panel ${state.accountSetupOpen ? '' : 'hidden'}">
-      <div class="card">
-        <h2 class="section-title">Setup cấu hình</h2>
-        <p class="meta">Các cấu hình trước đây trong tab Cài đặt được chuyển vào khu vực này.</p>
-      </div>
-      <div id="accountSetupContent" class="account-setup-content"></div>
-    </div>
-    <div style="text-align:center;margin:18px 0 6px;color:var(--g-muted);font-size:12.5px;line-height:1.45">
+    <div class="account-author">
       <p style="margin:3px 0;font-weight:700;color:#5f3b49">PHẦN MỀM SỔ TRỰC - GIAO BAN</p>
       <p style="margin:3px 0">Developed by Nguyễn Văn Chính</p>
       <p style="margin:3px 0">Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
     </div>
   `;
-  if(state.accountSetupOpen) renderSettingsTab();
+  bindAccountPanel(view);
   if(!state.accountInfo && state.token && state.initLoaded) loadAccountInfoSilently();
 }
 
-function accountInfoItem(label, value){
-  return `<div class="account-info-item"><div class="account-info-label">${esc(label)}</div><div class="account-info-value">${esc(value || '')}</div></div>`;
+function accountMenuButton(view, icon, label, active){
+  return `<button class="account-menu-btn ${active === view ? 'active' : ''}" type="button" onclick="setAccountView('${escAttr(view)}')"><span>${icon}</span> ${esc(label)}</button>`;
+}
+
+function setAccountView(view){
+  state.accountView = view || 'info';
+  if(state.accountView !== 'setup') state.accountSetupSection = '';
+  renderAccountTab();
+}
+
+function renderAccountPanelContent(view, info, isAdmin){
+  if(view === 'edit') return renderAccountEditPanel(info);
+  if(view === 'password') return renderAccountPasswordPanel(isAdmin);
+  if(view === 'setup') return renderAccountSetupPanel();
+  return renderAccountInfoPanel(info, isAdmin);
+}
+
+function renderAccountInfoPanel(info, isAdmin){
+  return `
+    <div class="account-header">
+      <div class="account-avatar">👤</div>
+      <div>
+        <h2 class="account-title">THÔNG TIN TÀI KHOẢN</h2>
+        <p class="account-sub">Thông tin lấy từ dữ liệu nhân sự dùng chung của Trung tâm.</p>
+      </div>
+    </div>
+    <div class="account-info-grid">
+      ${accountInfoItem('👤', 'Tên nhân viên', info.tenNhanVien)}
+      ${accountInfoItem('🪪', 'Mã nhân viên', info.maNhanVien)}
+      ${accountInfoItem('📅', 'Ngày sinh', info.ngaySinh || 'Chưa cập nhật')}
+      ${accountInfoItem('✉️', 'Email', info.email || 'Chưa cập nhật')}
+      ${accountInfoItem('💼', 'Chức danh', info.chucDanh || info.chucDanhHienThi || 'Chưa cập nhật')}
+      ${accountInfoItem('🏢', 'Khoa/phòng', info.khoaPhong || info.phongLamViec || 'Chưa cập nhật')}
+      ${accountInfoItem('📍', 'Vị trí trực', info.viTriTruc || 'Chưa cập nhật')}
+      ${accountInfoItem('🛡️', 'Quyền', isAdmin ? 'Admin' : (info.chucVu ? 'Có chức vụ' : 'Người dùng'))}
+    </div>
+    ${!state.accountInfo ? '<p class="meta" style="margin-top:10px">Đang tải thông tin tài khoản chi tiết...</p>' : ''}
+  `;
+}
+
+function renderAccountEditPanel(info){
+  const opts = state.accountOptions || {listPhongBan: [], listViTriTruc: [], listChucDanh: []};
+  return `
+    <div class="account-header">
+      <div class="account-avatar">✏️</div>
+      <div>
+        <h2 class="account-title">SỬA THÔNG TIN TÀI KHOẢN</h2>
+        <p class="account-sub">Chỉ cập nhật thông tin cá nhân của tài khoản đang đăng nhập.</p>
+      </div>
+    </div>
+    <div class="grid account-action-form">
+      <div class="col-12"><label>Ngày sinh</label><input id="editAccNgaySinh" type="date" value="${escAttr(info.ngaySinhIso || '')}"></div>
+      <div class="col-12"><label>Email</label><input id="editAccEmail" type="email" value="${escAttr(info.email || '')}" placeholder="Nhập email"></div>
+      <div class="col-12"><label>Chức danh</label><select id="editAccChucDanh">${optionHtml(opts.listChucDanh, info.chucDanh || info.chucDanhHienThi || '')}</select></div>
+      <div class="col-12"><label>Khoa/phòng</label><select id="editAccKhoaPhong">${optionHtml(opts.listPhongBan || state.khoaPhong, info.khoaPhong || info.phongLamViec || '')}</select></div>
+      <div class="col-12"><label>Vị trí trực</label><select id="editAccViTriTruc">${optionHtml(opts.listViTriTruc, info.viTriTruc || '')}</select></div>
+    </div>
+    <div class="btn-row"><button id="saveAccountInfoBtn" class="btn primary" onclick="saveAccountInfo()">Cập nhật thông tin</button></div>
+  `;
+}
+
+function renderAccountPasswordPanel(isAdmin){
+  return `
+    <div class="account-header">
+      <div class="account-avatar">🔑</div>
+      <div>
+        <h2 class="account-title">${isAdmin ? 'ĐỔI / RESET MẬT KHẨU' : 'ĐỔI MẬT KHẨU'}</h2>
+        <p class="account-sub">Sau khi đổi mật khẩu cá nhân, app sẽ đăng xuất để đăng nhập lại.</p>
+      </div>
+    </div>
+    <div class="grid account-action-form">
+      ${passwordFieldHtml('oldPassword', 'Mật khẩu cũ', 'Nhập mật khẩu hiện tại')}
+      ${passwordFieldHtml('newPassword', 'Mật khẩu mới', 'Nhập mật khẩu mới')}
+      ${passwordFieldHtml('confirmPassword', 'Xác nhận mật khẩu', 'Nhập lại mật khẩu mới')}
+    </div>
+    <div class="btn-row"><button id="changePasswordBtn" class="btn primary" onclick="saveChangePassword()">Xác nhận đổi mật khẩu</button></div>
+    ${isAdmin ? `
+      <div class="list-card" style="margin-top:18px">
+        <strong style="color:var(--wine-dark)">Reset mật khẩu nhân viên (Admin)</strong>
+        <p class="meta">Chỉ admin được dùng. Tài khoản được reset sẽ bị hủy các phiên đăng nhập đang mở.</p>
+        <div class="grid account-action-form">
+          <div class="col-12"><label>Mã nhân viên cần reset</label><input id="resetTargetMa" placeholder="Nhập mã nhân viên"></div>
+          ${passwordFieldHtml('resetNewPassword', 'Mật khẩu mới', 'Nhập mật khẩu mới')}
+        </div>
+        <div class="btn-row"><button id="resetPasswordBtn" class="btn danger" onclick="saveResetPasswordByAdmin()">Reset mật khẩu</button></div>
+      </div>` : ''}
+  `;
+}
+
+function renderAccountSetupPanel(){
+  const section = state.accountSetupSection || '';
+  return `
+    <div class="account-header">
+      <div class="account-avatar">⚙️</div>
+      <div>
+        <h2 class="account-title">SETUP CẤU HÌNH</h2>
+        <p class="account-sub">Chọn nhóm cấu hình cần mở. Trên điện thoại, mỗi nhóm mở bằng bảng popup có nút X để đóng.</p>
+      </div>
+    </div>
+    ${accountSetupButtonsHtml(section)}
+    <div id="accountSetupContent" class="account-setup-content">
+      ${section ? renderAccountSetupSectionHtml(section) : '<div class="empty" style="margin-top:12px">Chọn một nhóm cấu hình ở trên để xem nội dung.</div>'}
+    </div>
+  `;
+}
+
+function accountSetupButtonsHtml(active){
+  const items = [
+    ['signature','✍️','Chữ ký'],
+    ['equipment','🧰','Cấu hình trang thiết bị'],
+    ['templates','📄','Mẫu phiếu họp/giao ban'],
+    ['global','🧩','Cấu hình biến toàn cục'],
+    ['variables','📚','Bảng biến mẫu'],
+    ['info','🔗','Thông tin chung: API đang dùng']
+  ];
+  return `<div class="account-setup-buttons">${items.map(([key,icon,label]) => `<button class="account-setup-btn ${active === key ? 'active' : ''}" type="button" onclick="openAccountSetupSection('${key}')">${icon} ${esc(label)}</button>`).join('')}</div>`;
+}
+
+function openAccountSetupSection(section){
+  if(isAccountMobileLayout()){
+    openModal(`
+      <div class="modal-card">
+        <div class="modal-head"><div class="modal-title">${esc(accountSetupSectionTitle(section))}</div><button class="close-btn" onclick="closeModal()">×</button></div>
+        <div id="accountSetupModalContent" style="margin-top:12px">${renderAccountSetupSectionHtml(section)}</div>
+      </div>
+    `);
+    bindAccountSetupSection(section);
+    return;
+  }
+  state.accountSetupSection = section;
+  state.accountView = 'setup';
+  renderAccountTab();
+}
+
+function accountSetupSectionTitle(section){
+  const map = {
+    signature:'Chữ ký',
+    equipment:'Cấu hình trang thiết bị',
+    templates:'Mẫu phiếu họp/giao ban',
+    global:'Cấu hình biến toàn cục',
+    variables:'Bảng biến mẫu',
+    info:'Thông tin chung'
+  };
+  return map[section] || 'Setup cấu hình';
+}
+
+function isAccountMobileLayout(){
+  return window.matchMedia && window.matchMedia('(max-width: 760px)').matches;
+}
+
+function bindAccountPanel(view){
+  if(view === 'setup' && state.accountSetupSection) bindAccountSetupSection(state.accountSetupSection);
+  setTimeout(() => $$('textarea').forEach(autoGrow), 0);
+}
+
+function accountInfoItem(icon, label, value){
+  return `<div class="account-info-item"><div class="account-info-label"><span class="info-ico">${esc(icon || '')}</span>${esc(label)}</div><div class="account-info-value">${esc(value || '')}</div></div>`;
 }
 
 async function loadAccountInfoSilently(){
@@ -3600,7 +3767,9 @@ async function saveResetPasswordByAdmin(){
 }
 
 function toggleAccountSetup(){
-  state.accountSetupOpen = !state.accountSetupOpen;
+  state.accountView = 'setup';
+  state.accountSetupOpen = true;
+  if(!state.accountSetupSection) state.accountSetupSection = '';
   renderAccountTab();
 }
 
@@ -3665,8 +3834,8 @@ function openForgotPasswordModal(){
       <div class="grid" style="margin-top:12px">
         <div class="col-12"><label>Mã nhân viên</label><input id="forgotMaNV" value="${escAttr(currentMa)}" placeholder="Nhập mã nhân viên"></div>
       </div>
-      <p class="modal-note">App này không gửi mật khẩu qua email. Chức năng này dùng để kiểm tra tài khoản và hướng dẫn liên hệ quản trị.</p>
-      <div class="btn-row"><button class="btn secondary" onclick="closeModal()">Đóng</button><button id="forgotPasswordBtn" class="btn primary" onclick="submitForgotPassword()">Tiếp tục</button></div>
+      <p class="modal-note">App sẽ gửi mật khẩu hiện tại tới email đã đăng ký trong dữ liệu nhân sự.</p>
+      <div class="btn-row"><button class="btn secondary" onclick="closeModal()">Đóng</button><button id="forgotPasswordBtn" class="btn primary" onclick="submitForgotPassword()">Gửi mật khẩu qua email</button></div>
     </div>
   `);
 }
@@ -3674,9 +3843,10 @@ function openForgotPasswordModal(){
 async function submitForgotPassword(){
   const maNhanVien = $('#forgotMaNV')?.value || '';
   if(!maNhanVien) return toast('Vui lòng nhập mã nhân viên.');
-  await withButton($('#forgotPasswordBtn'), 'Đang kiểm tra...', async () => {
+  await withButton($('#forgotPasswordBtn'), 'Đang gửi...', async () => {
     const res = await api('forgotPassword', {maNhanVien}, {noToken:true});
-    toast(res.message || 'Vui lòng liên hệ quản trị/phòng hành chính để được cấp lại mật khẩu.');
+    closeModal();
+    toast(res.message || 'Mật khẩu đã được gửi tới email đã đăng ký.');
   });
 }
 
@@ -3684,46 +3854,82 @@ async function submitForgotPassword(){
 
 
 function getSettingsRenderRoot(){
-  return document.getElementById('accountSetupContent') || document.getElementById('tab-settings');
+  return document.getElementById('accountSetupModalContent') || document.getElementById('accountSetupContent') || document.getElementById('tab-settings');
 }
 
 function renderSettingsTab(){
   const root = getSettingsRenderRoot();
   if(!root) return;
-  const signatureCard = renderMySignatureSettingsCard();
+  const section = state.accountSetupSection || 'signature';
+  root.innerHTML = renderAccountSetupSectionHtml(section);
+  bindAccountSetupSection(section);
+  setTimeout(() => $$('textarea').forEach(autoGrow), 0);
+}
+
+function renderAccountSetupSectionHtml(section){
+  if(section === 'equipment') return renderEquipmentSettingsSection();
+  if(section === 'templates') return renderPdfTemplateSettingsSection();
+  if(section === 'global') return renderPdfGlobalSettingsSection();
+  if(section === 'variables') return renderPdfVariablesSettingsSection();
+  if(section === 'info') return renderGeneralInfoSettingsSection();
+  return renderMySignatureSettingsCard();
+}
+
+function bindAccountSetupSection(section){
+  if(section === 'equipment') return bindSettingsEquipmentEvents();
+  if(section === 'templates') return bindPdfTemplateEvents();
+  if(section === 'global') return bindPdfContentEvents();
+  if(section === 'signature') return bindMySignatureEvents();
+}
+
+function renderEquipmentSettingsSection(){
   if(!canOpenAdminSettings()){
-    root.innerHTML = signatureCard;
-    bindMySignatureEvents();
-    return;
+    return `<div class="empty">Chỉ tài khoản quản trị hoặc nhân sự có Chức vụ được cấu hình trang thiết bị.</div>`;
   }
+  const dept = state.user?.khoaPhong || state.user?.phongLamViec || 'Khoa/phòng hiện tại';
   const items = getTmEquipmentConfig();
   const rows = items.map((it, idx) => renderSettingEquipmentRow(it, idx)).join('');
-  root.innerHTML = signatureCard + `
+  return `
     <div class="card">
-      <h2 class="section-title">Cài đặt</h2>
-      <p class="meta">Tab này dành cho tài khoản quản trị hoặc nhân sự có Chức vụ. Dữ liệu app lưu trong các sheet SESSION, PHIEU, GIAO_BAN, LOG; cấu hình thiết bị và mẫu PDF được lưu trong Script Properties của backend.</p>
-      <div class="list-card">
-        <strong>API đang dùng</strong>
-        <div class="meta" style="word-break:break-all">${esc(API_URL)}</div>
+      <h2 class="section-title">Cấu hình trang thiết bị - ${esc(dept)}</h2>
+      <p class="meta">Danh mục này dùng để tự điền mục bàn giao tài sản cho khoa/phòng đang sử dụng. Hiện dữ liệu cấu hình được lưu ở backend và áp dụng theo danh mục trang thiết bị đang cấu hình cho app.</p>
+      <div class="tm-equip-wrap">
+        <table class="tm-equip-table">
+          <thead><tr><th rowspan="2">STT</th><th rowspan="2">Trang thiết bị, dụng cụ, hóa chất</th><th rowspan="2">Đơn vị</th><th colspan="2">Số lượng mặc định</th><th rowspan="2"></th></tr><tr><th>HĐ BT</th><th>Hỏng</th></tr></thead>
+          <tbody id="tmEquipmentSettingsBody">${rows}</tbody>
+        </table>
       </div>
-      <div class="list-card">
-        <strong>Cấu trúc nhân sự cần có trong sheet DATA</strong>
-        <div class="two-col-text meta">Mã nhân viên · Họ tên · Chức danh · Khoa/phòng · Mật khẩu · Quyền/Role · Trạng thái</div>
+      <div class="btn-row">
+        <button id="addTmEquipmentBtn" class="btn secondary" type="button">Thêm thiết bị</button>
+        <button id="resetTmEquipmentBtn" class="btn secondary" type="button">Khôi phục danh mục mặc định</button>
+        <button id="saveTmEquipmentBtn" class="btn primary">Lưu cấu hình thiết bị</button>
       </div>
-    </div>
+    </div>`;
+}
 
+function renderPdfTemplateSettingsSection(){
+  if(!canOpenAdminSettings()){
+    return `<div class="empty">Chỉ tài khoản quản trị hoặc nhân sự có Chức vụ được cấu hình mẫu phiếu họp/giao ban.</div>`;
+  }
+  return `
     <div class="card">
-      <h2 class="section-title">Cấu hình mẫu PDF giao ban</h2>
-      <p class="meta">Upload file Word mẫu, sau đó dùng bảng biến bên dưới để khai báo vị trí cần chèn dữ liệu. Có thể dùng một biến khối <b>{{APP_NOI_DUNG_GIAO_BAN}}</b> hoặc các biến chi tiết.</p>
+      <h2 class="section-title">Mẫu phiếu họp/giao ban</h2>
+      <p class="meta">Upload file Word mẫu, sau đó dùng bảng biến để khai báo vị trí cần chèn dữ liệu. Có thể dùng biến khối <b>{{APP_NOI_DUNG_GIAO_BAN}}</b> hoặc các biến chi tiết.</p>
       <div class="template-config-grid">
         ${renderPdfTemplateBox('BM04', 'Mẫu Giao ban thường trực')}
         ${renderPdfTemplateBox('BM06', 'Mẫu Biên bản họp')}
       </div>
       <p class="meta" style="margin-top:10px">Cần bật Drive API nâng cao trong Apps Script: Dịch vụ/Services → thêm Drive API.</p>
-    </div>
+    </div>`;
+}
 
+function renderPdfGlobalSettingsSection(){
+  if(!canOpenAdminSettings()){
+    return `<div class="empty">Chỉ tài khoản quản trị hoặc nhân sự có Chức vụ được cấu hình biến toàn cục.</div>`;
+  }
+  return `
     <div class="card">
-      <h2 class="section-title">Cấu hình nội dung PDF toàn cục</h2>
+      <h2 class="section-title">Cấu hình biến toàn cục</h2>
       <p class="meta">Dùng khi file Word có biến <b>{{APP_NOI_DUNG_GIAO_BAN}}</b>. App sẽ thay các biến chi tiết trong nội dung toàn cục rồi chèn vào vị trí biến khối.</p>
       <div class="global-template-grid">
         <div class="global-template-box">
@@ -3741,35 +3947,40 @@ function renderSettingsTab(){
         <button id="savePdfContentBtn" class="btn primary" type="button">Lưu nội dung & định dạng PDF</button>
         <button id="reloadPdfContentBtn" class="btn secondary" type="button">Tải lại cấu hình</button>
       </div>
-    </div>
+    </div>`;
+}
 
+function renderPdfVariablesSettingsSection(){
+  return `
     <div class="card">
-      <h2 class="section-title">Bảng biến mẫu PDF</h2>
-      <p class="meta">Copy đúng tên biến rồi dán vào file mẫu Word/Google Docs. Sau này nếu cập nhật thêm biến mới, bảng này sẽ tự cập nhật theo backend.</p>
+      <h2 class="section-title">Bảng biến mẫu</h2>
+      <p class="meta">Copy đúng tên biến rồi dán vào file mẫu Word/Google Docs. Bảng này được lấy theo cấu hình biến của backend.</p>
       ${renderPdfVariableTable()}
-    </div>
+    </div>`;
+}
 
+function renderGeneralInfoSettingsSection(){
+  const user = state.user || {};
+  return `
     <div class="card">
-      <h2 class="section-title">Cấu hình trang thiết bị Truyền máu</h2>
-      <p class="meta">Admin có thể thêm thiết bị mới, sửa tên, đơn vị, số lượng HĐ BT mặc định và số lượng Hỏng mặc định. Cấu hình này sẽ tự điền vào mục bàn giao tài sản khi ô Khoa/phòng đang chọn có chứa chữ “Truyền máu”.</p>
-      <div class="tm-equip-wrap">
-        <table class="tm-equip-table">
-          <thead><tr><th rowspan="2">STT</th><th rowspan="2">Trang thiết bị, dụng cụ, hóa chất</th><th rowspan="2">Đơn vị</th><th colspan="2">Số lượng mặc định</th><th rowspan="2"></th></tr><tr><th>HĐ BT</th><th>Hỏng</th></tr></thead>
-          <tbody id="tmEquipmentSettingsBody">${rows}</tbody>
-        </table>
+      <h2 class="section-title">Thông tin chung</h2>
+      <div class="list-card">
+        <strong>API đang dùng</strong>
+        <div class="meta" style="word-break:break-all">${esc(API_URL)}</div>
       </div>
-      <div class="btn-row">
-        <button id="addTmEquipmentBtn" class="btn secondary" type="button">Thêm thiết bị</button>
-        <button id="resetTmEquipmentBtn" class="btn secondary" type="button">Khôi phục danh mục mặc định</button>
-        <button id="saveTmEquipmentBtn" class="btn primary">Lưu cấu hình thiết bị</button>
+      <div class="list-card">
+        <strong>Phiên bản frontend</strong>
+        <div class="meta">${esc(APP_VERSION)}</div>
       </div>
-    </div>
-  `;
-  bindMySignatureEvents();
-  bindSettingsEquipmentEvents();
-  bindPdfTemplateEvents();
-  bindPdfContentEvents();
-  setTimeout(() => $$('textarea').forEach(autoGrow), 0);
+      <div class="list-card">
+        <strong>Tài khoản đang đăng nhập</strong>
+        <div class="meta">${esc(user.tenNhanVien || '')} · ${esc(user.maNhanVien || '')} · ${esc(user.khoaPhong || '')}</div>
+      </div>
+      <div class="list-card">
+        <strong>Cấu trúc nhân sự cần có trong sheet DATA</strong>
+        <div class="two-col-text meta">Mã nhân viên · Họ tên · Ngày sinh · Email · Chức danh · Khoa/phòng · Vị trí trực · Mật khẩu · Chức vụ · Vai trò</div>
+      </div>
+    </div>`;
 }
 
 function renderMySignatureSettingsCard(){
@@ -4041,7 +4252,7 @@ function renderSettingEquipmentRow(it, idx){
 }
 
 function bindSettingsEquipmentEvents(){
-  $$(`#tab-settings input[type="number"]`).forEach(el => el.addEventListener('input', () => cleanIntegerInput(el)));
+  $$(`#tmEquipmentSettingsBody input[type="number"]`).forEach(el => el.addEventListener('input', () => cleanIntegerInput(el)));
   $('#addTmEquipmentBtn')?.addEventListener('click', addSettingTmEquipmentRow);
   $('#resetTmEquipmentBtn')?.addEventListener('click', resetDefaultTmEquipmentConfig);
   $('#saveTmEquipmentBtn')?.addEventListener('click', () => saveTmEquipmentConfig($('#saveTmEquipmentBtn')));
