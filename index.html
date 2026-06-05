@@ -697,7 +697,7 @@
         </div>
       </div>
       <button id="loginBtn" class="btn primary" style="width:100%;margin-top:14px">Đăng nhập</button>
-      <p class="login-version">Version: 83.050626-TM-TONG-BN-KTC-GANTACH</p>
+      <p class="login-version">Version: 84.050626-HOP-GIAOBAN-LABEL</p>
     </div>
   </div>
 
@@ -729,11 +729,11 @@
     <nav class="tabbar">
       <button class="tab-btn active" data-tab="create"><span class="ico">➕</span><span>Tạo phiếu</span></button>
       <button class="tab-btn" data-tab="list"><span class="ico">📋</span><span>DS phiếu</span></button>
-      <button class="tab-btn" data-tab="meeting"><span class="ico">🗣️</span><span>Giao ban</span></button>
+      <button class="tab-btn" data-tab="meeting"><span class="ico">🗣️</span><span>Họp</span></button>
       <button class="tab-btn" data-tab="pdf"><span class="ico">📄</span><span>PDF</span></button>
       <button id="settingsTabBtn" class="tab-btn hidden" data-tab="settings"><span class="ico">⚙️</span><span>Cài đặt</span></button>
     </nav>
-    <div class="app-version">Version: 83.050626-TM-TONG-BN-KTC-GANTACH</div>
+    <div class="app-version">Version: 84.050626-HOP-GIAOBAN-LABEL</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -741,7 +741,7 @@
   <div id="toast" class="toast hidden"></div>
 
 <script>
-const APP_VERSION = 'INDEX-83.050626-TM-TONG-BN-KTC-GANTACH';
+const APP_VERSION = 'INDEX-84.050626-HOP-GIAOBAN-LABEL';
 
 function canOpenAdminSettings(){
   return !!(state.user && (state.user.isAdmin || String(state.user.chucVu || '').trim()));
@@ -2102,7 +2102,7 @@ window.saveEditPhieu = async function(phieuID, btn){
 function renderMeetingTab(){
   $('#tab-meeting').innerHTML = `
     <div class="card">
-      <h2 class="section-title">Giao ban</h2>
+      <h2 class="section-title">HỌP/GIAO BAN</h2>
       <div class="grid filter-grid">
         <div class="col-3 date-pair"><label>Từ ngày</label><input id="gbFrom" class="equal-control date-vi-input" type="date"></div>
         <div class="col-3 date-pair"><label>Đến ngày</label><input id="gbTo" class="equal-control date-vi-input" type="date"></div>
@@ -2117,9 +2117,9 @@ function renderMeetingTab(){
         </div>
         <div class="col-3"><label>Trạng thái</label><select id="gbStatus" class="equal-control"><option>Tất cả</option><option>${STATUS_CHUA}</option><option>${STATUS_DA}</option></select></div>
         <div class="col-3 filter-action"><button id="loadGbBtn" class="btn primary">Xem danh sách</button></div>
-        <div class="col-3 filter-action"><button id="createGbBtn" class="btn ok">Tạo phiên giao ban</button></div>
+        <div class="col-3 filter-action"><button id="createGbBtn" class="btn ok">Tạo phiên họp/giao ban</button></div>
       </div>
-      <p class="meta">Tạo phiên giao ban sẽ mở hộp thoại chọn khoa/phòng và loại giao ban. Nếu không lưu nháp hoặc ký kết thúc thì phiên mới chưa được ghi nhận.</p>
+      <p class="meta">Tạo phiên họp/giao ban sẽ mở hộp thoại chọn khoa/phòng và loại phiếu. Nếu không lưu nháp hoặc ký kết thúc thì phiên mới chưa được ghi nhận.</p>
     </div>
     <div id="giaoBanListBox"></div>
   `;
@@ -2217,7 +2217,7 @@ function openCreateGiaoBanDialog(){
   openModal(`
     <div class="modal-card">
       <div class="modal-head">
-        <div class="modal-title">Tạo phiên giao ban</div>
+        <div class="modal-title">Tạo phiên họp/giao ban</div>
         <button class="close-btn" onclick="closeModal()">×</button>
       </div>
       <div class="gb-create-choice">
@@ -2226,7 +2226,7 @@ function openCreateGiaoBanDialog(){
           <select id="createGbDept" class="equal-control">${deptOptions(state.user?.khoaPhong || '')}</select>
         </div>
         <div>
-          <label>Loại giao ban</label>
+          <label>Loại phiếu</label>
           <select id="createGbLoai" class="equal-control">
             <option value="">Chọn loại</option>
             <option value="${LOAI_GIAO_BAN_THUONG_TRUC}">${LOAI_GIAO_BAN_THUONG_TRUC}</option>
@@ -2235,7 +2235,7 @@ function openCreateGiaoBanDialog(){
         </div>
       </div>
       <div class="btn-row">
-        <button class="btn primary" onclick="createGiaoBanFromDialog(false, this)">Tạo phiên giao ban</button>
+        <button class="btn primary" onclick="createGiaoBanFromDialog(false, this)">Tạo phiên họp/giao ban</button>
       </div>
       <p class="meta">Phiên mới chỉ được ghi nhận khi bạn bấm Lưu nháp hoặc Ký kết thúc giao ban.</p>
     </div>
@@ -2245,7 +2245,7 @@ function openCreateGiaoBanDialog(){
 window.createGiaoBanFromDialog = async function(forceCreate, btn){
   const dept = $('#createGbDept')?.value || state.user?.khoaPhong || '';
   const loai = $('#createGbLoai')?.value || '';
-  if(!loai) return toast('Vui lòng chọn loại giao ban.');
+  if(!loai) return toast('Vui lòng chọn loại phiếu.');
   const payload = {
     khoaPhong: dept,
     loaiGiaoBan: loai,
