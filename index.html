@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta id="viewportMeta" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <title>Sổ trực - Giao ban Phòng Truyền máu</title>
-  <link rel="icon" type="image/png" sizes="64x64" href="./APP_ICON_SO_TRUC_64.png?v=83.050626-TM-TONG-BN-KTC-GANTACH">
-  <link rel="shortcut icon" type="image/png" href="./APP_ICON_SO_TRUC_64.png?v=83.050626-TM-TONG-BN-KTC-GANTACH">
-  <link rel="apple-touch-icon" sizes="180x180" href="./APP_ICON_SO_TRUC_180.png?v=83.050626-TM-TONG-BN-KTC-GANTACH">
-  <link rel="manifest" href="./manifest.json?v=83.050626-TM-TONG-BN-KTC-GANTACH">
-  <meta name="msapplication-TileImage" content="./APP_ICON_SO_TRUC_192.png?v=83.050626-TM-TONG-BN-KTC-GANTACH">
+  <link rel="icon" type="image/png" sizes="64x64" href="./APP_ICON_SO_TRUC_64.png?v=85.050626-ACCOUNT-LOGIN-LOADING">
+  <link rel="shortcut icon" type="image/png" href="./APP_ICON_SO_TRUC_64.png?v=85.050626-ACCOUNT-LOGIN-LOADING">
+  <link rel="apple-touch-icon" sizes="180x180" href="./APP_ICON_SO_TRUC_180.png?v=85.050626-ACCOUNT-LOGIN-LOADING">
+  <link rel="manifest" href="./manifest.json?v=85.050626-ACCOUNT-LOGIN-LOADING">
+  <meta name="msapplication-TileImage" content="./APP_ICON_SO_TRUC_192.png?v=85.050626-ACCOUNT-LOGIN-LOADING">
   <meta name="theme-color" content="#580824">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -208,6 +208,18 @@
     .login-center{font-family:"Segoe UI",Roboto,Arial,"Noto Sans",Tahoma,sans-serif;margin:0 0 5px;color:var(--wine);font-size:18px;font-weight:700;text-align:center;letter-spacing:0;line-height:1.35}
     .login-title{font-family:"Segoe UI",Roboto,Arial,"Noto Sans",Tahoma,sans-serif;margin:0 0 16px;color:var(--wine-dark);font-size:25px;font-weight:800;text-align:center;letter-spacing:0;line-height:1.35}
     .login-version{margin:12px 0 0;color:var(--g-muted);font-size:13px;text-align:center;line-height:1.4}
+    .login-links{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:13px;font-size:13.5px;line-height:1.4}
+    .login-links a{color:var(--g-blue);text-decoration:none;font-weight:600}.login-links a:hover{text-decoration:underline}.login-links .forgot-link{color:var(--g-danger)}
+    .login-author{margin-top:16px;padding-top:12px;border-top:1px solid var(--line);font-size:12.5px;line-height:1.45;color:var(--g-muted);text-align:center}.login-author p{margin:3px 0}.login-author strong{color:#5f3b49}
+    .password-wrap{position:relative}.password-wrap input{padding-right:42px}.password-toggle{position:absolute;right:1px;top:1px;bottom:1px;width:38px;display:grid;place-items:center;border:0;background:transparent;color:#777;font-size:16px;cursor:pointer;border-radius:0 4px 4px 0}.password-toggle:hover{background:#f1f3f4;color:#333}
+    .login-loading-overlay{position:fixed;inset:0;z-index:180;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;color:var(--g-text)}
+    .login-loading-logo{position:relative;width:168px;height:168px;border-radius:24px;overflow:hidden;margin-bottom:18px;background:#fff;box-shadow:0 10px 30px rgba(0,0,0,.10)}
+    .login-loading-logo img{width:100%;height:100%;object-fit:contain;display:block;padding:8px}.login-loading-logo::after{content:"";position:absolute;inset:0;left:-150%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-24deg);animation:shimmer 2.2s infinite}
+    .login-loading-text{font-size:19px;font-weight:800;color:var(--wine-dark);margin:0 0 8px}.login-loading-progress{font-size:24px;font-weight:800;color:var(--g-blue);min-height:28px}.login-loading-sub{font-size:13px;color:var(--g-muted);margin-top:6px}
+    @keyframes shimmer{100%{left:150%}}
+    .account-header{display:flex;align-items:flex-start;gap:12px;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:12px}.account-avatar{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:#fff0f5;color:var(--wine);font-size:28px;flex:0 0 auto}.account-title{margin:0;color:var(--wine-dark);font-size:21px;line-height:1.25}.account-sub{margin:4px 0 0;color:var(--muted);font-size:13px}.account-info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.account-info-item{border:1px solid var(--line);background:#fffafb;border-radius:12px;padding:10px}.account-info-label{font-size:13px;color:var(--muted);font-weight:700;margin-bottom:3px}.account-info-value{font-size:15.5px;color:var(--text);font-weight:600;word-break:break-word}.account-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.account-setup-panel{margin-top:12px}.account-setup-content{margin-top:10px}.account-setup-content>.card:first-child{margin-top:0}
+    .modal-small{max-width:520px}.modal-small h3{margin:0 0 12px;color:var(--wine-dark)}.modal-note{font-size:13px;color:var(--muted);line-height:1.45;margin:6px 0 0}
+    @media(max-width:700px){.account-info-grid{grid-template-columns:1fr}.login-card{padding:20px}.login-loading-logo{width:140px;height:140px}}
     .toast{
       position:fixed;left:50%;bottom:calc(var(--tabbar-h) + 14px);transform:translateX(-50%);z-index:100;
       background:#2a111a;color:white;border-radius:999px;padding:10px 14px;box-shadow:0 8px 25px rgba(0,0,0,.2);max-width:92vw;font-size:13px
@@ -674,7 +686,7 @@
 <body>
   <div id="bootScreen" class="boot-screen">
     <div class="boot-box">
-      <div class="boot-logo">✓</div>
+      <div class="login-logo logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=85.050626-ACCOUNT-LOGIN-LOADING" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
       <p class="boot-title">Đang mở Sổ trực điện tử</p>
       <p class="boot-sub">Đang khôi phục phiên đăng nhập</p>
     </div>
@@ -682,7 +694,7 @@
 
   <div id="loginScreen" class="login-screen hidden">
     <div class="login-card">
-      <div class="login-logo logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=83.050626-TM-TONG-BN-KTC-GANTACH" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
+      <div class="login-logo logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=85.050626-ACCOUNT-LOGIN-LOADING" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
       <p class="login-hospital">B&#7879;nh vi&#7879;n B&#7841;ch Mai</p>
       <p class="login-center">Trung t&#226;m Huy&#7871;t h&#7885;c v&#224; Truy&#7873;n m&#225;u</p>
       <h1 class="login-title">S&#7893; Tr&#7921;c - Giao ban</h1>
@@ -693,18 +705,38 @@
         </div>
         <div class="col-12">
           <label>Mật khẩu</label>
-          <input id="loginPw" type="password" autocomplete="current-password" placeholder="Nhập mật khẩu">
+          <div class="password-wrap">
+            <input id="loginPw" type="password" autocomplete="current-password" placeholder="Nhập mật khẩu">
+            <button id="loginPwToggle" class="password-toggle" type="button" title="Hiện/ẩn mật khẩu">👁️</button>
+          </div>
         </div>
       </div>
       <button id="loginBtn" class="btn primary" style="width:100%;margin-top:14px">Đăng nhập</button>
-      <p class="login-version">Version: 84.050626-HOP-GIAOBAN-LABEL</p>
+      <div class="login-links">
+        <a href="#" id="registerAccountLink">Đăng ký tài khoản mới</a>
+        <span style="color:#c8b8c1">|</span>
+        <a href="#" id="forgotPasswordLink" class="forgot-link">Quên mật khẩu?</a>
+      </div>
+      <div class="login-author">
+        <p><strong>PHẦN MỀM SỔ TRỰC - GIAO BAN</strong></p>
+        <p>Developed by Nguyễn Văn Chính</p>
+        <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
+      </div>
+      <p class="login-version">Version: 85.050626-ACCOUNT-LOGIN-LOADING</p>
     </div>
+  </div>
+
+  <div id="loginLoadingOverlay" class="login-loading-overlay hidden">
+    <div class="login-loading-logo"><img src="./LOGO%20TRON%20BVBM.png?v=85.050626-ACCOUNT-LOGIN-LOADING" alt="Logo Bệnh viện Bạch Mai"></div>
+    <p class="login-loading-text" id="loginLoadingText">Đang tải dữ liệu...</p>
+    <div class="login-loading-progress" id="loginLoadingProgress">0%</div>
+    <div class="login-loading-sub">Vui lòng chờ trong giây lát</div>
   </div>
 
   <div id="app" class="app-shell hidden">
     <header class="topbar">
       <div class="brand">
-        <div class="brand-icon logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=83.050626-TM-TONG-BN-KTC-GANTACH" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
+        <div class="brand-icon logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=85.050626-ACCOUNT-LOGIN-LOADING" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
         <div>
           <div id="brandTitle" class="brand-title">Trung t&#226;m Huy&#7871;t h&#7885;c v&#224; Truy&#7873;n m&#225;u</div>
           <div id="brandSub" class="brand-sub">Khoa</div>
@@ -722,6 +754,7 @@
         <section id="tab-list" class="tab-panel hidden"></section>
         <section id="tab-meeting" class="tab-panel hidden"></section>
         <section id="tab-pdf" class="tab-panel hidden"></section>
+        <section id="tab-account" class="tab-panel hidden"></section>
         <section id="tab-settings" class="tab-panel hidden"></section>
       </div>
     </main>
@@ -731,9 +764,9 @@
       <button class="tab-btn" data-tab="list"><span class="ico">📋</span><span>DS phiếu</span></button>
       <button class="tab-btn" data-tab="meeting"><span class="ico">🗣️</span><span>Họp</span></button>
       <button class="tab-btn" data-tab="pdf"><span class="ico">📄</span><span>PDF</span></button>
-      <button id="settingsTabBtn" class="tab-btn hidden" data-tab="settings"><span class="ico">⚙️</span><span>Cài đặt</span></button>
+      <button id="accountTabBtn" class="tab-btn" data-tab="account"><span class="ico">👤</span><span>Tài khoản</span></button>
     </nav>
-    <div class="app-version">Version: 84.050626-HOP-GIAOBAN-LABEL</div>
+    <div class="app-version">Version: 85.050626-ACCOUNT-LOGIN-LOADING</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -741,7 +774,7 @@
   <div id="toast" class="toast hidden"></div>
 
 <script>
-const APP_VERSION = 'INDEX-84.050626-HOP-GIAOBAN-LABEL';
+const APP_VERSION = 'INDEX-85.050626-ACCOUNT-LOGIN-LOADING';
 
 function canOpenAdminSettings(){
   return !!(state.user && (state.user.isAdmin || String(state.user.chucVu || '').trim()));
@@ -795,6 +828,9 @@ const state = {
   pdfTemplateVariables: [],
   signaturePad: {drawing:false, canvas:null, ctx:null, hasInk:false, lastPoint:null, dataUrl:'', targetRole:''},
   mySignature: null,
+  accountInfo: null,
+  accountOptions: {listPhongBan: [], listViTriTruc: [], listChucDanh: []},
+  accountSetupOpen: false,
   afterProfileSignRole: '',
   pendingThuKySignatureDataUrl: '',
   pendingThuKySignatureAt: '',
@@ -929,6 +965,10 @@ async function checkSessionInBackground(){
 function bindGlobalEvents(){
   $('#loginBtn').addEventListener('click', login);
   $('#loginPw').addEventListener('keydown', e => { if(e.key === 'Enter') login(); });
+  $('#loginMa').addEventListener('keydown', e => { if(e.key === 'Enter') $('#loginPw').focus(); });
+  $('#loginPwToggle')?.addEventListener('click', () => togglePasswordInput('loginPw', 'loginPwToggle'));
+  $('#registerAccountLink')?.addEventListener('click', e => { e.preventDefault(); openRegisterAccountModal(); });
+  $('#forgotPasswordLink')?.addEventListener('click', e => { e.preventDefault(); openForgotPasswordModal(); });
   $('#logoutBtn').addEventListener('click', logout);
   $$('.tab-btn').forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
   document.addEventListener('input', e => {
@@ -940,15 +980,19 @@ async function login(){
   const maNhanVien = $('#loginMa').value.trim();
   const matKhau = $('#loginPw').value;
   if(!maNhanVien || !matKhau) return toast('Vui lòng nhập mã nhân viên và mật khẩu.');
-  withButton($('#loginBtn'), 'Đang đăng nhập...', async () => {
+  await withButton($('#loginBtn'), 'Đang đăng nhập...', async () => {
     const res = await api('login', {maNhanVien, matKhau}, {noToken:true});
     state.isLoggingOut = false;
     state.sessionGuard++;
     state.token = res.data.token;
     state.user = res.data.user;
     storeSession(state.token, state.user);
+    showLoginLoading(12, 'Đăng nhập thành công');
     showApp();
-    await loadInitData();
+    showLoginLoading(45, 'Đang tải dữ liệu...');
+    await loadInitData({fromLogin:true});
+    showLoginLoading(100, 'Hoàn tất');
+    setTimeout(hideLoginLoading, 350);
   });
 }
 
@@ -965,7 +1009,10 @@ async function logout(){
   state.selectedStaff = [];
   state.currentGiaoBan = null;
   state.currentReports = [];
+  state.accountInfo = null;
+  state.accountSetupOpen = false;
   clearListCaches();
+  hideLoginLoading();
   showLogin();
   try{ if(oldToken) await api('logout', {}, {token: oldToken}); }catch(e){}
   // Giữ cờ đăng xuất cho tới khi người dùng đăng nhập lại thủ công.
@@ -986,14 +1033,14 @@ function showApp(){
   $('#userName').textContent = state.user?.tenNhanVien || 'Đang khôi phục phiên';
   $('#brandTitle').innerHTML = 'Trung t&#226;m Huy&#7871;t h&#7885;c v&#224; Truy&#7873;n m&#225;u';
   $('#brandSub').textContent = 'Khoa/phòng: ' + (state.user?.khoaPhong || '');
-  $('#settingsTabBtn').classList.remove('hidden');
   renderCreateTab();
-  renderSettingsTab();
+  renderAccountTab();
 }
 
-async function loadInitData(){
+async function loadInitData(opts={}){
   if(state.initLoaded) return;
   try{
+    if(opts.fromLogin) showLoginLoading(55, 'Đang tải danh mục...');
     const res = await api('getInitData', {});
     state.user = res.data.user || state.user;
     if(state.token && state.user) storeSession(state.token, state.user);
@@ -1002,17 +1049,21 @@ async function loadInitData(){
     state.tmEquipmentConfig = normalizeTmEquipmentConfig(res.data.tmEquipmentConfig || []);
     state.pdfTemplateConfig = res.data.pdfTemplateConfig || null;
     state.mySignature = res.data.mySignature || state.mySignature || null;
+    state.accountInfo = res.data.accountInfo || state.accountInfo || null;
+    state.accountOptions = res.data.accountOptions || state.accountOptions || {listPhongBan: [], listViTriTruc: [], listChucDanh: []};
     state.pdfContentTemplates = state.pdfTemplateConfig?.contentTemplates || null;
     state.pdfTemplateVariables = state.pdfTemplateConfig?.variables || [];
     state.initLoaded = true;
+    if(opts.fromLogin) showLoginLoading(78, 'Đang dựng giao diện...');
     refreshDatalists();
     renderCreateTab();
     renderListTab();
     renderMeetingTab();
     renderPdfTab();
-    renderSettingsTab();
+    renderAccountTab();
     setDefaultFilters();
   }catch(err){
+    hideLoginLoading();
     toast(err.message);
   }
 }
@@ -1054,7 +1105,7 @@ function renderAllTabsSkeleton(){
   renderListTab();
   renderMeetingTab();
   renderPdfTab();
-  renderSettingsTab();
+  renderAccountTab();
 }
 
 function switchTab(tab){
@@ -1062,6 +1113,7 @@ function switchTab(tab){
   $$('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
   $$('.tab-panel').forEach(p => p.classList.add('hidden'));
   $(`#tab-${tab}`).classList.remove('hidden');
+  if(tab === 'account') renderAccountTab();
   $('#main').scrollTop = 0;
 
 }
@@ -3154,7 +3206,7 @@ async function saveProfileSignatureFromPad(btn){
     toast('Đã lưu chữ ký hệ thống.');
     closeFullSignatureModal();
     state.afterProfileSignRole = '';
-    if(state.activeTab === 'settings') renderSettingsTab();
+    if(state.activeTab === 'account') renderSettingsTab();
     if(afterRole === 'thuKy') return submitThuKySignature(null, true);
     if(afterRole === 'chuTri') return submitChuTriSignature(null, true);
   };
@@ -3339,19 +3391,314 @@ async function loadPdfList(){
   }
 }
 
+
+/* ================= ACCOUNT ================= */
+
+function showLoginLoading(progress=0, text='Đang tải dữ liệu...'){
+  const overlay = $('#loginLoadingOverlay');
+  if(!overlay) return;
+  $('#loginLoadingText').textContent = text;
+  $('#loginLoadingProgress').textContent = Math.max(0, Math.min(100, Number(progress) || 0)) + '%';
+  overlay.classList.remove('hidden');
+}
+
+function hideLoginLoading(){
+  $('#loginLoadingOverlay')?.classList.add('hidden');
+}
+
+function togglePasswordInput(inputId, btnId){
+  const input = document.getElementById(inputId);
+  const btn = document.getElementById(btnId);
+  if(!input) return;
+  input.type = input.type === 'password' ? 'text' : 'password';
+  if(btn) btn.textContent = input.type === 'password' ? '👁️' : '🙈';
+}
+
+function accountInfoFallback(){
+  const u = state.accountInfo || state.user || {};
+  return {
+    maNhanVien: u.maNhanVien || '',
+    tenNhanVien: u.tenNhanVien || '',
+    ngaySinh: u.ngaySinh || '',
+    ngaySinhIso: u.ngaySinhIso || '',
+    email: u.email || '',
+    chucDanh: u.chucDanhGoc || u.chucDanh || '',
+    chucVu: u.chucVu || '',
+    chucDanhHienThi: u.chucDanhHienThi || u.chucDanh || '',
+    khoaPhong: u.khoaPhong || u.phongLamViec || '',
+    phongLamViec: u.phongLamViec || u.khoaPhong || '',
+    viTriTruc: u.viTriTruc || '',
+    isAdmin: !!u.isAdmin
+  };
+}
+
+function renderAccountTab(){
+  const root = $('#tab-account');
+  if(!root) return;
+  const info = accountInfoFallback();
+  const isAdmin = !!(state.user?.isAdmin || info.isAdmin);
+  root.innerHTML = `
+    <div class="card">
+      <div class="account-header">
+        <div class="account-avatar">👤</div>
+        <div>
+          <h2 class="account-title">THÔNG TIN TÀI KHOẢN</h2>
+          <p class="account-sub">Thông tin lấy từ dữ liệu nhân sự dùng chung của Trung tâm.</p>
+        </div>
+      </div>
+      <div class="account-info-grid">
+        ${accountInfoItem('Tên nhân viên', info.tenNhanVien)}
+        ${accountInfoItem('Mã nhân viên', info.maNhanVien)}
+        ${accountInfoItem('Ngày sinh', info.ngaySinh || 'Chưa cập nhật')}
+        ${accountInfoItem('Email', info.email || 'Chưa cập nhật')}
+        ${accountInfoItem('Chức danh', info.chucDanh || info.chucDanhHienThi || 'Chưa cập nhật')}
+        ${accountInfoItem('Khoa/phòng', info.khoaPhong || info.phongLamViec || 'Chưa cập nhật')}
+        ${accountInfoItem('Vị trí trực', info.viTriTruc || 'Chưa cập nhật')}
+        ${accountInfoItem('Quyền', isAdmin ? 'Admin' : (info.chucVu ? 'Có chức vụ' : 'Người dùng'))}
+      </div>
+      <div class="account-actions">
+        <button class="btn primary" type="button" onclick="openEditAccountModal()">Sửa thông tin tài khoản</button>
+        <button class="btn secondary" type="button" onclick="openChangePasswordModal()">Đổi mật khẩu</button>
+        ${isAdmin ? '<button class="btn secondary" type="button" onclick="openResetPasswordModal()">Reset mật khẩu (Admin)</button>' : ''}
+        <button class="btn secondary" type="button" onclick="toggleAccountSetup()">Setup cấu hình</button>
+        <button class="btn danger" type="button" onclick="logout()">Đăng xuất</button>
+      </div>
+      ${!state.accountInfo ? '<p class="meta" style="margin-top:10px">Đang tải thông tin tài khoản chi tiết...</p>' : ''}
+    </div>
+    <div id="accountSetupPanel" class="account-setup-panel ${state.accountSetupOpen ? '' : 'hidden'}">
+      <div class="card">
+        <h2 class="section-title">Setup cấu hình</h2>
+        <p class="meta">Các cấu hình trước đây trong tab Cài đặt được chuyển vào khu vực này.</p>
+      </div>
+      <div id="accountSetupContent" class="account-setup-content"></div>
+    </div>
+    <div style="text-align:center;margin:18px 0 6px;color:var(--g-muted);font-size:12.5px;line-height:1.45">
+      <p style="margin:3px 0;font-weight:700;color:#5f3b49">PHẦN MỀM SỔ TRỰC - GIAO BAN</p>
+      <p style="margin:3px 0">Developed by Nguyễn Văn Chính</p>
+      <p style="margin:3px 0">Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
+    </div>
+  `;
+  if(state.accountSetupOpen) renderSettingsTab();
+  if(!state.accountInfo && state.token && state.initLoaded) loadAccountInfoSilently();
+}
+
+function accountInfoItem(label, value){
+  return `<div class="account-info-item"><div class="account-info-label">${esc(label)}</div><div class="account-info-value">${esc(value || '')}</div></div>`;
+}
+
+async function loadAccountInfoSilently(){
+  try{
+    const res = await api('getAccountInfo', {});
+    state.accountInfo = res.data.account || state.accountInfo;
+    state.accountOptions = res.data.options || state.accountOptions;
+    if(state.activeTab === 'account') renderAccountTab();
+  }catch(e){}
+}
+
+function optionHtml(list, selected){
+  const all = Array.from(new Set([selected, ...(list || [])].filter(Boolean)));
+  return '<option value="">Chọn</option>' + all.map(x => `<option value="${escAttr(x)}" ${norm(x)===norm(selected) ? 'selected' : ''}>${esc(x)}</option>`).join('');
+}
+
+function openEditAccountModal(){
+  const info = accountInfoFallback();
+  const opts = state.accountOptions || {listPhongBan: [], listViTriTruc: [], listChucDanh: []};
+  openModal(`
+    <div class="modal-card modal-small">
+      <div class="modal-head"><div class="modal-title">Sửa thông tin tài khoản</div><button class="close-btn" onclick="closeModal()">×</button></div>
+      <div class="grid" style="margin-top:12px">
+        <div class="col-12"><label>Ngày sinh</label><input id="editAccNgaySinh" type="date" value="${escAttr(info.ngaySinhIso || '')}"></div>
+        <div class="col-12"><label>Email</label><input id="editAccEmail" type="email" value="${escAttr(info.email || '')}" placeholder="Nhập email"></div>
+        <div class="col-12"><label>Chức danh</label><select id="editAccChucDanh">${optionHtml(opts.listChucDanh, info.chucDanh || info.chucDanhHienThi || '')}</select></div>
+        <div class="col-12"><label>Khoa/phòng</label><select id="editAccKhoaPhong">${optionHtml(opts.listPhongBan || state.khoaPhong, info.khoaPhong || info.phongLamViec || '')}</select></div>
+        <div class="col-12"><label>Vị trí trực</label><select id="editAccViTriTruc">${optionHtml(opts.listViTriTruc, info.viTriTruc || '')}</select></div>
+      </div>
+      <div class="btn-row"><button class="btn secondary" onclick="closeModal()">Hủy</button><button id="saveAccountInfoBtn" class="btn primary" onclick="saveAccountInfo()">Cập nhật thông tin</button></div>
+    </div>
+  `);
+}
+
+async function saveAccountInfo(){
+  const payload = {
+    ngaySinh: $('#editAccNgaySinh')?.value || '',
+    email: $('#editAccEmail')?.value || '',
+    chucDanh: $('#editAccChucDanh')?.value || '',
+    khoaPhong: $('#editAccKhoaPhong')?.value || '',
+    viTriTruc: $('#editAccViTriTruc')?.value || ''
+  };
+  if(!payload.ngaySinh || !payload.email || !payload.chucDanh || !payload.khoaPhong || !payload.viTriTruc) return toast('Vui lòng nhập đầy đủ thông tin tài khoản.');
+  await withButton($('#saveAccountInfoBtn'), 'Đang cập nhật...', async () => {
+    const res = await api('updateAccountInfo', payload);
+    state.accountInfo = res.data.account || state.accountInfo;
+    state.user = res.data.user || state.user;
+    if(state.token && state.user) storeSession(state.token, state.user);
+    $('#userName').textContent = state.user?.tenNhanVien || '';
+    $('#brandSub').textContent = 'Khoa/phòng: ' + (state.user?.khoaPhong || '');
+    closeModal();
+    refreshDatalists();
+    renderAccountTab();
+    toast('Đã cập nhật thông tin tài khoản.');
+  });
+}
+
+function openChangePasswordModal(){
+  openModal(`
+    <div class="modal-card modal-small">
+      <div class="modal-head"><div class="modal-title">Đổi mật khẩu</div><button class="close-btn" onclick="closeModal()">×</button></div>
+      <div class="grid" style="margin-top:12px">
+        ${passwordFieldHtml('oldPassword', 'Mật khẩu cũ', 'Nhập mật khẩu hiện tại')}
+        ${passwordFieldHtml('newPassword', 'Mật khẩu mới', 'Nhập mật khẩu mới')}
+        ${passwordFieldHtml('confirmPassword', 'Xác nhận mật khẩu', 'Nhập lại mật khẩu mới')}
+      </div>
+      <p class="modal-note">Sau khi đổi mật khẩu thành công, app sẽ đăng xuất để anh đăng nhập lại.</p>
+      <div class="btn-row"><button class="btn secondary" onclick="closeModal()">Hủy</button><button id="changePasswordBtn" class="btn primary" onclick="saveChangePassword()">Xác nhận đổi mật khẩu</button></div>
+    </div>
+  `);
+}
+
+function passwordFieldHtml(id, label, placeholder){
+  return `<div class="col-12"><label>${esc(label)}</label><div class="password-wrap"><input id="${escAttr(id)}" type="password" placeholder="${escAttr(placeholder)}"><button class="password-toggle" type="button" onclick="togglePasswordInput('${escAttr(id)}', this.id)">👁️</button></div></div>`;
+}
+
+async function saveChangePassword(){
+  const payload = {
+    oldPassword: $('#oldPassword')?.value || '',
+    newPassword: $('#newPassword')?.value || '',
+    confirmPassword: $('#confirmPassword')?.value || ''
+  };
+  if(!payload.oldPassword || !payload.newPassword || !payload.confirmPassword) return toast('Vui lòng nhập đầy đủ thông tin mật khẩu.');
+  if(payload.newPassword !== payload.confirmPassword) return toast('Mật khẩu mới và xác nhận mật khẩu không khớp.');
+  await withButton($('#changePasswordBtn'), 'Đang đổi...', async () => {
+    const res = await api('changePassword', payload);
+    toast(res.message || 'Đổi mật khẩu thành công.');
+    closeModal();
+    await logout();
+  });
+}
+
+function openResetPasswordModal(){
+  openModal(`
+    <div class="modal-card modal-small">
+      <div class="modal-head"><div class="modal-title">Reset mật khẩu Admin</div><button class="close-btn" onclick="closeModal()">×</button></div>
+      <div class="grid" style="margin-top:12px">
+        <div class="col-12"><label>Mã nhân viên cần reset</label><input id="resetTargetMa" placeholder="Nhập mã nhân viên"></div>
+        ${passwordFieldHtml('resetNewPassword', 'Mật khẩu mới', 'Nhập mật khẩu mới')}
+      </div>
+      <div class="btn-row"><button class="btn secondary" onclick="closeModal()">Hủy</button><button id="resetPasswordBtn" class="btn danger" onclick="saveResetPasswordByAdmin()">Reset mật khẩu</button></div>
+    </div>
+  `);
+}
+
+async function saveResetPasswordByAdmin(){
+  const payload = { maNhanVien: $('#resetTargetMa')?.value || '', newPassword: $('#resetNewPassword')?.value || '' };
+  if(!payload.maNhanVien || !payload.newPassword) return toast('Vui lòng nhập mã nhân viên và mật khẩu mới.');
+  await withButton($('#resetPasswordBtn'), 'Đang reset...', async () => {
+    const res = await api('resetPasswordByAdmin', payload);
+    closeModal();
+    toast(res.message || 'Đã reset mật khẩu.');
+  });
+}
+
+function toggleAccountSetup(){
+  state.accountSetupOpen = !state.accountSetupOpen;
+  renderAccountTab();
+}
+
+async function loadPublicAccountOptions(){
+  if(state.accountOptions && (state.accountOptions.listPhongBan || []).length) return state.accountOptions;
+  const res = await api('getAccountSetupOptions', {}, {noToken:true});
+  state.accountOptions = res.data || state.accountOptions;
+  return state.accountOptions;
+}
+
+async function openRegisterAccountModal(){
+  try{
+    const flag = await api('isRegistrationEnabled', {}, {noToken:true});
+    if(!flag.data?.enabled) return toast('Tính năng đăng ký tài khoản đang tạm tắt. Vui lòng liên hệ quản trị/phòng hành chính.');
+    const opts = await loadPublicAccountOptions();
+    openModal(`
+      <div class="modal-card modal-small">
+        <div class="modal-head"><div class="modal-title">Đăng ký tài khoản mới</div><button class="close-btn" onclick="closeModal()">×</button></div>
+        <div class="grid" style="margin-top:12px">
+          <div class="col-12"><label>Mã nhân viên</label><input id="regMaNV" inputmode="numeric" placeholder="Nhập mã nhân viên"></div>
+          <div class="col-12"><label>Tên nhân viên</label><input id="regTenNV" placeholder="Nhập họ tên"></div>
+          <div class="col-12"><label>Ngày sinh</label><input id="regNgaySinh" type="date"></div>
+          <div class="col-12"><label>Email</label><input id="regEmail" type="email" placeholder="Nhập email"></div>
+          <div class="col-12"><label>Chức danh</label><select id="regChucDanh">${optionHtml(opts.listChucDanh, '')}</select></div>
+          <div class="col-12"><label>Khoa/phòng</label><select id="regKhoaPhong">${optionHtml(opts.listPhongBan, '')}</select></div>
+          <div class="col-12"><label>Vị trí trực</label><select id="regViTriTruc">${optionHtml(opts.listViTriTruc, '')}</select></div>
+          ${passwordFieldHtml('regPassword', 'Mật khẩu', 'Nhập mật khẩu')}
+          ${passwordFieldHtml('regConfirmPassword', 'Xác nhận mật khẩu', 'Nhập lại mật khẩu')}
+        </div>
+        <div class="btn-row"><button class="btn secondary" onclick="closeModal()">Quay lại</button><button id="registerAccountBtn" class="btn primary" onclick="saveRegisterAccount()">Đăng ký</button></div>
+      </div>
+    `);
+  }catch(err){ toast(err.message); }
+}
+
+async function saveRegisterAccount(){
+  const payload = {
+    maNhanVien: $('#regMaNV')?.value || '',
+    tenNhanVien: $('#regTenNV')?.value || '',
+    ngaySinh: $('#regNgaySinh')?.value || '',
+    email: $('#regEmail')?.value || '',
+    chucDanh: $('#regChucDanh')?.value || '',
+    khoaPhong: $('#regKhoaPhong')?.value || '',
+    viTriTruc: $('#regViTriTruc')?.value || '',
+    password: $('#regPassword')?.value || '',
+    confirmPassword: $('#regConfirmPassword')?.value || ''
+  };
+  if(!payload.maNhanVien || !payload.tenNhanVien || !payload.ngaySinh || !payload.email || !payload.chucDanh || !payload.khoaPhong || !payload.viTriTruc || !payload.password) return toast('Vui lòng nhập đầy đủ thông tin đăng ký.');
+  if(payload.password !== payload.confirmPassword) return toast('Mật khẩu xác nhận không khớp.');
+  await withButton($('#registerAccountBtn'), 'Đang đăng ký...', async () => {
+    const res = await api('registerAccount', payload, {noToken:true});
+    closeModal();
+    toast(res.message || 'Đăng ký tài khoản thành công.');
+  });
+}
+
+function openForgotPasswordModal(){
+  const currentMa = $('#loginMa')?.value || '';
+  openModal(`
+    <div class="modal-card modal-small">
+      <div class="modal-head"><div class="modal-title">Quên mật khẩu</div><button class="close-btn" onclick="closeModal()">×</button></div>
+      <div class="grid" style="margin-top:12px">
+        <div class="col-12"><label>Mã nhân viên</label><input id="forgotMaNV" value="${escAttr(currentMa)}" placeholder="Nhập mã nhân viên"></div>
+      </div>
+      <p class="modal-note">App này không gửi mật khẩu qua email. Chức năng này dùng để kiểm tra tài khoản và hướng dẫn liên hệ quản trị.</p>
+      <div class="btn-row"><button class="btn secondary" onclick="closeModal()">Đóng</button><button id="forgotPasswordBtn" class="btn primary" onclick="submitForgotPassword()">Tiếp tục</button></div>
+    </div>
+  `);
+}
+
+async function submitForgotPassword(){
+  const maNhanVien = $('#forgotMaNV')?.value || '';
+  if(!maNhanVien) return toast('Vui lòng nhập mã nhân viên.');
+  await withButton($('#forgotPasswordBtn'), 'Đang kiểm tra...', async () => {
+    const res = await api('forgotPassword', {maNhanVien}, {noToken:true});
+    toast(res.message || 'Vui lòng liên hệ quản trị/phòng hành chính để được cấp lại mật khẩu.');
+  });
+}
+
 /* ================= SETTINGS ================= */
 
 
+function getSettingsRenderRoot(){
+  return document.getElementById('accountSetupContent') || document.getElementById('tab-settings');
+}
+
 function renderSettingsTab(){
+  const root = getSettingsRenderRoot();
+  if(!root) return;
   const signatureCard = renderMySignatureSettingsCard();
   if(!canOpenAdminSettings()){
-    $('#tab-settings').innerHTML = signatureCard;
+    root.innerHTML = signatureCard;
     bindMySignatureEvents();
     return;
   }
   const items = getTmEquipmentConfig();
   const rows = items.map((it, idx) => renderSettingEquipmentRow(it, idx)).join('');
-  $('#tab-settings').innerHTML = signatureCard + `
+  root.innerHTML = signatureCard + `
     <div class="card">
       <h2 class="section-title">Cài đặt</h2>
       <p class="meta">Tab này dành cho tài khoản quản trị hoặc nhân sự có Chức vụ. Dữ liệu app lưu trong các sheet SESSION, PHIEU, GIAO_BAN, LOG; cấu hình thiết bị và mẫu PDF được lưu trong Script Properties của backend.</p>
