@@ -561,6 +561,96 @@
     .gb-preview-card .section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
     .gb-preview-refresh{min-height:30px!important;height:30px!important;padding:0 10px!important;font-size:12.5px!important}
 
+
+    @media (min-width:900px){
+      .tabbar{
+        display:flex!important;
+        grid-template-columns:none!important;
+        align-items:center;
+        justify-content:flex-start;
+        gap:6px;
+        overflow-x:auto;
+        overflow-y:hidden;
+        scrollbar-width:thin;
+      }
+      .tabbar .tab-btn{
+        flex:0 0 auto;
+        width:auto;
+        min-width:108px;
+        padding-left:12px;
+        padding-right:12px;
+      }
+      #tab-list:not(.hidden),
+      #tab-meeting:not(.hidden),
+      #tab-pdf:not(.hidden){
+        height:calc(100vh - var(--header-h) - var(--tabbar-h) - 46px);
+        min-height:420px;
+        align-items:stretch;
+      }
+      @supports (height:100dvh){
+        #tab-list:not(.hidden),
+        #tab-meeting:not(.hidden),
+        #tab-pdf:not(.hidden){
+          height:calc(100dvh - var(--header-h) - var(--tabbar-h) - 46px);
+        }
+      }
+      #tab-list > .card,
+      #tab-meeting > .card,
+      #tab-pdf > .card{
+        position:relative!important;
+        top:auto!important;
+        height:100%;
+        max-height:100%;
+        overflow:auto;
+        margin:0;
+      }
+      #phieuListBox,
+      #giaoBanListBox,
+      #pdfListBox{
+        height:100%;
+        max-height:100%;
+        min-height:0;
+        overflow:auto;
+        background:var(--card);
+        border:1px solid var(--line);
+        border-radius:var(--radius);
+        box-shadow:var(--shadow);
+        padding:12px;
+      }
+      #phieuListBox .list-card:first-child,
+      #giaoBanListBox .list-card:first-child,
+      #pdfListBox .list-card:first-child{margin-top:0}
+      #phieuListBox .list-card:last-child,
+      #giaoBanListBox .list-card:last-child,
+      #pdfListBox .list-card:last-child{margin-bottom:0}
+      #phieuListBox .empty,
+      #giaoBanListBox .empty,
+      #pdfListBox .empty,
+      #phieuListBox .loading,
+      #giaoBanListBox .loading,
+      #pdfListBox .loading{margin:0}
+      #tab-list .filter-grid,
+      #tab-meeting .filter-grid,
+      #tab-pdf .filter-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr))!important;
+        gap:9px;
+      }
+      #tab-list .filter-grid > div,
+      #tab-meeting .filter-grid > div,
+      #tab-pdf .filter-grid > div,
+      #tab-pdf .filter-keyword,
+      #tab-list .filter-action,
+      #tab-meeting .filter-action,
+      #tab-pdf .filter-action{
+        grid-column:1 / -1!important;
+      }
+      #tab-list .filter-grid > .date-pair,
+      #tab-meeting .filter-grid > .date-pair,
+      #tab-pdf .filter-grid > .date-pair{
+        grid-column:auto!important;
+      }
+    }
+
   </style>
 </head>
 <body>
