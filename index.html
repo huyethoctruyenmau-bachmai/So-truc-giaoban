@@ -159,6 +159,9 @@
     .tm-report-title{font-weight:700;color:var(--wine-dark);margin-bottom:8px}
     .tm-inline-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
     .tm-inline-grid.phat-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+    #soLieuTrucBox .tm-inline-grid.phat-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+    #soLieuTrucBox .tm-inline-grid.phat-grid .phat-patient-field{grid-column:1 / -1}
+    #soLieuTrucBox .tm-inline-grid.ton-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
     .tm-total{background:var(--g-readonly);font-weight:700;color:var(--wine-dark)}
     .tm-equip-wrap{overflow:auto;border:1px solid var(--g-line);border-radius:12px;background:#fff}
     .tm-equip-table{width:100%;border-collapse:collapse;min-width:540px;font-size:13.5px}
@@ -252,7 +255,7 @@
     #tab-pdf .filter-grid{grid-template-columns:repeat(4,minmax(0,1fr));}
     #tab-pdf .filter-grid > div{grid-column:auto!important;min-width:0;}
     input[type="date"],input[type="datetime-local"],select{min-width:0}
-    input[type="date"],input[type="datetime-local"]{width:100%;max-width:100%;height:var(--field-h);min-height:var(--field-h);display:block;cursor:pointer;appearance:auto;-webkit-appearance:auto;color-scheme:light}
+    input[type="date"],input[type="datetime-local"]{width:100%;max-width:100%;height:38px;min-height:38px;display:block;cursor:pointer}
     input[type="date"]::-webkit-date-and-time-value,input[type="datetime-local"]::-webkit-date-and-time-value{text-align:left;width:100%}
     input[type="date"]::-webkit-calendar-picker-indicator,input[type="datetime-local"]::-webkit-calendar-picker-indicator{cursor:pointer;opacity:1}
     .vi-date-wrap{position:relative;width:100%;min-width:0;display:block}
@@ -364,6 +367,10 @@
       .tab-btn{font-size:12px}.tab-btn .ico{font-size:20px}
       .tm-inline-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
       .tm-inline-grid.phat-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+      #soLieuTrucBox .tm-inline-grid.phat-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+      #soLieuTrucBox .tm-inline-grid.ton-grid{grid-template-columns:repeat(6,minmax(0,1fr))}
+      #soLieuTrucBox .tm-inline-grid.ton-grid > div:nth-child(-n+3){grid-column:span 2}
+      #soLieuTrucBox .tm-inline-grid.ton-grid > div:nth-child(n+4){grid-column:span 3}
       .tm-equip-table{font-size:13px;min-width:680px}
       .tm-create-equipment-table{min-width:620px}
     }
@@ -737,7 +744,7 @@
   <div id="toast" class="toast hidden"></div>
 
 <script>
-const APP_VERSION = 'INDEX-83.050626-TM-FIELDS-DATE-EDIT';
+const APP_VERSION = 'INDEX-84.050626-CREATE-TM-MOBILE-LAYOUT';
 
 function canOpenAdminSettings(){
   return !!(state.user && (state.user.isAdmin || String(state.user.chucVu || '').trim()));
@@ -1343,15 +1350,15 @@ function renderSoLieuTrucInput(isTM){
       <div class="tm-report-group">
         <div class="tm-report-title">Phát máu</div>
         <div class="tm-inline-grid phat-grid">
+          <div class="phat-patient-field"><label>Tổng số bệnh nhân</label><input id="tmPhatBenhNhan" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
           <div><label>KHC</label><input id="tmPhatKHC" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
           <div><label>CP</label><input id="tmPhatCP" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
           <div><label>Tổng số</label><input id="tmPhatTong" class="tm-total" readonly value="0"></div>
-          <div><label>Tổng số bệnh nhân</label><input id="tmPhatBenhNhan" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
         </div>
       </div>
       <div class="tm-report-group">
         <div class="tm-report-title">Máu tồn</div>
-        <div class="tm-inline-grid">
+        <div class="tm-inline-grid ton-grid">
           <div><label>KHC</label><input id="tmTonKHC" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
           <div><label>HTT</label><input id="tmTonHTT" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
           <div><label>Tủa</label><input id="tmTonTua" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
@@ -4076,12 +4083,50 @@ function scheduleViDatePickerEnhance(){
 function enhanceViDatePickers(root){
   const scope = root || document;
   $$('.date-vi-input[type="date"], .datetime-vi-input[type="datetime-local"]', scope).forEach(input => {
-    if(input.dataset.viEnhanced === '1') return;
+    if(input.dataset.viEnhanced === '1'){
+      updateViDateDisplay(input);
+      return;
+    }
     input.dataset.viEnhanced = '1';
-    input.setAttribute('lang', 'vi-VN');
-    input.setAttribute('autocomplete', 'off');
-    if(input.type === 'datetime-local' && !input.getAttribute('step')) input.setAttribute('step', '60');
-    input.addEventListener('change', () => input.blur());
+    input.classList.add('vi-date-native');
+
+    const wrap = document.createElement('div');
+    wrap.className = 'vi-date-wrap';
+    const display = document.createElement('input');
+    display.type = 'text';
+    display.className = 'equal-control vi-date-display';
+    display.readOnly = true;
+    display.setAttribute('aria-label', input.getAttribute('aria-label') || input.id || 'Chọn ngày');
+    display.setAttribute('autocomplete', 'off');
+
+    input.parentNode.insertBefore(wrap, input);
+    wrap.appendChild(display);
+    wrap.appendChild(input);
+
+    const openNativePicker = () => {
+      try{
+        if(input.showPicker) input.showPicker();
+        else input.click();
+      }catch(e){
+        input.focus();
+        input.click();
+      }
+    };
+    display.addEventListener('click', openNativePicker);
+    input.addEventListener('click', () => {
+      if(document.documentElement.classList.contains('desktop-date-ui')){
+        try{ if(input.showPicker) input.showPicker(); }catch(e){}
+      }
+    });
+    display.addEventListener('keydown', e => {
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        openNativePicker();
+      }
+    });
+    input.addEventListener('input', () => updateViDateDisplay(input));
+    input.addEventListener('change', () => updateViDateDisplay(input));
+    updateViDateDisplay(input);
   });
 }
 
