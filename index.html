@@ -481,7 +481,7 @@
     .signature-full-chair strong{color:var(--wine-dark);font-weight:800}
     .signature-full-actions{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:10px 12px max(12px,env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid var(--line)}
     .signature-full-actions .btn{min-height:40px;height:40px}
-    .sign-step-box{border:1px solid var(--g-line);border-radius:12px;background:#fff;padding:10px;margin-top:8px}.sign-step-title{font-weight:800;color:var(--wine-dark);margin-bottom:8px}.sign-step-status{font-size:13px;color:var(--muted);line-height:1.4;margin-top:8px}.sign-action-row{display:grid;grid-template-columns:72px auto;gap:8px;align-items:center;justify-content:start;margin-top:6px}.sign-action-row .sign-mode-compact{width:72px}.sign-action-row select{width:72px!important;min-width:72px!important;height:38px;min-height:38px;text-align:center;text-align-last:center;font-weight:700;padding-left:8px;padding-right:22px}.sign-action-row .btn{width:auto!important;min-width:0;height:38px;min-height:38px;white-space:nowrap;padding:0 16px}
+    .sign-step-box{border:1px solid var(--g-line);border-radius:12px;background:#fff;padding:10px;margin-top:8px}.sign-step-title{font-weight:800;color:var(--wine-dark);margin-bottom:8px}.sign-step-status{font-size:13px;color:var(--muted);line-height:1.4;margin-top:8px}.sign-action-row{display:grid;grid-template-columns:72px auto;gap:8px;align-items:center;justify-content:start;margin-top:6px}.sign-action-row .sign-mode-compact{width:72px}.sign-action-row select{width:72px!important;min-width:72px!important;height:38px;min-height:38px;text-align:center;text-align-last:center;font-weight:700;padding-left:8px;padding-right:22px}.sign-action-row .btn{width:auto!important;min-width:0;height:38px;min-height:38px;white-space:nowrap;padding:0 16px}.signature-profile-preview{border:1px dashed var(--g-line);border-radius:14px;min-height:118px;display:flex;align-items:center;justify-content:center;background:#fff;margin-top:10px;padding:10px}.signature-profile-preview img{max-width:220px;max-height:110px;display:block}.signature-profile-meta{font-size:13px;color:var(--muted);line-height:1.4;margin-top:8px}
     @media (max-width:760px){.template-config-grid,.global-template-grid{grid-template-columns:1fr}.format-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sign-action-row{grid-template-columns:64px auto;gap:8px}.sign-action-row .sign-mode-compact{width:64px}.sign-action-row select{width:64px!important;min-width:64px!important}.sign-action-row .btn{width:auto!important;padding:0 12px}.sign-mode-grid{grid-template-columns:minmax(0,1fr) auto}.sign-mode-grid .btn{width:auto}.signature-pad{height:170px}.signature-full-head{height:50px;min-height:50px}.signature-full-body{padding:8px}.signature-full-canvas-wrap{min-height:360px}.signature-full-actions .btn{width:auto;flex:1}}
 
 
@@ -559,7 +559,7 @@
       <button class="tab-btn" data-tab="pdf"><span class="ico">📄</span><span>PDF</span></button>
       <button id="settingsTabBtn" class="tab-btn hidden" data-tab="settings"><span class="ico">⚙️</span><span>Cài đặt</span></button>
     </nav>
-    <div class="app-version">Version: 71.220526-TM-BM06-DUAL-SIGNATURE-DARK</div>
+    <div class="app-version">Version: 76.050626-VIEW-SIGNATURE-SESSION</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -567,7 +567,7 @@
   <div id="toast" class="toast hidden"></div>
 
 <script>
-const APP_VERSION = 'NOSIGFILE-72.220526-TM-SIGN-SELECT-CANVAS-FIX';
+const APP_VERSION = 'INDEX-76.050626-VIEW-SIGNATURE-SESSION';
 const API_URL = 'https://script.google.com/macros/s/AKfycbxLHKUczat2WOH1R4W_YVVsUeBAmEuJ-4EjOEWNuBYXvX0oL4Dr6OhyO8f4lHPfn-8Nmg/exec';
 
 const LOAI_BAN_GIAO = 'Bàn giao thường trực';
@@ -616,6 +616,8 @@ const state = {
   pdfContentTemplates: null,
   pdfTemplateVariables: [],
   signaturePad: {drawing:false, canvas:null, ctx:null, hasInk:false, lastPoint:null, dataUrl:'', targetRole:''},
+  mySignature: null,
+  afterProfileSignRole: '',
   pendingThuKySignatureDataUrl: '',
   pendingThuKySignatureAt: '',
   pendingThuKySignMode: '',
@@ -782,7 +784,7 @@ function showApp(){
   $('#userName').textContent = state.user?.tenNhanVien || 'Đang khôi phục phiên';
   $('#brandTitle').innerHTML = 'Trung t&#226;m Huy&#7871;t h&#7885;c v&#224; Truy&#7873;n m&#225;u';
   $('#brandSub').textContent = 'Khoa/phòng: ' + (state.user?.khoaPhong || '');
-  $('#settingsTabBtn').classList.toggle('hidden', !state.user?.isAdmin);
+  $('#settingsTabBtn').classList.remove('hidden');
   renderCreateTab();
   renderSettingsTab();
 }
@@ -797,6 +799,7 @@ async function loadInitData(){
     state.khoaPhong = res.data.khoaPhong || [];
     state.tmEquipmentConfig = normalizeTmEquipmentConfig(res.data.tmEquipmentConfig || []);
     state.pdfTemplateConfig = res.data.pdfTemplateConfig || null;
+    state.mySignature = res.data.mySignature || state.mySignature || null;
     state.pdfContentTemplates = state.pdfTemplateConfig?.contentTemplates || null;
     state.pdfTemplateVariables = state.pdfTemplateConfig?.variables || [];
     state.initLoaded = true;
@@ -2720,9 +2723,37 @@ window.handleSignClick = async function(role, btn){
       danger:false
     });
     if(!ok) return;
+    if(!await ensureSystemSignatureReady('thuKy')) return;
     return submitThuKySignature(btn, true);
   }
   return finishGiaoBan(btn);
+}
+
+async function ensureSystemSignatureReady(afterRole){
+  if(state.mySignature?.hasSignature) return true;
+  const ok = await showConfirmDialog({
+    title:'Chưa có chữ ký hệ thống',
+    message:'Tài khoản của bạn chưa có chữ ký trên hệ thống. Bạn có muốn tạo chữ ký ngay không? Nếu không tạo, vui lòng chuyển hình thức ký sang KT để ký tay thủ công.',
+    confirmText:'Tạo chữ ký',
+    cancelText:'Chọn KT thủ công',
+    danger:false
+  });
+  if(ok){
+    openProfileSignatureModal(afterRole || '');
+  }else{
+    setSignModeManual(afterRole);
+    toast('Đã chuyển sang KT. Bấm lại nút ký để ký tay thủ công.');
+  }
+  return false;
+}
+
+function setSignModeManual(role){
+  const same = isSecretarySameChair();
+  let id = 'gbHinhThucKyChuTriSingle';
+  if(!same && role === 'thuKy') id = 'gbHinhThucKyThuKy';
+  if(!same && role === 'chuTri') id = 'gbHinhThucKyChuTri';
+  const el = document.getElementById(id);
+  if(el && !el.disabled) el.value = HINH_THUC_KY_TAY;
 }
 
 window.openFullSignatureForRole = function(role, btn){
@@ -2766,6 +2797,32 @@ window.closeFullSignatureModal = function(){
   state.signaturePad.canvas = null;
   state.signaturePad.ctx = null;
   state.signaturePad.lastPoint = null;
+}
+
+function openProfileSignatureModal(afterRole){
+  state.afterProfileSignRole = afterRole || '';
+  state.signaturePad.targetRole = 'profile';
+  state.signaturePad.dataUrl = '';
+  state.signaturePad.hasInk = false;
+  const modal = document.createElement('div');
+  modal.id = 'fullSignatureModal';
+  modal.className = 'signature-full-modal';
+  modal.innerHTML = `
+    <div class="signature-full-head">
+      <div class="signature-full-title">Tạo chữ ký hệ thống</div>
+      <button class="close-btn" onclick="closeFullSignatureModal()">×</button>
+    </div>
+    <div class="signature-full-body">
+      <div class="signature-full-canvas-wrap"><canvas id="fullSignaturePad" class="signature-full-pad"></canvas></div>
+    </div>
+    <div class="signature-full-chair">Người ký: <strong>${esc(state.user?.tenNhanVien || '')}</strong></div>
+    <div class="signature-full-actions">
+      <button type="button" class="btn secondary" onclick="clearSignaturePad()">Xóa ký</button>
+      <button type="button" class="btn ok" onclick="confirmFullSignature(this)">Lưu chữ ký</button>
+    </div>`;
+  document.body.appendChild(modal);
+  document.body.style.overflow = 'hidden';
+  setTimeout(setupFullSignaturePad, 30);
 }
 
 function getCanvasPoint(e, canvas){
@@ -2880,8 +2937,26 @@ window.confirmFullSignature = async function(btn){
   }
   state.signaturePad.dataUrl = exportSignatureSquareDataUrl(canvas);
   const role = state.signaturePad.targetRole || 'chuTri';
+  if(role === 'profile') return saveProfileSignatureFromPad(btn);
   if(role === 'thuKy') return submitThuKySignature(btn);
   return submitChuTriSignature(btn);
+}
+
+async function saveProfileSignatureFromPad(btn){
+  const dataUrl = getSignatureDataUrl();
+  if(!dataUrl) return toast('Vui lòng ký trong khung trước khi lưu.');
+  const afterRole = state.afterProfileSignRole || '';
+  const task = async () => {
+    const res = await api('saveMySignature', {chuKyDataUrl: dataUrl});
+    state.mySignature = res.data.signature || {hasSignature:true, dataUrl};
+    toast('Đã lưu chữ ký hệ thống.');
+    closeFullSignatureModal();
+    renderSettingsTab();
+    if(afterRole === 'thuKy') return submitThuKySignature(null, true);
+    if(afterRole === 'chuTri') return submitChuTriSignature(null, true);
+  };
+  if(btn) return withButton(btn, 'Đang lưu...', task);
+  try{ await task(); }catch(err){ toast(err.message); }
 }
 
 function collectGiaoBanPayload(){
@@ -2951,6 +3026,7 @@ window.finishGiaoBan = async function(btn){
     danger:false
   });
   if(!ok) return;
+  if(!await ensureSystemSignatureReady('chuTri')) return;
   await submitChuTriSignature(btn, true);
 }
 
@@ -2964,24 +3040,19 @@ async function submitThuKySignature(btn, systemSign){
       toast('Vui lòng ký thư ký trong khung trước khi xác nhận.');
       return;
     }
-    state.pendingThuKyGiaoBanID = g.giaoBanID || '';
-    state.pendingThuKySignMode = mode;
-    state.pendingThuKySignatureDataUrl = signDataUrl;
-    state.pendingThuKySignatureAt = hanoiNowIso();
-    if(state.currentGiaoBan){
-      state.currentGiaoBan.thoiDiemThuKyKy = state.pendingThuKySignatureAt;
-      state.currentGiaoBan.hinhThucKyThuKy = mode;
-      state.currentGiaoBan.chuKyThuKyFileId = '';
-      // Giữ nguyên chủ trì đã chọn trước khi render lại màn hình.
-      // Nếu không lưu tạm các trường này, ô Chủ trì sẽ rơi về người tạo phiếu/thư ký.
-      if(chairBeforeSign.tenNhanVien){
-        state.currentGiaoBan.chuTriMa = chairBeforeSign.maNhanVien || '';
-        state.currentGiaoBan.chuTriTen = chairBeforeSign.tenNhanVien || '';
-        state.currentGiaoBan.chuTriChucDanh = chairBeforeSign.chucDanh || '';
-        state.currentGiaoBan.nguoiChuTriTuDo = chairBeforeSign.tenNhanVien || '';
-      }
-      state.currentGiaoBan.hinhThucKyChuTri = getSelectedHinhThucKy('chuTri');
+    const payload = collectGiaoBanPayload();
+    payload.hinhThucKyThuKy = mode;
+    payload.chuKyThuKyDataUrl = signDataUrl;
+    if(chairBeforeSign.tenNhanVien){
+      payload.chuTriMa = chairBeforeSign.maNhanVien || '';
+      payload.chuTriTen = chairBeforeSign.tenNhanVien || '';
+      payload.chuTriChucDanh = chairBeforeSign.chucDanh || '';
+      payload.nguoiChuTriTuDo = chairBeforeSign.tenNhanVien || '';
     }
+    const res = await api('signThuKyBienBanHop', payload);
+    state.currentGiaoBan = res.data.giaoBan || state.currentGiaoBan;
+    resetPendingThuKySignature(state.currentGiaoBan?.giaoBanID || '');
+    clearListCaches();
     toast('Thư ký đã ký xác nhận');
     closeFullSignatureModal();
     renderGiaoBanModal();
@@ -3068,9 +3139,15 @@ async function loadPdfList(){
 
 
 function renderSettingsTab(){
+  const signatureCard = renderMySignatureSettingsCard();
+  if(!state.user?.isAdmin){
+    $('#tab-settings').innerHTML = signatureCard;
+    bindMySignatureEvents();
+    return;
+  }
   const items = getTmEquipmentConfig();
   const rows = items.map((it, idx) => renderSettingEquipmentRow(it, idx)).join('');
-  $('#tab-settings').innerHTML = `
+  $('#tab-settings').innerHTML = signatureCard + `
     <div class="card">
       <h2 class="section-title">Cài đặt</h2>
       <p class="meta">Tab này dành cho quản trị. Bản hiện tại lưu dữ liệu app trong các sheet SESSION, PHIEU, GIAO_BAN, LOG; cấu hình thiết bị và mẫu PDF được lưu trong Script Properties của backend.</p>
@@ -3137,10 +3214,64 @@ function renderSettingsTab(){
       </div>
     </div>
   `;
+  bindMySignatureEvents();
   bindSettingsEquipmentEvents();
   bindPdfTemplateEvents();
   bindPdfContentEvents();
   setTimeout(() => $$('textarea').forEach(autoGrow), 0);
+}
+
+function renderMySignatureSettingsCard(){
+  const sig = state.mySignature || {};
+  const has = !!sig.hasSignature;
+  const preview = has && sig.dataUrl
+    ? `<img src="${escAttr(sig.dataUrl)}" alt="Chữ ký hệ thống">`
+    : `<span class="meta">Chưa có chữ ký hệ thống.</span>`;
+  const updated = sig.updatedAt ? `Cập nhật: ${dateTimeVi(sig.updatedAt)}` : 'Chưa cấu hình';
+  return `
+    <div class="card">
+      <h2 class="section-title">Chữ ký hệ thống cá nhân</h2>
+      <p class="meta">Dùng khi chọn hình thức ký <b>HT</b>. Nếu chưa có chữ ký hệ thống, app sẽ yêu cầu tạo chữ ký hoặc chuyển sang ký tay <b>KT</b>.</p>
+      <div class="signature-profile-preview">${preview}</div>
+      <div class="signature-profile-meta">Trạng thái: <span class="pill ${has ? 'ok' : 'warn'}">${has ? 'Đã có chữ ký' : 'Chưa có chữ ký'}</span> · ${esc(updated)}</div>
+      <div class="btn-row">
+        <button id="createMySignatureBtn" class="btn primary" type="button">${has ? 'Cập nhật chữ ký' : 'Tạo chữ ký'}</button>
+        <button id="reloadMySignatureBtn" class="btn secondary" type="button">Tải lại</button>
+        ${has ? '<button id="deleteMySignatureBtn" class="btn danger" type="button">Xóa chữ ký</button>' : ''}
+      </div>
+    </div>`;
+}
+
+function bindMySignatureEvents(){
+  $('#createMySignatureBtn')?.addEventListener('click', () => openProfileSignatureModal(''));
+  $('#reloadMySignatureBtn')?.addEventListener('click', () => loadMySignature($('#reloadMySignatureBtn')));
+  $('#deleteMySignatureBtn')?.addEventListener('click', () => deleteMySignature($('#deleteMySignatureBtn')));
+}
+
+async function loadMySignature(btn){
+  await withButton(btn, 'Đang tải...', async () => {
+    const res = await api('getMySignature', {});
+    state.mySignature = res.data.signature || null;
+    renderSettingsTab();
+    toast('Đã tải lại chữ ký cá nhân.');
+  });
+}
+
+async function deleteMySignature(btn){
+  const ok = await showConfirmDialog({
+    title:'Xóa chữ ký hệ thống',
+    message:'Bạn chắc chắn muốn xóa chữ ký hệ thống cá nhân? Sau khi xóa, khi ký HT bạn sẽ phải tạo lại chữ ký.',
+    confirmText:'Xóa chữ ký',
+    cancelText:'Hủy',
+    danger:true
+  });
+  if(!ok) return;
+  await withButton(btn, 'Đang xóa...', async () => {
+    const res = await api('deleteMySignature', {});
+    state.mySignature = res.data.signature || null;
+    renderSettingsTab();
+    toast('Đã xóa chữ ký hệ thống.');
+  });
 }
 
 function renderPdfTemplateBox(type, title){
