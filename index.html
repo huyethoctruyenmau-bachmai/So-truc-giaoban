@@ -735,16 +735,85 @@
 
 
     /* ===== ACCOUNT PATCH 88: MOBILE TAB ORDER + ACCOUNT MODAL ACTIONS ===== */
-    @media (max-width:760px){
-      .tabbar .tab-btn[data-tab="create"]{order:1}
-      .tabbar .tab-btn[data-tab="account"]{order:2}
-      .tabbar .tab-btn[data-tab="list"]{order:3}
-      .tabbar .tab-btn[data-tab="meeting"]{order:4}
-      .tabbar .tab-btn[data-tab="pdf"]{order:5}
+    /* Tab Tài khoản đứng đầu trên mọi kích thước màn hình */
+    .tabbar .tab-btn[data-tab="account"]{order:1}
+    .tabbar .tab-btn[data-tab="create"]{order:2}
+    .tabbar .tab-btn[data-tab="list"]{order:3}
+    .tabbar .tab-btn[data-tab="meeting"]{order:4}
+    .tabbar .tab-btn[data-tab="pdf"]{order:5}
+
+
+  
+
+    /* ===== ACCOUNT PATCH 89: TAB ĐẦU TIÊN + RESPONSIVE ỔN ĐỊNH NHƯ HỌP/KÝ NHẬN/PDF ===== */
+    .tabbar .tab-btn[data-tab="account"]{order:1!important}
+    .tabbar .tab-btn[data-tab="create"]{order:2!important}
+    .tabbar .tab-btn[data-tab="list"]{order:3!important}
+    .tabbar .tab-btn[data-tab="meeting"]{order:4!important}
+    .tabbar .tab-btn[data-tab="pdf"]{order:5!important}
+
+    @media (min-width:900px){
+      #tab-account:not(.hidden){
+        display:block!important;
+        height:calc(100vh - var(--header-h) - var(--tabbar-h) - 46px);
+        min-height:420px;
+      }
+      @supports (height:100dvh){
+        #tab-account:not(.hidden){height:calc(100dvh - var(--header-h) - var(--tabbar-h) - 46px)}
+      }
+      #tab-account .account-layout{
+        display:grid!important;
+        grid-template-columns:320px minmax(0,1fr)!important;
+        gap:14px!important;
+        height:100%!important;
+        max-height:100%!important;
+        min-height:0!important;
+        align-items:stretch!important;
+      }
+      #tab-account .account-menu-card,
+      #tab-account .account-content-card{
+        position:relative!important;
+        top:auto!important;
+        height:100%!important;
+        max-height:100%!important;
+        min-height:0!important;
+        overflow:auto!important;
+        margin:0!important;
+      }
+      #tab-account .account-menu-card{align-self:stretch!important}
+      #tab-account .account-content-card{align-self:stretch!important}
     }
 
-
-  </style>
+    @media (max-width:899px){
+      #tab-account:not(.hidden){display:block!important;height:auto!important;min-height:0!important}
+      #tab-account .account-layout{display:block!important;height:auto!important;min-height:0!important}
+      #tab-account .account-menu-card{position:static!important;top:auto!important;height:auto!important;max-height:none!important;overflow:visible!important;margin:0!important}
+      #tab-account .account-content-card{height:auto!important;max-height:none!important;overflow:visible!important;margin-top:12px!important}
+      #tab-account .account-mobile-stack{display:flex;flex-direction:column;gap:12px}
+      #tab-account .account-mobile-info-card{order:1;margin:0!important}
+      #tab-account .account-mobile-actions{order:2;margin:0!important}
+      #tab-account .account-mobile-action-panel{order:3;margin:0!important}
+      #tab-account .account-mobile-actions .account-header{display:none!important}
+      #tab-account .account-menu .btn,
+      #tab-account .account-setup-buttons .btn{
+        width:100%!important;
+        justify-content:center!important;
+        text-align:center!important;
+        min-height:50px!important;
+        height:50px!important;
+        border-radius:10px!important;
+        font-weight:600!important;
+      }
+      #tab-account .account-setup-buttons{padding-left:0!important;border-left:0!important;margin-top:10px!important}
+      #tab-account .account-info-card{background:linear-gradient(135deg,#fffafb 0%,#f8f1f4 100%);border-radius:10px;border-left:4px solid var(--wine);padding:15px;margin-bottom:0}
+      #tab-account .account-header{margin-bottom:14px;padding-bottom:15px;border-bottom:3px solid #f8f1f4}
+      #tab-account .account-avatar{font-size:32px;width:52px;height:52px}
+      #tab-account .account-title{font-size:20px}
+      #tab-account .account-info-label{font-size:14px;color:#5f4a55}
+      #tab-account .account-info-value{font-size:16px;color:#212529;font-weight:500;margin-left:28px}
+      #tab-account .account-info-sep{background:#e1e5e9;margin:12px 0}
+    }
+</style>
 </head>
 <body>
   <div id="bootScreen" class="boot-screen">
@@ -785,7 +854,7 @@
       <p><strong>PHẦN MỀM SỔ TRỰC - GIAO BAN</strong></p>
       <p>Developed by Nguyễn Văn Chính</p>
       <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
-      <p class="login-version">Version: 88.050626-MOBILE-ACCOUNT-BEFORE-SIGN-MODAL</p>
+      <p class="login-version">Version: 89.050626-ACCOUNT-FIRST-STABLE-RESPONSIVE</p>
     </div>
   </div>
 
@@ -823,13 +892,13 @@
     </main>
 
     <nav class="tabbar">
+      <button id="accountTabBtn" class="tab-btn" data-tab="account"><span class="ico">👤</span><span>Tài khoản</span></button>
       <button class="tab-btn active" data-tab="create"><span class="ico">➕</span><span>Tạo phiếu</span></button>
       <button class="tab-btn" data-tab="list"><span class="ico">📋</span><span>Ký nhận</span></button>
       <button class="tab-btn" data-tab="meeting"><span class="ico">🗣️</span><span>Họp</span></button>
       <button class="tab-btn" data-tab="pdf"><span class="ico">📄</span><span>PDF</span></button>
-      <button id="accountTabBtn" class="tab-btn" data-tab="account"><span class="ico">👤</span><span>Tài khoản</span></button>
     </nav>
-    <div class="app-version">Version: 88.050626-MOBILE-ACCOUNT-BEFORE-SIGN-MODAL</div>
+    <div class="app-version">Version: 89.050626-ACCOUNT-FIRST-STABLE-RESPONSIVE</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -3762,7 +3831,7 @@ function accountSetupSectionTitle(section){
 }
 
 function isAccountMobileLayout(){
-  return window.matchMedia && window.matchMedia('(max-width: 760px)').matches;
+  return window.matchMedia && window.matchMedia('(max-width: 899px)').matches;
 }
 
 function bindAccountPanel(view){
