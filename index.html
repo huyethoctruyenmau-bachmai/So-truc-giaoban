@@ -260,12 +260,16 @@
     input[type="date"]::-webkit-calendar-picker-indicator,input[type="datetime-local"]::-webkit-calendar-picker-indicator{cursor:pointer;opacity:1}
     .vi-date-wrap{position:relative;width:100%;min-width:0;display:block}
     .gb-time-row .vi-date-wrap{flex:1;min-width:0}
-    .vi-date-display{display:none}
-
-    html.desktop-date-ui .vi-date-wrap .vi-date-display{display:block;width:100%;height:38px;min-height:38px;padding-right:42px;cursor:pointer;background:#fff}
-    html.desktop-date-ui .vi-date-wrap input.vi-date-native{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;opacity:0!important;z-index:2;cursor:pointer}
-    html.desktop-date-ui .vi-date-wrap::after{content:"📅";position:absolute;right:12px;top:50%;transform:translateY(-50%);z-index:1;pointer-events:none;font-size:16px;opacity:.72}
-    .vi-date-wrap.is-disabled .vi-date-display{background:#f8f9fa;color:var(--g-muted);cursor:not-allowed}
+    .vi-date-wrap input.vi-date-native{position:absolute!important;left:0!important;top:0!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
+    .vi-date-segments{width:100%;max-width:100%;height:var(--field-h);min-height:var(--field-h);display:flex;align-items:center;gap:0;background:#fff;cursor:text;overflow:hidden}
+    .vi-date-segments:focus-within{border-color:#93b4ff;box-shadow:0 0 0 3px rgba(59,130,246,.12)}
+    .vi-date-seg{border:0!important;outline:0!important;background:transparent!important;box-shadow:none!important;padding:0!important;margin:0!important;height:calc(var(--field-h) - 2px)!important;min-height:0!important;font:inherit!important;color:inherit!important;text-align:center!important;min-width:0!important;appearance:textfield!important;-webkit-appearance:none!important}
+    .vi-date-seg::-webkit-outer-spin-button,.vi-date-seg::-webkit-inner-spin-button{appearance:none;-webkit-appearance:none;margin:0}
+    .vi-date-seg-day,.vi-date-seg-month,.vi-date-seg-hour,.vi-date-seg-minute{width:2.2ch!important;flex:0 0 2.2ch!important}
+    .vi-date-seg-year{width:4.4ch!important;flex:0 0 4.4ch!important}
+    .vi-date-sep{flex:0 0 auto;color:#6b7280;padding:0 1px;line-height:1;user-select:none}
+    .vi-date-wrap.is-disabled .vi-date-segments{background:#f8f9fa;color:var(--g-muted);cursor:not-allowed}
+    .vi-date-wrap.is-disabled .vi-date-seg{color:var(--g-muted)!important;cursor:not-allowed}
     #gbTime{cursor:pointer}
     #gbTime:disabled{cursor:not-allowed;background:#f8f9fa}
 
@@ -354,9 +358,8 @@
       .date-pair{grid-column:auto!important}
       .equal-control,input[type="date"],input[type="datetime-local"],select{width:100%!important;max-width:100%!important}
       .vi-date-wrap{width:100%!important;max-width:100%!important;min-width:0!important}
-      .vi-date-wrap .vi-date-display{display:none!important}
-      .vi-date-wrap input.vi-date-native{position:static!important;width:100%!important;height:var(--field-h)!important;max-width:100%!important;min-width:0!important;opacity:1!important;z-index:auto!important;cursor:pointer!important;margin:0!important}
-      .vi-date-wrap::after{content:none}
+      .vi-date-wrap input.vi-date-native{position:absolute!important;left:0!important;top:0!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important;margin:0!important}
+      .vi-date-segments{width:100%!important;max-width:100%!important;height:var(--field-h)!important;min-height:var(--field-h)!important;font-size:15.5px!important;line-height:20px!important;padding:5px 9px!important;text-align:left!important;background:#fff}
       .btn{width:100%;min-height:38px}
       .phieu-actions .btn,.modal-card .btn-row .btn{width:auto!important;min-height:32px;height:32px;padding:0 13px}
       .staff-add-btn{width:42px!important;min-width:42px!important}
@@ -744,7 +747,7 @@
   <div id="toast" class="toast hidden"></div>
 
 <script>
-const APP_VERSION = 'INDEX-85.050626-DATETIME-VI-23H30';
+const APP_VERSION = 'INDEX-85.050626-DATETIME-SEGMENT-EDIT';
 
 function canOpenAdminSettings(){
   return !!(state.user && (state.user.isAdmin || String(state.user.chucVu || '').trim()));
@@ -1121,7 +1124,7 @@ async function withButton(btn, busyText, fn){
 
 function renderCreateTab(){
   const today = todayIso();
-  const now = dateTimeVi(hanoiNowIso());
+  const now = toDatetimeLocal(hanoiNowIso());
   $('#tab-create').innerHTML = `
     <div class="card">
       <h2 class="section-title">I. Thông tin phiếu</h2>
@@ -1194,7 +1197,7 @@ function renderCreateTab(){
         </div>
         <div class="col-3">
           <label id="handoverLabel4">2.4 Thời gian bàn giao</label>
-          <input id="thoiGianBanGiao" class="equal-control datetime-vi-input" type="text" inputmode="numeric" placeholder="dd/mm/yyyy HHhmm" value="${now}">
+          <input id="thoiGianBanGiao" class="equal-control datetime-vi-input" type="datetime-local" value="${now}">
         </div>
       </div>
       <div class="btn-row">
@@ -1801,7 +1804,7 @@ window.editPhieu = async function(phieuID, btn){
               <div class="col-12"><label>${handoverNo}.1 Tài sản, dụng cụ, thiết bị y tế</label><div id="editBanGiaoTaiSanBox">${renderEditBanGiaoTaiSanInput(p)}</div></div>
               <div class="col-12"><label>${handoverNo}.2 Chuyên môn</label><textarea id="editBGCM">${esc(p.banGiaoChuyenMon||'')}</textarea></div>
               <div class="col-12"><label>${handoverNo}.3 Vấn đề khác</label><textarea id="editBGKhac">${esc(p.banGiaoVanDeKhac||'')}</textarea></div>
-              <div class="col-3"><label>${handoverNo}.4 Thời gian bàn giao</label><input id="editTGBG" class="equal-control datetime-vi-input" type="text" inputmode="numeric" placeholder="dd/mm/yyyy HHhmm" value="${escAttr(dateTimeVi(p.thoiGianBanGiao))}"></div>
+              <div class="col-3"><label>${handoverNo}.4 Thời gian bàn giao</label><input id="editTGBG" class="equal-control datetime-vi-input" type="datetime-local" value="${escAttr(toDatetimeLocal(p.thoiGianBanGiao))}"></div>
             ` : `<div class="col-12"><div class="empty">Phần bàn giao đã ký nhận nên không được sửa. Nếu là phiếu Báo cáo thường trực, bạn vẫn có thể sửa phần báo cáo phía trên cho đến khi kết thúc giao ban.</div></div>`}
           </div>
         </div>
@@ -2616,7 +2619,7 @@ function renderGiaoBanModal(){
             <div class="col-3">
               <label>Thời gian giao ban</label>
               <div class="gb-time-row">
-                <input id="gbTime" class="equal-control datetime-vi-input" type="text" inputmode="numeric" placeholder="dd/mm/yyyy HHhmm" value="${escAttr(dateTimeVi(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || hanoiNowIso()))}" ${g.trangThai === STATUS_DA || g.daKhoa ? 'disabled' : ''}>
+                <input id="gbTime" class="equal-control datetime-vi-input" type="datetime-local" value="${escAttr(toDatetimeLocal(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || hanoiNowIso()))}" ${g.trangThai === STATUS_DA || g.daKhoa ? 'disabled' : ''}>
                 ${g.trangThai !== STATUS_DA && !g.daKhoa ? `<button class="gb-time-refresh-icon" type="button" onclick="updateGiaoBanTimeNow()" title="Cập nhật thời gian hiện tại" aria-label="Cập nhật thời gian hiện tại"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></button>` : ''}
               </div>
             </div>
@@ -2694,7 +2697,7 @@ function renderGiaoBanDotXuatModal(){
         <div class="card" style="box-shadow:none">
           <h3 class="section-title">A. Phần hành chính</h3>
           <div class="grid">
-            <div class="col-3"><label>Thời gian giao ban</label><div class="gb-time-row"><input id="gbTime" class="equal-control datetime-vi-input" type="text" inputmode="numeric" placeholder="dd/mm/yyyy HHhmm" value="${escAttr(dateTimeVi(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || hanoiNowIso()))}" ${g.trangThai === STATUS_DA || g.daKhoa ? 'disabled' : ''}>${g.trangThai !== STATUS_DA && !g.daKhoa ? `<button class="gb-time-refresh-icon" type="button" onclick="updateGiaoBanTimeNow()" title="Cập nhật thời gian hiện tại" aria-label="Cập nhật thời gian hiện tại"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></button>` : ''}</div></div>
+            <div class="col-3"><label>Thời gian giao ban</label><div class="gb-time-row"><input id="gbTime" class="equal-control datetime-vi-input" type="datetime-local" value="${escAttr(toDatetimeLocal(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || hanoiNowIso()))}" ${g.trangThai === STATUS_DA || g.daKhoa ? 'disabled' : ''}>${g.trangThai !== STATUS_DA && !g.daKhoa ? `<button class="gb-time-refresh-icon" type="button" onclick="updateGiaoBanTimeNow()" title="Cập nhật thời gian hiện tại" aria-label="Cập nhật thời gian hiện tại"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></button>` : ''}</div></div>
             <div class="col-3"><label>Khoa/phòng</label><select id="gbDotDept" class="equal-control" ${g.daKhoa ? 'disabled' : ''}>${deptOptions(g.khoaPhong || state.user?.khoaPhong || '')}</select></div>
             <div class="col-3"><label>Thư ký</label><input class="equal-control" readonly value="${escAttr(g.nguoiTaoTen || state.user?.tenNhanVien || '')}"></div>
             <div class="col-3"><label>Chủ trì giao ban</label><input id="gbChuTriInput" class="equal-control" list="staffDatalist" value="${escAttr(g.chuTriTen || g.nguoiChuTriTuDo || g.nguoiTaoTen || state.user?.tenNhanVien || '')}" ${g.daKhoa ? 'readonly' : ''} onblur="normalizeChairInput();syncSignModeWithChair()" onchange="normalizeChairInput();syncSignModeWithChair()" oninput="syncSignModeWithChair()"></div>
@@ -2821,7 +2824,7 @@ window.updateGiaoBanTimeNow = function(){
   const input = $('#gbTime');
   const text = $('#gbTimeDisplay') || $('#gbTimeText');
   if(input){
-    input.value = input.type === 'datetime-local' ? toDatetimeLocal(now) : dateTimeVi(now);
+    input.value = toDatetimeLocal(now);
     updateViDateDisplay(input);
   }
   if(text){ if('value' in text) text.value = dateTimeVi(now); else text.textContent = dateTimeVi(now); }
@@ -4082,18 +4085,87 @@ function scheduleViDatePickerEnhance(){
 
 function enhanceViDatePickers(root){
   const scope = root || document;
-  $$('.date-vi-input[type="date"], .datetime-vi-input[type="datetime-local"], .datetime-vi-input[type="text"]', scope).forEach(input => {
-    if(input.dataset.viEnhanced === '1') return;
+  $$('.date-vi-input[type="date"], .datetime-vi-input[type="datetime-local"]', scope).forEach(input => {
+    if(input.dataset.viEnhanced === '1'){
+      updateViDateDisplay(input);
+      return;
+    }
     input.dataset.viEnhanced = '1';
+    input.classList.add('vi-date-native');
     input.setAttribute('lang', 'vi-VN');
     input.setAttribute('autocomplete', 'off');
     if(input.type === 'datetime-local' && !input.getAttribute('step')) input.setAttribute('step', '60');
-    if(input.classList.contains('datetime-vi-input')){
-      input.setAttribute('placeholder', 'dd/mm/yyyy HHhmm');
-      input.setAttribute('inputmode', 'numeric');
-    }
-    input.addEventListener('change', () => input.blur());
+
+    const wrap = document.createElement('div');
+    wrap.className = 'vi-date-wrap';
+    input.parentNode.insertBefore(wrap, input);
+    wrap.appendChild(input);
+    wrap.appendChild(buildViDateSegments(input));
+
+    input.addEventListener('change', () => { updateViDateDisplay(input); input.blur(); });
+    input.addEventListener('input', () => updateViDateDisplay(input));
+    updateViDateDisplay(input);
   });
+}
+
+function buildViDateSegments(input){
+  const isDateTime = input.type === 'datetime-local';
+  const box = document.createElement('div');
+  box.className = 'equal-control vi-date-segments';
+  box.setAttribute('role', 'group');
+  box.setAttribute('aria-label', input.getAttribute('aria-label') || input.id || (isDateTime ? 'Ngày giờ' : 'Ngày'));
+
+  const addSegment = (part, len, label) => {
+    const seg = document.createElement('input');
+    seg.type = 'text';
+    seg.inputMode = 'numeric';
+    seg.maxLength = len;
+    seg.className = 'vi-date-seg vi-date-seg-' + part;
+    seg.dataset.part = part;
+    seg.dataset.len = String(len);
+    seg.setAttribute('aria-label', label);
+    seg.setAttribute('autocomplete', 'off');
+    box.appendChild(seg);
+    return seg;
+  };
+  const addSep = text => {
+    const sep = document.createElement('span');
+    sep.className = 'vi-date-sep';
+    sep.textContent = text;
+    box.appendChild(sep);
+  };
+
+  addSegment('day', 2, 'Ngày'); addSep('/');
+  addSegment('month', 2, 'Tháng'); addSep('/');
+  addSegment('year', 4, 'Năm');
+  if(isDateTime){ addSep(' '); addSegment('hour', 2, 'Giờ'); addSep('h'); addSegment('minute', 2, 'Phút'); }
+
+  box.addEventListener('click', e => {
+    if(e.target === box){
+      const first = box.querySelector('.vi-date-seg:not(:disabled)');
+      if(first) first.focus();
+    }
+  });
+  box.addEventListener('input', e => {
+    const seg = e.target && e.target.classList && e.target.classList.contains('vi-date-seg') ? e.target : null;
+    if(!seg) return;
+    const len = Number(seg.dataset.len || seg.maxLength || 2);
+    seg.value = String(seg.value || '').replace(/\D+/g, '').slice(0, len);
+    if(seg.value.length >= len){
+      const next = getNextViDateSegment(seg);
+      if(next) next.focus();
+    }
+    syncViDateSegmentsToInput(input, false);
+  });
+  box.addEventListener('blur', e => {
+    const seg = e.target && e.target.classList && e.target.classList.contains('vi-date-seg') ? e.target : null;
+    if(!seg) return;
+    normalizeViDateSegment(seg);
+    syncViDateSegmentsToInput(input, true);
+  }, true);
+  box.addEventListener('keydown', e => handleViDateSegmentKeydown(e, input));
+  box.addEventListener('paste', e => handleViDateSegmentPaste(e, input));
+  return box;
 }
 
 function refreshViDatePickers(){
@@ -4103,13 +4175,159 @@ function refreshViDatePickers(){
 function updateViDateDisplay(input){
   if(!input || !input.parentElement) return;
   const wrap = input.parentElement;
-  const display = wrap.querySelector('.vi-date-display');
-  if(!display) return;
-  if(input.type === 'date') display.value = input.value ? dateVi(input.value) : '';
-  else if(input.type === 'datetime-local') display.value = input.value ? dateTimeInputVi(input.value) : '';
-  display.placeholder = input.type === 'datetime-local' ? 'dd/mm/yyyy HH:mm' : 'dd/mm/yyyy';
-  display.disabled = !!input.disabled;
-  wrap.classList.toggle('is-disabled', !!input.disabled);
+  const parts = getNativeDateInputParts(input);
+  if(parts){
+    setViDateSegmentValue(wrap, 'day', parts.day);
+    setViDateSegmentValue(wrap, 'month', parts.month);
+    setViDateSegmentValue(wrap, 'year', parts.year);
+    setViDateSegmentValue(wrap, 'hour', parts.hour);
+    setViDateSegmentValue(wrap, 'minute', parts.minute);
+  }
+  const disabled = !!input.disabled;
+  wrap.classList.toggle('is-disabled', disabled);
+  $$('.vi-date-seg', wrap).forEach(seg => { seg.disabled = disabled; });
+}
+
+function getNativeDateInputParts(input){
+  const s = String(input && input.value || '');
+  if(!s) return {day:'', month:'', year:'', hour:'', minute:''};
+  if(input.type === 'date'){
+    const m = s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    return m ? {day:m[3], month:m[2], year:m[1], hour:'', minute:''} : null;
+  }
+  const m = s.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
+  return m ? {day:m[3], month:m[2], year:m[1], hour:m[4], minute:m[5]} : null;
+}
+
+function setViDateSegmentValue(wrap, part, value){
+  const seg = wrap.querySelector('.vi-date-seg-' + part);
+  if(seg && document.activeElement !== seg) seg.value = value || '';
+}
+
+function getViDateSegmentValue(wrap, part){
+  const seg = wrap.querySelector('.vi-date-seg-' + part);
+  return seg ? String(seg.value || '').replace(/\D+/g, '') : '';
+}
+
+function syncViDateSegmentsToInput(input, strict){
+  if(!input || !input.parentElement) return false;
+  const wrap = input.parentElement;
+  let day = getViDateSegmentValue(wrap, 'day');
+  let month = getViDateSegmentValue(wrap, 'month');
+  let year = getViDateSegmentValue(wrap, 'year');
+  let hour = getViDateSegmentValue(wrap, 'hour');
+  let minute = getViDateSegmentValue(wrap, 'minute');
+  const isDateTime = input.type === 'datetime-local';
+
+  if(strict){
+    if(day) day = pad(clampNumber(Number(day), 1, 31));
+    if(month) month = pad(clampNumber(Number(month), 1, 12));
+    if(year && year.length < 4) year = String(2000 + Number(year)).slice(-4);
+    if(isDateTime){
+      if(hour) hour = pad(clampNumber(Number(hour), 0, 23));
+      if(minute) minute = pad(clampNumber(Number(minute), 0, 59));
+    }
+  }
+
+  if(day.length !== 2 || month.length !== 2 || year.length !== 4) return false;
+  if(isDateTime && (hour.length !== 2 || minute.length !== 2)) return false;
+
+  const y = Number(year), mo = Number(month), d0 = Number(day);
+  if(!y || mo < 1 || mo > 12 || d0 < 1) return false;
+  const maxDay = new Date(y, mo, 0).getDate();
+  const d = Math.min(d0, maxDay);
+  day = pad(d);
+  if(isDateTime){
+    const h = clampNumber(Number(hour), 0, 23);
+    const mi = clampNumber(Number(minute), 0, 59);
+    hour = pad(h); minute = pad(mi);
+  }
+  setViDateSegmentValue(wrap, 'day', day);
+  setViDateSegmentValue(wrap, 'month', month);
+  setViDateSegmentValue(wrap, 'year', year);
+  setViDateSegmentValue(wrap, 'hour', hour);
+  setViDateSegmentValue(wrap, 'minute', minute);
+
+  const nativeValue = isDateTime ? `${year}-${month}-${day}T${hour}:${minute}` : `${year}-${month}-${day}`;
+  if(input.value !== nativeValue){
+    input.value = nativeValue;
+    input.dispatchEvent(new Event('input', {bubbles:true}));
+  }
+  return true;
+}
+
+function normalizeViDateSegment(seg){
+  if(!seg) return;
+  const part = seg.dataset.part;
+  let v = String(seg.value || '').replace(/\D+/g, '');
+  if(!v) return;
+  if(part === 'year'){
+    if(v.length < 4) v = String(2000 + Number(v)).slice(-4);
+    seg.value = v.slice(0,4);
+    return;
+  }
+  if(part === 'hour') seg.value = pad(clampNumber(Number(v), 0, 23));
+  else if(part === 'minute') seg.value = pad(clampNumber(Number(v), 0, 59));
+  else if(part === 'month') seg.value = pad(clampNumber(Number(v), 1, 12));
+  else seg.value = pad(clampNumber(Number(v), 1, 31));
+}
+
+function clampNumber(n, min, max){
+  n = Number(n);
+  if(!Number.isFinite(n)) n = min;
+  return Math.min(max, Math.max(min, n));
+}
+
+function getNextViDateSegment(seg){
+  const all = Array.from(seg.closest('.vi-date-segments').querySelectorAll('.vi-date-seg'));
+  return all[all.indexOf(seg) + 1] || null;
+}
+
+function getPrevViDateSegment(seg){
+  const all = Array.from(seg.closest('.vi-date-segments').querySelectorAll('.vi-date-seg'));
+  return all[all.indexOf(seg) - 1] || null;
+}
+
+function handleViDateSegmentKeydown(e, input){
+  const seg = e.target && e.target.classList && e.target.classList.contains('vi-date-seg') ? e.target : null;
+  if(!seg) return;
+  if(e.key === 'ArrowRight'){
+    const next = getNextViDateSegment(seg);
+    if(next){ e.preventDefault(); next.focus(); next.select(); }
+    return;
+  }
+  if(e.key === 'ArrowLeft'){
+    const prev = getPrevViDateSegment(seg);
+    if(prev){ e.preventDefault(); prev.focus(); prev.select(); }
+    return;
+  }
+  if(e.key === 'Backspace' && !seg.value){
+    const prev = getPrevViDateSegment(seg);
+    if(prev){ e.preventDefault(); prev.focus(); prev.select(); }
+    return;
+  }
+  if(e.key === 'ArrowUp' || e.key === 'ArrowDown'){
+    e.preventDefault();
+    const part = seg.dataset.part;
+    const delta = e.key === 'ArrowUp' ? 1 : -1;
+    const limits = {day:[1,31], month:[1,12], year:[1900,2099], hour:[0,23], minute:[0,59]}[part] || [0,99];
+    let n = Number(String(seg.value || '').replace(/\D+/g, ''));
+    if(!Number.isFinite(n) || !n) n = part === 'year' ? new Date().getFullYear() : limits[0];
+    n += delta;
+    if(n > limits[1]) n = limits[0];
+    if(n < limits[0]) n = limits[1];
+    seg.value = part === 'year' ? String(n).padStart(4,'0') : pad(n);
+    syncViDateSegmentsToInput(input, true);
+  }
+}
+
+function handleViDateSegmentPaste(e, input){
+  const text = (e.clipboardData || window.clipboardData)?.getData('text') || '';
+  const parsed = input.type === 'datetime-local' ? parseDateTimeInputSql(text) : parseDateInputVi(text);
+  if(!parsed) return;
+  e.preventDefault();
+  input.value = input.type === 'datetime-local' ? parsed.replace(' ', 'T').slice(0,16) : parsed;
+  updateViDateDisplay(input);
 }
 
 function setDefaultDateRange(fromId,toId,daysBack){
@@ -4133,6 +4351,7 @@ function parseDateInputVi(value){
 function getDateInputIso(id){
   const el = document.getElementById(id);
   if(!el) return '';
+  syncViDateSegmentsToInput(el, true);
   const iso = parseDateInputVi(el.value);
   if(iso && el.type === 'date') el.value = iso;
   updateViDateDisplay(el);
@@ -4146,6 +4365,7 @@ function dateTimeInputVi(value){
 function getDateTimeInputSql(id){
   const el = document.getElementById(id);
   if(!el) return '';
+  syncViDateSegmentsToInput(el, true);
   updateViDateDisplay(el);
   return parseDateTimeInputSql(el.value);
 }
@@ -4257,8 +4477,6 @@ function toDatetimeLocal(value){
 }
 
 function fromDatetimeLocal(v){
-  const parsed = parseDateTimeInputSql(v);
-  if(parsed) return parsed;
   return v ? v.replace('T',' ') + ':00' : '';
 }
 
