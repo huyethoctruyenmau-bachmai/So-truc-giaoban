@@ -134,7 +134,7 @@
     .pill.ok{background:#e8f7ef;color:var(--ok)}.pill.warn{background:#fff5e5;color:var(--warn)}.pill.danger{background:#feeceb;color:var(--danger)}.pill.muted{background:#f2e7ec;color:#6e5360}
     .list-card{border:1px solid var(--line);background:#fff;border-radius:14px;padding:12px;margin:10px 0}.data-card{border-left:4px solid var(--wine);background:#fffafb;line-height:1.55}.data-card .field-row{padding:5px 0;border-bottom:1px solid rgba(234,215,223,.65)}.data-card .field-row:last-child{border-bottom:0}.data-card .field-name{font-weight:600;color:var(--wine-dark);display:block;margin-bottom:2px}.data-card .field-value{color:var(--text);font-size:14px;line-height:1.45;white-space:pre-wrap}.data-card strong{font-weight:600;color:var(--wine-dark)}.phieu-inline{margin-top:8px;border:1px solid var(--line);border-left:4px solid var(--wine);border-radius:12px;background:#fff;padding:10px 12px;line-height:1.5}.phieu-inline .field-row{color:var(--text);font-size:14.5px;line-height:1.45;margin:0 0 8px;padding:0;border:0}.phieu-inline .field-row:last-child{margin-bottom:0}.phieu-inline .field-name{font-weight:700;color:var(--muted);display:block;margin:0 0 2px;font-size:14.5px;line-height:1.35}.phieu-inline .field-value{color:var(--text);font-size:14.5px;line-height:1.45;font-weight:400;white-space:pre-wrap}
     .list-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
-    .list-title{font-weight:700;color:var(--wine-dark);font-size:17px}
+    .list-title{font-weight:700;color:var(--wine-dark);font-size:17px}.list-title.title-blue{color:var(--g-blue)}
     .meta{font-size:14px;color:var(--muted);line-height:1.45}
     .empty,.loading{padding:18px;text-align:center;color:var(--muted);background:#fff;border:1px dashed #dec0cc;border-radius:16px}
     .loading:before{content:"";display:inline-block;width:17px;height:17px;border-radius:50%;border:3px solid #ead0da;border-top-color:var(--wine);animation:spin .75s linear infinite;margin-right:8px;vertical-align:-4px}
@@ -1844,7 +1844,7 @@ function renderPhieuList(items, note=''){
       <div class="list-card phieu-card">
         <div class="list-head">
           <div>
-            <div class="list-title">${esc(title)}</div>
+            <div class="list-title title-blue">${esc(title)}</div>
             <div class="meta">Người tạo: ${esc(p.nguoiThucHienTen || '')}${p.thoiDiemTao ? ' · Tạo lúc: ' + dateTimeVi(p.thoiDiemTao) : ''}</div>
           </div>
           ${statusPill(p.trangThaiBanGiao)}
@@ -2406,7 +2406,7 @@ function renderGiaoBanList(items, note=''){
       <div class="list-card phieu-card">
         <div class="list-head">
           <div>
-            <div class="list-title">${esc(title)}</div>
+            <div class="list-title ${isDotXuat ? 'title-blue' : ''}">${esc(title)}</div>
             ${metaHtml}
           </div>
           ${statusPill(g.trangThai)}
