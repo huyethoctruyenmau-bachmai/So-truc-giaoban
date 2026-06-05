@@ -3746,7 +3746,7 @@ function renderAccountEditPanel(info){
       </div>
     </div>
     <div class="grid account-action-form">
-      <div class="col-12"><label>Ngày sinh</label><input id="editAccNgaySinh" type="date" value="${escAttr(info.ngaySinhIso || '')}"></div>
+      <div class="col-12"><label>Ngày sinh</label><input id="editAccNgaySinh" class="equal-control date-vi-input" type="date" value="${escAttr(info.ngaySinhIso || '')}"></div>
       <div class="col-12"><label>Email</label><input id="editAccEmail" type="email" value="${escAttr(info.email || '')}" placeholder="Nhập email"></div>
       <div class="col-12"><label>Chức danh</label><select id="editAccChucDanh">${optionHtml(opts.listChucDanh, info.chucDanh || info.chucDanhHienThi || '')}</select></div>
       <div class="col-12"><label>Khoa/phòng</label><select id="editAccKhoaPhong">${optionHtml(opts.listPhongBan || state.khoaPhong, info.khoaPhong || info.phongLamViec || '')}</select></div>
@@ -3874,7 +3874,7 @@ function openEditAccountModal(){
     <div class="modal-card modal-small">
       <div class="modal-head"><div class="modal-title">Sửa thông tin tài khoản</div><button class="close-btn" onclick="closeModal()">×</button></div>
       <div class="grid" style="margin-top:12px">
-        <div class="col-12"><label>Ngày sinh</label><input id="editAccNgaySinh" type="date" value="${escAttr(info.ngaySinhIso || '')}"></div>
+        <div class="col-12"><label>Ngày sinh</label><input id="editAccNgaySinh" class="equal-control date-vi-input" type="date" value="${escAttr(info.ngaySinhIso || '')}"></div>
         <div class="col-12"><label>Email</label><input id="editAccEmail" type="email" value="${escAttr(info.email || '')}" placeholder="Nhập email"></div>
         <div class="col-12"><label>Chức danh</label><select id="editAccChucDanh">${optionHtml(opts.listChucDanh, info.chucDanh || info.chucDanhHienThi || '')}</select></div>
         <div class="col-12"><label>Khoa/phòng</label><select id="editAccKhoaPhong">${optionHtml(opts.listPhongBan || state.khoaPhong, info.khoaPhong || info.phongLamViec || '')}</select></div>
