@@ -159,6 +159,9 @@
     .tm-report-title{font-weight:700;color:var(--wine-dark);margin-bottom:8px}
     .tm-inline-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
     .tm-inline-grid.phat-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+    #soLieuTrucBox .tm-inline-grid.phat-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+    #soLieuTrucBox .tm-inline-grid.phat-grid .phat-patient-field{grid-column:1 / -1}
+    #soLieuTrucBox .tm-inline-grid.ton-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
     .tm-total{background:var(--g-readonly);font-weight:700;color:var(--wine-dark)}
     .tm-equip-wrap{overflow:auto;border:1px solid var(--g-line);border-radius:12px;background:#fff}
     .tm-equip-table{width:100%;border-collapse:collapse;min-width:540px;font-size:13.5px}
@@ -364,6 +367,10 @@
       .tab-btn{font-size:12px}.tab-btn .ico{font-size:20px}
       .tm-inline-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
       .tm-inline-grid.phat-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+      #soLieuTrucBox .tm-inline-grid.phat-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+      #soLieuTrucBox .tm-inline-grid.ton-grid{grid-template-columns:repeat(6,minmax(0,1fr))}
+      #soLieuTrucBox .tm-inline-grid.ton-grid > div:nth-child(-n+3){grid-column:span 2}
+      #soLieuTrucBox .tm-inline-grid.ton-grid > div:nth-child(n+4){grid-column:span 3}
       .tm-equip-table{font-size:13px;min-width:680px}
       .tm-create-equipment-table{min-width:620px}
     }
@@ -737,7 +744,7 @@
   <div id="toast" class="toast hidden"></div>
 
 <script>
-const APP_VERSION = 'INDEX-83.050626-TM-FIELDS-DATE-EDIT';
+const APP_VERSION = 'INDEX-84.050626-CREATE-TM-MOBILE-LAYOUT';
 
 function canOpenAdminSettings(){
   return !!(state.user && (state.user.isAdmin || String(state.user.chucVu || '').trim()));
@@ -1343,15 +1350,15 @@ function renderSoLieuTrucInput(isTM){
       <div class="tm-report-group">
         <div class="tm-report-title">Phát máu</div>
         <div class="tm-inline-grid phat-grid">
+          <div class="phat-patient-field"><label>Tổng số bệnh nhân</label><input id="tmPhatBenhNhan" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
           <div><label>KHC</label><input id="tmPhatKHC" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
           <div><label>CP</label><input id="tmPhatCP" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
           <div><label>Tổng số</label><input id="tmPhatTong" class="tm-total" readonly value="0"></div>
-          <div><label>Tổng số bệnh nhân</label><input id="tmPhatBenhNhan" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
         </div>
       </div>
       <div class="tm-report-group">
         <div class="tm-report-title">Máu tồn</div>
-        <div class="tm-inline-grid">
+        <div class="tm-inline-grid ton-grid">
           <div><label>KHC</label><input id="tmTonKHC" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
           <div><label>HTT</label><input id="tmTonHTT" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
           <div><label>Tủa</label><input id="tmTonTua" type="number" min="0" step="1" inputmode="numeric" value="0"></div>
