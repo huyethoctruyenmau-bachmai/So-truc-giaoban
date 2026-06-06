@@ -955,6 +955,19 @@
       color:#fff!important;
       opacity:1!important;
     }
+
+    /* ===== PATCH 95: PHIẾU CHUYÊN MÔN TRUYỀN MÁU + DS PHIẾU ===== */
+    .tm-form-note{font-size:13px;color:var(--muted);margin:6px 0 0;line-height:1.45}
+    .tm-form-row-2{display:grid;grid-template-columns:minmax(0,1fr) minmax(160px,240px);gap:10px;align-items:end}
+    .tm-blood-options{border:1px solid var(--line);border-radius:12px;padding:10px;background:#fff;margin-top:6px}
+    .tm-blood-row{display:grid;grid-template-columns:24px minmax(0,1fr) minmax(130px,190px);gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed #f1dce6}
+    .tm-blood-row:last-child{border-bottom:0}
+    .tm-blood-row input[type="checkbox"]{width:18px;min-height:18px;box-shadow:none}
+    .tm-blood-row input[type="text"]{min-height:34px;padding:5px 8px}
+    .ds-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px;flex-wrap:wrap}
+    .ds-toolbar .meta{margin:0}
+    @media (max-width:760px){.tm-form-row-2{grid-template-columns:1fr}.tm-blood-row{grid-template-columns:24px minmax(0,1fr);}.tm-blood-row input[type="text"]{grid-column:2 / -1}}
+
 </style>
 </head>
 <body>
@@ -996,7 +1009,7 @@
       <p><strong>PHẦN MỀM SỔ TRỰC - GIAO BAN</strong></p>
       <p>Developed by Nguyễn Văn Chính</p>
       <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
-      <p class="login-version">Version: 93.050626-EQUIPMENT-COLUMN-SAFE</p>
+      <p class="login-version">Version: 95.060626-TM-PHIEU-DS-PHIEU</p>
     </div>
   </div>
 
@@ -1038,9 +1051,9 @@
       <button class="tab-btn active" data-tab="create"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg></span><span>Tạo phiếu</span></button>
       <button class="tab-btn" data-tab="list"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 20h6"/><path d="M14.5 4.5l5 5L10 19l-5.5 1.5L6 15l8.5-10.5Z"/><path d="M13 6l5 5"/></svg></span><span>Ký nhận</span></button>
       <button class="tab-btn" data-tab="meeting"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="6" r="2.1"/><circle cx="5.8" cy="9.3" r="1.9"/><circle cx="18.2" cy="9.3" r="1.9"/><path d="M8.6 13.2c.8-1.4 2-2.1 3.4-2.1s2.6.7 3.4 2.1"/><path d="M2.8 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><path d="M15.2 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><ellipse cx="12" cy="16.6" rx="6.3" ry="2.2"/><path d="M12 18.8v2.2M8.7 21h6.6"/></svg></span><span>Họp</span></button>
-      <button class="tab-btn" data-tab="pdf"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h5M10 12h6M10 16h6"/></svg></span><span>PDF</span></button>
+      <button class="tab-btn" data-tab="pdf"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h5M10 12h6M10 16h6"/></svg></span><span>DS phiếu</span></button>
     </nav>
-    <div class="app-version">Version: 93.050626-EQUIPMENT-COLUMN-SAFE</div>
+    <div class="app-version">Version: 95.060626-TM-PHIEU-DS-PHIEU</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -1048,7 +1061,7 @@
   <div id="toast" class="toast hidden"></div>
 
 <script>
-const APP_VERSION = 'INDEX-94.050626-EQUIPMENT-BORDER-FIX';
+const APP_VERSION = 'INDEX-95.060626-TM-PHIEU-DS-PHIEU';
 
 function canOpenAdminSettings(){
   return !!(state.user && (state.user.isAdmin || String(state.user.chucVu || '').trim()));
@@ -1057,6 +1070,8 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbxLHKUczat2WOH1R4W_YVVs
 
 const LOAI_BAN_GIAO = 'Bàn giao thường trực';
 const LOAI_BAO_CAO = 'Báo cáo thường trực';
+const LOAI_TM_XU_TRI = 'Khai báo xử trí chuyên môn Truyền máu';
+const LOAI_TM_TDKMM = 'Khai báo tác dụng không mong muốn liên quan truyền máu';
 const STATUS_CHUA = 'Chưa hoàn thành';
 const STATUS_DA = 'Đã hoàn thành';
 const LOAI_GIAO_BAN_THUONG_TRUC = 'Giao ban thường trực';
@@ -1104,6 +1119,7 @@ const state = {
   mySignature: null,
   accountInfo: null,
   accountOptions: {listPhongBan: [], listViTriTruc: [], listChucDanh: []},
+  appSetup: {},
   accountSetupOpen: false,
   accountView: 'info',
   accountSetupSection: '',
@@ -1338,6 +1354,7 @@ async function loadInitData(opts={}){
     state.mySignature = res.data.mySignature || state.mySignature || null;
     state.accountInfo = res.data.accountInfo || state.accountInfo || null;
     state.accountOptions = res.data.accountOptions || state.accountOptions || {listPhongBan: [], listViTriTruc: [], listChucDanh: []};
+    state.appSetup = res.data.appSetup || state.appSetup || {};
     state.pdfContentTemplates = state.pdfTemplateConfig?.contentTemplates || null;
     state.pdfTemplateVariables = state.pdfTemplateConfig?.variables || [];
     state.initLoaded = true;
@@ -1480,6 +1497,10 @@ async function withInlineBusy(el, busyText, fn){
 function renderCreateTab(){
   const today = todayIso();
   const now = toDatetimeLocal(hanoiNowIso());
+  const allowTm = isTruyenMauDept(state.user?.khoaPhong || state.user?.phongLamViec || '');
+  const tmOptions = allowTm ? `
+            <option>${LOAI_TM_XU_TRI}</option>
+            <option>${LOAI_TM_TDKMM}</option>` : '';
   $('#tab-create').innerHTML = `
     <div class="card">
       <h2 class="section-title">I. Thông tin phiếu</h2>
@@ -1488,11 +1509,11 @@ function renderCreateTab(){
           <label>Loại phiếu</label>
           <select id="createLoai" class="equal-control">
             <option>${LOAI_BAN_GIAO}</option>
-            <option>${LOAI_BAO_CAO}</option>
+            <option>${LOAI_BAO_CAO}</option>${tmOptions}
           </select>
         </div>
         <div class="col-3">
-          <label>Ngày trực</label>
+          <label id="createDateLabel">Ngày trực</label>
           <input id="createDate" class="equal-control date-vi-input" type="date" value="${today}">
         </div>
         <div class="col-3">
@@ -1500,11 +1521,13 @@ function renderCreateTab(){
           <select id="createDept" class="equal-control">${deptOptions(state.user?.khoaPhong || '')}</select>
         </div>
         <div class="col-3">
-          <label>Người thực hiện</label>
+          <label id="createUserLabel">Người thực hiện</label>
           <input class="equal-control" readonly value="${esc(displayUser(state.user))}">
         </div>
       </div>
     </div>
+
+    <div id="tmPhieuBlock" class="card hidden"></div>
 
     <div id="reportBlock" class="card hidden">
       <h3 class="section-title">II. Báo cáo thường trực</h3>
@@ -1535,7 +1558,7 @@ function renderCreateTab(){
       </div>
     </div>
 
-    <div class="card">
+    <div id="regularPhieuBlock" class="card">
       <h3 id="handoverTitle" class="section-title">II. Bàn giao thường trực</h3>
       <div class="grid">
         <div class="col-12">
@@ -1579,9 +1602,19 @@ function renderCreateTab(){
 }
 
 function updateCreateFormNumbering(){
-  const isReport = $('#createLoai')?.value === LOAI_BAO_CAO;
+  const loai = $('#createLoai')?.value || LOAI_BAN_GIAO;
+  const isReport = loai === LOAI_BAO_CAO;
+  const isTmPhieu = isTmPhieuLoai(loai);
   const isTM = isTruyenMauDept($('#createDept')?.value || '');
-  $('#reportBlock')?.classList.toggle('hidden', !isReport);
+  $('#reportBlock')?.classList.toggle('hidden', !isReport || isTmPhieu);
+  $('#regularPhieuBlock')?.classList.toggle('hidden', isTmPhieu);
+  $('#tmPhieuBlock')?.classList.toggle('hidden', !isTmPhieu);
+  if($('#createDateLabel')) $('#createDateLabel').textContent = isTmPhieu ? (loai === LOAI_TM_XU_TRI ? 'Ngày thực hiện' : 'Ngày tháng năm') : 'Ngày trực';
+  if($('#createUserLabel')) $('#createUserLabel').textContent = loai === LOAI_TM_TDKMM ? 'Người báo cáo' : 'Người thực hiện';
+  if(isTmPhieu){
+    renderTmPhieuCreateForm(loai);
+    return;
+  }
   const n = isReport ? '3' : '2';
   if($('#handoverTitle')) $('#handoverTitle').textContent = `${isReport ? 'III' : 'II'}. Bàn giao thường trực`;
   if($('#handoverLabel1')) $('#handoverLabel1').textContent = `${n}.1 Tài sản, dụng cụ, thiết bị y tế`;
@@ -1861,8 +1894,11 @@ function collectBanGiaoTaiSan(){
 }
 
 async function submitCreatePhieu(){
+  const loai = $('#createLoai').value;
+  if(isTmPhieuLoai(loai)) return submitCreateTmPhieu(loai);
+
   const payload = {
-    loaiPhieu: $('#createLoai').value,
+    loaiPhieu: loai,
     ngayTruc: getDateInputIso('createDate'),
     khoaPhong: $('#createDept').value,
     nhanVienThuongTruc: state.selectedStaff,
@@ -1885,6 +1921,264 @@ async function submitCreatePhieu(){
     renderCreateTab();
   });
 }
+
+
+function isTmPhieuLoai(loai){
+  return loai === LOAI_TM_XU_TRI || loai === LOAI_TM_TDKMM;
+}
+
+function appSetupList(key, fallback=[]){
+  const list = state.appSetup?.[key];
+  return Array.isArray(list) && list.length ? list : fallback;
+}
+
+function optionHtml(list, selected=''){
+  return (list || []).map(x => `<option value="${escAttr(x)}" ${norm(x)===norm(selected) ? 'selected' : ''}>${esc(x)}</option>`).join('');
+}
+
+function renderTmPhieuCreateForm(loai){
+  const box = $('#tmPhieuBlock');
+  if(!box) return;
+  box.innerHTML = renderTmPhieuFormHtml(loai, {}, 'tmCreate') + `
+    <div class="btn-row"><button id="createTmBtn" class="btn primary">Tạo phiếu</button></div>
+    <p class="meta">Người thực hiện/người báo cáo được lấy tự động từ tài khoản đang đăng nhập.</p>`;
+  $('#createTmBtn').addEventListener('click', submitCreatePhieu);
+  bindTmPhieuFormEvents('tmCreate', loai);
+  setTimeout(() => $$('textarea').forEach(autoGrow), 0);
+}
+
+function renderTmPhieuFormHtml(loai, data={}, prefix='tmCreate'){
+  const d = data || {};
+  if(loai === LOAI_TM_XU_TRI) return renderTmXuTriFormHtml(d, prefix);
+  return renderTmTdkmmFormHtml(d, prefix);
+}
+
+function renderTmXuTriFormHtml(d={}, prefix='tmCreate'){
+  const vanDe = appSetupList('cacVanDeCanXuTri', []);
+  const abo = appSetupList('nhomMauHeABO', ['A','B','O','AB','Chưa xác định']);
+  const rh = appSetupList('rhD', ['Dương','Âm','Yếu','Chưa xác định']);
+  return `
+    <h3 class="section-title">II. Khai báo xử trí chuyên môn Truyền máu</h3>
+    <h3 class="sub-title">A. Thông tin người bệnh</h3>
+    <div class="grid">
+      <div class="col-3"><label>PID</label><input id="${prefix}Pid" class="equal-control" value="${escAttr(d.maBenhNhan || d.pid || '')}"></div>
+      <div class="col-3"><label>Họ tên bệnh nhân</label><input id="${prefix}HoTen" class="equal-control" value="${escAttr(d.hoTenBenhNhan || d.hoTen || '')}"></div>
+      <div class="col-3"><label>Năm sinh</label><input id="${prefix}NamSinh" class="equal-control" value="${escAttr(d.namSinh || '')}"></div>
+      <div class="col-3"><label>TT/Khoa/Phòng</label><input id="${prefix}KhoaDieuTri" class="equal-control" value="${escAttr(d.khoaPhongDieuTri || d.ttKhoaPhong || '')}"></div>
+      <div class="col-12"><label>Chẩn đoán</label><textarea id="${prefix}ChanDoan">${esc(d.chanDoan || '')}</textarea></div>
+    </div>
+    <h3 class="sub-title">B. Nội dung xử trí</h3>
+    <div class="grid">
+      <div class="col-6"><label>Vấn đề cần xử trí</label><select id="${prefix}VanDe" class="equal-control">${optionHtml(vanDe, d.vanDeCanXuTri || '')}</select></div>
+      <div class="col-6"><label>Các vấn đề khác</label><input id="${prefix}VanDeKhac" class="equal-control" value="${escAttr(d.vanDeKhac || '')}"></div>
+      <div class="col-12"><label>Cách xử lý</label><textarea id="${prefix}CachXuLy">${esc(d.cachXuLy || '')}</textarea></div>
+      <div class="col-12"><label>Kết quả xử lý</label><textarea id="${prefix}KetQuaXuLy">${esc(d.ketQuaXuLy || '')}</textarea></div>
+    </div>
+    <h3 class="sub-title">C. Thông tin nhóm máu/xét nghiệm liên quan</h3>
+    <div class="grid">
+      <div class="col-3"><label>Nhóm máu hệ ABO</label><select id="${prefix}ABO" class="equal-control">${optionHtml(abo, d.nhomMauABO || '')}</select></div>
+      <div class="col-3"><label>Nhóm máu hệ Rh(D)</label><select id="${prefix}RhD" class="equal-control">${optionHtml(rh, d.rhD || '')}</select></div>
+      <div class="col-6"><label>Kháng thể bất thường</label><input id="${prefix}KhangThe" class="equal-control" value="${escAttr(d.khangTheBatThuong || '')}"></div>
+      <div class="col-12"><label>Các lưu ý khác</label><textarea id="${prefix}LuuYKhac">${esc(d.luuYKhac || '')}</textarea></div>
+    </div>
+    <h3 class="sub-title">D. Người thực hiện</h3>
+    <div class="list-card data-card"><div class="field-row"><span class="field-name">Người thực hiện</span><div class="field-value">${esc(state.user?.tenNhanVien || '')}</div></div></div>`;
+}
+
+function renderTmTdkmmFormHtml(d={}, prefix='tmCreate'){
+  const abo = appSetupList('nhomMauHeABO', ['A','B','O','AB','Chưa xác định']);
+  const rh = appSetupList('rhD', ['Dương','Âm','Yếu','Chưa xác định']);
+  const gioiTinh = appSetupList('gioiTinh', ['Nam','Nữ']);
+  const nghiNgo = appSetupList('loaiMauChePhamNghiNgo', ['KHC 50','KHC 250','KHC 350','HTT 200','HTT 250','KTC Pool','KTC GT 120','KTC GT 250','Tủa VIII','KBC']);
+  const daTruyen = appSetupList('loaiMauDaTruyenTruocPhanUng', ['Chưa truyền','KHC','KTC','HTT','KTC GT','Tủa VIII']);
+  const mucDo = appSetupList('mucDoPhanUng', ['Nhẹ','Trung bình','Nặng']);
+  const kq = appSetupList('ketQuaXetNghiem', ['Âm tính','Dương tính (1+)','Dương tính (2+)','Dương tính (3+)','Dương tính (4+)','Không thực hiện']);
+  const before = d.loaiMauDaTruyenTruocPhanUng || {chuaTruyen:false, items:[]};
+  const beforeItems = Array.isArray(before.items) ? before.items : [];
+  const isChua = !!before.chuaTruyen;
+  const rows = daTruyen.filter(x => norm(x)!==norm('Chưa truyền')).map(x => {
+    const found = beforeItems.find(it => norm(it.ten)===norm(x)) || {};
+    return `<div class="tm-blood-row"><input type="checkbox" class="${prefix}DaTruyenCheck" value="${escAttr(x)}" ${found.ten ? 'checked' : ''}><span>${esc(x)}</span><input type="text" class="${prefix}DaTruyenTheTich" data-name="${escAttr(x)}" placeholder="Thể tích" value="${escAttr(found.theTich || '')}"></div>`;
+  }).join('');
+  return `
+    <h3 class="section-title">II. Khai báo tác dụng không mong muốn liên quan truyền máu</h3>
+    <h3 class="sub-title">A. Thông tin người bệnh</h3>
+    <div class="grid">
+      <div class="col-3"><label>Mã bệnh nhân</label><input id="${prefix}MaBN" class="equal-control" value="${escAttr(d.maBenhNhan || d.maBN || '')}"></div>
+      <div class="col-3"><label>Họ tên</label><input id="${prefix}HoTen" class="equal-control" value="${escAttr(d.hoTenBenhNhan || d.hoTen || '')}"></div>
+      <div class="col-2"><label>Năm sinh</label><input id="${prefix}NamSinh" class="equal-control" value="${escAttr(d.namSinh || '')}"></div>
+      <div class="col-2"><label>Giới tính</label><select id="${prefix}GioiTinh" class="equal-control">${optionHtml(gioiTinh, d.gioiTinh || '')}</select></div>
+      <div class="col-2"><label>Nhóm máu ABO</label><select id="${prefix}ABO" class="equal-control">${optionHtml(abo, d.nhomMauABO || '')}</select></div>
+      <div class="col-3"><label>Rh(D)</label><select id="${prefix}RhD" class="equal-control">${optionHtml(rh, d.rhD || '')}</select></div>
+      <div class="col-9"><label>Viện/TT/Khoa - Phòng - Giường</label><input id="${prefix}KhoaGiuong" class="equal-control" value="${escAttr(d.khoaPhongDieuTri || d.vienKhoaPhongGiuong || '')}"></div>
+      <div class="col-12"><label>Chẩn đoán</label><textarea id="${prefix}ChanDoan">${esc(d.chanDoan || '')}</textarea></div>
+    </div>
+    <h3 class="sub-title">B. Thông tin truyền máu</h3>
+    <div class="grid">
+      <div class="col-4"><label>Mã đơn vị máu nghi ngờ phản ứng</label><input id="${prefix}MaDonVi" class="equal-control" value="${escAttr(d.maDonViMauNghiNgo || '')}"></div>
+      <div class="col-8 tm-form-row-2"><div><label>Loại Máu - Chế phẩm nghi ngờ phản ứng</label><select id="${prefix}ChePhamNghiNgo" class="equal-control">${optionHtml(nghiNgo, d.loaiMauChePhamNghiNgo || '')}</select></div><div><label>Thể tích đơn vị máu đã truyền</label><input id="${prefix}TheTichNghiNgo" class="equal-control" value="${escAttr(d.theTichDonViMauDaTruyen || '')}"></div></div>
+      <div class="col-12">
+        <label>Loại máu đã truyền trước khi phản ứng</label>
+        <label class="tm-form-note"><input id="${prefix}ChuaTruyen" type="checkbox" ${isChua ? 'checked' : ''}> Chưa truyền</label>
+        <div id="${prefix}DaTruyenBox" class="tm-blood-options ${isChua ? 'hidden' : ''}">${rows}</div>
+      </div>
+    </div>
+    <h3 class="sub-title">C. Mô tả phản ứng</h3>
+    <div class="grid">
+      <div class="col-3"><label>Mức độ phản ứng</label><select id="${prefix}MucDo" class="equal-control">${optionHtml(mucDo, d.mucDoPhanUng || '')}</select></div>
+      <div class="col-9"><label>Triệu chứng</label><input id="${prefix}TrieuChung" class="equal-control" value="${escAttr(d.trieuChung || '')}"></div>
+      <div class="col-12"><label>Ghi chú</label><textarea id="${prefix}GhiChu">${esc(d.ghiChu || '')}</textarea></div>
+    </div>
+    <h3 class="sub-title">D. Xét nghiệm trước truyền</h3>
+    <div class="grid">
+      <div class="col-3"><label>Phản ứng hòa hợp - Trước truyền</label><select id="${prefix}PUHHTruoc" class="equal-control">${optionHtml(kq, d.phanUngHoaHopTruoc || '')}</select></div>
+      <div class="col-3"><label>Coombs TT - Trước truyền</label><select id="${prefix}CoombsTTTruoc" class="equal-control">${optionHtml(kq, d.coombsTTTruoc || '')}</select></div>
+      <div class="col-3"><label>Coombs GT - Trước truyền</label><select id="${prefix}CoombsGTTruoc" class="equal-control">${optionHtml(kq, d.coombsGTTruoc || '')}</select></div>
+      <div class="col-3"><label>SLKT - Trước truyền</label><select id="${prefix}SLKTTruoc" class="equal-control">${optionHtml(kq, d.slktTruoc || '')}</select></div>
+    </div>
+    <h3 class="sub-title">E. Xét nghiệm sau truyền</h3>
+    <div class="grid">
+      <div class="col-3"><label>Phản ứng hòa hợp - Sau truyền</label><select id="${prefix}PUHHSau" class="equal-control">${optionHtml(kq, d.phanUngHoaHopSau || '')}</select></div>
+      <div class="col-3"><label>Coombs TT - Sau truyền</label><select id="${prefix}CoombsTTSau" class="equal-control">${optionHtml(kq, d.coombsTTSau || '')}</select></div>
+      <div class="col-3"><label>Coombs GT - Sau truyền</label><select id="${prefix}CoombsGTSau" class="equal-control">${optionHtml(kq, d.coombsGTSau || '')}</select></div>
+      <div class="col-3"><label>SLKTBT - Sau truyền</label><select id="${prefix}SLKTSau" class="equal-control">${optionHtml(kq, d.slktbtSau || '')}</select></div>
+    </div>
+    <h3 class="sub-title">F. Người báo cáo</h3>
+    <div class="list-card data-card"><div class="field-row"><span class="field-name">Người báo cáo</span><div class="field-value">${esc(state.user?.tenNhanVien || '')}</div></div></div>`;
+}
+
+function bindTmPhieuFormEvents(prefix, loai){
+  const chua = document.getElementById(`${prefix}ChuaTruyen`);
+  if(chua){
+    chua.addEventListener('change', () => {
+      const box = document.getElementById(`${prefix}DaTruyenBox`);
+      if(box) box.classList.toggle('hidden', chua.checked);
+      if(chua.checked){
+        $$(`#${prefix}DaTruyenBox input[type="checkbox"]`).forEach(x => x.checked = false);
+        $$(`#${prefix}DaTruyenBox input[type="text"]`).forEach(x => x.value = '');
+      }
+    });
+  }
+}
+
+function collectTmPhieuPayload(prefix, loai){
+  const base = {
+    loaiPhieuTM: loai,
+    ngaySuKien: getDateInputIso('createDate'),
+    namSinh: document.getElementById(`${prefix}NamSinh`)?.value || '',
+    chanDoan: document.getElementById(`${prefix}ChanDoan`)?.value || ''
+  };
+  if(loai === LOAI_TM_XU_TRI){
+    return Object.assign(base, {
+      pid: document.getElementById(`${prefix}Pid`)?.value || '',
+      maBenhNhan: document.getElementById(`${prefix}Pid`)?.value || '',
+      hoTenBenhNhan: document.getElementById(`${prefix}HoTen`)?.value || '',
+      ttKhoaPhong: document.getElementById(`${prefix}KhoaDieuTri`)?.value || '',
+      khoaPhongDieuTri: document.getElementById(`${prefix}KhoaDieuTri`)?.value || '',
+      vanDeCanXuTri: document.getElementById(`${prefix}VanDe`)?.value || '',
+      vanDeKhac: document.getElementById(`${prefix}VanDeKhac`)?.value || '',
+      cachXuLy: document.getElementById(`${prefix}CachXuLy`)?.value || '',
+      ketQuaXuLy: document.getElementById(`${prefix}KetQuaXuLy`)?.value || '',
+      nhomMauABO: document.getElementById(`${prefix}ABO`)?.value || '',
+      rhD: document.getElementById(`${prefix}RhD`)?.value || '',
+      khangTheBatThuong: document.getElementById(`${prefix}KhangThe`)?.value || '',
+      luuYKhac: document.getElementById(`${prefix}LuuYKhac`)?.value || ''
+    });
+  }
+  const chua = document.getElementById(`${prefix}ChuaTruyen`)?.checked;
+  const items = chua ? [] : $$(`#${prefix}DaTruyenBox .${prefix}DaTruyenCheck`).filter(x => x.checked).map(x => ({
+    ten: x.value,
+    theTich: document.querySelector(`#${prefix}DaTruyenBox .${prefix}DaTruyenTheTich[data-name="${cssEscape(x.value)}"]`)?.value || ''
+  }));
+  return Object.assign(base, {
+    maBenhNhan: document.getElementById(`${prefix}MaBN`)?.value || '',
+    hoTenBenhNhan: document.getElementById(`${prefix}HoTen`)?.value || '',
+    gioiTinh: document.getElementById(`${prefix}GioiTinh`)?.value || '',
+    vienKhoaPhongGiuong: document.getElementById(`${prefix}KhoaGiuong`)?.value || '',
+    khoaPhongDieuTri: document.getElementById(`${prefix}KhoaGiuong`)?.value || '',
+    nhomMauABO: document.getElementById(`${prefix}ABO`)?.value || '',
+    rhD: document.getElementById(`${prefix}RhD`)?.value || '',
+    maDonViMauNghiNgo: document.getElementById(`${prefix}MaDonVi`)?.value || '',
+    loaiMauChePhamNghiNgo: document.getElementById(`${prefix}ChePhamNghiNgo`)?.value || '',
+    theTichDonViMauDaTruyen: document.getElementById(`${prefix}TheTichNghiNgo`)?.value || '',
+    loaiMauDaTruyenTruocPhanUng: {chuaTruyen: !!chua, items},
+    mucDoPhanUng: document.getElementById(`${prefix}MucDo`)?.value || '',
+    trieuChung: document.getElementById(`${prefix}TrieuChung`)?.value || '',
+    ghiChu: document.getElementById(`${prefix}GhiChu`)?.value || '',
+    phanUngHoaHopTruoc: document.getElementById(`${prefix}PUHHTruoc`)?.value || '',
+    coombsTTTruoc: document.getElementById(`${prefix}CoombsTTTruoc`)?.value || '',
+    coombsGTTruoc: document.getElementById(`${prefix}CoombsGTTruoc`)?.value || '',
+    slktTruoc: document.getElementById(`${prefix}SLKTTruoc`)?.value || '',
+    phanUngHoaHopSau: document.getElementById(`${prefix}PUHHSau`)?.value || '',
+    coombsTTSau: document.getElementById(`${prefix}CoombsTTSau`)?.value || '',
+    coombsGTSau: document.getElementById(`${prefix}CoombsGTSau`)?.value || '',
+    slktbtSau: document.getElementById(`${prefix}SLKTSau`)?.value || ''
+  });
+}
+
+function cssEscape(v){
+  if(window.CSS && CSS.escape) return CSS.escape(v);
+  return String(v || '').replace(/["\\]/g, '\\$&');
+}
+
+async function submitCreateTmPhieu(loai){
+  const payload = collectTmPhieuPayload('tmCreate', loai);
+  if(!payload.ngaySuKien || !payload.maBenhNhan || !payload.hoTenBenhNhan) return toast('Vui lòng nhập ngày, mã bệnh nhân/PID và họ tên bệnh nhân.');
+  withButton($('#createTmBtn'), 'Đang tạo phiếu...', async () => {
+    const res = await api('createTmPhieu', payload);
+    clearListCaches();
+    toast('Đã tạo phiếu chuyên môn Truyền máu');
+    showTmPhieuModal(res.data.phieu);
+    renderCreateTab();
+  });
+}
+
+function formatLoaiMauTruocClient(value){
+  if(!value) return '';
+  if(typeof value === 'string') return value;
+  if(value.chuaTruyen) return 'Chưa truyền';
+  return (value.items || []).map(it => `${it.ten || ''}${it.theTich ? ' ' + it.theTich : ''}`.trim()).filter(Boolean).join('; ');
+}
+
+function tmSummaryLine(item){
+  const d = item.data || {};
+  if(item.loaiPhieu === LOAI_TM_XU_TRI) return `Vấn đề: ${d.vanDeCanXuTri || ''}${d.ketQuaXuLy ? ' · Kết quả: ' + d.ketQuaXuLy : ''}`;
+  return `Chế phẩm nghi ngờ: ${d.loaiMauChePhamNghiNgo || ''}${d.theTichDonViMauDaTruyen ? ' · Thể tích: ' + d.theTichDonViMauDaTruyen : ''}${d.mucDoPhanUng ? ' · Mức độ: ' + d.mucDoPhanUng : ''}`;
+}
+
+function showTmPhieuModal(p){
+  const d = p.data || {};
+  const isXuTri = p.loaiPhieuTM === LOAI_TM_XU_TRI || p.loaiPhieu === LOAI_TM_XU_TRI;
+  const rows = isXuTri ? [
+    ['Ngày thực hiện', dateVi(p.ngaySuKien)], ['PID', p.maBenhNhan], ['Họ tên bệnh nhân', p.hoTenBenhNhan], ['Năm sinh', p.namSinh], ['TT/Khoa/Phòng', p.khoaPhongDieuTri], ['Chẩn đoán', d.chanDoan], ['Vấn đề cần xử trí', d.vanDeCanXuTri], ['Các vấn đề khác', d.vanDeKhac], ['Cách xử lý', d.cachXuLy], ['Kết quả xử lý', d.ketQuaXuLy], ['Nhóm máu ABO', d.nhomMauABO], ['Rh(D)', d.rhD], ['Kháng thể bất thường', d.khangTheBatThuong], ['Các lưu ý khác', d.luuYKhac], ['Người thực hiện', p.nguoiTaoTen]
+  ] : [
+    ['Ngày tháng năm', dateVi(p.ngaySuKien)], ['Mã bệnh nhân', p.maBenhNhan], ['Họ tên', p.hoTenBenhNhan], ['Năm sinh', p.namSinh], ['Giới tính', d.gioiTinh], ['Viện/TT/Khoa - Phòng - Giường', p.khoaPhongDieuTri], ['Chẩn đoán', d.chanDoan], ['Nhóm máu ABO', d.nhomMauABO], ['Rh(D)', d.rhD], ['Mã đơn vị máu nghi ngờ phản ứng', d.maDonViMauNghiNgo], ['Loại Máu - Chế phẩm nghi ngờ phản ứng', d.loaiMauChePhamNghiNgo], ['Thể tích đơn vị máu đã truyền', d.theTichDonViMauDaTruyen], ['Loại máu đã truyền trước khi phản ứng', formatLoaiMauTruocClient(d.loaiMauDaTruyenTruocPhanUng)], ['Mức độ phản ứng', d.mucDoPhanUng], ['Triệu chứng', d.trieuChung], ['Phản ứng hòa hợp - Trước truyền', d.phanUngHoaHopTruoc], ['Coombs TT - Trước truyền', d.coombsTTTruoc], ['Coombs GT - Trước truyền', d.coombsGTTruoc], ['SLKT - Trước truyền', d.slktTruoc], ['Phản ứng hòa hợp - Sau truyền', d.phanUngHoaHopSau], ['Coombs TT - Sau truyền', d.coombsTTSau], ['Coombs GT - Sau truyền', d.coombsGTSau], ['SLKTBT - Sau truyền', d.slktbtSau], ['Ghi chú', d.ghiChu], ['Người báo cáo', p.nguoiTaoTen]
+  ];
+  openModal(`<div class="modal-card"><div class="modal-head"><div class="modal-title">${esc(p.loaiPhieuTM || p.loaiPhieu)} ${statusPill(p.trangThai)}</div><button class="close-btn" onclick="closeModal()">×</button></div><div class="list-card data-card">${rows.filter(r => String(r[1] || '').trim()).map(r => `<div class="field-row"><span class="field-name">${esc(r[0])}</span><div class="field-value">${esc(r[1] || '')}</div></div>`).join('')}</div><div class="btn-row"><button class="btn secondary" onclick="closeModal()">Đóng</button></div></div>`);
+}
+
+window.openTmPhieu = async function(phieuTMID, btn){
+  const task = async () => { const res = await api('getTmPhieuDetail', {phieuTMID}); showTmPhieuModal(res.data.phieu); };
+  if(btn) return withButton(btn, 'Đang mở...', task);
+  try{ await task(); }catch(err){ toast(err.message); }
+}
+
+window.deleteTmPhieu = async function(phieuTMID, btn){
+  const ok = await showConfirmDialog({title:'Xóa phiếu', message:'Bạn có chắc muốn xóa phiếu này không?', confirmText:'Xóa', cancelText:'Hủy', danger:true});
+  if(!ok) return;
+  await withButton(btn, 'Đang xóa...', async () => { await api('deleteTmPhieu', {phieuTMID}); toast('Đã xóa phiếu'); await loadDsPhieuList(); });
+}
+
+window.editTmPhieu = async function(phieuTMID, btn){
+  const res = await api('getTmPhieuDetail', {phieuTMID});
+  const p = res.data.phieu;
+  const data = Object.assign({}, p.data || {}, {maBenhNhan:p.maBenhNhan, hoTenBenhNhan:p.hoTenBenhNhan, namSinh:p.namSinh, khoaPhongDieuTri:p.khoaPhongDieuTri});
+  openModal(`<div class="modal-card"><div class="modal-head"><div class="modal-title">Sửa phiếu</div><button class="close-btn" onclick="closeModal()">×</button></div>${renderTmPhieuFormHtml(p.loaiPhieuTM, data, 'tmEdit')}<div class="btn-row"><button id="saveTmEditBtn" class="btn primary">Lưu cập nhật</button><button class="btn secondary" onclick="closeModal()">Đóng</button></div></div>`);
+  bindTmPhieuFormEvents('tmEdit', p.loaiPhieuTM);
+  $('#saveTmEditBtn').addEventListener('click', () => withButton($('#saveTmEditBtn'), 'Đang lưu...', async () => { await api('updateTmPhieu', Object.assign({phieuTMID}, collectTmPhieuPayload('tmEdit', p.loaiPhieuTM))); toast('Đã cập nhật phiếu'); closeModal(); await loadDsPhieuList(); }));
+  setTimeout(() => $$('textarea').forEach(autoGrow), 0);
+}
+
 
 /* ================= DS PHIẾU ================= */
 
@@ -3699,56 +3993,79 @@ async function submitChuTriSignature(btn, systemSign){
 /* ================= PDF ================= */
 
 function renderPdfTab(){
+  const allowTm = isTruyenMauDept(state.user?.khoaPhong || state.user?.phongLamViec || '');
+  const tmOptions = allowTm ? `
+            <option>${LOAI_TM_XU_TRI}</option>
+            <option>${LOAI_TM_TDKMM}</option>` : '';
   $('#tab-pdf').innerHTML = `
     <div class="card">
-      <h2 class="section-title">Tra cứu / PDF</h2>
+      <h2 class="section-title">DS phiếu</h2>
       <div class="grid filter-grid">
         <div class="col-3 date-pair"><label>Từ ngày</label><input id="pdfFrom" class="equal-control date-vi-input" type="date"></div>
         <div class="col-3 date-pair"><label>Đến ngày</label><input id="pdfTo" class="equal-control date-vi-input" type="date"></div>
         <div class="col-3"><label>Khoa/phòng</label><select id="pdfDept" class="equal-control">${deptOptions(state.user?.khoaPhong || '')}</select></div>
-        <div class="col-12 filter-keyword"><label>Từ khóa</label><input id="pdfKeyword" class="equal-control" placeholder="Tìm theo người tạo, phòng, tiêu đề PDF"></div>
-        <div class="col-3 filter-action"><button id="loadPdfBtn" class="btn primary">Tra cứu PDF</button></div>
+        <div class="col-3"><label>Loại phiếu</label><select id="pdfLoai" class="equal-control"><option>Tất cả</option><option>${LOAI_BAN_GIAO}</option><option>${LOAI_BAO_CAO}</option><option>${LOAI_GIAO_BAN_THUONG_TRUC}</option><option>${LOAI_GIAO_BAN_DOT_XUAT}</option>${tmOptions}</select></div>
+        <div class="col-3"><label>Trạng thái</label><select id="pdfStatus" class="equal-control"><option>Tất cả</option><option>${STATUS_CHUA}</option><option>${STATUS_DA}</option></select></div>
+        <div class="col-12 filter-keyword"><label>Từ khóa</label><input id="pdfKeyword" class="equal-control" placeholder="Tìm theo mã BN/PID, họ tên, khoa/phòng, nội dung"></div>
+        <div class="col-3 filter-action"><button id="loadPdfBtn" class="btn primary">Xem danh sách</button></div>
       </div>
-      <p class="meta">Chỉ phiên giao ban đã ký kết thúc mới xuất và tra cứu PDF.</p>
+      <p class="meta">Phiếu có PDF sẽ hiện nút Xem PDF. Riêng 2 phiếu chuyên môn Truyền máu có thể xuất Excel danh sách BN.</p>
     </div>
     <div id="pdfListBox"></div>
   `;
-  $('#loadPdfBtn').addEventListener('click', () => withButton($('#loadPdfBtn'), 'Đang tra cứu...', loadPdfList));
+  $('#loadPdfBtn').addEventListener('click', () => withButton($('#loadPdfBtn'), 'Đang tải...', loadDsPhieuList));
   setDefaultDateRange('pdfFrom','pdfTo',30);
 }
 
-async function loadPdfList(){
+async function loadPdfList(){ return loadDsPhieuList(); }
+
+async function loadDsPhieuList(){
   const box = $('#pdfListBox');
-  box.innerHTML = `<div class="loading">Đang tải hồ sơ PDF...</div>`;
+  box.innerHTML = `<div class="loading">Đang tải danh sách phiếu...</div>`;
+  const payload = getDsPhieuFilters();
   try{
-    const res = await api('searchPdf', {
-      fromDate: getDateInputIso('pdfFrom'),
-      toDate: getDateInputIso('pdfTo'),
-      khoaPhong: $('#pdfDept').value,
-      loaiHoSo: 'Giao ban',
-      keyword: $('#pdfKeyword').value
-    });
+    const res = await api('searchHoSo', payload);
     const items = res.data.items || [];
-    if(!items.length){
-      box.innerHTML = `<div class="empty">Không có PDF phù hợp.</div>`;
-      return;
-    }
-    box.innerHTML = items.map(x => `
-      <div class="list-card">
-        <div class="list-head">
-          <div>
-            <div class="list-title">${esc(x.title)}</div>
-            <div class="meta">${esc(x.type)} · ${esc(x.khoaPhong)} · ${esc(x.nguoiTao || '')}</div>
-          </div>
-          <span class="pill ok">PDF</span>
-        </div>
-        <div class="btn-row"><a class="btn secondary" target="_blank" href="${escAttr(x.url)}">Mở PDF</a></div>
-      </div>
-    `).join('');
-  }catch(err){
-    box.innerHTML = `<div class="empty">${esc(err.message)}</div>`;
-  }
+    if(!items.length){ box.innerHTML = `<div class="empty">Không có phiếu phù hợp.</div>`; return; }
+    const exportBtn = isTmPhieuLoai(payload.loaiHoSo) ? `<button class="btn secondary" onclick="exportTmExcel(this)">Xuất Excel danh sách BN</button>` : '';
+    box.innerHTML = `<div class="ds-toolbar"><p class="meta">Tổng: ${items.length} phiếu</p>${exportBtn}</div>` + items.map(renderDsPhieuCard).join('');
+  }catch(err){ box.innerHTML = `<div class="empty">${esc(err.message)}</div>`; }
 }
+
+function getDsPhieuFilters(){
+  return {
+    fromDate: getDateInputIso('pdfFrom'),
+    toDate: getDateInputIso('pdfTo'),
+    khoaPhong: $('#pdfDept')?.value || state.user?.khoaPhong || '',
+    loaiHoSo: $('#pdfLoai')?.value || 'Tất cả',
+    trangThai: $('#pdfStatus')?.value || 'Tất cả',
+    keyword: $('#pdfKeyword')?.value || ''
+  };
+}
+
+function renderDsPhieuCard(x){
+  const isTm = x.source === 'TM_PHIEU';
+  const pdfBtn = x.pdfUrl ? `<a class="btn secondary" target="_blank" href="${escAttr(x.pdfUrl)}">Xem PDF</a>` : '';
+  const detailBtn = isTm ? `<button class="btn secondary" onclick="openTmPhieu('${escAttr(x.id)}', this)">Xem chi tiết</button>` : (x.source === 'PHIEU' ? `<button class="btn secondary" onclick="openPhieu('${escAttr(x.id)}', this)">Xem chi tiết</button>` : '');
+  const editBtn = isTm && x.canEdit ? `<button class="app-icon-btn" onclick="editTmPhieu('${escAttr(x.id)}', this)" title="Sửa phiếu" aria-label="Sửa phiếu">${iconEdit()}</button>` : '';
+  const deleteBtn = isTm && x.canDelete ? `<button class="app-icon-btn delete" onclick="deleteTmPhieu('${escAttr(x.id)}', this)" title="Xóa phiếu" aria-label="Xóa phiếu">${iconTrash()}</button>` : '';
+  const bn = isTm ? `<div class="meta">BN: ${esc(x.hoTenBenhNhan || '')}${x.maBenhNhan ? ' · PID/Mã BN: ' + esc(x.maBenhNhan) : ''}</div>` : '';
+  const summary = isTm && x.data ? `<div class="phieu-inline"><div class="field-row"><span class="field-name">Tóm tắt</span><div class="field-value">${esc(tmSummaryLine(x))}</div></div></div>` : '';
+  return `<div class="list-card"><div class="list-head"><div><div class="list-title ${isTm ? 'title-blue' : ''}">${esc(x.title || x.loaiPhieu || '')}</div><div class="meta">${esc(x.loaiPhieu || x.type || '')} · ${esc(x.khoaPhong || '')} · ${esc(x.nguoiTao || '')}</div>${bn}</div>${statusPill(x.trangThai || '')}</div>${summary}<div class="phieu-actions"><div class="phieu-main-actions">${detailBtn}${pdfBtn}</div><div class="phieu-icon-actions">${editBtn}${deleteBtn}</div></div></div>`;
+}
+
+window.exportTmExcel = async function(btn){
+  const payload = getDsPhieuFilters();
+  if(!isTmPhieuLoai(payload.loaiHoSo)) return toast('Chỉ xuất Excel cho 2 loại phiếu chuyên môn Truyền máu.');
+  await withButton(btn, 'Đang xuất Excel...', async () => {
+    const res = await api('exportTmPhieuExcel', Object.assign({loaiPhieuTM: payload.loaiHoSo}, payload));
+    const url = res.data?.downloadUrl || res.data?.url;
+    if(url) window.open(url, '_blank');
+    toast('Đã tạo file Excel');
+  });
+}
+
+
 
 
 /* ================= ACCOUNT ================= */
