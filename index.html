@@ -596,13 +596,13 @@
     .protected-view{position:relative;user-select:none;-webkit-user-select:none}
     .pdf-modal.protected-view{overflow:hidden}
     .modal-card.protected-view{overflow-y:auto;overflow-x:hidden;max-width:calc(100vw - 16px);box-sizing:border-box;contain:paint}
-    .protected-watermark{position:absolute;inset:-22%;z-index:30;pointer-events:none;display:grid;grid-template-columns:repeat(2,minmax(680px,1fr));gap:74px 120px;align-content:center;justify-content:center;transform:rotate(-36deg);opacity:.10;mix-blend-mode:multiply;overflow:hidden}
-    .protected-watermark span{display:block;white-space:nowrap;color:#1f2937;font-size:18px;font-weight:700;letter-spacing:.4px;line-height:1.2;text-transform:uppercase}
+    .protected-watermark{position:absolute;inset:0;z-index:30;pointer-events:none;opacity:.12;mix-blend-mode:multiply;overflow:hidden}
+    .protected-watermark span{position:absolute;left:50%;top:50%;display:block;width:170vmax;max-width:none;white-space:nowrap;color:#1f2937;font-size:18px;font-weight:700;letter-spacing:.4px;line-height:1.2;text-transform:uppercase;transform:translate(-50%,-50%) rotate(-52deg);transform-origin:center;text-align:center}
     .protected-view > .pdf-topbar,.protected-view > .modal-head,.protected-view > .card,.protected-view > h3,.protected-view > div:not(.protected-watermark){position:relative;z-index:2}
     .pdf-frame-wrap{position:relative}
     .pdf-frame-wrap .protected-watermark{display:none}
-    .modal-card.protected-view .protected-watermark{position:fixed;top:-22vh;left:-38vw;right:auto;bottom:auto;width:176vw;height:144vh;overflow:hidden;grid-template-columns:repeat(4,minmax(520px,1fr));gap:64px 90px;align-content:start;justify-content:start;transform:rotate(-36deg);transform-origin:center;opacity:.075;z-index:100002}
-    .modal-card.protected-view .protected-watermark span{font-size:16px;max-width:none;display:block;white-space:nowrap}
+    .modal-card.protected-view .protected-watermark{position:fixed;inset:0;width:100vw;height:100dvh;opacity:.10;z-index:100002}
+    .modal-card.protected-view .protected-watermark span{font-size:16px}
     .modal-card.protected-view .list-card,
     .modal-card.protected-view .data-card,
     .modal-card.protected-view .phieu-inline,
@@ -619,8 +619,8 @@
       .modal-card{width:calc(100vw - 16px);max-width:calc(100vw - 16px);margin-left:8px;margin-right:8px}
       .full-modal .modal-card{width:100%;max-width:100%;margin:0}
       .modal-card.protected-view{width:calc(100vw - 16px);max-width:calc(100vw - 16px);overflow-x:hidden}
-      .modal-card.protected-view .protected-watermark{top:-26vh;left:-65vw;width:230vw;height:156vh;grid-template-columns:repeat(3,minmax(360px,1fr));gap:54px 64px;transform:rotate(-36deg);opacity:.075}
-      .modal-card.protected-view .protected-watermark span{font-size:14px}
+      .modal-card.protected-view .protected-watermark{inset:0;width:100vw;height:100dvh;opacity:.10}
+      .modal-card.protected-view .protected-watermark span{font-size:13px;width:190vmax;transform:translate(-50%,-50%) rotate(-52deg)}
     }
     .pdf-download-btn{border:0;background:transparent}
     .secure-blackout{position:fixed;inset:0;z-index:999999;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;font-weight:800;font-size:18px;letter-spacing:.2px}
@@ -1054,7 +1054,7 @@
       <p><strong>PHẦN MỀM SỔ TRỰC - GIAO BAN</strong></p>
       <p>Developed by Nguyễn Văn Chính</p>
       <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
-      <p class="login-version">Version: INDEX-110.070626-SUA-VI-TRI-PDF-INAPP</p>
+      <p class="login-version">Version: INDEX-112.070626-PDF-WATERMARK-1-DUONG-CHEO</p>
     </div>
   </div>
 
@@ -1098,7 +1098,7 @@
       <button class="tab-btn" data-tab="meeting"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="6" r="2.1"/><circle cx="5.8" cy="9.3" r="1.9"/><circle cx="18.2" cy="9.3" r="1.9"/><path d="M8.6 13.2c.8-1.4 2-2.1 3.4-2.1s2.6.7 3.4 2.1"/><path d="M2.8 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><path d="M15.2 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><ellipse cx="12" cy="16.6" rx="6.3" ry="2.2"/><path d="M12 18.8v2.2M8.7 21h6.6"/></svg></span><span>Họp</span></button>
       <button class="tab-btn" data-tab="pdf"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h5M10 12h6M10 16h6"/></svg></span><span>DS phiếu</span></button>
     </nav>
-    <div class="app-version">Version: INDEX-110.070626-SUA-VI-TRI-PDF-INAPP</div>
+    <div class="app-version">Version: INDEX-112.070626-PDF-WATERMARK-1-DUONG-CHEO</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -1107,7 +1107,7 @@
   <div id="secureBlackout" class="secure-blackout hidden">Nội dung được bảo vệ</div>
 
 <script>
-const APP_VERSION = 'INDEX-111.070626-PDF-WATERMARK-THUC-TE';
+const APP_VERSION = 'INDEX-112.070626-PDF-WATERMARK-1-DUONG-CHEO';
 
 function canOpenAdminSettings(){
   return !!(state.user && (state.user.isAdmin || String(state.user.chucVu || '').trim()));
@@ -5592,22 +5592,14 @@ function watermarkText(){
   return who + ' - ' + dateTimeVi(hanoiNowIso());
 }
 
-function watermarkLayerHtml(count=72){
+function watermarkLayerHtml(){
   const text = esc(watermarkText());
-  return `<div class="protected-watermark" aria-hidden="true">${Array.from({length:count}).map(() => `<span>${text}</span>`).join('')}</div>`;
+  return `<div class="protected-watermark" aria-hidden="true"><span>${text}</span></div>`;
 }
 
 function refreshProtectedWatermarks(){
-  document.querySelectorAll('.modal-card.protected-view > .protected-watermark').forEach(layer => {
-    const host = layer.closest('.modal-card.protected-view');
-    if(!host) return;
-    const h = Math.max(host.scrollHeight || 0, host.clientHeight || 0, window.innerHeight || 0);
-    const w = Math.max(host.scrollWidth || 0, host.clientWidth || 0, window.innerWidth || 0);
-    const rows = Math.max(8, Math.ceil(h / 120) + 5);
-    const cols = Math.max(2, Math.ceil(w / 520) + 2);
-    const count = Math.min(160, rows * cols);
-    layer.style.setProperty('--wm-h', h + 'px');
-    layer.innerHTML = Array.from({length:count}).map(() => `<span>${esc(watermarkText())}</span>`).join('');
+  document.querySelectorAll('.protected-watermark').forEach(layer => {
+    layer.innerHTML = `<span>${esc(watermarkText())}</span>`;
   });
 }
 
@@ -5787,8 +5779,8 @@ function dataUrlToBytes(dataUrl){
 function makeWatermarkPngBytes(text){
   const canvas = document.createElement('canvas');
   const ratio = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-  const w = 980;
-  const h = 92;
+  const w = 1800;
+  const h = 76;
   canvas.width = Math.round(w * ratio);
   canvas.height = Math.round(h * ratio);
   canvas.style.width = w + 'px';
@@ -5796,10 +5788,16 @@ function makeWatermarkPngBytes(text){
   const ctx = canvas.getContext('2d');
   ctx.scale(ratio, ratio);
   ctx.clearRect(0, 0, w, h);
-  ctx.font = '700 24px "Segoe UI", Arial, "Noto Sans", Tahoma, sans-serif';
+  ctx.font = '700 23px "Segoe UI", Arial, "Noto Sans", Tahoma, sans-serif';
   ctx.fillStyle = 'rgba(31, 41, 55, 0.18)';
   ctx.textBaseline = 'middle';
-  ctx.fillText(String(text || '').toUpperCase(), 18, h / 2);
+  const raw = String(text || '').toUpperCase();
+  const phrase = raw + '     •     ';
+  let x = 18;
+  while(x < w - 20){
+    ctx.fillText(phrase, x, h / 2);
+    x += Math.max(320, ctx.measureText(phrase).width);
+  }
   return dataUrlToBytes(canvas.toDataURL('image/png'));
 }
 
@@ -5814,21 +5812,21 @@ async function buildWatermarkedPdfBytesFromBase64(base64){
     const size = page.getSize();
     const pageW = size.width;
     const pageH = size.height;
-    const tileW = Math.min(460, Math.max(340, pageW * 0.72));
-    const tileH = tileW * png.height / png.width;
-    const stepX = tileW + 105;
-    const stepY = 135;
-    for(let y = -pageH * 0.35; y < pageH * 1.35; y += stepY){
-      for(let x = -pageW * 0.55; x < pageW * 1.35; x += stepX){
-        page.drawImage(png, {
-          x, y,
-          width: tileW,
-          height: tileH,
-          rotate: PDFLib.degrees(35),
-          opacity: 0.9
-        });
-      }
-    }
+    const diag = Math.sqrt(pageW * pageW + pageH * pageH);
+    const angle = Math.atan2(pageH, pageW);
+    const imgW = diag * 1.16;
+    const imgH = imgW * png.height / png.width;
+    const cx = pageW / 2;
+    const cy = pageH / 2;
+    const x = cx - (imgW / 2) * Math.cos(angle) + (imgH / 2) * Math.sin(angle);
+    const y = cy - (imgW / 2) * Math.sin(angle) - (imgH / 2) * Math.cos(angle);
+    page.drawImage(png, {
+      x, y,
+      width: imgW,
+      height: imgH,
+      rotate: PDFLib.degrees(angle * 180 / Math.PI),
+      opacity: 0.95
+    });
   });
   return await pdfDoc.save();
 }
