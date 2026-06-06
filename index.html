@@ -1292,7 +1292,7 @@ function showApp(){
 async function loadInitData(opts={}){
   if(state.initLoaded) return;
   try{
-    if(opts.fromLogin) showLoginLoading(55, 'Đang tải danh mục...');
+    if(opts.fromLogin) showLoginLoading(55, 'Đang tải dữ liệu...');
     const res = await api('getInitData', {});
     state.user = res.data.user || state.user;
     if(state.token && state.user) storeSession(state.token, state.user);
@@ -1315,7 +1315,7 @@ async function loadInitData(opts={}){
     renderAccountTab();
     setDefaultFilters();
     if(opts.fromLogin){
-      showLoginLoading(88, 'Đang tải danh sách Ký nhận và Họp...');
+      showLoginLoading(88, 'Đang tải dữ liệu...');
       await preloadStartupLists();
     }
   }catch(err){
@@ -2505,7 +2505,7 @@ function renderGiaoBanList(items, note=''){
       : `${creator}<div class="meta">Khoảng báo cáo: ${dateVi(g.tuNgayBaoCao)} - ${dateVi(g.denNgayBaoCao)}</div>`;
     const deleteBtn = g.canDelete ? `<button class="app-icon-btn delete" onclick="deleteGiaoBan('${escAttr(g.giaoBanID)}', this)" title="Xóa phiên giao ban" aria-label="Xóa phiên giao ban">${iconTrash()}</button>` : '';
     const done = g.trangThai === STATUS_DA;
-    const pdfBtn = g.pdfGiaoBanUrl ? `<button class="btn ok" onclick="openGiaoBanPdf('${escAttr(g.pdfGiaoBanUrl)}','${escAttr(title)}')">Xem PDF</button>` : '';
+    const pdfBtn = g.pdfGiaoBanUrl ? `<button class="btn secondary" onclick="openGiaoBanPdf('${escAttr(g.pdfGiaoBanUrl)}','${escAttr(title)}')">Xem PDF</button>` : '';
     const pdfDownload = g.pdfGiaoBanUrl ? `<a class="app-icon-btn" href="${escAttr(toPdfDownloadUrl(g.pdfGiaoBanUrl))}" target="_blank" title="Tải PDF" aria-label="Tải PDF">${iconDownload()}</a>` : '';
     const mainActions = done
       ? `${pdfBtn}${g.pdfGiaoBanUrl ? '' : '<span class="meta">Chưa có file PDF đã ký.</span>'}`
@@ -3045,7 +3045,7 @@ function renderGiaoBanFinishBlock(g){
         <div class="meta">Chủ trì: ${esc(g.chuTriTen || g.nguoiChuTriTuDo || '')}</div>
         ${g.thoiDiemThuKyKy ? `<div class="meta">Thư ký ký: ${dateTimeVi(g.thoiDiemThuKyKy)}</div>` : ''}
         <div class="meta">Thời điểm ký chủ trì: ${dateTimeVi(g.thoiDiemChuTriKy)}</div>
-        ${g.pdfGiaoBanUrl ? `<div class="btn-row"><button class="btn ok" onclick="openGiaoBanPdf('${escAttr(g.pdfGiaoBanUrl)}','${escAttr((g.loaiGiaoBan || '') + ' - ' + formatDeptPlain(g.khoaPhong || '') + ' - ' + dateTimeVi(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || ''))}')">Xem PDF đã ký</button><a class="app-icon-btn" href="${escAttr(toPdfDownloadUrl(g.pdfGiaoBanUrl))}" target="_blank" title="Tải PDF" aria-label="Tải PDF">${iconDownload()}</a></div>` : '<div class="empty">Chưa có file PDF đã ký.</div>'}
+        ${g.pdfGiaoBanUrl ? `<div class="btn-row"><button class="btn secondary" onclick="openGiaoBanPdf('${escAttr(g.pdfGiaoBanUrl)}','${escAttr((g.loaiGiaoBan || '') + ' - ' + formatDeptPlain(g.khoaPhong || '') + ' - ' + dateTimeVi(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || ''))}')">Xem PDF đã ký</button><a class="app-icon-btn" href="${escAttr(toPdfDownloadUrl(g.pdfGiaoBanUrl))}" target="_blank" title="Tải PDF" aria-label="Tải PDF">${iconDownload()}</a></div>` : '<div class="empty">Chưa có file PDF đã ký.</div>'}
       </div>`;
   }
 
@@ -3721,7 +3721,7 @@ async function loadPdfList(){
 function showLoginLoading(progress=0, text='Đang tải dữ liệu...'){
   const overlay = $('#loginLoadingOverlay');
   if(!overlay) return;
-  $('#loginLoadingText').textContent = text;
+  $('#loginLoadingText').textContent = 'Đang tải dữ liệu...';
   $('#loginLoadingProgress').textContent = Math.max(0, Math.min(100, Number(progress) || 0)) + '%';
   overlay.classList.remove('hidden');
 }
