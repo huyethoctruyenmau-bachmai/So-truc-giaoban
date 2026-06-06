@@ -1028,7 +1028,7 @@
       <p><strong>PHẦN MỀM SỔ TRỰC - GIAO BAN</strong></p>
       <p>Developed by Nguyễn Văn Chính</p>
       <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
-      <p class="login-version">Version: INDEX-106.070626-SUA-CUON-PDF-BO-CHE-MAT-FOCUS</p>
+      <p class="login-version">Version: INDEX-107.070626-SUA-NUT-XEM-PDF</p>
     </div>
   </div>
 
@@ -1072,7 +1072,7 @@
       <button class="tab-btn" data-tab="meeting"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="6" r="2.1"/><circle cx="5.8" cy="9.3" r="1.9"/><circle cx="18.2" cy="9.3" r="1.9"/><path d="M8.6 13.2c.8-1.4 2-2.1 3.4-2.1s2.6.7 3.4 2.1"/><path d="M2.8 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><path d="M15.2 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><ellipse cx="12" cy="16.6" rx="6.3" ry="2.2"/><path d="M12 18.8v2.2M8.7 21h6.6"/></svg></span><span>Họp</span></button>
       <button class="tab-btn" data-tab="pdf"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h5M10 12h6M10 16h6"/></svg></span><span>DS phiếu</span></button>
     </nav>
-    <div class="app-version">Version: INDEX-106.070626-SUA-CUON-PDF-BO-CHE-MAT-FOCUS</div>
+    <div class="app-version">Version: INDEX-107.070626-SUA-NUT-XEM-PDF</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -1081,7 +1081,7 @@
   <div id="secureBlackout" class="secure-blackout hidden">Nội dung được bảo vệ</div>
 
 <script>
-const APP_VERSION = 'INDEX-106.070626-SUA-CUON-PDF-BO-CHE-MAT-FOCUS';
+const APP_VERSION = 'INDEX-107.070626-SUA-NUT-XEM-PDF';
 
 function canOpenAdminSettings(){
   return !!(state.user && (state.user.isAdmin || String(state.user.chucVu || '').trim()));
@@ -3308,8 +3308,8 @@ function renderGiaoBanList(items, note=''){
       : `${creator}<div class="meta">Khoảng báo cáo: ${dateVi(g.tuNgayBaoCao)} - ${dateVi(g.denNgayBaoCao)}</div>`;
     const deleteBtn = g.canDelete ? `<button class="app-icon-btn delete" onclick="deleteGiaoBan('${escAttr(g.giaoBanID)}', this)" title="Xóa phiên giao ban" aria-label="Xóa phiên giao ban">${iconTrash()}</button>` : '';
     const done = g.trangThai === STATUS_DA;
-    const pdfBtn = g.pdfGiaoBanUrl ? `<button class="btn secondary" onclick="openGiaoBanPdf(${jsArg(g.pdfGiaoBanUrl)},${jsArg(title)})">Xem PDF</button>` : '';
-    const pdfDownload = g.pdfGiaoBanUrl ? `<button class="app-icon-btn" type="button" onclick="downloadPdfWithLog('${escAttr(g.pdfGiaoBanUrl)}','${escAttr(title)}','GIAO_BAN','${escAttr(g.giaoBanID)}')" title="Tải PDF" aria-label="Tải PDF">${iconDownload()}</button>` : '';
+    const pdfBtn = g.pdfGiaoBanUrl ? pdfViewButtonHtml(g.pdfGiaoBanUrl, title, 'Xem PDF') : '';
+    const pdfDownload = g.pdfGiaoBanUrl ? pdfDownloadIconButtonHtml(g.pdfGiaoBanUrl, title, 'GIAO_BAN', g.giaoBanID) : '';
     const mainActions = done
       ? `${pdfBtn}${g.pdfGiaoBanUrl ? '' : '<span class="meta">Chưa có file PDF đã ký.</span>'}`
       : `<button class="btn secondary" onclick="openGiaoBan('${escAttr(g.giaoBanID)}','${escAttr(g.khoaPhong)}', this)">Mở giao ban</button>`;
@@ -3861,7 +3861,7 @@ function renderGiaoBanFinishBlock(g){
         <div class="meta">Chủ trì: ${esc(g.chuTriTen || g.nguoiChuTriTuDo || '')}</div>
         ${g.thoiDiemThuKyKy ? `<div class="meta">Thư ký ký: ${dateTimeVi(g.thoiDiemThuKyKy)}</div>` : ''}
         <div class="meta">Thời điểm ký chủ trì: ${dateTimeVi(g.thoiDiemChuTriKy)}</div>
-        ${g.pdfGiaoBanUrl ? `<div class="btn-row"><button class="btn secondary" onclick="openGiaoBanPdf(${jsArg(g.pdfGiaoBanUrl)},${jsArg((g.loaiGiaoBan || '') + ' - ' + formatDeptPlain(g.khoaPhong || '') + ' - ' + dateTimeVi(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || ''))})">Xem PDF đã ký</button><button class="app-icon-btn" type="button" onclick="downloadPdfWithLog('${escAttr(g.pdfGiaoBanUrl)}','${escAttr((g.loaiGiaoBan || '') + ' - ' + formatDeptPlain(g.khoaPhong || '') + ' - ' + dateTimeVi(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || ''))}','GIAO_BAN','${escAttr(g.giaoBanID || '')}')" title="Tải PDF" aria-label="Tải PDF">${iconDownload()}</button></div>` : '<div class="empty">Chưa có file PDF đã ký.</div>'}
+        ${g.pdfGiaoBanUrl ? `<div class="btn-row">${pdfViewButtonHtml(g.pdfGiaoBanUrl, (g.loaiGiaoBan || '') + ' - ' + formatDeptPlain(g.khoaPhong || '') + ' - ' + dateTimeVi(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || ''), 'Xem PDF đã ký')}${pdfDownloadIconButtonHtml(g.pdfGiaoBanUrl, (g.loaiGiaoBan || '') + ' - ' + formatDeptPlain(g.khoaPhong || '') + ' - ' + dateTimeVi(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || ''), 'GIAO_BAN', g.giaoBanID || '')}</div>` : '<div class="empty">Chưa có file PDF đã ký.</div>'}
       </div>`;
   }
 
@@ -4543,7 +4543,7 @@ function sortDsPhieuByCreatedDesc(items){
 
 function renderDsPhieuCard(x){
   const isTm = x.source === 'TM_PHIEU';
-  const pdfBtn = x.pdfUrl ? `<button class="btn secondary" type="button" onclick="openGiaoBanPdf(${jsArg(x.pdfUrl)},${jsArg(x.title || x.loaiPhieu || 'PDF')})">Xem PDF</button>` : '';
+  const pdfBtn = x.pdfUrl ? pdfViewButtonHtml(x.pdfUrl, x.title || x.loaiPhieu || 'PDF', 'Xem PDF') : '';
   const detailBtn = isTm ? `<button class="btn secondary" onclick="openTmPhieu('${escAttr(x.id)}', this)">Xem chi tiết</button>` : (x.source === 'PHIEU' ? `<button class="btn secondary" onclick="openPhieu('${escAttr(x.id)}', this)">Xem chi tiết</button>` : '');
   const editBtn = isTm && x.canEdit ? `<button class="app-icon-btn" onclick="editTmPhieu('${escAttr(x.id)}', this)" title="Sửa phiếu" aria-label="Sửa phiếu">${iconEdit()}</button>` : '';
   const deleteBtn = isTm && x.canDelete ? `<button class="app-icon-btn delete" onclick="deleteTmPhieu('${escAttr(x.id)}', this)" title="Xóa phiếu" aria-label="Xóa phiếu">${iconTrash()}</button>` : '';
@@ -5646,19 +5646,38 @@ function closePdfViewer(){
   closeModal();
 }
 
+
+function pdfViewButtonHtml(url, title='PDF', label='Xem PDF'){
+  return `<button class="btn secondary" type="button" data-pdf-url="${escAttr(url || '')}" data-pdf-title="${escAttr(title || 'PDF')}" onclick="openPdfFromButton(this)">${esc(label || 'Xem PDF')}</button>`;
+}
+
+function pdfDownloadIconButtonHtml(url, title='', source='PDF', id=''){
+  return `<button class="app-icon-btn" type="button" data-pdf-url="${escAttr(url || '')}" data-pdf-title="${escAttr(title || '')}" data-pdf-source="${escAttr(source || 'PDF')}" data-pdf-id="${escAttr(id || '')}" onclick="downloadPdfFromButton(this)" title="Tải PDF" aria-label="Tải PDF">${iconDownload()}</button>`;
+}
+
+window.openPdfFromButton = function(btn){
+  const url = btn && btn.dataset ? (btn.dataset.pdfUrl || '') : '';
+  const title = btn && btn.dataset ? (btn.dataset.pdfTitle || 'PDF') : 'PDF';
+  if(!url) return toast('Không có link PDF.');
+  openGiaoBanPdf(url, title);
+}
+
+window.downloadPdfFromButton = function(btn){
+  const d = btn && btn.dataset ? btn.dataset : {};
+  return downloadPdfWithLog(d.pdfUrl || '', d.pdfTitle || '', d.pdfSource || 'PDF', d.pdfId || '');
+}
+
 window.openGiaoBanPdf = function(url, title='PDF giao ban'){
   setViewportForPdf(true);
   setupScreenProtection();
   const wm = watermarkLayerHtml();
-  const safeUrlArg = jsArg(url);
-  const safeTitleArg = jsArg(title || 'PDF giao ban');
   openModal(`
     <div class="pdf-modal protected-view">
       ${wm}
       <div class="pdf-topbar">
         <div class="pdf-title">${esc(title || 'PDF giao ban')}</div>
         <div class="pdf-actions">
-          <button class="pdf-icon-btn pdf-download-btn" type="button" onclick="downloadPdfWithLog(${safeUrlArg},${safeTitleArg},'PDF','')" title="Tải PDF" aria-label="Tải PDF">
+          <button class="pdf-icon-btn pdf-download-btn" type="button" data-pdf-url="${escAttr(url)}" data-pdf-title="${escAttr(title || 'PDF giao ban')}" data-pdf-source="PDF" data-pdf-id="" onclick="downloadPdfFromButton(this)" title="Tải PDF" aria-label="Tải PDF">
             <svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
           </button>
           <button class="pdf-icon-btn" onclick="closePdfViewer()" title="Đóng" aria-label="Đóng">
