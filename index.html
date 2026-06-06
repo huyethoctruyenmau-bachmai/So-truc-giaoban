@@ -843,17 +843,14 @@
     .tm-equip-table .action{display:none!important}
 
 
-    /* ===== PATCH 92: ĐỒNG BỘ KÍCH THƯỚC CỘT TẤT CẢ BẢNG THIẾT BỊ ===== */
-    .tm-equip-table,
+    /* ===== PATCH 93: GIỮ NGUYÊN BẢNG CẤU HÌNH THIẾT BỊ, CHỈ ĐỒNG BỘ BẢNG KHÁC THEO BẢNG CẤU HÌNH ===== */
     .tm-create-equipment-table,
     .tm-view-table{
       width:100%!important;
-      min-width:620px!important;
-      table-layout:fixed!important;
+      min-width:540px!important;
+      table-layout:auto!important;
       font-size:13.5px!important;
     }
-    .tm-equip-table th,
-    .tm-equip-table td,
     .tm-create-equipment-table th,
     .tm-create-equipment-table td,
     .tm-view-table th,
@@ -863,56 +860,44 @@
       vertical-align:middle!important;
       white-space:normal!important;
     }
-    .tm-equip-table th:nth-child(1),
-    .tm-equip-table td:nth-child(1),
     .tm-create-equipment-table th:nth-child(1),
     .tm-create-equipment-table td:nth-child(1),
     .tm-view-table th:nth-child(1),
     .tm-view-table td:nth-child(1){
-      width:46px!important;
-      min-width:46px!important;
-      max-width:46px!important;
+      width:42px!important;
+      min-width:42px!important;
+      max-width:42px!important;
       text-align:center!important;
     }
-    .tm-equip-table th:nth-child(2),
-    .tm-equip-table td:nth-child(2),
     .tm-create-equipment-table th:nth-child(2),
     .tm-create-equipment-table td:nth-child(2),
     .tm-view-table th:nth-child(2),
     .tm-view-table td:nth-child(2){
       width:auto!important;
-      min-width:0!important;
+      min-width:135px!important;
       max-width:none!important;
       text-align:left!important;
     }
-    .tm-equip-table th:nth-child(3),
-    .tm-equip-table td:nth-child(3),
     .tm-create-equipment-table th:nth-child(3),
     .tm-create-equipment-table td:nth-child(3),
     .tm-view-table th:nth-child(3),
     .tm-view-table td:nth-child(3){
-      width:86px!important;
-      min-width:86px!important;
-      max-width:86px!important;
+      width:64px!important;
+      min-width:64px!important;
+      max-width:64px!important;
       text-align:center!important;
     }
-    .tm-equip-table tbody td:nth-child(4),
-    .tm-equip-table tbody td:nth-child(5),
-    .tm-equip-table thead tr:nth-child(2) th,
     .tm-create-equipment-table tbody td:nth-child(4),
     .tm-create-equipment-table tbody td:nth-child(5),
     .tm-create-equipment-table thead tr:nth-child(2) th,
     .tm-view-table tbody td:nth-child(4),
     .tm-view-table tbody td:nth-child(5),
     .tm-view-table thead tr:nth-child(2) th{
-      width:86px!important;
-      min-width:86px!important;
-      max-width:86px!important;
+      width:74px!important;
+      min-width:74px!important;
+      max-width:74px!important;
       text-align:center!important;
     }
-    .tm-equip-table .eq-name-input,
-    .tm-equip-table .unit-input,
-    .tm-equip-table input[type="number"],
     .tm-create-equipment-table .eq-name-input,
     .tm-create-equipment-table .unit-input,
     .tm-create-equipment-table input[type="number"],
@@ -921,21 +906,21 @@
     .tm-view-table input[type="number"]{
       width:100%!important;
       min-width:0!important;
-      text-align:inherit!important;
     }
-    .tm-equip-table .unit-input,
-    .tm-equip-table input[type="number"]{
+    .tm-create-equipment-table .unit-input,
+    .tm-create-equipment-table input[type="number"],
+    .tm-view-table .unit-input,
+    .tm-view-table input[type="number"]{
       text-align:center!important;
     }
-
     @media (max-width:760px){
-      .tm-equip-table,
       .tm-create-equipment-table,
       .tm-view-table{
         width:max-content!important;
-        min-width:620px!important;
+        min-width:680px!important;
       }
     }
+
 
 </style>
 </head>
@@ -978,7 +963,7 @@
       <p><strong>PHẦN MỀM SỔ TRỰC - GIAO BAN</strong></p>
       <p>Developed by Nguyễn Văn Chính</p>
       <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
-      <p class="login-version">Version: 92.050626-EQUIPMENT-COLUMN-SYNC</p>
+      <p class="login-version">Version: 93.050626-EQUIPMENT-COLUMN-SAFE</p>
     </div>
   </div>
 
@@ -1022,7 +1007,7 @@
       <button class="tab-btn" data-tab="meeting"><span class="ico">🗣️</span><span>Họp</span></button>
       <button class="tab-btn" data-tab="pdf"><span class="ico">📄</span><span>PDF</span></button>
     </nav>
-    <div class="app-version">Version: 92.050626-EQUIPMENT-COLUMN-SYNC</div>
+    <div class="app-version">Version: 93.050626-EQUIPMENT-COLUMN-SAFE</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -1030,7 +1015,7 @@
   <div id="toast" class="toast hidden"></div>
 
 <script>
-const APP_VERSION = 'INDEX-92.050626-EQUIPMENT-COLUMN-SYNC';
+const APP_VERSION = 'INDEX-93.050626-EQUIPMENT-COLUMN-SAFE';
 
 function canOpenAdminSettings(){
   return !!(state.user && (state.user.isAdmin || String(state.user.chucVu || '').trim()));
