@@ -1028,7 +1028,7 @@
       <p><strong>PHẦN MỀM SỔ TRỰC - GIAO BAN</strong></p>
       <p>Developed by Nguyễn Văn Chính</p>
       <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
-      <p class="login-version">Version: INDEX-107.070626-SUA-NUT-XEM-PDF</p>
+      <p class="login-version">Version: INDEX-108.070626-SUA-XEM-PDF-BLOB</p>
     </div>
   </div>
 
@@ -1072,7 +1072,7 @@
       <button class="tab-btn" data-tab="meeting"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="6" r="2.1"/><circle cx="5.8" cy="9.3" r="1.9"/><circle cx="18.2" cy="9.3" r="1.9"/><path d="M8.6 13.2c.8-1.4 2-2.1 3.4-2.1s2.6.7 3.4 2.1"/><path d="M2.8 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><path d="M15.2 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><ellipse cx="12" cy="16.6" rx="6.3" ry="2.2"/><path d="M12 18.8v2.2M8.7 21h6.6"/></svg></span><span>Họp</span></button>
       <button class="tab-btn" data-tab="pdf"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h5M10 12h6M10 16h6"/></svg></span><span>DS phiếu</span></button>
     </nav>
-    <div class="app-version">Version: INDEX-107.070626-SUA-NUT-XEM-PDF</div>
+    <div class="app-version">Version: INDEX-108.070626-SUA-XEM-PDF-BLOB</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -1081,7 +1081,7 @@
   <div id="secureBlackout" class="secure-blackout hidden">Nội dung được bảo vệ</div>
 
 <script>
-const APP_VERSION = 'INDEX-107.070626-SUA-NUT-XEM-PDF';
+const APP_VERSION = 'INDEX-108.070626-SUA-XEM-PDF-BLOB';
 
 function canOpenAdminSettings(){
   return !!(state.user && (state.user.isAdmin || String(state.user.chucVu || '').trim()));
@@ -1161,7 +1161,8 @@ const state = {
   pendingCreateGiaoBanPayload: null,
   refreshGiaoBanListOnClose: false,
   sessionGuard: 0,
-  isLoggingOut: false
+  isLoggingOut: false,
+  currentPdfObjectUrl: ''
 };
 
 
@@ -5641,14 +5642,22 @@ function setViewportForPdf(enable){
   meta.setAttribute('content', enable ? PDF_VIEWPORT_CONTENT : APP_VIEWPORT_CONTENT);
 }
 
+function revokeCurrentPdfObjectUrl(){
+  if(state.currentPdfObjectUrl){
+    try{ URL.revokeObjectURL(state.currentPdfObjectUrl); }catch(e){}
+    state.currentPdfObjectUrl = '';
+  }
+}
+
 function closePdfViewer(){
   setViewportForPdf(false);
+  revokeCurrentPdfObjectUrl();
   closeModal();
 }
 
 
 function pdfViewButtonHtml(url, title='PDF', label='Xem PDF'){
-  return `<button class="btn secondary" type="button" data-pdf-url="${escAttr(url || '')}" data-pdf-title="${escAttr(title || 'PDF')}" onclick="openPdfFromButton(this)">${esc(label || 'Xem PDF')}</button>`;
+  return `<button class="btn secondary js-pdf-view" type="button" data-pdf-url="${escAttr(url || '')}" data-pdf-title="${escAttr(title || 'PDF')}">${esc(label || 'Xem PDF')}</button>`;
 }
 
 function pdfDownloadIconButtonHtml(url, title='', source='PDF', id=''){
@@ -5659,7 +5668,7 @@ window.openPdfFromButton = function(btn){
   const url = btn && btn.dataset ? (btn.dataset.pdfUrl || '') : '';
   const title = btn && btn.dataset ? (btn.dataset.pdfTitle || 'PDF') : 'PDF';
   if(!url) return toast('Không có link PDF.');
-  openGiaoBanPdf(url, title);
+  window.openGiaoBanPdf(url, title);
 }
 
 window.downloadPdfFromButton = function(btn){
@@ -5667,10 +5676,27 @@ window.downloadPdfFromButton = function(btn){
   return downloadPdfWithLog(d.pdfUrl || '', d.pdfTitle || '', d.pdfSource || 'PDF', d.pdfId || '');
 }
 
-window.openGiaoBanPdf = function(url, title='PDF giao ban'){
+function base64ToBlobUrl(base64, mimeType){
+  const raw = atob(String(base64 || ''));
+  const chunks = [];
+  const chunkSize = 8192;
+  for(let i = 0; i < raw.length; i += chunkSize){
+    const part = raw.slice(i, i + chunkSize);
+    const bytes = new Uint8Array(part.length);
+    for(let j = 0; j < part.length; j++) bytes[j] = part.charCodeAt(j);
+    chunks.push(bytes);
+  }
+  const blob = new Blob(chunks, {type: mimeType || 'application/pdf'});
+  return URL.createObjectURL(blob);
+}
+
+function renderPdfModal({url='', frameSrc='', title='PDF giao ban', loading=false, message=''}){
   setViewportForPdf(true);
   setupScreenProtection();
   const wm = watermarkLayerHtml();
+  const content = loading
+    ? `<div class="empty" style="margin:16px"><span class="loading-dot"></span>${esc(message || 'Đang tải PDF...')}</div>`
+    : `<iframe class="pdf-frame" src="${escAttr(frameSrc || '')}" allow="autoplay; fullscreen"></iframe>`;
   openModal(`
     <div class="pdf-modal protected-view">
       ${wm}
@@ -5687,10 +5713,27 @@ window.openGiaoBanPdf = function(url, title='PDF giao ban'){
       </div>
       <div class="pdf-frame-wrap">
         ${wm}
-        <iframe class="pdf-frame" src="${escAttr(toPdfPreviewUrl(url))}" allow="autoplay; fullscreen"></iframe>
+        ${content}
       </div>
     </div>
   `, true);
+}
+
+window.openGiaoBanPdf = async function(url, title='PDF giao ban'){
+  if(!url) return toast('Không có link PDF.');
+  revokeCurrentPdfObjectUrl();
+  renderPdfModal({url, title, loading:true, message:'Đang tải PDF trong app...'});
+  try{
+    const res = await api('getPdfFileBase64', {url}, {timeoutMs:180000});
+    const pdf = res.data || {};
+    const objectUrl = base64ToBlobUrl(pdf.base64 || '', pdf.mimeType || 'application/pdf');
+    state.currentPdfObjectUrl = objectUrl;
+    renderPdfModal({url, frameSrc: objectUrl, title: title || pdf.name || 'PDF giao ban'});
+  }catch(err){
+    revokeCurrentPdfObjectUrl();
+    renderPdfModal({url, frameSrc: toPdfPreviewUrl(url), title});
+    toast((err && err.message ? err.message : 'Không tải được PDF qua app.') + ' Đang thử chế độ xem dự phòng.');
+  }
 }
 
 async function downloadPdfWithLog(url, title='', source='PDF', id=''){
@@ -5700,6 +5743,13 @@ async function downloadPdfWithLog(url, title='', source='PDF', id=''){
   window.open(toPdfDownloadUrl(url), '_blank', 'noopener');
 }
 
+
+document.addEventListener('click', function(e){
+  const btn = e.target && e.target.closest ? e.target.closest('[data-pdf-url].js-pdf-view') : null;
+  if(!btn) return;
+  e.preventDefault();
+  window.openPdfFromButton(btn);
+});
 
 function iconEdit(){
   return '<svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
