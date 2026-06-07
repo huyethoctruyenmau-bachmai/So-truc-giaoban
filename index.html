@@ -989,7 +989,7 @@
 
 
 
-    /* FIX INDEX-134.070626-XOA-WATERMARK-KHI-CO-NUT-KY tránh nút tab Tài khoản bị chữ trắng trên nền sáng khi hover desktop */
+    /* FIX INDEX-135.070626-SUA-NUT-KY-ZINDEX-GOI-Y-CHU-TRI tránh nút tab Tài khoản bị chữ trắng trên nền sáng khi hover desktop */
     #tab-account .account-menu-btn:not(.active):hover,
     #tab-account .account-setup-btn:not(.active):hover{
       background:linear-gradient(135deg,#fffafb 0%,#fff0f5 100%)!important;
@@ -1204,6 +1204,58 @@
       padding-bottom:calc(env(safe-area-inset-bottom,0px) + 128px)!important;
     }
 
+
+
+    /* ===== PATCH 135: HỘP XÁC NHẬN KÝ NẰM TRÊN MODAL + GỢI Ý CHỦ TRÌ MOBILE ===== */
+    .confirm-modal{
+      z-index:100600!important;
+    }
+    .confirm-card{
+      position:relative!important;
+      z-index:100601!important;
+    }
+    #confirmRoot{
+      position:fixed;
+      inset:0;
+      z-index:100600;
+      pointer-events:none;
+    }
+    #confirmRoot .confirm-modal{
+      pointer-events:auto;
+    }
+    .chair-suggest{
+      position:fixed;
+      left:var(--chair-suggest-left,10px);
+      top:var(--chair-suggest-top,120px);
+      width:var(--chair-suggest-width,calc(100vw - 20px));
+      max-width:calc(100vw - 20px);
+      max-height:280px;
+      overflow-y:auto;
+      -webkit-overflow-scrolling:touch;
+      z-index:100500;
+      background:#fff;
+      border:1px solid var(--g-line);
+      border-radius:12px;
+      box-shadow:0 8px 22px rgba(60,64,67,.22);
+    }
+    .chair-suggest.hidden{display:none!important}
+    .chair-suggest button{
+      width:100%;
+      border:0;
+      background:#fff;
+      text-align:left;
+      padding:10px 12px;
+      min-height:44px;
+      border-bottom:1px solid #f1f3f4;
+      color:var(--g-text);
+      font-size:15px;
+      line-height:1.35;
+    }
+    .chair-suggest button:last-child{border-bottom:0}
+    .chair-suggest button:hover,.chair-suggest button.active{background:#f8fbff}
+    .chair-suggest .staff-code{font-weight:700;color:var(--wine-dark)}
+    .chair-suggest .staff-role{color:var(--g-muted);font-size:12.5px;margin-top:2px}
+
 </style>
 </head>
 <body>
@@ -1245,7 +1297,7 @@
       <p><strong>PHẦN MỀM SỔ TRỰC - GIAO BAN</strong></p>
       <p>Developed by Nguyễn Văn Chính</p>
       <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
-      <p class="login-version">Version: INDEX-134.070626-XOA-WATERMARK-KHI-CO-NUT-KY</p>
+      <p class="login-version">Version: INDEX-135.070626-SUA-NUT-KY-ZINDEX-GOI-Y-CHU-TRI</p>
     </div>
   </div>
 
@@ -1289,7 +1341,7 @@
       <button class="tab-btn" data-tab="meeting"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="6" r="2.1"/><circle cx="5.8" cy="9.3" r="1.9"/><circle cx="18.2" cy="9.3" r="1.9"/><path d="M8.6 13.2c.8-1.4 2-2.1 3.4-2.1s2.6.7 3.4 2.1"/><path d="M2.8 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><path d="M15.2 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><ellipse cx="12" cy="16.6" rx="6.3" ry="2.2"/><path d="M12 18.8v2.2M8.7 21h6.6"/></svg></span><span>Họp</span></button>
       <button class="tab-btn" data-tab="pdf"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h5M10 12h6M10 16h6"/></svg></span><span>DS phiếu</span></button>
     </nav>
-    <div class="app-version">Version: INDEX-134.070626-XOA-WATERMARK-KHI-CO-NUT-KY</div>
+    <div class="app-version">Version: INDEX-135.070626-SUA-NUT-KY-ZINDEX-GOI-Y-CHU-TRI</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -1298,7 +1350,7 @@
   <div id="secureBlackout" class="secure-blackout hidden">Nội dung được bảo vệ</div>
 
 <script>
-const APP_VERSION = 'INDEX-134.070626-XOA-WATERMARK-KHI-CO-NUT-KY';
+const APP_VERSION = 'INDEX-135.070626-SUA-NUT-KY-ZINDEX-GOI-Y-CHU-TRI';
 
 function canOpenAdminSettings(){
   return !!(state.user && (state.user.isAdmin || String(state.user.chucVu || '').trim()));
@@ -1513,6 +1565,7 @@ function bindGlobalEvents(){
   $('#forgotPasswordLink')?.addEventListener('click', e => { e.preventDefault(); withInlineBusy(e.currentTarget, 'Đang mở...', openForgotPasswordModal); });
   $('#logoutBtn').addEventListener('click', logout);
   $$('.tab-btn').forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
+  bindChairSuggestDelegates();
   document.addEventListener('input', e => {
     if(e.target.matches('textarea')) autoGrow(e.target);
   });
@@ -3993,7 +4046,7 @@ function renderGiaoBanModal(){
             </div>
             <div class="col-3"><label>Khoa/phòng</label><input class="equal-control" readonly value="${escAttr(g.khoaPhong || '')}"></div>
             <div class="col-3"><label>Thư ký</label><input class="equal-control" readonly value="${escAttr(g.nguoiTaoTen || state.user?.tenNhanVien || '')}"></div>
-            <div class="col-3"><label>Chủ trì giao ban</label><input id="gbChuTriInput" class="equal-control" list="staffDatalist" value="${escAttr(g.chuTriTen || g.nguoiChuTriTuDo || g.nguoiTaoTen || state.user?.tenNhanVien || '')}" ${g.daKhoa ? 'readonly' : ''} onblur="normalizeChairInput();syncSignModeWithChair()" onchange="normalizeChairInput();syncSignModeWithChair()" oninput="syncSignModeWithChair()"></div>
+            <div class="col-3"><label>Chủ trì giao ban</label><input id="gbChuTriInput" class="equal-control" list="staffDatalist" autocomplete="off" onfocus="showChairSuggestForInput(this)" value="${escAttr(g.chuTriTen || g.nguoiChuTriTuDo || g.nguoiTaoTen || state.user?.tenNhanVien || '')}" ${g.daKhoa ? 'readonly' : ''} onblur="normalizeChairInput();syncSignModeWithChair()" onchange="normalizeChairInput();syncSignModeWithChair()" oninput="syncSignModeWithChair()"></div>
           </div>
         </div>
 
@@ -4072,7 +4125,7 @@ function renderGiaoBanDotXuatModal(){
             <div class="col-3"><label>Thời gian giao ban</label><div class="gb-time-row"><input id="gbTime" class="equal-control datetime-vi-input" type="datetime-local" value="${escAttr(toDatetimeLocal(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || hanoiNowIso()))}" ${g.trangThai === STATUS_DA || g.daKhoa ? 'disabled' : ''}>${g.trangThai !== STATUS_DA && !g.daKhoa ? `<button class="gb-time-refresh-icon" type="button" onclick="updateGiaoBanTimeNow()" title="Cập nhật thời gian hiện tại" aria-label="Cập nhật thời gian hiện tại"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></button>` : ''}</div></div>
             <div class="col-3"><label>Khoa/phòng</label><select id="gbDotDept" class="equal-control" ${g.daKhoa ? 'disabled' : ''}>${deptOptions(g.khoaPhong || state.user?.khoaPhong || '')}</select></div>
             <div class="col-3"><label>Thư ký</label><input class="equal-control" readonly value="${escAttr(g.nguoiTaoTen || state.user?.tenNhanVien || '')}"></div>
-            <div class="col-3"><label>Chủ trì giao ban</label><input id="gbChuTriInput" class="equal-control" list="staffDatalist" value="${escAttr(g.chuTriTen || g.nguoiChuTriTuDo || g.nguoiTaoTen || state.user?.tenNhanVien || '')}" ${g.daKhoa ? 'readonly' : ''} onblur="normalizeChairInput();syncSignModeWithChair()" onchange="normalizeChairInput();syncSignModeWithChair()" oninput="syncSignModeWithChair()"></div>
+            <div class="col-3"><label>Chủ trì giao ban</label><input id="gbChuTriInput" class="equal-control" list="staffDatalist" autocomplete="off" onfocus="showChairSuggestForInput(this)" value="${escAttr(g.chuTriTen || g.nguoiChuTriTuDo || g.nguoiTaoTen || state.user?.tenNhanVien || '')}" ${g.daKhoa ? 'readonly' : ''} onblur="normalizeChairInput();syncSignModeWithChair()" onchange="normalizeChairInput();syncSignModeWithChair()" oninput="syncSignModeWithChair()"></div>
             <div class="col-12"><label>Thành phần tham dự</label><textarea id="gbThanhPhanThamDu" ${g.daKhoa ? 'readonly' : ''}>${esc(g.thanhPhanThamDu || '')}</textarea></div>
           </div>
         </div>
@@ -4212,6 +4265,102 @@ window.updateGiaoBanTimeNow = function(){
 document.addEventListener('change', e => { if(e.target && e.target.id === 'gbTime') buildGiaoBanPreview(); });
 document.addEventListener('input', e => { if(e.target && e.target.id === 'gbTime') buildGiaoBanPreview(); });
 
+
+
+function isMobileStaffSuggestMode(){
+  return !!(window.matchMedia && window.matchMedia('(max-width:760px)').matches);
+}
+
+function getChairSuggestBox(){
+  let box = document.getElementById('chairSuggestBox');
+  if(!box){
+    box = document.createElement('div');
+    box.id = 'chairSuggestBox';
+    box.className = 'chair-suggest hidden';
+    document.body.appendChild(box);
+  }
+  return box;
+}
+
+function positionChairSuggestBox(input, box){
+  if(!input || !box) return;
+  const r = input.getBoundingClientRect();
+  const gap = 6;
+  const left = Math.max(10, Math.min(r.left, window.innerWidth - 20));
+  const width = Math.max(240, Math.min(r.width, window.innerWidth - 20));
+  let top = r.bottom + gap;
+  const maxTop = Math.max(72, window.innerHeight - 300);
+  if(top > maxTop) top = Math.max(72, r.top - 286);
+  box.style.setProperty('--chair-suggest-left', left + 'px');
+  box.style.setProperty('--chair-suggest-top', top + 'px');
+  box.style.setProperty('--chair-suggest-width', width + 'px');
+}
+
+function hideChairSuggestBox(){
+  const box = document.getElementById('chairSuggestBox');
+  if(box) box.classList.add('hidden');
+}
+
+function showChairSuggestForInput(input){
+  if(!input || input.readOnly || input.disabled) return;
+  if(!isMobileStaffSuggestMode()) return;
+  const box = getChairSuggestBox();
+  const q = norm(input.value || '');
+  const matched = state.personnel.filter(p => {
+    const hay = norm([p.maNhanVien, p.tenNhanVien, p.chucDanh, p.chucVu].filter(Boolean).join(' '));
+    return !q || hay.includes(q);
+  }).slice(0, 10);
+  if(!matched.length){
+    box.innerHTML = `<button type="button" disabled>Không tìm thấy nhân viên phù hợp</button>`;
+  }else{
+    box.innerHTML = matched.map((p, idx) => `
+      <button type="button" class="${idx === 0 ? 'active' : ''}" data-ma="${escAttr(p.maNhanVien || '')}" onclick="chooseChairSuggestion('${escAttr(p.maNhanVien || '')}')">
+        <span class="staff-code">${esc(p.maNhanVien || '')}</span> - ${esc(p.tenNhanVien || '')}
+        ${p.chucDanh ? `<div class="staff-role">${esc(p.chucDanh)}</div>` : ''}
+      </button>
+    `).join('');
+  }
+  positionChairSuggestBox(input, box);
+  box.classList.remove('hidden');
+}
+
+window.chooseChairSuggestion = function(ma){
+  const person = state.personnel.find(p => norm(p.maNhanVien) === norm(ma));
+  const input = document.getElementById('gbChuTriInput');
+  if(person && input){
+    input.value = person.tenNhanVien || '';
+    syncSignModeWithChair();
+    refreshGiaoBanStructuredPreview();
+  }
+  hideChairSuggestBox();
+}
+
+function repositionChairSuggestBox(){
+  const box = document.getElementById('chairSuggestBox');
+  const input = document.getElementById('gbChuTriInput');
+  if(box && input && !box.classList.contains('hidden')) positionChairSuggestBox(input, box);
+}
+
+function bindChairSuggestDelegates(){
+  if(bindChairSuggestDelegates.done) return;
+  bindChairSuggestDelegates.done = true;
+  document.addEventListener('focusin', e => {
+    if(e.target && e.target.id === 'gbChuTriInput') showChairSuggestForInput(e.target);
+  });
+  document.addEventListener('input', e => {
+    if(e.target && e.target.id === 'gbChuTriInput') showChairSuggestForInput(e.target);
+  });
+  document.addEventListener('click', e => {
+    const input = e.target && e.target.closest ? e.target.closest('#gbChuTriInput') : null;
+    const box = e.target && e.target.closest ? e.target.closest('#chairSuggestBox') : null;
+    if(!input && !box) hideChairSuggestBox();
+  }, true);
+  window.addEventListener('resize', repositionChairSuggestBox);
+  if(window.visualViewport){
+    window.visualViewport.addEventListener('resize', repositionChairSuggestBox);
+    window.visualViewport.addEventListener('scroll', repositionChairSuggestBox);
+  }
+}
 
 function resolveChairFromInput(raw){
   const s = String(raw || '').trim();
@@ -6353,6 +6502,7 @@ function showConfirmDialog({title='Xác nhận', message='', confirmText='Xác n
       root.id = 'confirmRoot';
       document.body.appendChild(root);
     }
+    root.style.pointerEvents = 'auto';
     root.innerHTML = `
       <div class="confirm-modal" role="dialog" aria-modal="true">
         <div class="confirm-card">
@@ -6364,7 +6514,7 @@ function showConfirmDialog({title='Xác nhận', message='', confirmText='Xác n
           </div>
         </div>
       </div>`;
-    const done = val => { root.innerHTML = ''; resolve(val); };
+    const done = val => { root.innerHTML = ''; root.style.pointerEvents = 'none'; resolve(val); };
     root.querySelector('[data-confirm="0"]').addEventListener('click', () => done(false));
     root.querySelector('[data-confirm="1"]').addEventListener('click', () => done(true));
     root.querySelector('.confirm-modal').addEventListener('click', e => {
