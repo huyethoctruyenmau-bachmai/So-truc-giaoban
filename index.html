@@ -989,7 +989,7 @@
 
 
 
-    /* FIX INDEX-131.070626-SUA-WATERMARK-KHONG-CHAN-NUT-KY tránh nút tab Tài khoản bị chữ trắng trên nền sáng khi hover desktop */
+    /* FIX INDEX-132.070626-WATERMARK-CHI-PHIEU-HOAN-THANH tránh nút tab Tài khoản bị chữ trắng trên nền sáng khi hover desktop */
     #tab-account .account-menu-btn:not(.active):hover,
     #tab-account .account-setup-btn:not(.active):hover{
       background:linear-gradient(135deg,#fffafb 0%,#fff0f5 100%)!important;
@@ -2808,8 +2808,8 @@ function showTmPhieuModal(p){
   const isXuTri = p.loaiPhieuTM === LOAI_TM_XU_TRI || p.loaiPhieu === LOAI_TM_XU_TRI;
   const detailHtml = isXuTri ? renderTmXutriDetailHtml(p, d) : renderTmTdkmmDetailHtml(p, d);
   openModal(`
-    <div class="modal-card protected-view">
-      ${watermarkLayerHtml()}
+    <div class="modal-card${protectedViewClassIfDone(p.trangThai)}">
+      ${protectedWatermarkIfDone(p.trangThai)}
       <div class="modal-head">
         <div class="modal-title">${esc(p.loaiPhieuTM || p.loaiPhieu)} ${statusPill(p.trangThai)}</div>
         <button class="close-btn" onclick="closeModal()">×</button>
@@ -2984,8 +2984,8 @@ function showPhieuModal(p, opts={}){
   ` : '';
 
   openModal(`
-    <div class="modal-card protected-view">
-      ${watermarkLayerHtml()}
+    <div class="modal-card${protectedViewClassIfDone(p.trangThaiBanGiao)}">
+      ${protectedWatermarkIfDone(p.trangThaiBanGiao)}
       <div class="modal-head">
         <div class="modal-title">${esc(p.loaiPhieu)} ${statusPill(p.trangThaiBanGiao)}</div>
         <button class="close-btn" onclick="closeModal()">×</button>
@@ -3886,8 +3886,8 @@ function renderGiaoBanModal(){
   const latestMauTon = isTM ? getLatestMauTonFromReports(sortedReports) : null;
   openModal(`
     <div class="modal full-modal">
-      <div class="modal-card protected-view">
-        ${watermarkLayerHtml()}
+      <div class="modal-card${protectedViewClassIfDone(g.trangThai)}">
+        ${protectedWatermarkIfDone(g.trangThai)}
         <div class="modal-head">
           <div>
             <div class="modal-title">${esc(loai)} ngày ${dateVi(g.ngayGiaoBan)}</div>
@@ -3971,8 +3971,8 @@ function renderGiaoBanDotXuatModal(){
   const g = state.currentGiaoBan;
   openModal(`
     <div class="modal full-modal">
-      <div class="modal-card protected-view">
-        ${watermarkLayerHtml()}
+      <div class="modal-card${protectedViewClassIfDone(g.trangThai)}">
+        ${protectedWatermarkIfDone(g.trangThai)}
         <div class="modal-head">
           <div>
             <div class="modal-title">${esc(LOAI_GIAO_BAN_DOT_XUAT)} ngày ${dateVi(g.ngayGiaoBan)}</div>
@@ -5824,6 +5824,18 @@ async function saveTmEquipmentConfig(btn){
 
 
 
+
+
+function isCompletedForWatermark(status){
+  const s = norm(status || '');
+  return s === norm(STATUS_DA) || s === norm('Hoàn thành') || s === norm('Đã khóa');
+}
+function protectedViewClassIfDone(status){
+  return isCompletedForWatermark(status) ? ' protected-view' : '';
+}
+function protectedWatermarkIfDone(status){
+  return isCompletedForWatermark(status) ? watermarkLayerHtml() : '';
+}
 
 function watermarkText(){
   const u = state.user || {};
