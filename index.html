@@ -604,14 +604,22 @@
     }
     .protected-view{position:relative;user-select:none;-webkit-user-select:none}
     .pdf-modal.protected-view{overflow:hidden}
-    .modal-card.protected-view{overflow-y:auto;overflow-x:hidden;max-width:calc(100vw - 16px);box-sizing:border-box}
-    .protected-watermark{position:absolute;inset:0;z-index:30;pointer-events:none;opacity:.13;mix-blend-mode:multiply;overflow:hidden}
-    .protected-watermark span{position:absolute;left:12px;bottom:20px;display:block;width:1000px;max-width:none;white-space:nowrap;color:#1f2937;font-size:28px;font-weight:400;letter-spacing:.8px;line-height:1.2;text-transform:uppercase;transform:rotate(var(--wm-angle,-68deg));transform-origin:left center;text-align:left}
-    .protected-view > .pdf-topbar,.protected-view > .modal-head,.protected-view > .card,.protected-view > h3,.protected-view > div:not(.protected-watermark){position:relative;z-index:2}
+    .modal-card.protected-view{
+      overflow-y:auto;overflow-x:hidden;max-width:calc(100vw - 16px);box-sizing:border-box;
+      background-color:#fff;
+      background-image:var(--detail-wm-bg, none), linear-gradient(#fff,#fff);
+      background-repeat:no-repeat, repeat;
+      background-position:left bottom, 0 0;
+      background-size:var(--detail-wm-size, 1180px 840px), auto;
+      background-attachment:scroll, scroll;
+    }
+    .protected-watermark{display:none!important}
+    .protected-view > .pdf-topbar,.protected-view > .modal-head,.protected-view > .card,.protected-view > h3,.protected-view > div{position:relative;z-index:2}
     .pdf-frame-wrap{position:relative}
-    .pdf-frame-wrap .protected-watermark{display:none}
-    .modal-card.protected-view .protected-watermark{position:absolute;left:0;top:0;width:100%;height:100%;inset:auto;opacity:.14;z-index:80;overflow:hidden}
-    .modal-card.protected-view .protected-watermark span{position:absolute;left:var(--wm-left,14px);bottom:var(--wm-bottom,16px);top:auto;font-size:30px;font-weight:400;width:var(--wm-width,1000px);transform:rotate(var(--wm-angle,-68deg));transform-origin:left center}
+    .modal-card.protected-view .list-card{background:rgba(255,255,255,.90)}
+    .modal-card.protected-view .data-card{background:rgba(255,250,251,.90)}
+    .modal-card.protected-view .phieu-inline{background:rgba(255,255,255,.90)}
+    .modal-card.protected-view .report-day{background:rgba(255,255,255,.90)}
     .pdf-secure-loading{height:100%;display:grid;place-items:center;background:#f1f2f4;color:var(--muted)}
     .pdf-loading-box{display:flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:16px 18px;border:1px dashed #dec0cc;border-radius:18px;background:#fff;font-weight:700;text-align:center}
     .pdf-secure-loading .loading-dot{width:20px;height:20px;border-color:#ead0da;border-top-color:var(--wine);flex:0 0 auto}
@@ -631,9 +639,7 @@
       .modal{overflow:hidden;padding-left:0;padding-right:0}
       .modal-card{width:calc(100vw - 16px);max-width:calc(100vw - 16px);margin-left:8px;margin-right:8px}
       .full-modal .modal-card{width:100%;max-width:100%;margin:0}
-      .modal-card.protected-view{width:calc(100vw - 16px);max-width:calc(100vw - 16px);overflow-x:hidden}
-      .modal-card.protected-view .protected-watermark{left:0;top:0;width:100%;height:100%;opacity:.14}
-      .modal-card.protected-view .protected-watermark span{position:absolute;left:var(--wm-left,10px);bottom:var(--wm-bottom,14px);top:auto;font-size:22px;font-weight:400;width:var(--wm-width,1000px);transform:rotate(var(--wm-angle,-68deg));transform-origin:left center}
+      .modal-card.protected-view{width:calc(100vw - 16px);max-width:calc(100vw - 16px);overflow-x:hidden;background-size:var(--detail-wm-size, 980px 720px), auto}
     }
     .pdf-download-btn{border:0;background:transparent}
     .secure-blackout{position:fixed;inset:0;z-index:999999;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;font-weight:800;font-size:18px;letter-spacing:.2px}
@@ -1070,7 +1076,7 @@
       <p><strong>PHẦN MỀM SỔ TRỰC - GIAO BAN</strong></p>
       <p>Developed by Nguyễn Văn Chính</p>
       <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
-      <p class="login-version">Version: INDEX-120.070626-CHI-TIET-WM-NEO-PHIEU-VIEW</p>
+      <p class="login-version">Version: INDEX-121.070626-CHI-TIET-WM-NEN-PHIEU</p>
     </div>
   </div>
 
@@ -1114,7 +1120,7 @@
       <button class="tab-btn" data-tab="meeting"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="6" r="2.1"/><circle cx="5.8" cy="9.3" r="1.9"/><circle cx="18.2" cy="9.3" r="1.9"/><path d="M8.6 13.2c.8-1.4 2-2.1 3.4-2.1s2.6.7 3.4 2.1"/><path d="M2.8 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><path d="M15.2 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><ellipse cx="12" cy="16.6" rx="6.3" ry="2.2"/><path d="M12 18.8v2.2M8.7 21h6.6"/></svg></span><span>Họp</span></button>
       <button class="tab-btn" data-tab="pdf"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h5M10 12h6M10 16h6"/></svg></span><span>DS phiếu</span></button>
     </nav>
-    <div class="app-version">Version: INDEX-120.070626-CHI-TIET-WM-NEO-PHIEU-VIEW</div>
+    <div class="app-version">Version: INDEX-121.070626-CHI-TIET-WM-NEN-PHIEU</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -1123,7 +1129,7 @@
   <div id="secureBlackout" class="secure-blackout hidden">Nội dung được bảo vệ</div>
 
 <script>
-const APP_VERSION = 'INDEX-120.070626-CHI-TIET-WM-NEO-PHIEU-VIEW';
+const APP_VERSION = 'INDEX-121.070626-CHI-TIET-WM-NEN-PHIEU';
 
 function canOpenAdminSettings(){
   return !!(state.user && (state.user.isAdmin || String(state.user.chucVu || '').trim()));
@@ -5608,43 +5614,43 @@ function watermarkText(){
   return who + ' - ' + dateTimeVi(hanoiNowIso());
 }
 
-function watermarkLayerInnerHtml(){
-  const text = esc(watermarkText());
-  const line = Array(5).fill(text).join('     •     ');
-  return `<span>${line}</span>`;
+function watermarkLayerHtml(){
+  return '';
 }
 
-function watermarkLayerHtml(){
-  return `<div class="protected-watermark" aria-hidden="true">${watermarkLayerInnerHtml()}</div>`;
+function escapeXml_(value){
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+function detailWatermarkBackgroundUrl(){
+  const text = String(watermarkText() || '').toUpperCase();
+  const repeated = Array(3).fill(text).join('     •     ');
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1080" width="1600" height="1080">
+      <style>
+        text{font-family:Arial,Helvetica,sans-serif;font-size:48px;font-weight:400;letter-spacing:1.2px;fill:#6b7280;fill-opacity:.20;}
+      </style>
+      <text x="18" y="1035" transform="rotate(-58 18 1035)">${escapeXml_(repeated)}</text>
+    </svg>`;
+  return 'url("data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg).replace(/'/g, '%27').replace(/\(/g, '%28').replace(/\)/g, '%29') + '")';
 }
 
 function applyProtectedWatermarkPositions(){
-  document.querySelectorAll('.modal-card.protected-view .protected-watermark').forEach(layer => {
-    const card = layer.closest('.modal-card.protected-view');
-    if(!card) return;
-    const padX = window.innerWidth <= 760 ? 10 : 14;
-    const padY = window.innerWidth <= 760 ? 14 : 16;
+  document.querySelectorAll('.modal-card.protected-view').forEach(card => {
     const visibleWidth = Math.max(1, card.clientWidth || card.getBoundingClientRect().width || window.innerWidth);
     const visibleHeight = Math.max(1, card.clientHeight || card.getBoundingClientRect().height || window.innerHeight);
-    const diagonal = Math.ceil(Math.sqrt(visibleWidth * visibleWidth + visibleHeight * visibleHeight) + 520);
-
-    // Watermark được neo bên trong chính khung phiếu view.
-    // Khi nội dung phiếu dài và người dùng cuộn, lớp watermark đi theo vùng nhìn thấy của phiếu,
-    // xuất phát cố định từ góc dưới bên trái của khung phiếu, không neo độc lập theo cửa sổ trình duyệt.
-    layer.style.left = '0px';
-    layer.style.top = (card.scrollTop || 0) + 'px';
-    layer.style.width = visibleWidth + 'px';
-    layer.style.height = visibleHeight + 'px';
-    layer.style.setProperty('--wm-left', padX + 'px');
-    layer.style.setProperty('--wm-bottom', padY + 'px');
-    layer.style.setProperty('--wm-width', diagonal + 'px');
-    layer.style.setProperty('--wm-angle', '-68deg');
+    const wmW = Math.max(window.innerWidth <= 760 ? 980 : 1180, Math.ceil(visibleWidth * 1.05));
+    const wmH = Math.max(window.innerWidth <= 760 ? 720 : 840, Math.ceil(visibleHeight * .95));
+    card.style.setProperty('--detail-wm-bg', detailWatermarkBackgroundUrl());
+    card.style.setProperty('--detail-wm-size', wmW + 'px ' + wmH + 'px');
   });
 }
 function refreshProtectedWatermarks(){
-  document.querySelectorAll('.protected-watermark').forEach(layer => {
-    layer.innerHTML = watermarkLayerInnerHtml();
-  });
   applyProtectedWatermarkPositions();
 }
 
