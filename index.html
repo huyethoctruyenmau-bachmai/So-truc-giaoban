@@ -1086,6 +1086,19 @@
       .phieu-icon-actions{flex:0 0 auto;margin-left:auto;justify-content:flex-end}
     }
 
+
+    /* ===== PATCH 127: GIAO BAN TM - NHẤN BỆNH NHÂN, MÃ BN XUỐNG DÒNG ===== */
+    .tm-report-patient .report-label{
+      color:var(--wine-dark);
+      font-weight:700;
+      font-size:15.2px;
+      line-height:1.42;
+    }
+    .tm-report-patient{
+      margin-top:10px;
+      margin-bottom:8px;
+    }
+
 </style>
 </head>
 <body>
@@ -1127,7 +1140,7 @@
       <p><strong>PHẦN MỀM SỔ TRỰC - GIAO BAN</strong></p>
       <p>Developed by Nguyễn Văn Chính</p>
       <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
-      <p class="login-version">Version: INDEX-126.070626-DS-PHIEU-TIEU-DE-TM-GON</p>
+      <p class="login-version">Version: INDEX-127.070626-GIAOBAN-TM-BN-MA-THUT-DONG</p>
     </div>
   </div>
 
@@ -1171,7 +1184,7 @@
       <button class="tab-btn" data-tab="meeting"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="6" r="2.1"/><circle cx="5.8" cy="9.3" r="1.9"/><circle cx="18.2" cy="9.3" r="1.9"/><path d="M8.6 13.2c.8-1.4 2-2.1 3.4-2.1s2.6.7 3.4 2.1"/><path d="M2.8 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><path d="M15.2 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><ellipse cx="12" cy="16.6" rx="6.3" ry="2.2"/><path d="M12 18.8v2.2M8.7 21h6.6"/></svg></span><span>Họp</span></button>
       <button class="tab-btn" data-tab="pdf"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h5M10 12h6M10 16h6"/></svg></span><span>DS phiếu</span></button>
     </nav>
-    <div class="app-version">Version: INDEX-126.070626-DS-PHIEU-TIEU-DE-TM-GON</div>
+    <div class="app-version">Version: INDEX-127.070626-GIAOBAN-TM-BN-MA-THUT-DONG</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -1180,7 +1193,7 @@
   <div id="secureBlackout" class="secure-blackout hidden">Nội dung được bảo vệ</div>
 
 <script>
-const APP_VERSION = 'INDEX-126.070626-DS-PHIEU-TIEU-DE-TM-GON';
+const APP_VERSION = 'INDEX-127.070626-GIAOBAN-TM-BN-MA-THUT-DONG';
 
 function canOpenAdminSettings(){
   return !!(state.user && (state.user.isAdmin || String(state.user.chucVu || '').trim()));
@@ -2600,7 +2613,8 @@ function tmTdkmmGiaoBanLines(items, includePatientNo=true){
 function tmReportItemHtml(label, value){
   const v = tmTxt(value);
   if(!v) return '';
-  return `<div class="report-item"><div class="report-label">${esc(label)}</div><div class="report-value">${esc(v)}</div></div>`;
+  const isPatientTitle = /^\d+\.\d+\.\s*Bệnh nhân/i.test(tmTxt(label));
+  return `<div class="report-item ${isPatientTitle ? 'tm-report-patient' : ''}"><div class="report-label">${esc(label)}</div><div class="report-value">${esc(v)}</div></div>`;
 }
 
 function renderTmXuTriGiaoBanCardHtml(items){
@@ -2615,9 +2629,9 @@ function renderTmXuTriGiaoBanCardHtml(items){
       tmBulletLine(tmJoinInline([
         x.hoTenBenhNhan || '',
         x.namSinh ? `Năm sinh: ${x.namSinh}` : '',
-        d.gioiTinh ? `Giới: ${d.gioiTinh}` : '',
-        x.maBenhNhan ? `Mã BN: ${x.maBenhNhan}` : ''
+        d.gioiTinh ? `Giới: ${d.gioiTinh}` : ''
       ])),
+      tmDetailLine('Mã BN', x.maBenhNhan),
       tmBulletLine(tmJoinInline([
         x.khoaPhongDieuTri ? `Viện/TT/khoa/phòng: ${x.khoaPhongDieuTri}` : '',
         d.giuong ? `Giường: ${d.giuong}` : ''
@@ -2660,9 +2674,9 @@ function renderTmTdkmmGiaoBanCardHtml(items){
       tmBulletLine(tmJoinInline([
         x.hoTenBenhNhan || '',
         x.namSinh ? `Năm sinh: ${x.namSinh}` : '',
-        d.gioiTinh ? `Giới: ${d.gioiTinh}` : '',
-        x.maBenhNhan ? `Mã BN: ${x.maBenhNhan}` : ''
+        d.gioiTinh ? `Giới: ${d.gioiTinh}` : ''
       ])),
+      tmDetailLine('Mã BN', x.maBenhNhan),
       tmBulletLine(tmJoinInline([
         (d.vienKhoaPhong || x.khoaPhongDieuTri) ? `Viện/TT/khoa/phòng: ${d.vienKhoaPhong || x.khoaPhongDieuTri}` : '',
         d.giuong ? `Giường: ${d.giuong}` : ''
@@ -2684,7 +2698,7 @@ function renderTmTdkmmGiaoBanCardHtml(items){
         d.maDonViMauNghiNgo ? `Mã: ${d.maDonViMauNghiNgo}` : '',
         d.theTichDonViMauDaTruyen ? `Thể tích đã truyền: ${d.theTichDonViMauDaTruyen}` : ''
       ])),
-      tmTxt(thoiGianTruyen) ? '  Thời gian truyền: ' + thoiGianTruyen : '',
+      tmTxt(thoiGianTruyen) ? '    Thời gian truyền: ' + thoiGianTruyen : '',
       tmDetailBlock('Loại máu đã truyền trước khi phản ứng', tmBeforeBloodDetailLines(d.loaiMauDaTruyenTruocPhanUng))
     ]);
     const phanUngInfo = tmDetailValue([
