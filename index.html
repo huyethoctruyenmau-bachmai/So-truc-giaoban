@@ -989,7 +989,7 @@
 
 
 
-    /* FIX INDEX-135.070626-SUA-NUT-KY-ZINDEX-GOI-Y-CHU-TRI tránh nút tab Tài khoản bị chữ trắng trên nền sáng khi hover desktop */
+    /* FIX INDEX-136.070626-AUTOCOMPLETE-DOI-TRUC-KY-TAY-ZINDEX tránh nút tab Tài khoản bị chữ trắng trên nền sáng khi hover desktop */
     #tab-account .account-menu-btn:not(.active):hover,
     #tab-account .account-setup-btn:not(.active):hover{
       background:linear-gradient(135deg,#fffafb 0%,#fff0f5 100%)!important;
@@ -1256,6 +1256,71 @@
     .chair-suggest .staff-code{font-weight:700;color:var(--wine-dark)}
     .chair-suggest .staff-role{color:var(--g-muted);font-size:12.5px;margin-top:2px}
 
+
+
+    /* ===== PATCH 136: AUTOCOMPLETE NHÂN SỰ GIỐNG APP ĐỔI TRỰC + SỬA MODAL KÝ TAY ===== */
+    .autocomplete-container{position:relative;width:100%;}
+    .autocomplete-input{
+      width:100%;
+      border:1px solid var(--g-line);
+      border-radius:4px;
+      font-size:15.5px;
+      background-color:#fff;
+      min-height:var(--field-h);
+      box-sizing:border-box;
+      transition:all .18s ease;
+    }
+    .autocomplete-input:focus{
+      outline:none;
+      border-color:#005baa;
+      box-shadow:0 0 0 3px rgba(0,91,170,.10);
+      transform:translateY(-1px);
+    }
+    .autocomplete-dropdown,
+    .staff-suggest.autocomplete-dropdown,
+    .chair-suggest.autocomplete-dropdown{
+      position:absolute!important;
+      top:calc(100% + 2px)!important;
+      left:0!important;
+      right:0!important;
+      width:auto!important;
+      max-width:none!important;
+      background:#fff!important;
+      border:1px solid #ddd!important;
+      border-radius:8px!important;
+      box-shadow:0 4px 16px rgba(0,0,0,.12)!important;
+      max-height:220px!important;
+      overflow-y:auto!important;
+      -webkit-overflow-scrolling:touch!important;
+      z-index:100500!important;
+      margin-top:0!important;
+    }
+    .autocomplete-dropdown.hidden,
+    .staff-suggest.autocomplete-dropdown.hidden,
+    .chair-suggest.autocomplete-dropdown.hidden{display:none!important;}
+    .autocomplete-item{
+      padding:12px 16px;
+      cursor:pointer;
+      border-bottom:1px solid #f0f0f0;
+      transition:background-color .2s;
+      background:#fff;
+      text-align:left;
+      color:var(--g-text);
+      min-height:44px;
+    }
+    .autocomplete-item:last-child{border-bottom:none;}
+    .autocomplete-item:hover,.autocomplete-item.selected,.autocomplete-item.active{background-color:#e3f2fd;}
+    .employee-name{color:#005baa;font-weight:bold;font-size:16px;line-height:1.3;}
+    .employee-details{color:#666;font-size:14px;margin-top:4px;line-height:1.3;}
+    .no-results{padding:12px 16px;color:#999;font-style:italic;text-align:center;}
+    .staff-picker.autocomplete-container .staff-input-row{position:relative;z-index:2;}
+    .staff-picker.autocomplete-container .autocomplete-dropdown{top:calc(100% + 4px)!important;right:0!important;}
+    #gbChuTriContainer .autocomplete-dropdown{z-index:100520!important;}
+    .signature-full-modal{z-index:100800!important;}
+    .signature-full-modal .close-btn,
+    .signature-full-modal button,
+    .signature-full-modal .btn{pointer-events:auto!important;touch-action:manipulation!important;}
+
 </style>
 </head>
 <body>
@@ -1297,7 +1362,7 @@
       <p><strong>PHẦN MỀM SỔ TRỰC - GIAO BAN</strong></p>
       <p>Developed by Nguyễn Văn Chính</p>
       <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
-      <p class="login-version">Version: INDEX-135.070626-SUA-NUT-KY-ZINDEX-GOI-Y-CHU-TRI</p>
+      <p class="login-version">Version: INDEX-136.070626-AUTOCOMPLETE-DOI-TRUC-KY-TAY-ZINDEX</p>
     </div>
   </div>
 
@@ -1341,7 +1406,7 @@
       <button class="tab-btn" data-tab="meeting"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="6" r="2.1"/><circle cx="5.8" cy="9.3" r="1.9"/><circle cx="18.2" cy="9.3" r="1.9"/><path d="M8.6 13.2c.8-1.4 2-2.1 3.4-2.1s2.6.7 3.4 2.1"/><path d="M2.8 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><path d="M15.2 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><ellipse cx="12" cy="16.6" rx="6.3" ry="2.2"/><path d="M12 18.8v2.2M8.7 21h6.6"/></svg></span><span>Họp</span></button>
       <button class="tab-btn" data-tab="pdf"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h5M10 12h6M10 16h6"/></svg></span><span>DS phiếu</span></button>
     </nav>
-    <div class="app-version">Version: INDEX-135.070626-SUA-NUT-KY-ZINDEX-GOI-Y-CHU-TRI</div>
+    <div class="app-version">Version: INDEX-136.070626-AUTOCOMPLETE-DOI-TRUC-KY-TAY-ZINDEX</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -1350,7 +1415,7 @@
   <div id="secureBlackout" class="secure-blackout hidden">Nội dung được bảo vệ</div>
 
 <script>
-const APP_VERSION = 'INDEX-135.070626-SUA-NUT-KY-ZINDEX-GOI-Y-CHU-TRI';
+const APP_VERSION = 'INDEX-136.070626-AUTOCOMPLETE-DOI-TRUC-KY-TAY-ZINDEX';
 
 function canOpenAdminSettings(){
   return !!(state.user && (state.user.isAdmin || String(state.user.chucVu || '').trim()));
@@ -1838,12 +1903,12 @@ function renderCreateTab(){
       <div class="grid">
         <div class="col-12">
           <label>2.1 Nhân viên phiên thường trực</label>
-          <div class="staff-picker">
+          <div class="staff-picker autocomplete-container">
             <div class="staff-input-row">
-              <input id="staffSearch" autocomplete="off" placeholder="Gõ tên hoặc mã nhân viên">
+              <input id="staffSearch" class="autocomplete-input" autocomplete="off" placeholder="Gõ tên hoặc mã nhân viên">
               <button id="addStaffBtn" class="btn secondary staff-add-btn" type="button" title="Thêm nhân viên" aria-label="Thêm nhân viên">+</button>
             </div>
-            <div id="staffSuggestBox" class="staff-suggest hidden"></div>
+            <div id="staffSuggestBox" class="staff-suggest autocomplete-dropdown hidden"></div>
           </div>
         </div>
         <div class="col-12"><div id="staffList" class="staff-list"></div></div>
@@ -1944,6 +2009,43 @@ function ensureLoginUserInStaff(){
 }
 
 
+
+function employeeNameForAutocomplete(p){
+  return String(p?.tenNhanVien || p?.tenNV || p?.ten || '').trim();
+}
+function employeeCodeForAutocomplete(p){
+  return String(p?.maNhanVien || p?.maNV || '').trim();
+}
+function employeeDetailsForAutocomplete(p){
+  return [p?.ngaySinh || '', p?.chucDanh || p?.chucVu || '', employeeCodeForAutocomplete(p)].filter(Boolean).join(' - ');
+}
+function renderEmployeeAutocompleteItems(box, list, chooseFnName){
+  if(!box) return;
+  if(!list || !list.length){
+    box.innerHTML = '<div class="no-results">Không tìm thấy nhân viên phù hợp</div>';
+    return;
+  }
+  box.innerHTML = list.map((p, idx) => {
+    const ma = employeeCodeForAutocomplete(p);
+    const name = employeeNameForAutocomplete(p);
+    const details = employeeDetailsForAutocomplete(p);
+    return `<div class="autocomplete-item staff-suggest-item ${idx === 0 ? 'selected active' : ''}" role="button" tabindex="-1" data-ma="${escAttr(ma)}" onmousedown="event.preventDefault()" onclick="${chooseFnName}('${escAttr(ma)}')">
+      <div class="employee-name">${esc(name)}</div>
+      ${details ? `<div class="employee-details">${esc(details)}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+function showAutocompleteBox(input, box){
+  if(!input || !box) return;
+  box.classList.remove('hidden');
+  box.style.display = 'block';
+}
+function hideAutocompleteBox(box){
+  if(!box) return;
+  box.classList.add('hidden');
+  box.style.display = 'none';
+}
+
 function positionStaffSuggestBox(input, box){
   if(!input || !box) return;
   if(window.matchMedia && window.matchMedia('(max-width:760px)').matches){
@@ -1977,28 +2079,16 @@ function handleStaffSearchInput(){
   const q = norm(input.value);
   state.selectedStaffCandidate = null;
   if(!q){
-    box.classList.add('hidden');
+    hideAutocompleteBox(box);
     box.innerHTML = '';
     return;
   }
   const matched = state.personnel.filter(p => {
-    const hay = norm([p.maNhanVien, p.tenNhanVien, p.chucDanh, p.chucVu].filter(Boolean).join(' '));
+    const hay = norm([employeeCodeForAutocomplete(p), employeeNameForAutocomplete(p), p.chucDanh, p.chucVu].filter(Boolean).join(' '));
     return hay.includes(q);
   }).slice(0, 8);
-  if(!matched.length){
-    box.innerHTML = `<button type="button" disabled>Không tìm thấy nhân viên phù hợp</button>`;
-    positionStaffSuggestBox(input, box);
-    box.classList.remove('hidden');
-    return;
-  }
-  box.innerHTML = matched.map((p, idx) => `
-    <button type="button" class="staff-suggest-item ${idx === 0 ? 'active' : ''}" data-ma="${escAttr(p.maNhanVien)}" onclick="chooseStaffSuggestion('${escAttr(p.maNhanVien)}')">
-      <span class="staff-code">${esc(p.maNhanVien || '')}</span> - ${esc(p.tenNhanVien || '')}
-      ${p.chucDanh ? `<div class="staff-role">${esc(p.chucDanh)}</div>` : ''}
-    </button>
-  `).join('');
-  positionStaffSuggestBox(input, box);
-  box.classList.remove('hidden');
+  renderEmployeeAutocompleteItems(box, matched, 'chooseStaffSuggestion');
+  showAutocompleteBox(input, box);
 }
 
 function handleStaffSearchKeydown(e){
@@ -2008,12 +2098,12 @@ function handleStaffSearchKeydown(e){
     if(first && !state.selectedStaffCandidate) chooseStaffSuggestion(first.dataset.ma);
     addSelectedStaff();
   }
-  if(e.key === 'Escape') $('#staffSuggestBox')?.classList.add('hidden');
+  if(e.key === 'Escape') hideAutocompleteBox($('#staffSuggestBox'));
 }
 
 function closeStaffSuggestOnOutsideClick(e){
   const picker = e.target.closest('.staff-picker');
-  if(!picker) $('#staffSuggestBox')?.classList.add('hidden');
+  if(!picker) hideAutocompleteBox($('#staffSuggestBox'));
 }
 
 window.chooseStaffSuggestion = function(ma){
@@ -2043,7 +2133,7 @@ function addSelectedStaff(){
   state.selectedStaff.push(person);
   state.selectedStaffCandidate = null;
   $('#staffSearch').value = '';
-  $('#staffSuggestBox')?.classList.add('hidden');
+  hideAutocompleteBox($('#staffSuggestBox'));
   refreshStaffList();
 }
 
@@ -4046,7 +4136,7 @@ function renderGiaoBanModal(){
             </div>
             <div class="col-3"><label>Khoa/phòng</label><input class="equal-control" readonly value="${escAttr(g.khoaPhong || '')}"></div>
             <div class="col-3"><label>Thư ký</label><input class="equal-control" readonly value="${escAttr(g.nguoiTaoTen || state.user?.tenNhanVien || '')}"></div>
-            <div class="col-3"><label>Chủ trì giao ban</label><input id="gbChuTriInput" class="equal-control" list="staffDatalist" autocomplete="off" onfocus="showChairSuggestForInput(this)" value="${escAttr(g.chuTriTen || g.nguoiChuTriTuDo || g.nguoiTaoTen || state.user?.tenNhanVien || '')}" ${g.daKhoa ? 'readonly' : ''} onblur="normalizeChairInput();syncSignModeWithChair()" onchange="normalizeChairInput();syncSignModeWithChair()" oninput="syncSignModeWithChair()"></div>
+            <div class="col-3"><label>Chủ trì giao ban</label><div class="autocomplete-container" id="gbChuTriContainer"><input id="gbChuTriInput" class="equal-control autocomplete-input" list="staffDatalist" autocomplete="off" onfocus="showChairSuggestForInput(this)" value="${escAttr(g.chuTriTen || g.nguoiChuTriTuDo || g.nguoiTaoTen || state.user?.tenNhanVien || '')}" ${g.daKhoa ? 'readonly' : ''} onblur="normalizeChairInput();syncSignModeWithChair()" onchange="normalizeChairInput();syncSignModeWithChair()" oninput="syncSignModeWithChair()"><div id="gbChuTriSuggestBox" class="chair-suggest autocomplete-dropdown hidden"></div></div></div>
           </div>
         </div>
 
@@ -4125,7 +4215,7 @@ function renderGiaoBanDotXuatModal(){
             <div class="col-3"><label>Thời gian giao ban</label><div class="gb-time-row"><input id="gbTime" class="equal-control datetime-vi-input" type="datetime-local" value="${escAttr(toDatetimeLocal(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || hanoiNowIso()))}" ${g.trangThai === STATUS_DA || g.daKhoa ? 'disabled' : ''}>${g.trangThai !== STATUS_DA && !g.daKhoa ? `<button class="gb-time-refresh-icon" type="button" onclick="updateGiaoBanTimeNow()" title="Cập nhật thời gian hiện tại" aria-label="Cập nhật thời gian hiện tại"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></button>` : ''}</div></div>
             <div class="col-3"><label>Khoa/phòng</label><select id="gbDotDept" class="equal-control" ${g.daKhoa ? 'disabled' : ''}>${deptOptions(g.khoaPhong || state.user?.khoaPhong || '')}</select></div>
             <div class="col-3"><label>Thư ký</label><input class="equal-control" readonly value="${escAttr(g.nguoiTaoTen || state.user?.tenNhanVien || '')}"></div>
-            <div class="col-3"><label>Chủ trì giao ban</label><input id="gbChuTriInput" class="equal-control" list="staffDatalist" autocomplete="off" onfocus="showChairSuggestForInput(this)" value="${escAttr(g.chuTriTen || g.nguoiChuTriTuDo || g.nguoiTaoTen || state.user?.tenNhanVien || '')}" ${g.daKhoa ? 'readonly' : ''} onblur="normalizeChairInput();syncSignModeWithChair()" onchange="normalizeChairInput();syncSignModeWithChair()" oninput="syncSignModeWithChair()"></div>
+            <div class="col-3"><label>Chủ trì giao ban</label><div class="autocomplete-container" id="gbChuTriContainer"><input id="gbChuTriInput" class="equal-control autocomplete-input" list="staffDatalist" autocomplete="off" onfocus="showChairSuggestForInput(this)" value="${escAttr(g.chuTriTen || g.nguoiChuTriTuDo || g.nguoiTaoTen || state.user?.tenNhanVien || '')}" ${g.daKhoa ? 'readonly' : ''} onblur="normalizeChairInput();syncSignModeWithChair()" onchange="normalizeChairInput();syncSignModeWithChair()" oninput="syncSignModeWithChair()"><div id="gbChuTriSuggestBox" class="chair-suggest autocomplete-dropdown hidden"></div></div></div>
             <div class="col-12"><label>Thành phần tham dự</label><textarea id="gbThanhPhanThamDu" ${g.daKhoa ? 'readonly' : ''}>${esc(g.thanhPhanThamDu || '')}</textarea></div>
           </div>
         </div>
@@ -4267,68 +4357,47 @@ document.addEventListener('input', e => { if(e.target && e.target.id === 'gbTime
 
 
 
-function isMobileStaffSuggestMode(){
-  return !!(window.matchMedia && window.matchMedia('(max-width:760px)').matches);
-}
-
 function getChairSuggestBox(){
-  let box = document.getElementById('chairSuggestBox');
+  let box = document.getElementById('gbChuTriSuggestBox');
   if(!box){
     box = document.createElement('div');
-    box.id = 'chairSuggestBox';
-    box.className = 'chair-suggest hidden';
+    box.id = 'gbChuTriSuggestBox';
+    box.className = 'chair-suggest autocomplete-dropdown hidden';
     document.body.appendChild(box);
   }
   return box;
 }
 
 function positionChairSuggestBox(input, box){
-  if(!input || !box) return;
-  const r = input.getBoundingClientRect();
-  const gap = 6;
-  const left = Math.max(10, Math.min(r.left, window.innerWidth - 20));
-  const width = Math.max(240, Math.min(r.width, window.innerWidth - 20));
-  let top = r.bottom + gap;
-  const maxTop = Math.max(72, window.innerHeight - 300);
-  if(top > maxTop) top = Math.max(72, r.top - 286);
-  box.style.setProperty('--chair-suggest-left', left + 'px');
-  box.style.setProperty('--chair-suggest-top', top + 'px');
-  box.style.setProperty('--chair-suggest-width', width + 'px');
+  // Dropdown được đặt theo .autocomplete-container giống app Đổi trực; không cần tính fixed riêng.
 }
 
 function hideChairSuggestBox(){
-  const box = document.getElementById('chairSuggestBox');
-  if(box) box.classList.add('hidden');
+  hideAutocompleteBox(document.getElementById('gbChuTriSuggestBox'));
 }
 
 function showChairSuggestForInput(input){
   if(!input || input.readOnly || input.disabled) return;
-  if(!isMobileStaffSuggestMode()) return;
   const box = getChairSuggestBox();
   const q = norm(input.value || '');
-  const matched = state.personnel.filter(p => {
-    const hay = norm([p.maNhanVien, p.tenNhanVien, p.chucDanh, p.chucVu].filter(Boolean).join(' '));
-    return !q || hay.includes(q);
-  }).slice(0, 10);
-  if(!matched.length){
-    box.innerHTML = `<button type="button" disabled>Không tìm thấy nhân viên phù hợp</button>`;
-  }else{
-    box.innerHTML = matched.map((p, idx) => `
-      <button type="button" class="${idx === 0 ? 'active' : ''}" data-ma="${escAttr(p.maNhanVien || '')}" onclick="chooseChairSuggestion('${escAttr(p.maNhanVien || '')}')">
-        <span class="staff-code">${esc(p.maNhanVien || '')}</span> - ${esc(p.tenNhanVien || '')}
-        ${p.chucDanh ? `<div class="staff-role">${esc(p.chucDanh)}</div>` : ''}
-      </button>
-    `).join('');
+  if(!q){
+    hideAutocompleteBox(box);
+    box.innerHTML = '';
+    return;
   }
-  positionChairSuggestBox(input, box);
-  box.classList.remove('hidden');
+  const matched = state.personnel.filter(p => {
+    const hay = norm([employeeCodeForAutocomplete(p), employeeNameForAutocomplete(p), p.chucDanh, p.chucVu].filter(Boolean).join(' '));
+    return hay.includes(q);
+  }).slice(0, 10);
+  renderEmployeeAutocompleteItems(box, matched, 'chooseChairSuggestion');
+  showAutocompleteBox(input, box);
 }
 
 window.chooseChairSuggestion = function(ma){
-  const person = state.personnel.find(p => norm(p.maNhanVien) === norm(ma));
+  const person = state.personnel.find(p => norm(employeeCodeForAutocomplete(p)) === norm(ma));
   const input = document.getElementById('gbChuTriInput');
   if(person && input){
-    input.value = person.tenNhanVien || '';
+    input.value = employeeNameForAutocomplete(person) || '';
     syncSignModeWithChair();
     refreshGiaoBanStructuredPreview();
   }
@@ -4336,7 +4405,7 @@ window.chooseChairSuggestion = function(ma){
 }
 
 function repositionChairSuggestBox(){
-  const box = document.getElementById('chairSuggestBox');
+  const box = document.getElementById('gbChuTriSuggestBox');
   const input = document.getElementById('gbChuTriInput');
   if(box && input && !box.classList.contains('hidden')) positionChairSuggestBox(input, box);
 }
@@ -4352,14 +4421,10 @@ function bindChairSuggestDelegates(){
   });
   document.addEventListener('click', e => {
     const input = e.target && e.target.closest ? e.target.closest('#gbChuTriInput') : null;
-    const box = e.target && e.target.closest ? e.target.closest('#chairSuggestBox') : null;
+    const box = e.target && e.target.closest ? e.target.closest('#gbChuTriSuggestBox') : null;
     if(!input && !box) hideChairSuggestBox();
   }, true);
   window.addEventListener('resize', repositionChairSuggestBox);
-  if(window.visualViewport){
-    window.visualViewport.addEventListener('resize', repositionChairSuggestBox);
-    window.visualViewport.addEventListener('scroll', repositionChairSuggestBox);
-  }
 }
 
 function resolveChairFromInput(raw){
@@ -4521,6 +4586,8 @@ function setSignModeManual(role){
 
 window.openFullSignatureForRole = function(role, btn){
   normalizeChairInput();
+  const oldModal = document.getElementById('fullSignatureModal');
+  if(oldModal) oldModal.remove();
   const g = state.currentGiaoBan || {};
   if(role === 'chuTri' && !isSecretarySameChair() && !(g.thoiDiemThuKyKy || g.chuKyThuKyFileId || hasPendingThuKySignatureForCurrent())){
     toast('Thư ký cần ký xác nhận trước khi chủ trì ký.');
@@ -4563,6 +4630,8 @@ window.closeFullSignatureModal = function(){
 }
 
 function openProfileSignatureModal(afterRole){
+  const oldModal = document.getElementById('fullSignatureModal');
+  if(oldModal) oldModal.remove();
   state.afterProfileSignRole = afterRole || '';
   state.signaturePad.targetRole = 'profile';
   state.signaturePad.dataUrl = '';
@@ -4813,9 +4882,8 @@ async function handleChairSystemSignatureMismatch(btn){
     danger:false
   });
   if(ok){
-    const sel = $('#gbHinhThucKyChuTri') || $('#gbHinhThucKyChuTriSingle');
-    if(sel) sel.value = HINH_THUC_KY_TAY;
-    openFullSignatureForRole('chuTri', btn);
+    setSignModeManual('chuTri');
+    setTimeout(() => openFullSignatureForRole('chuTri', btn), 0);
   }
   return false;
 }
