@@ -989,7 +989,7 @@
 
 
 
-    /* FIX INDEX-166.080626-GIAOBAN-KHUNG-2COT-FIXED-KY-DAY tránh nút tab Tài khoản bị chữ trắng trên nền sáng khi hover desktop */
+    /* FIX INDEX-167.080626-EP-HANH-CHINH-4-O-1-DONG tránh nút tab Tài khoản bị chữ trắng trên nền sáng khi hover desktop */
     #tab-account .account-menu-btn:not(.active):hover,
     #tab-account .account-setup-btn:not(.active):hover{
       background:linear-gradient(135deg,#fffafb 0%,#fff0f5 100%)!important;
@@ -1863,6 +1863,81 @@
       }
     }
 
+
+
+    /* ===== PATCH 167: ÉP 4 Ô PHẦN HÀNH CHÍNH NẰM CÙNG 1 DÒNG ===== */
+    @media (min-width:900px){
+      .gb-regular-left .gb-hanh-chinh-grid,
+      .gb-hanh-chinh-grid{
+        display:grid!important;
+        grid-template-columns:minmax(0,1.18fr) minmax(0,.82fr) minmax(0,.82fr) minmax(0,1.18fr)!important;
+        grid-auto-flow:column!important;
+        grid-auto-columns:auto!important;
+        gap:8px!important;
+        align-items:end!important;
+        width:100%!important;
+      }
+      .gb-hanh-chinh-grid > .gb-admin-item,
+      .gb-regular-left .gb-hanh-chinh-grid > .gb-admin-item{
+        display:block!important;
+        grid-column:auto!important;
+        grid-row:1!important;
+        min-width:0!important;
+        width:100%!important;
+        max-width:none!important;
+      }
+      .gb-hanh-chinh-grid > .gb-admin-time{ grid-column:1!important; }
+      .gb-hanh-chinh-grid > .gb-admin-dept{ grid-column:2!important; }
+      .gb-hanh-chinh-grid > .gb-admin-secretary{ grid-column:3!important; }
+      .gb-hanh-chinh-grid > .gb-admin-chair{ grid-column:4!important; }
+
+      .gb-hanh-chinh-grid label{
+        display:block!important;
+        white-space:nowrap!important;
+        overflow:hidden!important;
+        text-overflow:ellipsis!important;
+        font-size:12.5px!important;
+        line-height:1.2!important;
+        margin:0 0 4px!important;
+      }
+      .gb-hanh-chinh-grid .equal-control,
+      .gb-hanh-chinh-grid input{
+        width:100%!important;
+        height:32px!important;
+        min-height:32px!important;
+        font-size:13.5px!important;
+        padding:4px 7px!important;
+        box-sizing:border-box!important;
+      }
+      .gb-hanh-chinh-grid .gb-time-row{
+        display:grid!important;
+        grid-template-columns:minmax(0,1fr) 28px!important;
+        gap:5px!important;
+        width:100%!important;
+      }
+      .gb-hanh-chinh-grid .gb-time-refresh-icon{
+        width:28px!important;
+        min-width:28px!important;
+        height:32px!important;
+        min-height:32px!important;
+        padding:0!important;
+      }
+      .gb-hanh-chinh-grid .autocomplete-container{
+        width:100%!important;
+      }
+    }
+    @media (max-width:899px){
+      .gb-hanh-chinh-grid{
+        display:grid!important;
+        grid-template-columns:1fr!important;
+        gap:10px!important;
+      }
+      .gb-hanh-chinh-grid > .gb-admin-item{
+        grid-column:auto!important;
+        grid-row:auto!important;
+      }
+    }
+
 </style>
 </head>
 <body>
@@ -1904,7 +1979,7 @@
       <p><strong>PHẦN MỀM SỔ TRỰC - GIAO BAN</strong></p>
       <p>Developed by Nguyễn Văn Chính</p>
       <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
-      <p class="login-version">Version: INDEX-166.080626-GIAOBAN-KHUNG-2COT-FIXED-KY-DAY</p>
+      <p class="login-version">Version: INDEX-167.080626-EP-HANH-CHINH-4-O-1-DONG</p>
     </div>
   </div>
 
@@ -1948,7 +2023,7 @@
       <button class="tab-btn" data-tab="meeting"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="6" r="2.1"/><circle cx="5.8" cy="9.3" r="1.9"/><circle cx="18.2" cy="9.3" r="1.9"/><path d="M8.6 13.2c.8-1.4 2-2.1 3.4-2.1s2.6.7 3.4 2.1"/><path d="M2.8 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><path d="M15.2 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><ellipse cx="12" cy="16.6" rx="6.3" ry="2.2"/><path d="M12 18.8v2.2M8.7 21h6.6"/></svg></span><span>Họp</span></button>
       <button class="tab-btn" data-tab="pdf"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h5M10 12h6M10 16h6"/></svg></span><span>DS phiếu</span></button>
     </nav>
-    <div class="app-version">Version: INDEX-166.080626-GIAOBAN-KHUNG-2COT-FIXED-KY-DAY</div>
+    <div class="app-version">Version: INDEX-167.080626-EP-HANH-CHINH-4-O-1-DONG</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -1957,7 +2032,7 @@
   <div id="secureBlackout" class="secure-blackout hidden">Nội dung được bảo vệ</div>
 
 <script>
-const APP_VERSION = 'INDEX-166.080626-GIAOBAN-KHUNG-2COT-FIXED-KY-DAY';
+const APP_VERSION = 'INDEX-167.080626-EP-HANH-CHINH-4-O-1-DONG';
 
 function canOpenAdminSettings(){
   return !!(state.user && (state.user.isAdmin || String(state.user.chucVu || '').trim()));
@@ -3849,7 +3924,7 @@ window.editPhieu = async function(phieuID, btn){
           <div class="grid">
             <div class="col-3"><label>Loại phiếu</label><input class="equal-control" readonly value="${escAttr(p.loaiPhieuGoc || p.loaiPhieu || '')}"></div>
             <div class="col-3"><label>Ngày trực</label><input id="editDate" class="equal-control date-vi-input" type="date" value="${escAttr(p.ngayTruc || '')}"></div>
-            <div class="col-3"><label>Khoa/phòng</label><select id="editDept" class="equal-control">${deptOptions(p.khoaPhong)}</select></div>
+            <div class="gb-admin-item gb-admin-dept"><label>Khoa/phòng</label><select id="editDept" class="equal-control">${deptOptions(p.khoaPhong)}</select></div>
             <div class="col-3"><label>Người thực hiện</label><input class="equal-control" readonly value="${escAttr([p.nguoiThucHienTen, p.nguoiThucHienChucDanh, p.khoaPhong].filter(Boolean).join(' - '))}"></div>
           </div>
         </div>
@@ -4194,7 +4269,7 @@ function renderMeetingTab(){
       <div class="grid filter-grid">
         <div class="col-3 date-pair"><label>Từ ngày</label><input id="gbFrom" class="equal-control date-vi-input" type="date"></div>
         <div class="col-3 date-pair"><label>Đến ngày</label><input id="gbTo" class="equal-control date-vi-input" type="date"></div>
-        <div class="col-3"><label>Khoa/phòng</label><select id="gbDept" class="equal-control">${deptOptions(state.user?.khoaPhong || '')}</select></div>
+        <div class="gb-admin-item gb-admin-dept"><label>Khoa/phòng</label><select id="gbDept" class="equal-control">${deptOptions(state.user?.khoaPhong || '')}</select></div>
         <div class="col-3">
           <label>Loại phiếu</label>
           <select id="gbLoai" class="equal-control">
@@ -4660,7 +4735,7 @@ function renderGiaoBanModal(){
   const hanhChinhHtml = `
     <div class="card gb-regular-card">
       <h3 class="section-title">A. Phần hành chính</h3>
-      <div class="grid gb-hanh-chinh-grid">
+      <div class="gb-hanh-chinh-grid">
         <div class="gb-admin-item gb-admin-time">
           <label>T/G giao ban</label>
           <div class="gb-time-row">
@@ -4785,9 +4860,9 @@ function renderGiaoBanDotXuatModal(){
           <h3 class="section-title">A. Phần hành chính</h3>
           <div class="grid">
             <div class="col-3"><label>Thời gian giao ban</label><div class="gb-time-row"><input id="gbTime" class="equal-control datetime-vi-input" type="datetime-local" value="${escAttr(toDatetimeLocal(g.thoiGianGiaoBanHienThi || g.thoiGianGiaoBan || hanoiNowIso()))}" ${g.trangThai === STATUS_DA || g.daKhoa ? 'disabled' : ''}>${g.trangThai !== STATUS_DA && !g.daKhoa ? `<button class="gb-time-refresh-icon" type="button" onclick="updateGiaoBanTimeNow()" title="Cập nhật thời gian hiện tại" aria-label="Cập nhật thời gian hiện tại"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></button>` : ''}</div></div>
-            <div class="col-3"><label>Khoa/phòng</label><select id="gbDotDept" class="equal-control" ${g.daKhoa ? 'disabled' : ''}>${deptOptions(g.khoaPhong || state.user?.khoaPhong || '')}</select></div>
-            <div class="col-3"><label>Thư ký</label><input class="equal-control" readonly value="${escAttr(g.nguoiTaoTen || state.user?.tenNhanVien || '')}"></div>
-            <div class="col-3"><label>Chủ trì giao ban</label><div class="autocomplete-container" id="gbChuTriContainer"><input id="gbChuTriInput" class="equal-control autocomplete-input" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" onfocus="showChairSuggestForInput(this)" value="${escAttr(g.chuTriTen || g.nguoiChuTriTuDo || g.nguoiTaoTen || state.user?.tenNhanVien || '')}" ${g.daKhoa ? 'readonly' : ''} onblur="normalizeChairInput();syncSignModeWithChair()" onchange="normalizeChairInput();syncSignModeWithChair()" oninput="syncSignModeWithChair()"><div id="gbChuTriSuggestBox" class="chair-suggest autocomplete-dropdown hidden"></div></div></div>
+            <div class="gb-admin-item gb-admin-dept"><label>Khoa/phòng</label><select id="gbDotDept" class="equal-control" ${g.daKhoa ? 'disabled' : ''}>${deptOptions(g.khoaPhong || state.user?.khoaPhong || '')}</select></div>
+            <div class="gb-admin-item gb-admin-secretary"><label>Thư ký</label><input class="equal-control" readonly value="${escAttr(g.nguoiTaoTen || state.user?.tenNhanVien || '')}"></div>
+            <div class="gb-admin-item gb-admin-chair"><label>Chủ trì giao ban</label><div class="autocomplete-container" id="gbChuTriContainer"><input id="gbChuTriInput" class="equal-control autocomplete-input" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" onfocus="showChairSuggestForInput(this)" value="${escAttr(g.chuTriTen || g.nguoiChuTriTuDo || g.nguoiTaoTen || state.user?.tenNhanVien || '')}" ${g.daKhoa ? 'readonly' : ''} onblur="normalizeChairInput();syncSignModeWithChair()" onchange="normalizeChairInput();syncSignModeWithChair()" oninput="syncSignModeWithChair()"><div id="gbChuTriSuggestBox" class="chair-suggest autocomplete-dropdown hidden"></div></div></div>
             <div class="col-12"><label>Thành phần tham dự</label><textarea id="gbThanhPhanThamDu" ${g.daKhoa ? 'readonly' : ''}>${esc(g.thanhPhanThamDu || '')}</textarea></div>
           </div>
         </div>
@@ -5582,7 +5657,7 @@ function renderPdfTab(){
       <div class="grid filter-grid">
         <div class="col-3 date-pair"><label>Từ ngày</label><input id="pdfFrom" class="equal-control date-vi-input" type="date"></div>
         <div class="col-3 date-pair"><label>Đến ngày</label><input id="pdfTo" class="equal-control date-vi-input" type="date"></div>
-        <div class="col-3"><label>Khoa/phòng</label><select id="pdfDept" class="equal-control">${deptOptions(state.user?.khoaPhong || '')}</select></div>
+        <div class="gb-admin-item gb-admin-dept"><label>Khoa/phòng</label><select id="pdfDept" class="equal-control">${deptOptions(state.user?.khoaPhong || '')}</select></div>
         <div class="col-3"><label>Loại phiếu</label><select id="pdfLoai" class="equal-control"><option>Tất cả</option><option>${LOAI_BAN_GIAO}</option><option>${LOAI_BAO_CAO}</option><option>${LOAI_GIAO_BAN_THUONG_TRUC}</option><option>${LOAI_GIAO_BAN_DOT_XUAT}</option>${tmOptions}</select></div>
         <div class="col-3"><label>Trạng thái</label><select id="pdfStatus" class="equal-control"><option>Tất cả</option><option>${STATUS_CHUA}</option><option>${STATUS_DA}</option></select></div>
         <div class="col-12 filter-keyword"><label>Từ khóa</label><input id="pdfKeyword" class="equal-control" placeholder="Tìm theo mã BN/PID, họ tên, khoa/phòng, nội dung"></div>
