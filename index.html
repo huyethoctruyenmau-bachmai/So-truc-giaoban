@@ -989,7 +989,7 @@
 
 
 
-    /* FIX INDEX-181.080626-GIAOBAN-2COT-BIENBAN-HANHCHINH-GOIY-PHIM tránh nút tab Tài khoản bị chữ trắng trên nền sáng khi hover desktop */
+    /* FIX INDEX-182.080626-DS-PHIEU-XUAT-EXCEL-TU-TAI tránh nút tab Tài khoản bị chữ trắng trên nền sáng khi hover desktop */
     #tab-account .account-menu-btn:not(.active):hover,
     #tab-account .account-setup-btn:not(.active):hover{
       background:linear-gradient(135deg,#fffafb 0%,#fff0f5 100%)!important;
@@ -2772,7 +2772,7 @@
       <p><strong>PHẦN MỀM SỔ TRỰC - GIAO BAN</strong></p>
       <p>Developed by Nguyễn Văn Chính</p>
       <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
-      <p class="login-version">Version: INDEX-181.080626-GIAOBAN-2COT-BIENBAN-HANHCHINH-GOIY-PHIM</p>
+      <p class="login-version">Version: INDEX-182.080626-DS-PHIEU-XUAT-EXCEL-TU-TAI</p>
     </div>
   </div>
 
@@ -2816,7 +2816,7 @@
       <button class="tab-btn" data-tab="meeting"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="6" r="2.1"/><circle cx="5.8" cy="9.3" r="1.9"/><circle cx="18.2" cy="9.3" r="1.9"/><path d="M8.6 13.2c.8-1.4 2-2.1 3.4-2.1s2.6.7 3.4 2.1"/><path d="M2.8 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><path d="M15.2 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><ellipse cx="12" cy="16.6" rx="6.3" ry="2.2"/><path d="M12 18.8v2.2M8.7 21h6.6"/></svg></span><span>Họp</span></button>
       <button class="tab-btn" data-tab="pdf"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h5M10 12h6M10 16h6"/></svg></span><span>DS phiếu</span></button>
     </nav>
-    <div class="app-version">Version: INDEX-181.080626-GIAOBAN-2COT-BIENBAN-HANHCHINH-GOIY-PHIM</div>
+    <div class="app-version">Version: INDEX-182.080626-DS-PHIEU-XUAT-EXCEL-TU-TAI</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -2825,7 +2825,7 @@
   <div id="secureBlackout" class="secure-blackout hidden">Nội dung được bảo vệ</div>
 
 <script>
-const APP_VERSION = 'INDEX-181.080626-GIAOBAN-2COT-BIENBAN-HANHCHINH-GOIY-PHIM';
+const APP_VERSION = 'INDEX-182.080626-DS-PHIEU-XUAT-EXCEL-TU-TAI';
 
 function canOpenAdminSettings(){
   return !!(state.user && (state.user.isAdmin || String(state.user.chucVu || '').trim()));
@@ -6568,7 +6568,7 @@ function renderPdfTab(){
         <div class="col-12 filter-keyword"><label>Từ khóa</label><input id="pdfKeyword" class="equal-control" placeholder="Tìm theo mã BN/PID, họ tên, khoa/phòng, nội dung"></div>
         <div class="col-3 filter-action"><button id="loadPdfBtn" class="btn primary">Xem danh sách</button></div>
       </div>
-      <p class="meta">Phiếu có PDF sẽ hiện nút Xem PDF. Riêng 2 phiếu chuyên môn Truyền máu có thể xuất Excel danh sách BN.</p>
+      <p class="meta">Phiếu có PDF sẽ hiện nút Xem PDF. Chọn một loại phiếu cụ thể rồi bấm Xem danh sách để xuất Excel.</p>
     </div>
     <div id="pdfListBox"></div>
   `;
@@ -6586,7 +6586,7 @@ async function loadDsPhieuList(){
     const res = await api('searchHoSo', payload);
     const items = sortDsPhieuByCreatedDesc(res.data.items || []);
     if(!items.length){ box.innerHTML = `<div class="empty">Không có phiếu phù hợp.</div>`; return; }
-    const exportBtn = isTmPhieuLoai(payload.loaiHoSo) ? `<button class="btn secondary" onclick="exportTmExcel(this)">Xuất Excel danh sách BN</button>` : '';
+    const exportBtn = canExportDsPhieuExcel(payload) ? `<button class="btn secondary" onclick="exportDsPhieuExcel(this)">Xuất Excel</button>` : '';
     box.innerHTML = `<div class="ds-toolbar"><p class="meta">Tổng: ${items.length} phiếu</p>${exportBtn}</div>` + items.map(renderDsPhieuCard).join('');
   }catch(err){ box.innerHTML = `<div class="empty">${esc(err.message)}</div>`; }
 }
@@ -6707,16 +6707,48 @@ function renderDsPhieuCard(x){
 }
 
 
-window.exportTmExcel = async function(btn){
+function canExportDsPhieuExcel(filters){
+  const loai = String(filters?.loaiHoSo || '').trim();
+  return !!loai && loai !== 'Tất cả';
+}
+
+function downloadBase64File(fileName, mimeType, base64){
+  const binary = atob(base64 || '');
+  const chunkSize = 32768;
+  const chunks = [];
+  for(let i = 0; i < binary.length; i += chunkSize){
+    const slice = binary.slice(i, i + chunkSize);
+    const bytes = new Uint8Array(slice.length);
+    for(let j = 0; j < slice.length; j++) bytes[j] = slice.charCodeAt(j);
+    chunks.push(bytes);
+  }
+  const blob = new Blob(chunks, {type:mimeType || 'application/octet-stream'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fileName || 'DS_Phieu.xlsx';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1200);
+}
+
+window.exportDsPhieuExcel = async function(btn){
   const payload = getDsPhieuFilters();
-  if(!isTmPhieuLoai(payload.loaiHoSo)) return toast('Chỉ xuất Excel cho 2 loại phiếu chuyên môn Truyền máu.');
+  if(!canExportDsPhieuExcel(payload)){
+    return toast('Vui lòng chọn loại phiếu cụ thể trước khi xuất Excel.');
+  }
   await withButton(btn, 'Đang xuất Excel...', async () => {
-    const res = await api('exportTmPhieuExcel', Object.assign({loaiPhieuTM: payload.loaiHoSo}, payload));
-    const url = res.data?.downloadUrl || res.data?.url;
-    if(url) window.open(url, '_blank');
-    toast('Đã tạo file Excel');
+    const res = await api('exportDsPhieuExcel', payload, {timeoutMs: 120000});
+    const d = res.data || {};
+    if(!d.base64) throw new Error('API chưa trả dữ liệu file Excel.');
+    downloadBase64File(d.fileName || 'DS_Phieu.xlsx', d.mimeType || 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', d.base64);
+    toast('Đã tải file Excel');
   });
 }
+
+// Giữ alias cũ để không lỗi nếu còn nút cũ trong DOM/cache trình duyệt.
+window.exportTmExcel = window.exportDsPhieuExcel;
 
 
 
