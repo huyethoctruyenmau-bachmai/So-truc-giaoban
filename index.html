@@ -989,7 +989,7 @@
 
 
 
-    /* FIX INDEX-167.080626-EP-HANH-CHINH-4-O-1-DONG tránh nút tab Tài khoản bị chữ trắng trên nền sáng khi hover desktop */
+    /* FIX INDEX-168.080626-SUA-HIEN-THI-THU-KY-CHU-TRI-KY tránh nút tab Tài khoản bị chữ trắng trên nền sáng khi hover desktop */
     #tab-account .account-menu-btn:not(.active):hover,
     #tab-account .account-setup-btn:not(.active):hover{
       background:linear-gradient(135deg,#fffafb 0%,#fff0f5 100%)!important;
@@ -1938,6 +1938,42 @@
       }
     }
 
+
+
+    /* ===== PATCH 168: HIỂN THỊ RÕ 2 NGƯỜI KÝ THƯ KÝ / CHỦ TRÌ ===== */
+    .gb-sign-two-person{
+      gap:10px!important;
+      align-items:center!important;
+      flex-wrap:wrap!important;
+    }
+    .gb-sign-person{
+      display:flex!important;
+      align-items:center!important;
+      gap:6px!important;
+      flex-wrap:nowrap!important;
+    }
+    .gb-sign-label{
+      font-size:13px!important;
+      font-weight:700!important;
+      color:var(--wine-dark)!important;
+      white-space:nowrap!important;
+    }
+    .gb-sign-person .btn[disabled]{
+      opacity:.55!important;
+      cursor:not-allowed!important;
+    }
+    @media (max-width:899px){
+      .gb-sign-two-person{
+        width:100%!important;
+        flex-direction:column!important;
+        align-items:stretch!important;
+      }
+      .gb-sign-person{
+        width:100%!important;
+        justify-content:space-between!important;
+      }
+    }
+
 </style>
 </head>
 <body>
@@ -1979,7 +2015,7 @@
       <p><strong>PHẦN MỀM SỔ TRỰC - GIAO BAN</strong></p>
       <p>Developed by Nguyễn Văn Chính</p>
       <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
-      <p class="login-version">Version: INDEX-167.080626-EP-HANH-CHINH-4-O-1-DONG</p>
+      <p class="login-version">Version: INDEX-168.080626-SUA-HIEN-THI-THU-KY-CHU-TRI-KY</p>
     </div>
   </div>
 
@@ -2023,7 +2059,7 @@
       <button class="tab-btn" data-tab="meeting"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="6" r="2.1"/><circle cx="5.8" cy="9.3" r="1.9"/><circle cx="18.2" cy="9.3" r="1.9"/><path d="M8.6 13.2c.8-1.4 2-2.1 3.4-2.1s2.6.7 3.4 2.1"/><path d="M2.8 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><path d="M15.2 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><ellipse cx="12" cy="16.6" rx="6.3" ry="2.2"/><path d="M12 18.8v2.2M8.7 21h6.6"/></svg></span><span>Họp</span></button>
       <button class="tab-btn" data-tab="pdf"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h5M10 12h6M10 16h6"/></svg></span><span>DS phiếu</span></button>
     </nav>
-    <div class="app-version">Version: INDEX-167.080626-EP-HANH-CHINH-4-O-1-DONG</div>
+    <div class="app-version">Version: INDEX-168.080626-SUA-HIEN-THI-THU-KY-CHU-TRI-KY</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -2032,7 +2068,7 @@
   <div id="secureBlackout" class="secure-blackout hidden">Nội dung được bảo vệ</div>
 
 <script>
-const APP_VERSION = 'INDEX-167.080626-EP-HANH-CHINH-4-O-1-DONG';
+const APP_VERSION = 'INDEX-168.080626-SUA-HIEN-THI-THU-KY-CHU-TRI-KY';
 
 function canOpenAdminSettings(){
   return !!(state.user && (state.user.isAdmin || String(state.user.chucVu || '').trim()));
@@ -4931,10 +4967,12 @@ function renderGiaoBanFinishBlock(g){
   const pendingThuKyAt = getPendingThuKySignatureAt();
   const thuKySigned = !!(g.thoiDiemThuKyKy || g.chuKyThuKyFileId || pendingThuKyAt);
   const thuKyMode = getPendingThuKySignMode() || g.hinhThucKyThuKy || g.hinhThucKy || HINH_THUC_KY_TAY;
-  const chuTriMode = g.hinhThucKyChuTri || g.hinhThucKy || HINH_THUC_KY_TAY;
+  const chuTriMode = g.hinhThucKyChuTri || g.hinhThucKy || g.hinhThucKyThuKy || HINH_THUC_KY_TAY;
 
-  // Bản gọn: bỏ tiêu đề "Hoàn tất / ký...", chỉ giữ lưu nháp bên trái và cụm ký bên phải.
-  // Vẫn giữ id signSingleBlock/signTwoStepBlock để syncSignModeWithChair() hoạt động như cũ.
+  // Chỉ sửa phần hiển thị:
+  // - Chủ trì là thư ký: hiện 1 cụm ký xác nhận.
+  // - Chủ trì khác thư ký: hiện rõ 2 cụm riêng Thư ký và Chủ trì.
+  // Logic ẩn/hiện vẫn do syncSignModeWithChair() xử lý theo tên chủ trì hiện tại.
   return `
     <div class="gb-finish-compact">
       <div class="gb-finish-left">
@@ -4947,15 +4985,26 @@ function renderGiaoBanFinishBlock(g){
           <button id="signSingleInlineBtn" class="btn ok" onclick="finishGiaoBan(this)">Ký xác nhận</button>
         </div>
 
-        <div id="signTwoStepBlock" class="gb-sign-compact hidden">
-          ${!thuKySigned ? `
-            <div class="sign-mode-compact">${renderSignModeSelect('gbHinhThucKyThuKy', thuKyMode, false, true)}</div>
-            <button class="btn ok" onclick="handleSignClick('thuKy', this)">Ký xác nhận</button>
-          ` : `
-            <span class="gb-sign-done">Thư ký đã ký${pendingThuKyAt || g.thoiDiemThuKyKy ? ': ' + dateTimeVi(g.thoiDiemThuKyKy || pendingThuKyAt) : ''}</span>
-            <div class="sign-mode-compact">${renderSignModeSelect('gbHinhThucKyChuTri', chuTriMode, false, true)}</div>
-            <button class="btn ok" onclick="handleSignClick('chuTri', this)">Ký xác nhận</button>
-          `}
+        <div id="signTwoStepBlock" class="gb-sign-compact gb-sign-two-person hidden">
+          <div class="gb-sign-person">
+            <span class="gb-sign-label">Thư ký</span>
+            <div class="sign-mode-compact">${renderSignModeSelect('gbHinhThucKyThuKy', thuKyMode, thuKySigned, true)}</div>
+            <button class="btn ${thuKySigned ? 'secondary' : 'ok'}"
+              ${thuKySigned ? 'disabled' : ''}
+              onclick="handleSignClick('thuKy', this)">
+              ${thuKySigned ? 'Đã ký' : 'Ký xác nhận'}
+            </button>
+          </div>
+
+          <div class="gb-sign-person">
+            <span class="gb-sign-label">Chủ trì</span>
+            <div class="sign-mode-compact">${renderSignModeSelect('gbHinhThucKyChuTri', chuTriMode, !thuKySigned, true)}</div>
+            <button class="btn ok"
+              ${thuKySigned ? '' : 'disabled'}
+              onclick="handleSignClick('chuTri', this)">
+              Ký xác nhận
+            </button>
+          </div>
         </div>
       </div>
     </div>`;
