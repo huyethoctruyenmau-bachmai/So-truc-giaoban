@@ -989,7 +989,7 @@
 
 
 
-    /* FIX INDEX-182.080626-DS-PHIEU-XUAT-EXCEL-TU-TAI tránh nút tab Tài khoản bị chữ trắng trên nền sáng khi hover desktop */
+    /* FIX INDEX-183.090626-TDKMM-CAN-HANG-O-KHI-CO-NHO-DESKTOP tránh nút tab Tài khoản bị chữ trắng trên nền sáng khi hover desktop */
     #tab-account .account-menu-btn:not(.active):hover,
     #tab-account .account-setup-btn:not(.active):hover{
       background:linear-gradient(135deg,#fffafb 0%,#fff0f5 100%)!important;
@@ -2731,6 +2731,88 @@
       font-weight:400!important;
     }
 
+
+
+    /* ===== PATCH 183: TDKMM - CĂN HÀNG CÁC Ô KHI CO NHỎ TRÌNH DUYỆT DESKTOP ===== */
+    @media (min-width:900px){
+      .tm-tdkmm-form .tm-reaction-grid,
+      .tm-tdkmm-form .tm-lab-grid{
+        align-items:end!important;
+      }
+
+      .tm-tdkmm-form .tm-reaction-grid > div,
+      .tm-tdkmm-form .tm-lab-grid > div{
+        min-width:0!important;
+        display:flex!important;
+        flex-direction:column!important;
+        justify-content:flex-end!important;
+      }
+
+      .tm-tdkmm-form .tm-reaction-grid{
+        grid-template-columns:minmax(138px,1fr) minmax(0,3fr)!important;
+      }
+      .tm-tdkmm-form .tm-reaction-grid > .col-3{
+        grid-column:span 3!important;
+      }
+      .tm-tdkmm-form .tm-reaction-grid > .col-9{
+        grid-column:span 9!important;
+      }
+      .tm-tdkmm-form .tm-reaction-grid > .col-12{
+        grid-column:1 / -1!important;
+      }
+
+      .tm-tdkmm-form .tm-lab-grid{
+        grid-template-columns:repeat(4,minmax(0,1fr))!important;
+      }
+      .tm-tdkmm-form .tm-lab-grid > .col-3{
+        grid-column:auto!important;
+      }
+
+      .tm-tdkmm-form .tm-reaction-grid label{
+        min-height:42px!important;
+        display:flex!important;
+        align-items:flex-end!important;
+        line-height:1.18!important;
+        white-space:normal!important;
+        margin-bottom:5px!important;
+      }
+
+      .tm-tdkmm-form .tm-lab-grid label{
+        min-height:58px!important;
+        display:flex!important;
+        align-items:flex-end!important;
+        line-height:1.16!important;
+        white-space:normal!important;
+        margin-bottom:5px!important;
+      }
+
+      .tm-tdkmm-form .tm-reaction-grid input,
+      .tm-tdkmm-form .tm-reaction-grid select,
+      .tm-tdkmm-form .tm-lab-grid input,
+      .tm-tdkmm-form .tm-lab-grid select{
+        width:100%!important;
+        min-width:0!important;
+        height:38px!important;
+        min-height:38px!important;
+        box-sizing:border-box!important;
+      }
+    }
+
+    @media (min-width:900px) and (max-width:1100px){
+      .tm-tdkmm-form .tm-lab-grid{
+        gap:7px!important;
+      }
+      .tm-tdkmm-form .tm-lab-grid label{
+        min-height:64px!important;
+        font-size:14px!important;
+      }
+      .tm-tdkmm-form .tm-lab-grid select{
+        font-size:14px!important;
+        padding-left:8px!important;
+        padding-right:24px!important;
+      }
+    }
+
 </style>
 </head>
 <body>
@@ -2772,7 +2854,7 @@
       <p><strong>PHẦN MỀM SỔ TRỰC - GIAO BAN</strong></p>
       <p>Developed by Nguyễn Văn Chính</p>
       <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
-      <p class="login-version">Version: INDEX-182.080626-DS-PHIEU-XUAT-EXCEL-TU-TAI</p>
+      <p class="login-version">Version: INDEX-183.090626-TDKMM-CAN-HANG-O-KHI-CO-NHO-DESKTOP</p>
     </div>
   </div>
 
@@ -2816,7 +2898,7 @@
       <button class="tab-btn" data-tab="meeting"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="6" r="2.1"/><circle cx="5.8" cy="9.3" r="1.9"/><circle cx="18.2" cy="9.3" r="1.9"/><path d="M8.6 13.2c.8-1.4 2-2.1 3.4-2.1s2.6.7 3.4 2.1"/><path d="M2.8 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><path d="M15.2 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><ellipse cx="12" cy="16.6" rx="6.3" ry="2.2"/><path d="M12 18.8v2.2M8.7 21h6.6"/></svg></span><span>Họp</span></button>
       <button class="tab-btn" data-tab="pdf"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h5M10 12h6M10 16h6"/></svg></span><span>DS phiếu</span></button>
     </nav>
-    <div class="app-version">Version: INDEX-182.080626-DS-PHIEU-XUAT-EXCEL-TU-TAI</div>
+    <div class="app-version">Version: INDEX-183.090626-TDKMM-CAN-HANG-O-KHI-CO-NHO-DESKTOP</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -2825,7 +2907,7 @@
   <div id="secureBlackout" class="secure-blackout hidden">Nội dung được bảo vệ</div>
 
 <script>
-const APP_VERSION = 'INDEX-182.080626-DS-PHIEU-XUAT-EXCEL-TU-TAI';
+const APP_VERSION = 'INDEX-183.090626-TDKMM-CAN-HANG-O-KHI-CO-NHO-DESKTOP';
 
 function canOpenAdminSettings(){
   return !!(state.user && (state.user.isAdmin || String(state.user.chucVu || '').trim()));
@@ -3929,20 +4011,20 @@ function renderTmTdkmmFormHtml(d={}, prefix='tmCreate'){
       </div>
     </div>
     <h3 class="sub-title">3. Mô tả phản ứng</h3>
-    <div class="grid">
+    <div class="grid tm-reaction-grid">
       <div class="col-3"><label>Mức độ phản ứng</label><select id="${prefix}MucDo" class="equal-control">${optionHtml(mucDo, d.mucDoPhanUng || '')}</select></div>
       <div class="col-9 tdk-trieuchung"><label>Triệu chứng</label><input id="${prefix}TrieuChung" class="equal-control" value="${escAttr(d.trieuChung || '')}"></div>
       <div class="col-12"><label>Ghi chú</label><textarea id="${prefix}GhiChu">${esc(d.ghiChu || '')}</textarea></div>
     </div>
     <h3 class="sub-title">4. Xét nghiệm trước truyền</h3>
-    <div class="grid">
+    <div class="grid tm-lab-grid tm-lab-before-grid">
       <div class="col-3"><label>Phản ứng hòa hợp - Trước truyền</label><select id="${prefix}PUHHTruoc" class="equal-control">${optionHtml(kq, d.phanUngHoaHopTruoc || '')}</select></div>
       <div class="col-3"><label>Coombs TT - Trước truyền</label><select id="${prefix}CoombsTTTruoc" class="equal-control">${optionHtml(kq, d.coombsTTTruoc || '')}</select></div>
       <div class="col-3"><label>Coombs GT - Trước truyền</label><select id="${prefix}CoombsGTTruoc" class="equal-control">${optionHtml(kq, d.coombsGTTruoc || '')}</select></div>
       <div class="col-3"><label>SLKT - Trước truyền</label><select id="${prefix}SLKTTruoc" class="equal-control">${optionHtml(kq, d.slktTruoc || '')}</select></div>
     </div>
     <h3 class="sub-title">5. Xét nghiệm sau truyền</h3>
-    <div class="grid">
+    <div class="grid tm-lab-grid tm-lab-after-grid">
       <div class="col-3"><label>Phản ứng hòa hợp - Sau truyền</label><select id="${prefix}PUHHSau" class="equal-control">${optionHtml(kq, d.phanUngHoaHopSau || '')}</select></div>
       <div class="col-3"><label>Coombs TT - Sau truyền</label><select id="${prefix}CoombsTTSau" class="equal-control">${optionHtml(kq, d.coombsTTSau || '')}</select></div>
       <div class="col-3"><label>Coombs GT - Sau truyền</label><select id="${prefix}CoombsGTSau" class="equal-control">${optionHtml(kq, d.coombsGTSau || '')}</select></div>
