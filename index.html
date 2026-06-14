@@ -5386,7 +5386,40 @@ async function exportTdkmmPdf(phieuTMID, btn){
         else if(f.url) window.open(f.url, '_blank');
       }, idx * 450);
     });
+    closeModal();
     toast(files.length > 1 ? 'Đã xuất và tải 2 file PDF.' : 'Đã xuất và tải file PDF.');
+  });
+}
+
+window.openTdkmmPdfViewDialog = function(phieuTMID){
+  openModal(`
+    <div class="modal-card modal-small">
+      <div class="modal-head">
+        <div class="modal-title">Xem phiếu TDKMM</div>
+        <button class="close-btn" onclick="closeModal()">×</button>
+      </div>
+      <p class="meta">Chọn mẫu phiếu cần xem. App sẽ tạo bản PDF xem trước từ dữ liệu phiếu hiện tại và mở giống chức năng Xem mẫu.</p>
+      <div class="tdkmm-pdf-choice">
+        <label><input type="radio" name="tdkmmViewPdfType" value="PL11" checked> Báo cáo Tai biến không mong muốn liên quan đến truyền máu</label>
+        <label><input type="radio" name="tdkmmViewPdfType" value="PL12"> Phiếu xét nghiệm tai biến không mong muốn liên quan đến truyền máu</label>
+      </div>
+      <div class="btn-row">
+        <button id="viewTdkmmPdfBtn" class="btn primary" type="button">Xem phiếu</button>
+        <button class="btn secondary" type="button" onclick="closeModal()">Đóng</button>
+      </div>
+    </div>
+  `);
+  $('#viewTdkmmPdfBtn')?.addEventListener('click', () => viewTdkmmPdf(phieuTMID, $('#viewTdkmmPdfBtn')));
+}
+
+async function viewTdkmmPdf(phieuTMID, btn){
+  const pdfType = document.querySelector('input[name="tdkmmViewPdfType"]:checked')?.value || 'PL11';
+  await withButton(btn, 'Đang tạo...', async () => {
+    const res = await api('viewTdkmmPdf', {phieuTMID, pdfType}, {timeoutMs: 180000});
+    const pdf = res.data || {};
+    if(!pdf.url) throw new Error('API chưa trả link PDF để xem.');
+    closeModal();
+    openGiaoBanPdf(pdf.url, pdf.name || (pdfType === 'PL12' ? 'Phiếu xét nghiệm TDKMM' : 'Báo cáo TDKMM'));
   });
 }
 
@@ -6073,7 +6106,7 @@ function renderGiaoBanList(items, note=''){
     const pdfDownload = g.pdfGiaoBanUrl ? pdfDownloadIconButtonHtml(g.pdfGiaoBanUrl, title, 'GIAO_BAN', g.giaoBanID) : '';
     const mainActions = done
       ? `${pdfBtn}${g.pdfGiaoBanUrl ? '' : '<span class="meta">Chưa có file PDF đã ký.</span>'}`
-      : `<button class="btn secondary" onclick="openGiaoBan('${escAttr(g.giaoBanID)}','${escAttr(g.khoaPhong)}', this)">Xem phiếu</button>`;
+      : `<button class="btn secondary" onclick="previewGiaoBanDraftPdf(${jsArg(g.giaoBanID)}, ${jsArg(title)}, this)">Xem phiếu</button><button class="btn secondary" onclick="openGiaoBan('${escAttr(g.giaoBanID)}','${escAttr(g.khoaPhong)}', this)">Mở phiên</button>`;
     return `
       <div class="list-card phieu-card">
         <div class="list-head">
@@ -6088,6 +6121,17 @@ function renderGiaoBanList(items, note=''){
         </div>
       </div>`;
   }).join('');
+}
+
+window.previewGiaoBanDraftPdf = async function(giaoBanID, title, btn){
+  const task = async () => {
+    const res = await api('previewGiaoBanPdf', {giaoBanID}, {timeoutMs:180000});
+    const pdf = res.data || {};
+    if(!pdf.url) throw new Error('API chưa trả link PDF để xem.');
+    openGiaoBanPdf(pdf.url, title || pdf.name || 'Xem phiếu giao ban');
+  };
+  if(btn) return withButton(btn, 'Đang tạo...', task);
+  try{ await task(); }catch(err){ toast(err.message); }
 }
 
 window.openGiaoBan = async function(giaoBanID, khoaPhong, btn){
@@ -7592,8 +7636,13 @@ function dsCreatorMetaHtml(x){
 function renderDsPhieuCard(x){
   const isTm = x.source === 'TM_PHIEU';
   const title = dsPhieuTitle(x);
+  const loai = x.loaiPhieu || x.type || '';
   const pdfBtn = x.pdfUrl ? pdfViewButtonHtml(x.pdfUrl, title || x.loaiPhieu || 'PDF', 'Xem PDF') : '';
-  const detailBtn = isTm ? `<button class="btn secondary" onclick="openTmPhieu('${escAttr(x.id)}', this)">Xem phiếu</button>` : (x.source === 'PHIEU' ? `<button class="btn secondary" onclick="openPhieu('${escAttr(x.id)}', this)">Xem phiếu</button>` : '');
+  const isTdkmm = isTm && eqText(loai, LOAI_TM_TDKMM);
+  const isGiaoBanDraft = x.source === 'GIAO_BAN' && !x.pdfUrl;
+  const detailBtn = isTdkmm
+    ? `<button class="btn secondary" onclick="openTdkmmPdfViewDialog('${escAttr(x.id)}')">Xem phiếu</button>`
+    : (isGiaoBanDraft ? `<button class="btn secondary" onclick="previewGiaoBanDraftPdf(${jsArg(x.id)}, ${jsArg(title)}, this)">Xem phiếu</button>` : (isTm ? `<button class="btn secondary" onclick="openTmPhieu('${escAttr(x.id)}', this)">Xem phiếu</button>` : (x.source === 'PHIEU' ? `<button class="btn secondary" onclick="openPhieu('${escAttr(x.id)}', this)">Xem phiếu</button>` : '')));
   const editBtn = isTm && x.canEdit ? `<button class="app-icon-btn" onclick="editTmPhieu('${escAttr(x.id)}', this)" title="Sửa phiếu" aria-label="Sửa phiếu">${iconEdit()}</button>` : '';
   const deleteBtn = isTm && x.canDelete ? `<button class="app-icon-btn delete" onclick="deleteTmPhieu('${escAttr(x.id)}', this)" title="Xóa phiếu" aria-label="Xóa phiếu">${iconTrash()}</button>` : '';
   const bn = dsBnMetaHtml(x);
@@ -8215,7 +8264,7 @@ function renderPdfTemplateSettingsSection(){
   return `
     <div class="card">
       <h2 class="section-title">Mẫu phiếu họp/giao ban</h2>
-      <p class="meta">Upload file Word mẫu, sau đó dùng bảng biến để khai báo vị trí cần chèn dữ liệu. Với TDKMM, file Word chỉ cần biến khối <b>{{APP_NOI_DUNG_TDKMM_PL11}}</b> hoặc <b>{{APP_NOI_DUNG_TDKMM_PL12}}</b>.</p>
+      <p class="meta">Upload file Word mẫu, sau đó dùng bảng biến để khai báo vị trí cần chèn dữ liệu. Với TDKMM, dùng mẫu Google Docs/Word đầy đủ có biến chi tiết đặt trực tiếp trong từng trường và bảng.</p>
       <div class="template-config-grid">
         ${renderPdfTemplateBox('BM04', 'Mẫu Giao ban thường trực')}
         ${renderPdfTemplateBox('BM06', 'Mẫu Biên bản họp')}
@@ -8233,7 +8282,7 @@ function renderPdfGlobalSettingsSection(){
   return `
     <div class="card">
       <h2 class="section-title">Cấu hình biến toàn cục</h2>
-      <p class="meta">Dùng khi file Word có biến khối <b>{{APP_NOI_DUNG_GIAO_BAN}}</b>, <b>{{APP_NOI_DUNG_TDKMM_PL11}}</b> hoặc <b>{{APP_NOI_DUNG_TDKMM_PL12}}</b>. App sẽ thay biến chi tiết rồi chèn nội dung vào vị trí biến khối.</p>
+      <p class="meta">Dùng khi file Word mẫu giao ban/biên bản họp có biến khối <b>{{APP_NOI_DUNG_GIAO_BAN}}</b>. Hai phiếu TDKMM hiện dùng Google Docs/Word full có biến chi tiết nên không cấu hình nội dung toàn cục tại đây.</p>
       <div class="global-template-grid">
         <div class="global-template-box">
           <label>Nội dung toàn cục - Giao ban thường trực</label>
@@ -8242,16 +8291,6 @@ function renderPdfGlobalSettingsSection(){
         <div class="global-template-box">
           <label>Nội dung toàn cục - Biên bản họp</label>
           <textarea id="pdfContentBM06">${esc(state.pdfContentTemplates?.bm06 || '')}</textarea>
-        </div>
-        <div class="global-template-box">
-          <label>Nội dung toàn cục - TDKMM PL11</label>
-          <textarea id="pdfContentTdkmmPl11">${esc(state.pdfContentTemplates?.tdkmm_pl11 || '')}</textarea>
-          <div class="meta" style="margin-top:6px">Có thể dùng <b>{{APP_BANG_DON_VI_MAU_TDKMM}}</b> và <b>{{APP_KHU_VUC_KY_TDKMM}}</b> để app tự dựng bảng/vùng ký.</div>
-        </div>
-        <div class="global-template-box">
-          <label>Nội dung toàn cục - TDKMM PL12</label>
-          <textarea id="pdfContentTdkmmPl12">${esc(state.pdfContentTemplates?.tdkmm_pl12 || '')}</textarea>
-          <div class="meta" style="margin-top:6px">Có thể dùng <b>{{APP_BANG_XET_NGHIEM_TDKMM}}</b> để app tự dựng bảng kết quả xét nghiệm.</div>
         </div>
       </div>
       <h3 class="sub-title">Định dạng phần nội dung do app chèn</h3>
@@ -8507,8 +8546,6 @@ async function savePdfContentTemplateConfig(btn){
   const payload = {
     bm04: $('#pdfContentBM04')?.value || '',
     bm06: $('#pdfContentBM06')?.value || '',
-    tdkmm_pl11: $('#pdfContentTdkmmPl11')?.value || '',
-    tdkmm_pl12: $('#pdfContentTdkmmPl12')?.value || '',
     format: {
       fontFamily: $('#pdfFmtFont')?.value || 'Times New Roman',
       bodyFontSize: Number($('#pdfFmtBodySize')?.value || 13),
