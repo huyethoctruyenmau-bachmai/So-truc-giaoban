@@ -5365,11 +5365,16 @@ function showTmPhieuModal(p){
 
 
 window.openTdkmmPdfExportDialog = function(phieuTMID){
-  openModal(`
+  closeTdkmmPdfExportDialog();
+  const div = document.createElement('div');
+  div.id = 'tdkmmPdfExportDialog';
+  div.className = 'modal';
+  div.style.zIndex = '100900';
+  div.innerHTML = `
     <div class="modal-card modal-small">
       <div class="modal-head">
         <div class="modal-title">Xuất PDF theo Thông tư 26</div>
-        <button class="close-btn" onclick="closeModal()">×</button>
+        <button class="close-btn" type="button" onclick="closeTdkmmPdfExportDialog()">×</button>
       </div>
       <p class="meta">Chọn mẫu PDF cần xuất. Nếu chọn cả 2, app sẽ tự tải 2 file PDF độc lập sau một lần nhấn.</p>
       <div class="tdkmm-pdf-choice">
@@ -5379,15 +5384,24 @@ window.openTdkmmPdfExportDialog = function(phieuTMID){
       </div>
       <div class="btn-row">
         <button id="exportTdkmmPdfBtn" class="btn primary" type="button">Xuất PDF</button>
-        <button class="btn secondary" type="button" onclick="closeModal()">Hủy</button>
+        <button class="btn secondary" type="button" onclick="closeTdkmmPdfExportDialog()">Hủy</button>
       </div>
     </div>
-  `);
+  `;
+  document.body.appendChild(div);
+  document.body.classList.add('modal-open');
   $('#exportTdkmmPdfBtn')?.addEventListener('click', () => exportTdkmmPdf(phieuTMID, $('#exportTdkmmPdfBtn')));
 }
 
+window.closeTdkmmPdfExportDialog = function(){
+  document.getElementById('tdkmmPdfExportDialog')?.remove();
+  if(!document.getElementById('modalRoot')?.innerHTML.trim()){
+    document.body.classList.remove('modal-open');
+  }
+}
+
 async function exportTdkmmPdf(phieuTMID, btn){
-  const pdfType = document.querySelector('input[name="tdkmmPdfType"]:checked')?.value || 'PL11';
+  const pdfType = document.querySelector('#tdkmmPdfExportDialog input[name="tdkmmPdfType"]:checked')?.value || 'PL11';
   await withButton(btn, 'Đang xuất...', async () => {
     const res = await api('exportTdkmmPdf', {phieuTMID, pdfType}, {timeoutMs: 180000});
     const files = res.data?.files || [];
@@ -5398,7 +5412,7 @@ async function exportTdkmmPdf(phieuTMID, btn){
         else if(f.url) window.open(f.url, '_blank');
       }, idx * 450);
     });
-    closeModal();
+    closeTdkmmPdfExportDialog();
     toast(files.length > 1 ? 'Đã xuất và tải 2 file PDF.' : 'Đã xuất và tải file PDF.');
     try{ if(document.getElementById('pdfListBox')) await loadDsPhieuList(); }catch(_e){}
   });
@@ -5468,7 +5482,7 @@ async function pdfPageImagesFromBase64NoDownload(base64, onProgress){
 
 async function viewTdkmmFullPdf(phieuTMID, btn){
   const run = async () => {
-    renderTdkmmFullPdfModal({phieuTMID, loading:true, message:'Đang tạo đủ 2 phiếu PL11 và PL12...'});
+    renderTdkmmFullPdfModal({phieuTMID, loading:true, message:'Đang mở đủ 2 phiếu PL11 và PL12...'});
     const res = await api('viewTdkmmPdf', {phieuTMID, pdfType:'BOTH'}, {timeoutMs:180000});
     const files = res.data?.files || [];
     if(!files.length) throw new Error('API chưa trả file PDF để xem.');
@@ -8382,7 +8396,7 @@ function renderPdfGlobalSettingsSection(){
   return `
     <div class="card">
       <h2 class="section-title">Cấu hình biến toàn cục</h2>
-      <p class="meta">Dùng khi file Word có biến khối <b>{{APP_NOI_DUNG_GIAO_BAN}}</b>, <b>{{APP_NOI_DUNG_TDKMM_PL11}}</b> hoặc <b>{{APP_NOI_DUNG_TDKMM_PL12}}</b>. App sẽ thay biến chi tiết rồi chèn nội dung vào vị trí biến khối.</p>
+      <p class="meta">Dùng khi file Word có biến khối <b>{{APP_NOI_DUNG_GIAO_BAN}}</b>. Hai phiếu TDKMM hiện dùng Google Docs template full có biến chi tiết nên không cấu hình nội dung khối tại đây.</p>
       <div class="global-template-grid">
         <div class="global-template-box">
           <label>Nội dung toàn cục - Giao ban thường trực</label>
@@ -8391,16 +8405,6 @@ function renderPdfGlobalSettingsSection(){
         <div class="global-template-box">
           <label>Nội dung toàn cục - Biên bản họp</label>
           <textarea id="pdfContentBM06">${esc(state.pdfContentTemplates?.bm06 || '')}</textarea>
-        </div>
-        <div class="global-template-box">
-          <label>Nội dung toàn cục - TDKMM PL11</label>
-          <textarea id="pdfContentTdkmmPl11">${esc(state.pdfContentTemplates?.tdkmm_pl11 || '')}</textarea>
-          <div class="meta" style="margin-top:6px">Có thể dùng <b>{{APP_BANG_DON_VI_MAU_TDKMM}}</b> và <b>{{APP_KHU_VUC_KY_TDKMM}}</b> để app tự dựng bảng/vùng ký.</div>
-        </div>
-        <div class="global-template-box">
-          <label>Nội dung toàn cục - TDKMM PL12</label>
-          <textarea id="pdfContentTdkmmPl12">${esc(state.pdfContentTemplates?.tdkmm_pl12 || '')}</textarea>
-          <div class="meta" style="margin-top:6px">Có thể dùng <b>{{APP_BANG_XET_NGHIEM_TDKMM}}</b> để app tự dựng bảng kết quả xét nghiệm.</div>
         </div>
       </div>
       <h3 class="sub-title">Định dạng phần nội dung do app chèn</h3>
@@ -8656,8 +8660,6 @@ async function savePdfContentTemplateConfig(btn){
   const payload = {
     bm04: $('#pdfContentBM04')?.value || '',
     bm06: $('#pdfContentBM06')?.value || '',
-    tdkmm_pl11: $('#pdfContentTdkmmPl11')?.value || '',
-    tdkmm_pl12: $('#pdfContentTdkmmPl12')?.value || '',
     format: {
       fontFamily: $('#pdfFmtFont')?.value || 'Times New Roman',
       bodyFontSize: Number($('#pdfFmtBodySize')?.value || 13),
@@ -8951,6 +8953,7 @@ function revokeCurrentPdfObjectUrl(){
 }
 
 function closePdfViewer(){
+  closeTdkmmPdfExportDialog();
   setViewportForPdf(false);
   revokeCurrentPdfObjectUrl();
   closeModal();
