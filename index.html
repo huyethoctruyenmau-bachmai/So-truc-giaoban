@@ -3461,6 +3461,166 @@
     .tdkmm-history-user{font-weight:800;color:var(--wine-dark)}
     .tdkmm-history-time{font-size:13px;color:var(--muted)}
 
+  
+
+    /* ===== PATCH 195: TDKMM MỤC 5 MOBILE DẠNG THẺ + DESKTOP BẢNG FULL WIDTH + MÃ NGƯỜI KÝ READONLY ===== */
+    @media (min-width:900px){
+      .tdkmm-section-card .tdkmm-lab-scrollbox,
+      .tdkmm-section-card .tdkmm-lab-wrap{
+        width:100%!important;
+        max-width:100%!important;
+      }
+      .tdkmm-section-card .tdkmm-lab-wrap{
+        overflow-x:hidden!important;
+        overflow-y:visible!important;
+        padding-bottom:0!important;
+      }
+      .tdkmm-section-card .tdkmm-lab-table{
+        width:100%!important;
+        min-width:100%!important;
+        table-layout:fixed!important;
+        border-collapse:collapse!important;
+        font-size:14px!important;
+      }
+      .tdkmm-section-card .tdkmm-lab-table th:nth-child(1),
+      .tdkmm-section-card .tdkmm-lab-table td:nth-child(1){
+        position:static!important;
+        width:22%!important;
+        min-width:0!important;
+        max-width:none!important;
+        background:#fff!important;
+      }
+      .tdkmm-section-card .tdkmm-lab-table th:nth-child(1){
+        background:#fff4f8!important;
+      }
+      .tdkmm-section-card .tdkmm-lab-table th:nth-child(n+2),
+      .tdkmm-section-card .tdkmm-lab-table td:nth-child(n+2){
+        width:26%!important;
+        min-width:0!important;
+        max-width:none!important;
+      }
+      .tdkmm-section-card .tdkmm-lab-table th,
+      .tdkmm-section-card .tdkmm-lab-table td{
+        padding:8px 9px!important;
+      }
+      .tdkmm-section-card .tdkmm-lab-table input{
+        width:100%!important;
+        min-height:34px!important;
+        font-size:14px!important;
+      }
+      .tdkmm-section-card .tdkmm-lab-scrollbar,
+      .tdkmm-section-card .tdkmm-lab-range{
+        display:none!important;
+      }
+    }
+
+    @media (max-width:760px){
+      .tdkmm-section-card .tdkmm-lab-scrollbox{
+        overflow:visible!important;
+      }
+      .tdkmm-section-card .tdkmm-lab-wrap{
+        overflow:visible!important;
+        border:0!important;
+        border-radius:0!important;
+        padding:0!important;
+        background:transparent!important;
+        margin-top:8px!important;
+      }
+      .tdkmm-section-card .tdkmm-lab-table,
+      .tdkmm-section-card .tdkmm-lab-table thead,
+      .tdkmm-section-card .tdkmm-lab-table tbody,
+      .tdkmm-section-card .tdkmm-lab-table tr,
+      .tdkmm-section-card .tdkmm-lab-table th,
+      .tdkmm-section-card .tdkmm-lab-table td{
+        display:block!important;
+        width:100%!important;
+        min-width:0!important;
+        max-width:100%!important;
+        box-sizing:border-box!important;
+      }
+      .tdkmm-section-card .tdkmm-lab-table{
+        min-width:0!important;
+        border-collapse:separate!important;
+        border-spacing:0!important;
+        background:transparent!important;
+      }
+      .tdkmm-section-card .tdkmm-lab-table thead{
+        display:none!important;
+      }
+      .tdkmm-section-card .tdkmm-lab-table tr{
+        border:1px solid var(--line)!important;
+        border-radius:14px!important;
+        background:#fff!important;
+        margin:0 0 10px!important;
+        overflow:hidden!important;
+        box-shadow:0 1px 2px rgba(60,64,67,.08)!important;
+      }
+      .tdkmm-section-card .tdkmm-lab-table td{
+        position:static!important;
+        left:auto!important;
+        border-right:0!important;
+        border-bottom:1px solid #f1dce6!important;
+        padding:8px 10px!important;
+        background:#fff!important;
+        color:var(--g-text)!important;
+      }
+      .tdkmm-section-card .tdkmm-lab-table td:last-child{
+        border-bottom:0!important;
+      }
+      .tdkmm-section-card .tdkmm-lab-table td:first-child{
+        font-size:15px!important;
+        font-weight:800!important;
+        color:var(--wine-dark)!important;
+        background:#fff4f8!important;
+        line-height:1.35!important;
+      }
+      .tdkmm-section-card .tdkmm-lab-table td:not(:first-child)::before{
+        display:block!important;
+        font-size:12.5px!important;
+        line-height:1.25!important;
+        color:var(--g-muted)!important;
+        font-weight:700!important;
+        margin-bottom:5px!important;
+      }
+      .tdkmm-section-card .tdkmm-lab-table td:nth-child(2)::before{
+        content:"Mẫu máu người bệnh trước truyền";
+      }
+      .tdkmm-section-card .tdkmm-lab-table td:nth-child(3)::before{
+        content:"Mẫu máu người bệnh sau truyền";
+      }
+      .tdkmm-section-card .tdkmm-lab-table td:nth-child(4)::before{
+        content:"Mẫu máu từ đơn vị máu nghi ngờ gây tai biến";
+      }
+      .tdkmm-section-card .tdkmm-lab-table input{
+        width:100%!important;
+        min-width:0!important;
+        height:38px!important;
+        min-height:38px!important;
+        border:1px solid var(--g-line)!important;
+        border-radius:4px!important;
+        background:#fff!important;
+        padding:5px 8px!important;
+        font-size:14.5px!important;
+        line-height:19px!important;
+        box-shadow:none!important;
+      }
+      .tdkmm-section-card .tdkmm-lab-table input:focus{
+        border-color:var(--g-blue)!important;
+        box-shadow:0 0 0 1px var(--g-blue)!important;
+        background:#fff!important;
+      }
+      .tdkmm-section-card .tdkmm-lab-scrollbar,
+      .tdkmm-section-card .tdkmm-lab-range{
+        display:none!important;
+      }
+    }
+
+    .tdkmm-signer-code input[readonly]{
+      background:var(--g-readonly)!important;
+      color:var(--g-muted)!important;
+      cursor:not-allowed!important;
+    }
+
   </style>
 </head>
 <body>
@@ -4675,8 +4835,10 @@ function renderTmTdkmmFormHtml(d={}, prefix='tmCreate'){
   }).join('');
   const defaultSignerName = state.user?.tenNhanVien || '';
   const defaultSignerMa = state.user?.maNhanVien || '';
-  const nguoiPhuTrachPhatMauValue = d.nguoiPhuTrachPhatMau || d.nguoiPhuTrachPhatMauTen || defaultSignerName;
-  const nguoiPhuTrachPhatMauMaValue = d.nguoiPhuTrachPhatMauMaNhanVien || d.nguoiPhuTrachPhatMauMa || (nguoiPhuTrachPhatMauValue === defaultSignerName ? defaultSignerMa : '');
+  const defaultPhatMauName = 'Vũ Minh Tâm';
+  const defaultPhatMauMa = '15621';
+  const nguoiPhuTrachPhatMauValue = d.nguoiPhuTrachPhatMau || d.nguoiPhuTrachPhatMauTen || defaultPhatMauName;
+  const nguoiPhuTrachPhatMauMaValue = d.nguoiPhuTrachPhatMauMaNhanVien || d.nguoiPhuTrachPhatMauMa || (norm(nguoiPhuTrachPhatMauValue) === norm(defaultPhatMauName) ? defaultPhatMauMa : '');
   const kyThuatVienXetNghiemValue = d.kyThuatVienXetNghiem || d.kyThuatVienXetNghiemTen || defaultSignerName;
   const kyThuatVienXetNghiemMaValue = d.kyThuatVienXetNghiemMaNhanVien || d.kyThuatVienXetNghiemMa || (kyThuatVienXetNghiemValue === defaultSignerName ? defaultSignerMa : '');
   return `
@@ -4764,9 +4926,9 @@ function renderTmTdkmmFormHtml(d={}, prefix='tmCreate'){
         <div class="tdkmm-signer-name"><label>Điều dưỡng truyền máu</label><input id="${prefix}DieuDuongTruyenMau" class="equal-control" value="${escAttr(d.dieuDuongTruyenMau || '')}"></div>
         <div class="tdkmm-signer-code"><label>Mã nhân viên</label><input id="${prefix}DieuDuongTruyenMauMa" class="equal-control" value="${escAttr(d.dieuDuongTruyenMauMaNhanVien || d.dieuDuongTruyenMauMa || '')}"></div>
         <div class="tdkmm-signer-name"><label>Người phụ trách phát máu ở cơ sở KB, CB</label><input id="${prefix}NguoiPhuTrachPhatMau" class="equal-control" list="staffDatalist" value="${escAttr(nguoiPhuTrachPhatMauValue)}"></div>
-        <div class="tdkmm-signer-code"><label>Mã nhân viên</label><input id="${prefix}NguoiPhuTrachPhatMauMa" class="equal-control" value="${escAttr(nguoiPhuTrachPhatMauMaValue)}"></div>
+        <div class="tdkmm-signer-code"><label>Mã nhân viên</label><input id="${prefix}NguoiPhuTrachPhatMauMa" class="equal-control" value="${escAttr(nguoiPhuTrachPhatMauMaValue)}" readonly></div>
         <div class="tdkmm-signer-name"><label>Kỹ thuật viên xét nghiệm</label><input id="${prefix}KyThuatVienXetNghiem" class="equal-control" list="staffDatalist" value="${escAttr(kyThuatVienXetNghiemValue)}"></div>
-        <div class="tdkmm-signer-code"><label>Mã nhân viên</label><input id="${prefix}KyThuatVienXetNghiemMa" class="equal-control" value="${escAttr(kyThuatVienXetNghiemMaValue)}"></div>
+        <div class="tdkmm-signer-code"><label>Mã nhân viên</label><input id="${prefix}KyThuatVienXetNghiemMa" class="equal-control" value="${escAttr(kyThuatVienXetNghiemMaValue)}" readonly></div>
       </div>
     </div>
     </div>`;
@@ -4824,12 +4986,22 @@ function bindTdkmmSignerPicker(prefix, nameSuffix, codeSuffix){
   const nameEl = document.getElementById(`${prefix}${nameSuffix}`);
   const codeEl = document.getElementById(`${prefix}${codeSuffix}`);
   if(!nameEl || !codeEl) return;
+  codeEl.readOnly = true;
   const apply = () => {
-    const person = findPersonnelForTdkmmSigner(nameEl.value);
-    if(!person) return;
+    const raw = String(nameEl.value || '').trim();
+    if(!raw){
+      codeEl.value = '';
+      return;
+    }
+    const person = findPersonnelForTdkmmSigner(raw);
+    if(!person){
+      codeEl.value = '';
+      return;
+    }
     nameEl.value = person.tenNhanVien || '';
     codeEl.value = person.maNhanVien || '';
   };
+  nameEl.addEventListener('input', apply);
   nameEl.addEventListener('change', apply);
   nameEl.addEventListener('blur', apply);
 }
