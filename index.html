@@ -3491,7 +3491,7 @@
       <p><strong>PHẦN MỀM SỔ TRỰC - GIAO BAN</strong></p>
       <p>Developed by Nguyễn Văn Chính</p>
       <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
-      <p class="login-version">Version: INDEX-192.120626-TDKMM-MOBILE-TIME-SCROLL-NGUOI-KY</p>
+      <p class="login-version">Version: INDEX-194.140626-TDKMM-PDF-CLOSE-GLOBAL-CLEAN</p>
     </div>
   </div>
 
@@ -3535,7 +3535,7 @@
       <button class="tab-btn" data-tab="meeting"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="6" r="2.1"/><circle cx="5.8" cy="9.3" r="1.9"/><circle cx="18.2" cy="9.3" r="1.9"/><path d="M8.6 13.2c.8-1.4 2-2.1 3.4-2.1s2.6.7 3.4 2.1"/><path d="M2.8 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><path d="M15.2 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><ellipse cx="12" cy="16.6" rx="6.3" ry="2.2"/><path d="M12 18.8v2.2M8.7 21h6.6"/></svg></span><span>Họp</span></button>
       <button class="tab-btn" data-tab="pdf"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h5M10 12h6M10 16h6"/></svg></span><span>DS phiếu</span></button>
     </nav>
-    <div class="app-version">Version: INDEX-192.120626-TDKMM-MOBILE-TIME-SCROLL-NGUOI-KY</div>
+    <div class="app-version">Version: INDEX-194.140626-TDKMM-PDF-CLOSE-GLOBAL-CLEAN</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -3560,7 +3560,7 @@
 ========================================================= */
 
 // ===== MODULE: JS_CONFIG_STATE_START =====
-const APP_VERSION = 'INDEX-193.120626-TDKMM-BIEN-TOAN-CUC-PL11-PL12';
+const APP_VERSION = 'INDEX-194.140626-TDKMM-PDF-CLOSE-GLOBAL-CLEAN';
 
 function canOpenAdminSettings(){
   return !!(state.user && (state.user.isAdmin || String(state.user.chucVu || '').trim()));
@@ -5345,6 +5345,7 @@ async function exportTdkmmPdf(phieuTMID, btn){
         else if(f.url) window.open(f.url, '_blank');
       }, idx * 450);
     });
+    closeModal();
     toast(files.length > 1 ? 'Đã xuất và tải 2 file PDF.' : 'Đã xuất và tải file PDF.');
   });
 }
@@ -8174,7 +8175,7 @@ function renderPdfTemplateSettingsSection(){
   return `
     <div class="card">
       <h2 class="section-title">Mẫu phiếu họp/giao ban</h2>
-      <p class="meta">Upload file Word mẫu, sau đó dùng bảng biến để khai báo vị trí cần chèn dữ liệu. Với TDKMM, file Word chỉ cần biến khối <b>{{APP_NOI_DUNG_TDKMM_PL11}}</b> hoặc <b>{{APP_NOI_DUNG_TDKMM_PL12}}</b>.</p>
+      <p class="meta">Upload file Word mẫu, sau đó dùng bảng biến để khai báo vị trí cần chèn dữ liệu. Với TDKMM, dùng mẫu Word/Google Docs full có gắn biến chi tiết trực tiếp trong từng trường và bảng.</p>
       <div class="template-config-grid">
         ${renderPdfTemplateBox('BM04', 'Mẫu Giao ban thường trực')}
         ${renderPdfTemplateBox('BM06', 'Mẫu Biên bản họp')}
@@ -8192,7 +8193,7 @@ function renderPdfGlobalSettingsSection(){
   return `
     <div class="card">
       <h2 class="section-title">Cấu hình biến toàn cục</h2>
-      <p class="meta">Dùng khi file Word có biến khối <b>{{APP_NOI_DUNG_GIAO_BAN}}</b>, <b>{{APP_NOI_DUNG_TDKMM_PL11}}</b> hoặc <b>{{APP_NOI_DUNG_TDKMM_PL12}}</b>. App sẽ thay biến chi tiết rồi chèn nội dung vào vị trí biến khối.</p>
+      <p class="meta">Dùng khi file Word mẫu giao ban/biên bản họp có biến khối <b>{{APP_NOI_DUNG_GIAO_BAN}}</b>. Hai phiếu TDKMM hiện dùng mẫu Google Docs full có biến chi tiết nên không cấu hình tại đây.</p>
       <div class="global-template-grid">
         <div class="global-template-box">
           <label>Nội dung toàn cục - Giao ban thường trực</label>
@@ -8201,16 +8202,6 @@ function renderPdfGlobalSettingsSection(){
         <div class="global-template-box">
           <label>Nội dung toàn cục - Biên bản họp</label>
           <textarea id="pdfContentBM06">${esc(state.pdfContentTemplates?.bm06 || '')}</textarea>
-        </div>
-        <div class="global-template-box">
-          <label>Nội dung toàn cục - TDKMM PL11</label>
-          <textarea id="pdfContentTdkmmPl11">${esc(state.pdfContentTemplates?.tdkmm_pl11 || '')}</textarea>
-          <div class="meta" style="margin-top:6px">Có thể dùng <b>{{APP_BANG_DON_VI_MAU_TDKMM}}</b> và <b>{{APP_KHU_VUC_KY_TDKMM}}</b> để app tự dựng bảng/vùng ký.</div>
-        </div>
-        <div class="global-template-box">
-          <label>Nội dung toàn cục - TDKMM PL12</label>
-          <textarea id="pdfContentTdkmmPl12">${esc(state.pdfContentTemplates?.tdkmm_pl12 || '')}</textarea>
-          <div class="meta" style="margin-top:6px">Có thể dùng <b>{{APP_BANG_XET_NGHIEM_TDKMM}}</b> để app tự dựng bảng kết quả xét nghiệm.</div>
         </div>
       </div>
       <h3 class="sub-title">Định dạng phần nội dung do app chèn</h3>
@@ -8466,8 +8457,8 @@ async function savePdfContentTemplateConfig(btn){
   const payload = {
     bm04: $('#pdfContentBM04')?.value || '',
     bm06: $('#pdfContentBM06')?.value || '',
-    tdkmm_pl11: $('#pdfContentTdkmmPl11')?.value || '',
-    tdkmm_pl12: $('#pdfContentTdkmmPl12')?.value || '',
+    tdkmm_pl11: state.pdfContentTemplates?.tdkmm_pl11 || '',
+    tdkmm_pl12: state.pdfContentTemplates?.tdkmm_pl12 || '',
     format: {
       fontFamily: $('#pdfFmtFont')?.value || 'Times New Roman',
       bodyFontSize: Number($('#pdfFmtBodySize')?.value || 13),
