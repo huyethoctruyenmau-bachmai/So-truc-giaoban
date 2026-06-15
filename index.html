@@ -4002,6 +4002,128 @@
       }
     }
 
+
+    /* ===== PATCH 198: TDKMM DESKTOP GỌN DÒNG + KẾT LUẬN + SỬA Ô GIỜ/NGƯỜI KÝ ===== */
+    .tm-tdkmm-form .tdkmm-section-card{
+      width:100%!important;
+      max-width:100%!important;
+      box-sizing:border-box!important;
+    }
+    .tm-tdkmm-form .grid,
+    .tm-tdkmm-form .tm-patient-info-grid,
+    .tm-tdkmm-form .tm-tdkmm-transfusion-grid,
+    .tm-tdkmm-form .tm-reaction-grid,
+    .tm-tdkmm-form .tm-tdkmm-conclusion-grid{
+      width:100%!important;
+      max-width:100%!important;
+      margin-left:0!important;
+      margin-right:0!important;
+      box-sizing:border-box!important;
+    }
+    .tm-tdkmm-form textarea,
+    .tm-tdkmm-form input.equal-control,
+    .tm-tdkmm-form select.equal-control{
+      text-align:left!important;
+    }
+    .tm-tdkmm-form .tm-tx-before,
+    .tm-tdkmm-form .tm-tx-before label,
+    .tm-tdkmm-form .tm-tx-before .tm-radio-stack,
+    .tm-tdkmm-form .tm-tx-before .tm-blood-options{
+      text-align:left!important;
+      justify-content:flex-start!important;
+      align-items:flex-start!important;
+    }
+    .tm-tdkmm-form .tm-radio-stack label,
+    .tm-tdkmm-form .tm-blood-header,
+    .tm-tdkmm-form .tm-blood-row{
+      text-align:left!important;
+      justify-items:start!important;
+    }
+    .tm-tdkmm-form .tm-blood-row input[type="text"]{
+      justify-self:stretch!important;
+      text-align:left!important;
+    }
+    .tm-tdkmm-form .tdkmm-time-combo .tdkmm-time-control{
+      text-align:left!important;
+      color:var(--g-text)!important;
+      background:#fff!important;
+    }
+    .tdkmm-lab-table th,
+    .tdkmm-lab-table thead th,
+    .tdkmm-lab-table th:nth-child(4){
+      background:#fff4f8!important;
+      background-image:linear-gradient(#fff4f8,#fff4f8)!important;
+      background-clip:border-box!important;
+      color:var(--wine-dark)!important;
+    }
+    @media (min-width:900px){
+      .tm-tdkmm-form .tm-patient-info-grid{
+        grid-template-columns:repeat(6,minmax(0,1fr))!important;
+        gap:8px!important;
+        align-items:end!important;
+      }
+      .tm-tdkmm-form .tm-patient-info-grid .tm-patient-code,
+      .tm-tdkmm-form .tm-patient-info-grid .tm-patient-name,
+      .tm-tdkmm-form .tm-patient-info-grid .tm-patient-age,
+      .tm-tdkmm-form .tm-patient-info-grid .tm-patient-year,
+      .tm-tdkmm-form .tm-patient-info-grid .tm-patient-gender{
+        grid-row:1!important;
+        grid-column:auto!important;
+      }
+      .tm-tdkmm-form .tm-patient-info-grid .tm-patient-code{grid-column:1!important;grid-row:1!important}
+      .tm-tdkmm-form .tm-patient-info-grid .tm-patient-name{grid-column:2 / 4!important;grid-row:1!important}
+      .tm-tdkmm-form .tm-patient-info-grid .tm-patient-age{grid-column:4!important;grid-row:1!important}
+      .tm-tdkmm-form .tm-patient-info-grid .tm-patient-year{grid-column:5!important;grid-row:1!important}
+      .tm-tdkmm-form .tm-patient-info-grid .tm-patient-gender{grid-column:6!important;grid-row:1!important}
+      .tm-tdkmm-form .tm-patient-info-grid .tm-patient-dept{grid-column:1 / 4!important;grid-row:2!important}
+      .tm-tdkmm-form .tm-patient-info-grid .tm-patient-bed{grid-column:4!important;grid-row:2!important}
+      .tm-tdkmm-form .tm-patient-info-grid .tm-patient-diagnosis{grid-column:5 / 7!important;grid-row:2!important}
+      .tm-tdkmm-form .tm-patient-info-grid .tm-patient-abo{grid-column:1 / 4!important;grid-row:3!important}
+      .tm-tdkmm-form .tm-patient-info-grid .tm-patient-rh{grid-column:4 / 7!important;grid-row:3!important}
+
+      .tm-tdkmm-form .tm-tdkmm-transfusion-grid{
+        grid-template-columns:repeat(6,minmax(0,1fr))!important;
+        gap:8px!important;
+        align-items:end!important;
+      }
+      .tm-tdkmm-form .tm-tdkmm-transfusion-grid > div{
+        min-width:0!important;
+        max-width:100%!important;
+        display:flex!important;
+        flex-direction:column!important;
+        justify-content:flex-end!important;
+      }
+      .tm-tdkmm-form .tm-tx-code{grid-column:1 / 3!important;grid-row:1!important}
+      .tm-tdkmm-form .tm-tx-product{grid-column:3!important;grid-row:1!important}
+      .tm-tdkmm-form .tm-tx-volume{grid-column:4!important;grid-row:1!important}
+      .tm-tdkmm-form .tm-tx-abo{grid-column:5!important;grid-row:1!important}
+      .tm-tdkmm-form .tm-tx-rh{grid-column:6!important;grid-row:1!important}
+      .tm-tdkmm-form .tm-tx-collect-date{grid-column:1 / 3!important;grid-row:2!important}
+      .tm-tdkmm-form .tm-tx-expire-date{grid-column:3 / 5!important;grid-row:2!important}
+      .tm-tdkmm-form .tm-tx-source{grid-column:5 / 7!important;grid-row:2!important}
+      .tm-tdkmm-form .tm-tx-date{grid-column:1!important;grid-row:3!important}
+      .tm-tdkmm-form .tm-tx-start{grid-column:2!important;grid-row:3!important}
+      .tm-tdkmm-form .tm-tx-react{grid-column:3!important;grid-row:3!important}
+      .tm-tdkmm-form .tm-tx-stop{grid-column:4!important;grid-row:3!important}
+      .tm-tdkmm-form .tm-tx-speed{grid-column:5!important;grid-row:3!important}
+      .tm-tdkmm-form .tm-tx-volume-done{grid-column:6!important;grid-row:3!important}
+      .tm-tdkmm-form .tm-tx-before{grid-column:1 / 7!important;grid-row:4!important}
+
+      .tm-tdkmm-form .tm-reaction-grid{
+        grid-template-columns:repeat(6,minmax(0,1fr))!important;
+        gap:8px!important;
+        align-items:end!important;
+      }
+      .tm-tdkmm-form .tm-reaction-grid > div{min-width:0!important;max-width:100%!important}
+      .tm-tdkmm-form .tm-reaction-grid > div:nth-child(1){grid-column:1 / 7!important;grid-row:1!important}
+      .tm-tdkmm-form .tm-reaction-grid > div:nth-child(2){grid-column:1 / 5!important;grid-row:2!important}
+      .tm-tdkmm-form .tm-reaction-grid > div:nth-child(3){grid-column:5 / 7!important;grid-row:2!important}
+      .tm-tdkmm-form .tm-reaction-grid > div:nth-child(4){grid-column:1 / 7!important;grid-row:3!important}
+
+      .tm-tdkmm-form .tdkmm-time-picker{opacity:1!important;pointer-events:auto!important}
+      .tm-tdkmm-form .tdkmm-time-combo .tdkmm-time-control::placeholder{color:#80868b!important;opacity:1!important}
+    }
+
 </style>
 </head>
 <body>
@@ -4044,7 +4166,7 @@
       <p><strong>PHẦN MỀM SỔ TRỰC - GIAO BAN</strong></p>
       <p>Developed by Nguyễn Văn Chính</p>
       <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
-      <p class="login-version">Version: INDEX-197.120626-TDKMM-XN-KHAC-DONG</p>
+      <p class="login-version">Version: INDEX-198.150626-TDKMM-DESKTOP-GON-KET-LUAN</p>
     </div>
   </div>
 
@@ -4088,7 +4210,7 @@
       <button class="tab-btn" data-tab="meeting"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="6" r="2.1"/><circle cx="5.8" cy="9.3" r="1.9"/><circle cx="18.2" cy="9.3" r="1.9"/><path d="M8.6 13.2c.8-1.4 2-2.1 3.4-2.1s2.6.7 3.4 2.1"/><path d="M2.8 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><path d="M15.2 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><ellipse cx="12" cy="16.6" rx="6.3" ry="2.2"/><path d="M12 18.8v2.2M8.7 21h6.6"/></svg></span><span>Họp</span></button>
       <button class="tab-btn" data-tab="pdf"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h5M10 12h6M10 16h6"/></svg></span><span>DS phiếu</span></button>
     </nav>
-    <div class="app-version">Version: INDEX-197.120626-TDKMM-XN-KHAC-DONG</div>
+    <div class="app-version">Version: INDEX-198.150626-TDKMM-DESKTOP-GON-KET-LUAN</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -4113,7 +4235,7 @@
 ========================================================= */
 
 // ===== MODULE: JS_CONFIG_STATE_START =====
-const APP_VERSION = 'INDEX-195.140626-DS-XEM-TDKMM-FULL-2-PHIEU';
+const APP_VERSION = 'INDEX-198.150626-TDKMM-DESKTOP-GON-KET-LUAN';
 
 function canOpenAdminSettings(){
   return !!(state.user && (state.user.isAdmin || String(state.user.chucVu || '').trim()));
@@ -5289,9 +5411,9 @@ function renderTmTdkmmFormHtml(d={}, prefix='tmCreate'){
         <div class="col-4 tdk-mobile-third tm-patient-gender"><label>Giới tính</label><select id="${prefix}GioiTinh" class="equal-control">${optionHtml(gioiTinh, d.gioiTinh || '')}</select></div>
         <div class="col-9 tdk-mobile-main tm-patient-dept"><label>Viện/TT/Khoa/phòng</label><input id="${prefix}KhoaPhong" class="equal-control" value="${escAttr(khoaPhongOnly)}"></div>
         <div class="col-3 tdk-mobile-small tm-patient-bed"><label>Giường</label><input id="${prefix}Giuong" class="equal-control" value="${escAttr(d.giuong || '')}"></div>
-        <div class="col-12 tdk-mobile-full"><label>Chẩn đoán</label><textarea id="${prefix}ChanDoan">${esc(d.chanDoan || '')}</textarea></div>
-        <div class="col-6 tdk-mobile-half"><label>Nhóm máu ABO</label><select id="${prefix}ABO" class="equal-control blood-abo">${optionHtml(abo, d.nhomMauABO || '')}</select></div>
-        <div class="col-6 tdk-mobile-half"><label>Rh(D)</label><select id="${prefix}RhD" class="equal-control blood-rh">${optionHtml(rh, d.rhD || '')}</select></div>
+        <div class="col-12 tdk-mobile-full tm-patient-diagnosis"><label>Chẩn đoán</label><input id="${prefix}ChanDoan" class="equal-control" value="${escAttr(d.chanDoan || '')}"></div>
+        <div class="col-6 tdk-mobile-half tm-patient-abo"><label>Nhóm máu ABO</label><select id="${prefix}ABO" class="equal-control blood-abo">${optionHtml(abo, d.nhomMauABO || '')}</select></div>
+        <div class="col-6 tdk-mobile-half tm-patient-rh"><label>Rh(D)</label><select id="${prefix}RhD" class="equal-control blood-rh">${optionHtml(rh, d.rhD || '')}</select></div>
       </div>
     </div>
     <div class="tdkmm-section-card">
@@ -5311,7 +5433,7 @@ function renderTmTdkmmFormHtml(d={}, prefix='tmCreate'){
         <div class="col-6 tdk-mobile-half tdkmm-time-field tm-tx-stop"><label>T/G ngừng truyền</label>${tdkmmTimePickInputHtml(`${prefix}NgungTruyen`, d.thoiDiemNgungTruyen || d.thoiGianTruyenDen || '')}</div>
         <div class="col-6 tdk-mobile-half tm-tx-speed"><label>Tốc độ truyền (giọt/ph)</label><input id="${prefix}TocDoTruyen" class="equal-control" value="${escAttr(d.tocDoTruyen || '')}"></div>
         <div class="col-6 tdk-mobile-half tm-tx-volume-done"><label>Thể tích đã truyền (ml)</label><input id="${prefix}TheTichNghiNgo" class="equal-control" value="${escAttr(d.theTichDonViMauDaTruyen || '')}"></div>
-        <div class="col-12">
+        <div class="col-12 tm-tx-before">
           <label>Loại máu đã truyền trước khi phản ứng</label>
           <div class="tm-radio-stack">
             <label><input id="${prefix}ChuaTruyen" type="checkbox" value="chua" ${isChua ? 'checked' : ''}> Chưa truyền</label>
@@ -5347,10 +5469,11 @@ function renderTmTdkmmFormHtml(d={}, prefix='tmCreate'){
       ${renderTdkmmLabInputTable(d, prefix)}
     </div>
     <div class="tdkmm-section-card">
-      <h3 class="sub-title">6. Tình trạng hiện tại/việc cần theo dõi</h3>
-      <div class="grid">
+      <h3 class="sub-title">6. Tình trạng hiện tại/Kết luận/Kiến nghị</h3>
+      <div class="grid tm-tdkmm-conclusion-grid">
         <div class="col-12"><label>Tình trạng hiện tại (tử vong, xin về, ...)</label><textarea id="${prefix}TinhTrangHienTai">${esc(d.tinhTrangHienTai || '')}</textarea></div>
-        <div class="col-12"><label>Việc cần theo dõi/bàn giao tiếp</label><textarea id="${prefix}TheoDoiBanGiao">${esc(d.noiDungTheoDoiBanGiao || '')}</textarea></div>
+        <div class="col-12"><label>Kết luận</label><textarea id="${prefix}KetLuanTdkmm">${esc(d.ketLuanTdkmm || d.ketLuan || '')}</textarea></div>
+        <div class="col-12"><label>Kiến nghị (việc cần theo dõi, bàn giao tiếp,...)</label><textarea id="${prefix}TheoDoiBanGiao">${esc(d.noiDungTheoDoiBanGiao || '')}</textarea></div>
       </div>
     </div>
     <div class="tdkmm-section-card tdkmm-sign-card">
@@ -5436,7 +5559,10 @@ function bindTdkmmSignerPicker(prefix, nameSuffix, codeSuffix){
     nameEl.value = person.tenNhanVien || '';
     codeEl.value = person.maNhanVien || '';
   };
-  nameEl.addEventListener('input', apply);
+  nameEl.addEventListener('input', () => {
+    if(!String(nameEl.value || '').trim()) codeEl.value = '';
+    else codeEl.value = '';
+  });
   nameEl.addEventListener('change', apply);
   nameEl.addEventListener('blur', apply);
 }
@@ -5539,8 +5665,8 @@ function collectTmPhieuPayload(prefix, loai){
     aboTaiGiuongDonViMauTruyen: document.getElementById(`${prefix}ABOTaiGiuongDonVi`)?.value || '',
     thoiDiemLayMauNguoiBenhSauBatThuong: getDateTimeInputSql(`${prefix}LayMauSauBatThuong`) || document.getElementById(`${prefix}LayMauSauBatThuong`)?.value || '',
     thoiDiemNhanThongBaoVaMauNguoiBenh: getDateTimeInputSql(`${prefix}NhanThongBaoMau`) || document.getElementById(`${prefix}NhanThongBaoMau`)?.value || '',
-    ketLuanTdkmm: '',
     tinhTrangHienTai: document.getElementById(`${prefix}TinhTrangHienTai`)?.value || '',
+    ketLuanTdkmm: document.getElementById(`${prefix}KetLuanTdkmm`)?.value || '',
     noiDungTheoDoiBanGiao: document.getElementById(`${prefix}TheoDoiBanGiao`)?.value || '',
     bacSiDieuTri: document.getElementById(`${prefix}BacSiDieuTri`)?.value || '',
     bacSiDieuTriMaNhanVien: document.getElementById(`${prefix}BacSiDieuTriMa`)?.value || '',
@@ -5768,9 +5894,10 @@ function tdkmmGiaoBanTextBlocks(p, d){
   lines.push(`   Người bệnh ${x.aboTaiGiuongNguoiBenhSauPhanUng || ''} – Đơn vị máu truyền ${x.aboTaiGiuongDonViMauTruyen || ''}`);
   if(x.thoiDiemLayMauNguoiBenhSauBatThuong) lines.push(`- Thời điểm lấy mẫu máu người bệnh sau bất thường: ${x.thoiDiemLayMauNguoiBenhSauBatThuong}`);
   if(x.thoiDiemNhanThongBaoVaMauNguoiBenh) lines.push(`- Thời điểm nhận thông báo và mẫu máu người bệnh: ${x.thoiDiemNhanThongBaoVaMauNguoiBenh}`);
-  lines.push('f. Tình trạng hiện tại/việc cần theo dõi');
+  lines.push('f. Tình trạng hiện tại/Kết luận/Kiến nghị');
   if(x.tinhTrangHienTai) lines.push(`- Tình trạng hiện tại (tử vong, xin về, ...): ${x.tinhTrangHienTai}`);
-  if(x.noiDungTheoDoiBanGiao) lines.push(`- Việc cần theo dõi/bàn giao tiếp: ${x.noiDungTheoDoiBanGiao}`);
+  if(x.ketLuanTdkmm) lines.push(`- Kết luận: ${x.ketLuanTdkmm}`);
+  if(x.noiDungTheoDoiBanGiao) lines.push(`- Kiến nghị (việc cần theo dõi, bàn giao tiếp,...): ${x.noiDungTheoDoiBanGiao}`);
   return lines.filter(v => tmTxt(v));
 }
 
