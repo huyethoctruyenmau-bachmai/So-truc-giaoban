@@ -3467,7 +3467,10 @@
     .tdkmm-file-switch button{min-height:28px!important;height:28px!important;padding:0 10px!important;border-radius:6px!important;font-size:12.5px!important}
     .tdkmm-file-switch button.active{background:var(--g-blue);border-color:var(--g-blue);color:#fff}
     .tdkmm-direct-pdf-frame{width:100%;height:100%;min-height:0;margin:0;display:block;border:0;background:#fff;box-shadow:none;border-radius:0;flex:1 1 auto}
-    .tdkmm-direct-pdf-wrap,.tdkmm-direct-pdf-frame{-webkit-touch-callout:none;user-select:none}
+    .tdkmm-raster-pages-container{flex:1 1 auto;min-height:0;background:#e5e7eb;overflow:hidden}
+    .tdkmm-raster-pages-container .pdf-pages{height:100%;padding:10px;overflow:auto}
+    .tdkmm-raster-status{height:100%;display:grid;place-items:center;background:#f1f2f4;color:var(--muted);font-weight:700;text-align:center;padding:18px}
+    .tdkmm-direct-pdf-wrap,.tdkmm-direct-pdf-frame,.tdkmm-raster-pages-container{-webkit-touch-callout:none;user-select:none}
     .tdkmm-direct-pdf-fallback{display:none}
     .tdkmm-view-export-btn{width:auto!important;min-height:34px!important;height:34px!important;padding:0 12px!important;border-radius:6px!important;font-size:13.5px!important}
     .tdkmm-history-list{display:grid;gap:8px;margin-top:10px}
@@ -4536,7 +4539,7 @@
       <p><strong>PHẦN MỀM SỔ TRỰC - GIAO BAN</strong></p>
       <p>Developed by Nguyễn Văn Chính</p>
       <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
-      <p class="login-version">Version: INDEX-211.180626-TDKMM-XUAT-PDF-TU-BAN-DA-XEM</p>
+      <p class="login-version">Version: INDEX-212.180626-TDKMM-XEM-ANH-LAZY</p>
     </div>
   </div>
 
@@ -4580,7 +4583,7 @@
       <button class="tab-btn" data-tab="meeting"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="6" r="2.1"/><circle cx="5.8" cy="9.3" r="1.9"/><circle cx="18.2" cy="9.3" r="1.9"/><path d="M8.6 13.2c.8-1.4 2-2.1 3.4-2.1s2.6.7 3.4 2.1"/><path d="M2.8 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><path d="M15.2 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><ellipse cx="12" cy="16.6" rx="6.3" ry="2.2"/><path d="M12 18.8v2.2M8.7 21h6.6"/></svg></span><span>Họp</span></button>
       <button class="tab-btn" data-tab="pdf"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h5M10 12h6M10 16h6"/></svg></span><span>DS phiếu</span></button>
     </nav>
-    <div class="app-version">Version: INDEX-211.180626-TDKMM-XUAT-PDF-TU-BAN-DA-XEM</div>
+    <div class="app-version">Version: INDEX-212.180626-TDKMM-XEM-ANH-LAZY</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -4605,7 +4608,7 @@
 ========================================================= */
 
 // ===== MODULE: JS_CONFIG_STATE_START =====
-const APP_VERSION = 'INDEX-211.180626-TDKMM-XUAT-PDF-TU-BAN-DA-XEM';
+const APP_VERSION = 'INDEX-212.180626-TDKMM-XEM-ANH-LAZY';
 
 function canOpenAdminSettings(){
   return !!(state.user && (state.user.isAdmin || String(state.user.chucVu || '').trim()));
@@ -4691,6 +4694,9 @@ const state = {
   currentPdfObjectUrl: '',
   currentTdkmmPdfObjectUrls: [],
   currentTdkmmPdfSections: [],
+  currentTdkmmPdfActiveIndex: 0,
+  currentTdkmmRasterCacheKey: '',
+  tdkmmRasterViewCache: {},
   currentPdfWatermarkedBytes: null,
   currentPdfWatermarkedTitle: '',
   currentPdfWatermarkedUrl: ''
@@ -6735,41 +6741,13 @@ function normalizeTdkmmPdfChoice_(value){
   return ['PL11','PL12','BOTH'].includes(v) ? v : 'PL11';
 }
 
-function getCachedTdkmmCleanPdfFiles_(phieuTMID, pdfType){
-  const id = String(phieuTMID || '').trim();
-  const currentId = String(state.currentTdkmmCleanPdfPhieuTMID || '').trim();
-  if(!id || !currentId || id !== currentId) return [];
-  const choice = normalizeTdkmmPdfChoice_(pdfType);
-  const files = Array.isArray(state.currentTdkmmCleanPdfFiles) ? state.currentTdkmmCleanPdfFiles : [];
-  const order = {PL11: 1, PL12: 2};
-  return files
-    .filter(f => {
-      const t = normalizeTdkmmPdfChoice_(f.type || f.pdfType || '');
-      return choice === 'BOTH' ? (t === 'PL11' || t === 'PL12') : t === choice;
-    })
-    .sort((a, b) => (order[normalizeTdkmmPdfChoice_(a.type)] || 9) - (order[normalizeTdkmmPdfChoice_(b.type)] || 9));
+function getCachedTdkmmCleanPdfFiles_(_phieuTMID, _pdfType){
+  return [];
 }
 
 async function exportTdkmmPdf(phieuTMID, btn){
   const pdfType = normalizeTdkmmPdfChoice_(document.querySelector('#tdkmmPdfExportDialog input[name="tdkmmPdfType"]:checked')?.value || 'PL11');
-  const cachedFiles = getCachedTdkmmCleanPdfFiles_(phieuTMID, pdfType);
-  const expectedCount = pdfType === 'BOTH' ? 2 : 1;
-  const canUseCachedCleanPdf = cachedFiles.length >= expectedCount && cachedFiles.every(f => f && f.base64);
-
-  await withButton(btn, canUseCachedCleanPdf ? 'Đang tải...' : 'Đang xuất...', async () => {
-    if(canUseCachedCleanPdf){
-      await api('logTdkmmPdfExportFromCachedPreview', {phieuTMID, pdfType}, {timeoutMs: 60000});
-      cachedFiles.slice(0, expectedCount).forEach((f, idx) => {
-        setTimeout(() => {
-          downloadBase64File(f.fileName || f.name || 'TDKMM.pdf', f.mimeType || 'application/pdf', f.base64);
-        }, idx * 450);
-      });
-      closeTdkmmPdfExportDialog();
-      toast(expectedCount > 1 ? 'Đã tải 2 file PDF từ bản đã xem.' : 'Đã tải file PDF từ bản đã xem.');
-      try{ if(document.getElementById('pdfListBox')) await loadDsPhieuList(); }catch(_e){}
-      return;
-    }
-
+  await withButton(btn, 'Đang xuất...', async () => {
     const res = await api('exportTdkmmPdf', {phieuTMID, pdfType}, {timeoutMs: 180000});
     const files = res.data?.files || [];
     if(!files.length) throw new Error('API chưa trả file PDF.');
@@ -6808,46 +6786,64 @@ function renderTdkmmFullPdfModal({phieuTMID='', title='Xem phiếu TDKMM', loadi
 }
 
 function tdkmmFullPdfSectionsHtml(sections){
-  const list = Array.isArray(sections) ? sections.filter(x => x && x.objectUrl) : [];
+  const list = Array.isArray(sections) ? sections.filter(Boolean) : [];
   state.currentTdkmmPdfSections = list;
-  if(!list.length) return `<div class="empty">Không có dữ liệu PDF để xem.</div>`;
-  const first = list[0];
-  const switcher = list.length > 1 ? `<div class="tdkmm-file-switch">${list.map((sec, idx) => `<button class="btn secondary ${idx === 0 ? 'active' : ''}" type="button" id="tdkmmPdfSwitch${idx}" onclick="switchTdkmmPreviewPdf(${idx})">${esc(sec.shortTitle || sec.type || ('Phiếu ' + (idx + 1)))}</button>`).join('')}</div>` : '';
+  state.currentTdkmmPdfActiveIndex = Math.max(0, Math.min(Number(state.currentTdkmmPdfActiveIndex || 0), Math.max(list.length - 1, 0)));
+  if(!list.length) return `<div class="empty">Không có dữ liệu phiếu để xem.</div>`;
+  const active = list[state.currentTdkmmPdfActiveIndex] || list[0];
+  const switcher = list.length > 1 ? `<div class="tdkmm-file-switch">${list.map((sec, idx) => `<button class="btn secondary ${idx === state.currentTdkmmPdfActiveIndex ? 'active' : ''}" type="button" id="tdkmmPdfSwitch${idx}" onclick="switchTdkmmPreviewPdf(${idx})">${esc(tdkmmSectionButtonText_(sec))}</button>`).join('')}</div>` : '';
   setTimeout(attachTdkmmPdfRightClickBlock, 0);
-  const securityText = first.securityDisplayText || tdkmmViewSecurityTextDisplay();
+  const securityText = active.securityDisplayText || tdkmmViewSecurityTextDisplay();
   return `<div class="tdkmm-direct-pdf-wrap" aria-label="Nội dung phiếu TDKMM" oncontextmenu="return blockTdkmmPdfContextMenu(event)" onmousedown="return blockTdkmmPdfRightMouseDown(event)" onauxclick="return blockTdkmmPdfRightMouseDown(event)">
     <div class="tdkmm-file-opening-line">
-      <div class="tdkmm-file-opening-left">Đang mở file: <strong id="tdkmmCurrentPdfTitle">${esc(first.title || 'Phiếu TDKMM')}</strong><span class="tdkmm-security-view-text">${esc(securityText)}</span></div>
+      <div class="tdkmm-file-opening-left">Đang mở file: <strong id="tdkmmCurrentPdfTitle">${esc(active.title || 'Phiếu TDKMM')}</strong><span class="tdkmm-security-view-text">${esc(securityText)}</span></div>
       ${switcher}
     </div>
-    <iframe id="tdkmmDirectPdfFrame" class="tdkmm-direct-pdf-frame" src="${escAttr(first.objectUrl)}#toolbar=0&navpanes=0&scrollbar=0&view=FitH" title="${escAttr(first.title || 'Phiếu TDKMM')}" loading="eager" oncontextmenu="return blockTdkmmPdfContextMenu(event)" onmousedown="return blockTdkmmPdfRightMouseDown(event)" onauxclick="return blockTdkmmPdfRightMouseDown(event)"></iframe>
+    <div id="tdkmmRasterPagesContainer" class="tdkmm-raster-pages-container">${tdkmmRasterSectionContentHtml_(active)}</div>
   </div>`;
+}
+
+function tdkmmSectionButtonText_(sec){
+  const base = sec && (sec.shortTitle || sec.type) ? (sec.shortTitle || sec.type) : 'Phiếu';
+  if(sec && sec.status === 'loading') return base + '...';
+  if(sec && sec.status === 'error') return base + ' lỗi';
+  return base;
+}
+
+function tdkmmRasterSectionContentHtml_(sec){
+  if(!sec) return '<div class="tdkmm-raster-status">Không có dữ liệu phiếu.</div>';
+  if(sec.status === 'loading') return `<div class="tdkmm-raster-status"><div><span class="loading-dot"></span> ${esc(sec.message || 'Đang mở file...')}</div></div>`;
+  if(sec.status === 'error') return `<div class="tdkmm-raster-status">${esc(sec.message || 'Không mở được phiếu.')}</div>`;
+  const pages = Array.isArray(sec.pages) ? sec.pages : [];
+  if(!pages.length) return '<div class="tdkmm-raster-status">Không có trang để hiển thị.</div>';
+  return pdfPageImagesHtml(pages);
+}
+
+function refreshTdkmmRasterViewer_(){
+  const list = Array.isArray(state.currentTdkmmPdfSections) ? state.currentTdkmmPdfSections : [];
+  const active = list[state.currentTdkmmPdfActiveIndex || 0] || list[0];
+  const container = document.getElementById('tdkmmRasterPagesContainer');
+  if(container) container.innerHTML = tdkmmRasterSectionContentHtml_(active);
+  const title = document.getElementById('tdkmmCurrentPdfTitle');
+  if(title && active) title.textContent = active.title || 'Phiếu TDKMM';
+  list.forEach((sec, idx) => {
+    const btn = document.getElementById('tdkmmPdfSwitch' + idx);
+    if(btn){
+      btn.textContent = tdkmmSectionButtonText_(sec);
+      btn.classList.toggle('active', idx === (state.currentTdkmmPdfActiveIndex || 0));
+    }
+  });
 }
 
 window.switchTdkmmPreviewPdf = function(index){
   const list = Array.isArray(state.currentTdkmmPdfSections) ? state.currentTdkmmPdfSections : [];
-  const sec = list[Number(index) || 0];
-  if(!sec || !sec.objectUrl) return;
-  const frame = document.getElementById('tdkmmDirectPdfFrame');
-  const title = document.getElementById('tdkmmCurrentPdfTitle');
-  if(frame){
-    frame.src = `${sec.objectUrl}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`;
-    frame.title = sec.title || 'Phiếu TDKMM';
-    setTimeout(attachTdkmmPdfRightClickBlock, 0);
-  }
-  if(title) title.textContent = sec.title || 'Phiếu TDKMM';
-  (Array.isArray(list) ? list : []).forEach((_, i) => {
-    const btn = document.getElementById('tdkmmPdfSwitch' + i);
-    if(btn) btn.classList.toggle('active', i === (Number(index) || 0));
-  });
+  const idx = Math.max(0, Math.min(Number(index) || 0, Math.max(list.length - 1, 0)));
+  state.currentTdkmmPdfActiveIndex = idx;
+  refreshTdkmmRasterViewer_();
 }
 
-
-window.openTdkmmPdfObjectInNewTab = function(index){
-  const urls = Array.isArray(state.currentTdkmmPdfObjectUrls) ? state.currentTdkmmPdfObjectUrls : [];
-  const url = urls[Number(index) || 0] || '';
-  if(!url) return toast('Không có file PDF để mở.');
-  window.open(url, '_blank', 'noopener');
+window.openTdkmmPdfObjectInNewTab = function(){
+  toast('Bản xem phiếu đang hiển thị dạng ảnh bảo mật, không mở PDF trực tiếp.');
 }
 
 function setTdkmmFullPdfLoadingMessage(message){
@@ -6855,13 +6851,57 @@ function setTdkmmFullPdfLoadingMessage(message){
   if(el) el.textContent = message || 'Đang mở file...';
 }
 
-async function pdfPageImagesFromBase64NoDownload(base64, onProgress){
+function tdkmmListItemForCache_(phieuTMID){
+  const id = String(phieuTMID || '').trim();
+  return (state.currentTmPhieus || []).find(x => String(x.id || x.phieuTMID || '').trim() === id) || null;
+}
+
+function tdkmmRasterCacheKey_(phieuTMID, phieu){
+  const id = String(phieuTMID || '').trim();
+  const src = phieu || tdkmmListItemForCache_(id) || {};
+  const rev = String(src.thoiDiemSua || src.thoiDiemTao || src.updatedAt || '').trim() || 'no-rev';
+  const user = String(state.user?.maNhanVien || '').trim() || 'nouser';
+  return [id, rev, user].join('|');
+}
+
+function getTdkmmRasterCache_(phieuTMID){
+  const key = tdkmmRasterCacheKey_(phieuTMID);
+  const cache = state.tdkmmRasterViewCache && state.tdkmmRasterViewCache[key];
+  if(!cache) return null;
+  const ttl = 30 * 60 * 1000;
+  if(Date.now() - Number(cache.createdAt || 0) > ttl){
+    delete state.tdkmmRasterViewCache[key];
+    return null;
+  }
+  return cache;
+}
+
+function putTdkmmRasterCache_(cache){
+  if(!cache || !cache.cacheKey) return;
+  if(!state.tdkmmRasterViewCache) state.tdkmmRasterViewCache = {};
+  state.tdkmmRasterViewCache[cache.cacheKey] = cache;
+  const keys = Object.keys(state.tdkmmRasterViewCache);
+  if(keys.length > 8){
+    keys.sort((a,b) => Number(state.tdkmmRasterViewCache[a]?.createdAt || 0) - Number(state.tdkmmRasterViewCache[b]?.createdAt || 0));
+    keys.slice(0, Math.max(0, keys.length - 8)).forEach(k => delete state.tdkmmRasterViewCache[k]);
+  }
+}
+
+function tdkmmPdfSectionTitle_(pdfType){
+  const t = normalizeTdkmmPdfChoice_(pdfType);
+  return t === 'PL12'
+    ? 'Phụ lục 12 - Phiếu xét nghiệm tai biến không mong muốn liên quan đến truyền máu'
+    : 'Phụ lục 11 - Báo cáo tai biến không mong muốn liên quan đến truyền máu';
+}
+
+async function pdfPageImagesFromBase64WithTdkmmWatermark(base64, viewTimeText, onProgress){
   const pdfjsLib = await ensurePdfJsLoaded();
   const bytes = base64ToUint8Array(base64 || '');
   const loadingTask = pdfjsLib.getDocument({data: bytes, useSystemFonts: true});
   const srcPdf = await loadingTask.promise;
   const out = [];
   const scale = pdfRasterScale();
+  const wmText = tdkmmViewSecurityTextDisplay(viewTimeText);
   for(let pageNo = 1; pageNo <= srcPdf.numPages; pageNo++){
     if(typeof onProgress === 'function') onProgress(pageNo, srcPdf.numPages);
     const page = await srcPdf.getPage(pageNo);
@@ -6873,6 +6913,7 @@ async function pdfPageImagesFromBase64NoDownload(base64, onProgress){
     ctx.fillStyle = '#fff';
     ctx.fillRect(0,0,canvas.width,canvas.height);
     await page.render({canvasContext: ctx, viewport}).promise;
+    drawTdkmmRasterUserWatermark_(ctx, canvas, wmText);
     out.push({dataUrl: canvas.toDataURL('image/jpeg', 0.9)});
     canvas.width = 1; canvas.height = 1;
     if(page.cleanup) page.cleanup();
@@ -6881,64 +6922,142 @@ async function pdfPageImagesFromBase64NoDownload(base64, onProgress){
   return out;
 }
 
+function drawTdkmmRasterUserWatermark_(ctx, canvas, text){
+  const w = canvas.width;
+  const h = canvas.height;
+  if(!w || !h) return;
+  const label = String(text || '').trim();
+  if(!label) return;
+  const angle = -Math.atan2(h, w);
+  const fontSize = Math.max(18, Math.min(42, Math.round(Math.min(w, h) * 0.034)));
+  ctx.save();
+  ctx.translate(w / 2, h / 2);
+  ctx.rotate(angle);
+  ctx.font = '600 ' + fontSize + 'px "Segoe UI", Arial, "Noto Sans", Tahoma, sans-serif';
+  ctx.textBaseline = 'middle';
+  ctx.textAlign = 'center';
+  ctx.lineWidth = Math.max(2, fontSize * 0.10);
+  ctx.strokeStyle = 'rgba(255,255,255,0.45)';
+  ctx.fillStyle = 'rgba(110, 24, 24, 0.20)';
+  ctx.strokeText(label, 0, 0);
+  ctx.fillText(label, 0, 0);
+  ctx.restore();
+}
+
+async function loadTdkmmRasterPreviewSection_(phieuTMID, pdfType, viewTimeText, onMessage){
+  const choice = normalizeTdkmmPdfChoice_(pdfType) === 'PL12' ? 'PL12' : 'PL11';
+  if(typeof onMessage === 'function') onMessage(`Đang tạo ${choice} từ mẫu Word...`);
+  const res = await api('viewTdkmmPdf', {phieuTMID, pdfType: choice}, {timeoutMs:180000});
+  const files = res.data?.files || [];
+  const f = files.find(x => normalizeTdkmmPdfChoice_(x.type || x.pdfType || '') === choice) || files[0];
+  if(!f) throw new Error('API chưa trả file xem trước từ mẫu.');
+  let base64 = f.base64 || '';
+  if(!base64 && f.url){
+    if(typeof onMessage === 'function') onMessage(`Đang đọc ${choice}...`);
+    const fileRes = await api('getPdfFileBase64', {url:f.url}, {timeoutMs:180000});
+    base64 = fileRes.data?.base64 || '';
+  }
+  if(!base64) throw new Error('Không đọc được nội dung PDF xem trước.');
+  const title = tdkmmPdfSectionTitle_(choice);
+  const pages = await pdfPageImagesFromBase64WithTdkmmWatermark(base64, viewTimeText, (pageNo, total) => {
+    if(typeof onMessage === 'function') onMessage(total > 1 ? `Đang mở ${choice}... Trang ${pageNo}/${total}` : `Đang mở ${choice}...`);
+  });
+  return {
+    title,
+    shortTitle: choice,
+    type: choice,
+    status: 'ready',
+    pages,
+    securityDisplayText: tdkmmViewSecurityTextDisplay(viewTimeText),
+    phieu: res.data?.phieu || null
+  };
+}
+
+async function loadTdkmmPl12InBackground_(phieuTMID, cache, viewTimeText){
+  if(!cache || cache.loadingPl12) return;
+  const pl12Index = (cache.sections || []).findIndex(x => normalizeTdkmmPdfChoice_(x.type) === 'PL12');
+  if(pl12Index < 0) return;
+  const current = cache.sections[pl12Index];
+  if(current && current.status === 'ready') return;
+  cache.loadingPl12 = true;
+  try{
+    cache.sections[pl12Index] = Object.assign({}, current, {status:'loading', message:'Đang mở PL12...'});
+    if(state.currentTdkmmRasterCacheKey === cache.cacheKey) refreshTdkmmRasterViewer_();
+    const pl12 = await loadTdkmmRasterPreviewSection_(phieuTMID, 'PL12', viewTimeText, msg => {
+      const sec = cache.sections[pl12Index] || {};
+      cache.sections[pl12Index] = Object.assign({}, sec, {status:'loading', message:msg});
+      if(state.currentTdkmmRasterCacheKey === cache.cacheKey && state.currentTdkmmPdfActiveIndex === pl12Index) refreshTdkmmRasterViewer_();
+    });
+    cache.sections[pl12Index] = pl12;
+    cache.loadingPl12 = false;
+    putTdkmmRasterCache_(cache);
+    if(state.currentTdkmmRasterCacheKey === cache.cacheKey){
+      state.currentTdkmmPdfSections = cache.sections;
+      refreshTdkmmRasterViewer_();
+    }
+  }catch(err){
+    cache.loadingPl12 = false;
+    cache.sections[pl12Index] = Object.assign({}, cache.sections[pl12Index] || {}, {status:'error', message:err && err.message ? err.message : 'Không mở được PL12.'});
+    putTdkmmRasterCache_(cache);
+    if(state.currentTdkmmRasterCacheKey === cache.cacheKey){
+      state.currentTdkmmPdfSections = cache.sections;
+      refreshTdkmmRasterViewer_();
+    }
+  }
+}
+
 async function viewTdkmmFullPdf(phieuTMID, btn){
   const task = async () => {
     revokeCurrentPdfObjectUrl();
+    const cached = getTdkmmRasterCache_(phieuTMID);
+    if(cached && Array.isArray(cached.sections) && cached.sections.length){
+      state.currentTdkmmRasterCacheKey = cached.cacheKey;
+      state.currentTdkmmPdfActiveIndex = 0;
+      renderTdkmmFullPdfModal({
+        phieuTMID,
+        title:'Xem phiếu TDKMM theo mẫu',
+        sections: cached.sections
+      });
+      loadTdkmmPl12InBackground_(phieuTMID, cached, cached.viewTimeText || tdkmmNowHhmmDdmmyyyy());
+      return;
+    }
+
+    state.currentTdkmmPdfActiveIndex = 0;
     renderTdkmmFullPdfModal({
       phieuTMID,
       title:'Xem phiếu TDKMM theo mẫu',
       loading:true,
-      message:'Đang tạo bản xem trước từ mẫu Word...'
+      message:'Đang tạo PL11 từ mẫu Word...'
     });
-    const res = await api('viewTdkmmPdf', {phieuTMID}, {timeoutMs:180000});
-    const files = res.data?.files || [];
-    if(!files.length) throw new Error('API chưa trả file xem trước từ mẫu.');
 
-    const sections = [];
-    state.currentTdkmmCleanPdfPhieuTMID = String(phieuTMID || '').trim();
-    state.currentTdkmmCleanPdfFiles = [];
     const viewTimeText = tdkmmNowHhmmDdmmyyyy();
-    const securityDisplayText = tdkmmViewSecurityTextDisplay(viewTimeText);
-    let index = 0;
-    for(const f of files){
-      index += 1;
-      const type = String(f.type || '').toUpperCase();
-      const secTitle = type === 'PL12'
-        ? 'Phụ lục 12 - Phiếu xét nghiệm tai biến không mong muốn liên quan đến truyền máu'
-        : 'Phụ lục 11 - Báo cáo tai biến không mong muốn liên quan đến truyền máu';
-      setTdkmmFullPdfLoadingMessage(`Đang mở ${secTitle}...`);
-      let base64 = f.base64 || '';
-      if(!base64 && f.url){
-        const fileRes = await api('getPdfFileBase64', {url:f.url}, {timeoutMs:180000});
-        base64 = fileRes.data?.base64 || '';
-      }
-      if(!base64) throw new Error('Không đọc được nội dung PDF xem trước.');
-      state.currentTdkmmCleanPdfFiles.push({
-        type: type === 'PL12' ? 'PL12' : 'PL11',
-        fileId: f.fileId || '',
-        url: f.url || '',
-        name: f.name || f.fileName || (type === 'PL12' ? 'TDKMM_PL12.pdf' : 'TDKMM_PL11.pdf'),
-        fileName: f.fileName || f.name || (type === 'PL12' ? 'TDKMM_PL12.pdf' : 'TDKMM_PL11.pdf'),
-        mimeType: f.mimeType || 'application/pdf',
-        base64
-      });
-      setTdkmmFullPdfLoadingMessage(`Đang đóng watermark bảo mật vào ${secTitle}...`);
-      const watermarkedBytes = await buildTdkmmPreviewPdfWithUserWatermark(base64, viewTimeText);
-      const objectUrl = blobUrlFromBytes(watermarkedBytes, 'application/pdf');
-      state.currentTdkmmPdfObjectUrls.push(objectUrl);
-      sections.push({title:secTitle, shortTitle:type === 'PL12' ? 'PL12' : 'PL11', type:type === 'PL12' ? 'PL12' : 'PL11', objectUrl, securityDisplayText});
-      setTdkmmFullPdfLoadingMessage(files.length > 1 ? `Đã chuẩn bị ${index}/${files.length} phiếu...` : 'Đã chuẩn bị phiếu...');
-    }
-
+    const pl11 = await loadTdkmmRasterPreviewSection_(phieuTMID, 'PL11', viewTimeText, setTdkmmFullPdfLoadingMessage);
+    const cacheKey = tdkmmRasterCacheKey_(phieuTMID, pl11.phieu || null);
+    const cache = {
+      phieuTMID: String(phieuTMID || '').trim(),
+      cacheKey,
+      createdAt: Date.now(),
+      viewTimeText,
+      loadingPl12: false,
+      sections: [
+        pl11,
+        {title:tdkmmPdfSectionTitle_('PL12'), shortTitle:'PL12', type:'PL12', status:'loading', message:'Đang mở PL12...', securityDisplayText:tdkmmViewSecurityTextDisplay(viewTimeText)}
+      ]
+    };
+    putTdkmmRasterCache_(cache);
+    state.currentTdkmmRasterCacheKey = cacheKey;
+    state.currentTdkmmPdfActiveIndex = 0;
     renderTdkmmFullPdfModal({
       phieuTMID,
       title:'Xem phiếu TDKMM theo mẫu',
-      sections
+      sections: cache.sections
     });
+    loadTdkmmPl12InBackground_(phieuTMID, cache, viewTimeText);
   };
   if(btn) return withButton(btn, 'Đang mở...', task);
   try{ await task(); }catch(err){ revokeCurrentPdfObjectUrl(); toast(err.message); }
 }
+
 
 window.openTdkmmPdfExportHistory = async function(phieuTMID, btn){
   const run = async () => {
@@ -10402,7 +10521,7 @@ function tdkmmViewSecurityTextDisplay(viewTimeText){
   const ma = String(u.maNhanVien || u.maNV || u.ma || '').trim();
   const ten = String(u.tenNhanVien || u.hoTen || '').trim();
   const who = [ten, ma ? `Mã NV: ${ma}` : ''].filter(Boolean).join(' - ') || 'Người dùng đang xem';
-  return `BẢN XEM BẢO MẬT - ${who} - ${viewTimeText || tdkmmNowHhmmDdmmyyyy()}`;
+  return `${who} - ${viewTimeText || tdkmmNowHhmmDdmmyyyy()}`;
 }
 
 function tdkmmViewSecurityTextForPdf(viewTimeText){
@@ -10480,6 +10599,8 @@ function revokeCurrentPdfObjectUrl(){
     state.currentTdkmmPdfObjectUrls = [];
   }
   state.currentTdkmmPdfSections = [];
+  state.currentTdkmmPdfActiveIndex = 0;
+  state.currentTdkmmRasterCacheKey = '';
   state.currentTdkmmCleanPdfPhieuTMID = '';
   state.currentTdkmmCleanPdfFiles = [];
   state.currentPdfWatermarkedBytes = null;
