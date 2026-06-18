@@ -673,8 +673,9 @@
       .pdf-icon-btn{width:36px;height:36px}
       .pdf-pages{padding:0;gap:8px;background:#dfe2e6;align-items:stretch}
       .pdf-page-img{width:100%;max-width:100%;box-shadow:none;border-radius:0}
-      .tdkmm-direct-pdf-frame{max-width:100%;height:calc(100dvh - 106px);min-height:520px;margin-bottom:8px;box-shadow:none;border-radius:0}
-      .tdkmm-direct-pdf-fallback{max-width:100%;margin-bottom:8px;border-radius:0}
+      .tdkmm-file-opening-line{min-height:36px;font-size:12.8px;padding:6px 8px}
+      .tdkmm-file-switch button{min-height:26px!important;height:26px!important;padding:0 8px!important}
+      .tdkmm-direct-pdf-frame{height:100%;min-height:0;margin:0;box-shadow:none;border-radius:0}
       .pdf-loading-box{margin:12px;font-size:14px}
     }
 
@@ -3457,8 +3458,15 @@
       width:100%;max-width:980px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--wine);
       border-radius:10px;padding:8px 10px;margin:8px auto 0;font-weight:800;color:var(--wine-dark);box-shadow:0 1px 6px rgba(15,23,42,.10)
     }
-    .tdkmm-direct-pdf-frame{width:100%;max-width:980px;height:calc(100dvh - 132px);min-height:620px;margin:0 auto 10px;display:block;border:0;background:#fff;box-shadow:0 1px 8px rgba(15,23,42,.18);border-radius:2px}
-    .tdkmm-direct-pdf-fallback{width:100%;max-width:980px;margin:0 auto 10px;background:#fff;border:1px dashed var(--line);border-radius:10px;padding:10px;text-align:center;color:var(--muted);font-size:13.5px}
+    .tdkmm-direct-pdf-wrap{height:100%;min-height:0;display:flex;flex-direction:column;background:#fff}
+    .tdkmm-file-opening-line{min-height:38px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 10px;border-bottom:1px solid var(--line);background:#fff;color:var(--muted);font-size:13.5px;line-height:1.35;flex:0 0 auto}
+    .tdkmm-file-opening-line .loading-dot{width:16px;height:16px;border-color:#ead0da;border-top-color:var(--wine);flex:0 0 auto}
+    .tdkmm-file-opening-left{display:flex;align-items:center;gap:8px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .tdkmm-file-switch{display:flex;align-items:center;gap:6px;flex:0 0 auto}
+    .tdkmm-file-switch button{min-height:28px!important;height:28px!important;padding:0 10px!important;border-radius:6px!important;font-size:12.5px!important}
+    .tdkmm-file-switch button.active{background:var(--g-blue);border-color:var(--g-blue);color:#fff}
+    .tdkmm-direct-pdf-frame{width:100%;height:100%;min-height:0;margin:0;display:block;border:0;background:#fff;box-shadow:none;border-radius:0;flex:1 1 auto}
+    .tdkmm-direct-pdf-fallback{display:none}
     .tdkmm-view-export-btn{width:auto!important;min-height:34px!important;height:34px!important;padding:0 12px!important;border-radius:6px!important;font-size:13.5px!important}
     .tdkmm-history-list{display:grid;gap:8px;margin-top:10px}
     .tdkmm-history-item{border:1px solid var(--line);border-radius:10px;background:#fff;padding:9px 10px;line-height:1.45}
@@ -4526,7 +4534,7 @@
       <p><strong>PHẦN MỀM SỔ TRỰC - GIAO BAN</strong></p>
       <p>Developed by Nguyễn Văn Chính</p>
       <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
-      <p class="login-version">Version: INDEX-206.180626-TDKMM-DS-XEM-PDF-TRUC-TIEP</p>
+      <p class="login-version">Version: INDEX-207.180626-TDKMM-XEM-FULL-TG-HHMM</p>
     </div>
   </div>
 
@@ -4570,7 +4578,7 @@
       <button class="tab-btn" data-tab="meeting"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="6" r="2.1"/><circle cx="5.8" cy="9.3" r="1.9"/><circle cx="18.2" cy="9.3" r="1.9"/><path d="M8.6 13.2c.8-1.4 2-2.1 3.4-2.1s2.6.7 3.4 2.1"/><path d="M2.8 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><path d="M15.2 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><ellipse cx="12" cy="16.6" rx="6.3" ry="2.2"/><path d="M12 18.8v2.2M8.7 21h6.6"/></svg></span><span>Họp</span></button>
       <button class="tab-btn" data-tab="pdf"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h5M10 12h6M10 16h6"/></svg></span><span>DS phiếu</span></button>
     </nav>
-    <div class="app-version">Version: INDEX-206.180626-TDKMM-DS-XEM-PDF-TRUC-TIEP</div>
+    <div class="app-version">Version: INDEX-207.180626-TDKMM-XEM-FULL-TG-HHMM</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -4595,7 +4603,7 @@
 ========================================================= */
 
 // ===== MODULE: JS_CONFIG_STATE_START =====
-const APP_VERSION = 'INDEX-206.180626-TDKMM-DS-XEM-PDF-TRUC-TIEP';
+const APP_VERSION = 'INDEX-207.180626-TDKMM-XEM-FULL-TG-HHMM';
 
 function canOpenAdminSettings(){
   return !!(state.user && (state.user.isAdmin || String(state.user.chucVu || '').trim()));
@@ -4678,6 +4686,7 @@ const state = {
   isLoggingOut: false,
   currentPdfObjectUrl: '',
   currentTdkmmPdfObjectUrls: [],
+  currentTdkmmPdfSections: [],
   currentPdfWatermarkedBytes: null,
   currentPdfWatermarkedTitle: '',
   currentPdfWatermarkedUrl: ''
@@ -6169,10 +6178,29 @@ function tmSummaryLine(item){
 
 function tmTxt(v){ return String(v === null || v === undefined ? '' : v).trim(); }
 function tmJoinInline(items, gap='     '){ return (items || []).map(tmTxt).filter(Boolean).join(gap); }
+function tmDateTimeDisplay(value){
+  const s = tmTxt(value);
+  if(!s) return '';
+  if(/[zZ]$|[+-]\d{2}:?\d{2}$/.test(s)){
+    const d = new Date(s);
+    if(!isNaN(d.getTime())){
+      const p = hanoiDateParts(d);
+      return `${p.hour}:${p.minute} ${p.day}/${p.month}/${p.year}`;
+    }
+  }
+  const m = s.match(/^(\d{4})-(\d{2})-(\d{2})[T ]?(\d{2})?:?(\d{2})?/);
+  if(m && (m[4] || /T|\d{1,2}:\d{2}|\d{1,2}h\d{1,2}/.test(s))) return `${m[4] || '00'}:${m[5] || '00'} ${m[3]}/${m[2]}/${m[1]}`;
+  const d = new Date(s);
+  if(!isNaN(d.getTime())){
+    const p = hanoiDateParts(d);
+    return `${p.hour}:${p.minute} ${p.day}/${p.month}/${p.year}`;
+  }
+  return s.replace(/(\d{1,2})h(\d{1,2})/i, (_, h, mi) => `${pad(h)}:${pad(mi)}`);
+}
 function tmDateTimeText(value){
   const s = tmTxt(value);
   if(!s) return '';
-  return /T|\d{1,2}:\d{2}|\d{1,2}h\d{1,2}/.test(s) ? dateTimeVi(s) : dateVi(s);
+  return /T|\d{1,2}:\d{2}|\d{1,2}h\d{1,2}/.test(s) ? tmDateTimeDisplay(s) : dateVi(s);
 }
 function tmTimeInputValue(value){
   const s = tmTxt(value);
@@ -6275,8 +6303,8 @@ function tmAgeYearText(d, p){
 }
 function tmDateTimeFromDateAndTime(dateValue, timeValue){
   const date = dateValue ? dateVi(dateValue) : '';
-  const time = tmTxt(timeValue);
-  return time ? (date ? `${date} ${time}` : time) : date;
+  const time = tmTimeInputValue(timeValue) || tmTxt(timeValue).replace(/(\d{1,2})h(\d{1,2})/i, (_, h, mi) => `${pad(h)}:${pad(mi)}`);
+  return time ? (date ? `${time} ${date}` : time) : date;
 }
 function tdkmmViewData(p, d){
   const ngayTruyen = d.ngayTruyen || p.ngaySuKien || '';
@@ -6440,8 +6468,8 @@ function tdkmmGiaoBanTextBlocks(p, d){
   lines.push('d. Kiểm tra tại giường và lấy mẫu');
   lines.push('- Định nhóm ABO tại giường sau phản ứng:');
   lines.push(`   Người bệnh ${x.aboTaiGiuongNguoiBenhSauPhanUng || ''} – Đơn vị máu truyền ${x.aboTaiGiuongDonViMauTruyen || ''}`);
-  if(x.thoiDiemLayMauNguoiBenhSauBatThuong) lines.push(`- Thời điểm lấy mẫu máu người bệnh sau bất thường: ${x.thoiDiemLayMauNguoiBenhSauBatThuong}`);
-  if(x.thoiDiemNhanThongBaoVaMauNguoiBenh) lines.push(`- Thời điểm nhận thông báo và mẫu máu người bệnh: ${x.thoiDiemNhanThongBaoVaMauNguoiBenh}`);
+  if(x.thoiDiemLayMauNguoiBenhSauBatThuong) lines.push(`- Thời điểm lấy mẫu máu người bệnh sau bất thường: ${tmDateTimeText(x.thoiDiemLayMauNguoiBenhSauBatThuong)}`);
+  if(x.thoiDiemNhanThongBaoVaMauNguoiBenh) lines.push(`- Thời điểm nhận thông báo và mẫu máu người bệnh: ${tmDateTimeText(x.thoiDiemNhanThongBaoVaMauNguoiBenh)}`);
   lines.push('f. Tình trạng hiện tại/Kết luận/Kiến nghị');
   if(x.tinhTrangHienTai) lines.push(`- Tình trạng hiện tại (tử vong, xin về, ...): ${x.tinhTrangHienTai}`);
   if(x.ketLuanTdkmm) lines.push(`- Kết luận: ${x.ketLuanTdkmm}`);
@@ -6701,7 +6729,7 @@ function renderTdkmmFullPdfModal({phieuTMID='', title='Xem phiếu TDKMM', loadi
   setViewportForPdf(true);
   setupScreenProtection();
   const content = loading
-    ? `<div class="pdf-secure-loading"><div class="pdf-loading-box"><span class="loading-dot"></span><span class="pdf-loading-text" id="tdkmmFullPdfLoadingText">${esc(message || 'Đang mở đủ 2 phiếu...')}</span></div></div>`
+    ? `<div class="tdkmm-direct-pdf-wrap"><div class="tdkmm-file-opening-line"><div class="tdkmm-file-opening-left"><span class="loading-dot"></span><span id="tdkmmFullPdfLoadingText">${esc(message || 'Đang mở file...')}</span></div></div><div class="pdf-secure-loading" style="height:auto;flex:1;background:#fff"></div></div>`
     : tdkmmFullPdfSectionsHtml(sections || []);
   openModal(`
     <div class="pdf-modal protected-view" style="position:absolute!important;inset:0!important;width:100vw!important;height:100dvh!important;margin:0!important;z-index:100001!important;">
@@ -6720,13 +6748,35 @@ function renderTdkmmFullPdfModal({phieuTMID='', title='Xem phiếu TDKMM', loadi
 }
 
 function tdkmmFullPdfSectionsHtml(sections){
-  const list = Array.isArray(sections) ? sections : [];
+  const list = Array.isArray(sections) ? sections.filter(x => x && x.objectUrl) : [];
+  state.currentTdkmmPdfSections = list;
   if(!list.length) return `<div class="empty">Không có dữ liệu PDF để xem.</div>`;
-  return `<div class="pdf-pages" aria-label="Nội dung 2 phiếu TDKMM">${list.map((sec, idx) => `
-    <div class="tdkmm-full-pdf-section-title">${esc(sec.title || '')}</div>
-    ${sec.objectUrl ? `<iframe class="tdkmm-direct-pdf-frame" src="${escAttr(sec.objectUrl)}#toolbar=0&navpanes=0&scrollbar=1&view=FitH" title="${escAttr(sec.title || 'Phiếu TDKMM')}" loading="eager"></iframe>` : ''}
-    ${sec.objectUrl ? `<div class="tdkmm-direct-pdf-fallback">Nếu trình duyệt không hiển thị PDF trực tiếp, hãy nhấn <button class="btn secondary" type="button" onclick="openTdkmmPdfObjectInNewTab(${idx})">Mở phiếu này</button>.</div>` : `<div class="empty">Không có dữ liệu PDF để xem.</div>`}
-  `).join('')}</div>`;
+  const first = list[0];
+  const switcher = list.length > 1 ? `<div class="tdkmm-file-switch">${list.map((sec, idx) => `<button class="btn secondary ${idx === 0 ? 'active' : ''}" type="button" id="tdkmmPdfSwitch${idx}" onclick="switchTdkmmPreviewPdf(${idx})">${esc(sec.shortTitle || sec.type || ('Phiếu ' + (idx + 1)))}</button>`).join('')}</div>` : '';
+  return `<div class="tdkmm-direct-pdf-wrap" aria-label="Nội dung phiếu TDKMM">
+    <div class="tdkmm-file-opening-line">
+      <div class="tdkmm-file-opening-left">Đang mở file: <strong id="tdkmmCurrentPdfTitle">${esc(first.title || 'Phiếu TDKMM')}</strong></div>
+      ${switcher}
+    </div>
+    <iframe id="tdkmmDirectPdfFrame" class="tdkmm-direct-pdf-frame" src="${escAttr(first.objectUrl)}#toolbar=0&navpanes=0&scrollbar=0&view=FitH" title="${escAttr(first.title || 'Phiếu TDKMM')}" loading="eager"></iframe>
+  </div>`;
+}
+
+window.switchTdkmmPreviewPdf = function(index){
+  const list = Array.isArray(state.currentTdkmmPdfSections) ? state.currentTdkmmPdfSections : [];
+  const sec = list[Number(index) || 0];
+  if(!sec || !sec.objectUrl) return;
+  const frame = document.getElementById('tdkmmDirectPdfFrame');
+  const title = document.getElementById('tdkmmCurrentPdfTitle');
+  if(frame){
+    frame.src = `${sec.objectUrl}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`;
+    frame.title = sec.title || 'Phiếu TDKMM';
+  }
+  if(title) title.textContent = sec.title || 'Phiếu TDKMM';
+  (Array.isArray(list) ? list : []).forEach((_, i) => {
+    const btn = document.getElementById('tdkmmPdfSwitch' + i);
+    if(btn) btn.classList.toggle('active', i === (Number(index) || 0));
+  });
 }
 
 
@@ -6739,7 +6789,7 @@ window.openTdkmmPdfObjectInNewTab = function(index){
 
 function setTdkmmFullPdfLoadingMessage(message){
   const el = document.getElementById('tdkmmFullPdfLoadingText');
-  if(el) el.textContent = message || 'Đang mở đủ 2 phiếu...';
+  if(el) el.textContent = message || 'Đang mở file...';
 }
 
 async function pdfPageImagesFromBase64NoDownload(base64, onProgress){
@@ -6798,7 +6848,7 @@ async function viewTdkmmFullPdf(phieuTMID, btn){
       if(!base64) throw new Error('Không đọc được nội dung PDF xem trước.');
       const objectUrl = base64ToBlobUrl(base64, 'application/pdf');
       state.currentTdkmmPdfObjectUrls.push(objectUrl);
-      sections.push({title:secTitle, objectUrl});
+      sections.push({title:secTitle, shortTitle:type === 'PL12' ? 'PL12' : 'PL11', type:type === 'PL12' ? 'PL12' : 'PL11', objectUrl});
       setTdkmmFullPdfLoadingMessage(files.length > 1 ? `Đã chuẩn bị ${index}/${files.length} phiếu...` : 'Đã chuẩn bị phiếu...');
     }
 
@@ -10253,6 +10303,7 @@ function revokeCurrentPdfObjectUrl(){
     state.currentTdkmmPdfObjectUrls.forEach(url => { try{ URL.revokeObjectURL(url); }catch(e){} });
     state.currentTdkmmPdfObjectUrls = [];
   }
+  state.currentTdkmmPdfSections = [];
   state.currentPdfWatermarkedBytes = null;
   state.currentPdfWatermarkedTitle = '';
   state.currentPdfWatermarkedUrl = '';
