@@ -4659,6 +4659,33 @@
       }
     }
 
+
+    /* ===== PATCH 218: ẢNH/FILE ĐÍNH KÈM PHIẾU TRUYỀN MÁU ===== */
+    .tm-attachment-box{border:1px dashed var(--g-line);border-radius:14px;background:#fff;padding:10px;margin-top:6px;max-width:100%;overflow:hidden}
+    .tm-attachment-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .tm-attachment-actions input[type="file"]{height:auto;min-height:38px;padding:7px 8px;background:#fff}
+    .tm-attachment-note{font-size:12.5px;color:var(--muted);line-height:1.45;margin-top:6px}
+    .tm-attachment-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-top:10px}
+    .tm-attachment-item{border:1px solid var(--g-line);border-radius:12px;background:#fff;overflow:hidden;min-width:0}
+    .tm-attachment-thumb{height:132px;background:#f8f9fa;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;text-align:center;padding:8px;overflow:hidden}
+    .tm-attachment-thumb img{width:100%;height:100%;object-fit:contain;display:block}
+    .tm-attachment-file-icon{font-size:30px;line-height:1;margin-bottom:6px;color:var(--wine)}
+    .tm-attachment-meta{padding:8px;border-top:1px solid #f1f3f4;min-width:0}
+    .tm-attachment-name{font-size:13px;font-weight:700;color:var(--g-text);line-height:1.3;word-break:break-word}
+    .tm-attachment-sub{font-size:12px;color:var(--muted);line-height:1.35;margin-top:3px}
+    .tm-attachment-remove{width:100%;margin-top:7px;min-height:28px!important;height:28px!important;padding:0 8px!important;font-size:12.5px!important}
+    .tm-attachment-section{margin-top:12px}
+    .tm-attachment-section-title{font-weight:800;color:var(--wine-dark);font-size:15px;line-height:1.35;margin:0 0 8px}
+    .tm-attachment-inline{border:1px solid var(--line);border-radius:12px;background:#fffafb;padding:10px;margin:8px 0 4px}
+    .tm-attachment-inline .tm-attachment-list{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));margin-top:8px}
+    .tm-attachment-inline .tm-attachment-thumb{height:110px}
+    @media(max-width:760px){
+      .tm-attachment-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+      .tm-attachment-thumb{height:112px}
+      .tm-attachment-actions .btn{width:auto!important;min-height:34px!important;height:34px!important;padding:0 12px!important}
+      .tm-attachment-actions input[type="file"]{width:100%}
+    }
+
 </style>
 </head>
 <body>
@@ -4701,7 +4728,7 @@
       <p><strong>PHẦN MỀM SỔ TRỰC - GIAO BAN</strong></p>
       <p>Developed by Nguyễn Văn Chính</p>
       <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
-      <p class="login-version">Version: INDEX-216.210626-MOBILE-BIENBANHOP-FULLWIDTH</p>
+      <p class="login-version">Version: INDEX-218.220626-ANH-FILE-DINHKEM-TM</p>
     </div>
   </div>
 
@@ -4745,7 +4772,7 @@
       <button class="tab-btn" data-tab="meeting"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="6" r="2.1"/><circle cx="5.8" cy="9.3" r="1.9"/><circle cx="18.2" cy="9.3" r="1.9"/><path d="M8.6 13.2c.8-1.4 2-2.1 3.4-2.1s2.6.7 3.4 2.1"/><path d="M2.8 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><path d="M15.2 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><ellipse cx="12" cy="16.6" rx="6.3" ry="2.2"/><path d="M12 18.8v2.2M8.7 21h6.6"/></svg></span><span>Họp</span></button>
       <button class="tab-btn" data-tab="pdf"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h5M10 12h6M10 16h6"/></svg></span><span>DS phiếu</span></button>
     </nav>
-    <div class="app-version">Version: INDEX-216.210626-MOBILE-BIENBANHOP-FULLWIDTH</div>
+    <div class="app-version">Version: INDEX-218.220626-ANH-FILE-DINHKEM-TM</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -4770,7 +4797,7 @@
 ========================================================= */
 
 // ===== MODULE: JS_CONFIG_STATE_START =====
-const APP_VERSION = 'INDEX-217.210626-PHANQUYEN-SETUP-TAIKHOAN';
+const APP_VERSION = 'INDEX-218.220626-ANH-FILE-DINHKEM-TM';
 
 function isSystemAdminAccount(user){
   const u = user || state.user || state.accountInfo || {};
@@ -5344,7 +5371,7 @@ function renderCreateTab(){
   $('#createBtn').addEventListener('click', submitCreatePhieu);
   updateCreateFormNumbering();
   refreshStaffList();
-  setTimeout(() => $$('textarea').forEach(autoGrow), 0);
+  setTimeout(() => { $$('textarea').forEach(autoGrow); loadTmAttachmentImages(document.getElementById('modalRoot') || document); }, 0);
 }
 
 function updateCreateFormNumbering(){
@@ -5791,6 +5818,203 @@ function optionHtml(list, selected=''){
   return (list || []).map(x => `<option value="${escAttr(x)}" ${norm(x)===norm(selected) ? 'selected' : ''}>${esc(x)}</option>`).join('');
 }
 
+
+function tmAttachmentItems(d={}){
+  const raw = Array.isArray(d.attachments) ? d.attachments : (Array.isArray(d.dinhKem) ? d.dinhKem : []);
+  return raw.map(x => ({
+    fileId: tmTxt(x?.fileId || x?.id || ''),
+    name: tmTxt(x?.name || x?.fileName || 'Tệp đính kèm'),
+    mimeType: tmTxt(x?.mimeType || x?.type || ''),
+    size: Number(x?.size || x?.bytes || 0) || 0,
+    url: tmTxt(x?.url || ''),
+    uploadedAt: tmTxt(x?.uploadedAt || ''),
+    uploadedByTen: tmTxt(x?.uploadedByTen || x?.uploadedBy || ''),
+    isImage: !!(x?.isImage || /^image\//i.test(String(x?.mimeType || x?.type || '')))
+  })).filter(x => x.fileId || x.name);
+}
+function tmAttachmentSizeText(size){
+  const n = Number(size || 0);
+  if(!n) return '';
+  if(n < 1024) return n + ' B';
+  if(n < 1024 * 1024) return Math.round(n / 1024) + ' KB';
+  return (n / 1024 / 1024).toFixed(n >= 10 * 1024 * 1024 ? 0 : 1) + ' MB';
+}
+function renderTmAttachmentListHtml(items=[], editable=false, prefix=''){
+  const arr = tmAttachmentItems({attachments: items});
+  if(!arr.length) return `<div class="tm-attachment-note">Chưa có ảnh/tài liệu đính kèm.</div>`;
+  return `<div class="tm-attachment-list">${arr.map((it, idx) => {
+    const fileId = escAttr(it.fileId || '');
+    const name = esc(it.name || 'Tệp đính kèm');
+    const sub = [it.mimeType || '', tmAttachmentSizeText(it.size), it.uploadedByTen ? 'Tải lên: ' + it.uploadedByTen : ''].filter(Boolean).join(' · ');
+    const thumb = it.isImage && it.fileId
+      ? `<img alt="${escAttr(it.name || 'Ảnh đính kèm')}" data-tm-attachment-img="${fileId}" loading="lazy"><span class="tm-attachment-loading">Đang tải ảnh...</span>`
+      : `<div><div class="tm-attachment-file-icon">📎</div><div>${esc(it.mimeType || 'Tài liệu')}</div></div>`;
+    const openBtn = it.fileId ? `<button class="btn secondary tm-attachment-remove" type="button" onclick="openTmAttachmentFile('${fileId}')">Mở file</button>` : '';
+    const removeBtn = editable ? `<button class="btn danger tm-attachment-remove" type="button" onclick="removeTmAttachment('${escAttr(prefix)}',${idx})">Xóa khỏi phiếu</button>` : '';
+    return `<div class="tm-attachment-item"><div class="tm-attachment-thumb">${thumb}</div><div class="tm-attachment-meta"><div class="tm-attachment-name">${name}</div><div class="tm-attachment-sub">${esc(sub)}</div>${openBtn}${removeBtn}</div></div>`;
+  }).join('')}</div>`;
+}
+function renderTmAttachmentFieldHtml(d={}, prefix='tmCreate', title='4. Ảnh/tài liệu đính kèm'){
+  const items = tmAttachmentItems(d);
+  return `<h3 class="sub-title">${esc(title)}</h3>
+    <div class="tm-attachment-box" data-prefix="${escAttr(prefix)}">
+      <input type="hidden" id="${prefix}AttachmentsJson" value="${escAttr(JSON.stringify(items))}">
+      <div class="tm-attachment-actions">
+        <input id="${prefix}AttachmentInput" type="file" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx" multiple>
+        <button id="${prefix}AttachmentUploadBtn" type="button" class="btn secondary">Tải lên</button>
+      </div>
+      <div class="tm-attachment-note">Ảnh sẽ được nén/resize trước khi lưu. File PDF/Word/Excel được lưu dưới dạng tài liệu đính kèm.</div>
+      <div id="${prefix}AttachmentList">${renderTmAttachmentListHtml(items, true, prefix)}</div>
+    </div>`;
+}
+function getTmAttachmentsFromForm(prefix){
+  try{ return JSON.parse(document.getElementById(`${prefix}AttachmentsJson`)?.value || '[]') || []; }catch(e){ return []; }
+}
+function setTmAttachmentsToForm(prefix, items){
+  const el = document.getElementById(`${prefix}AttachmentsJson`);
+  if(el) el.value = JSON.stringify(tmAttachmentItems({attachments: items}));
+  const list = document.getElementById(`${prefix}AttachmentList`);
+  if(list) list.innerHTML = renderTmAttachmentListHtml(items, true, prefix);
+  setTimeout(() => loadTmAttachmentImages(list || document), 0);
+}
+window.removeTmAttachment = function(prefix, index){
+  const arr = getTmAttachmentsFromForm(prefix);
+  arr.splice(Number(index), 1);
+  setTmAttachmentsToForm(prefix, arr);
+}
+function readFileAsDataUrl(file){
+  return new Promise((resolve, reject) => {
+    const fr = new FileReader();
+    fr.onload = () => resolve(String(fr.result || ''));
+    fr.onerror = () => reject(new Error('Không đọc được file: ' + (file?.name || '')));
+    fr.readAsDataURL(file);
+  });
+}
+function loadImageFromDataUrl(dataUrl){
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error('Không xử lý được ảnh. Vui lòng chọn ảnh JPG/PNG/WebP.'));
+    img.src = dataUrl;
+  });
+}
+async function optimizeTmAttachmentFile(file){
+  const originalName = file.name || 'tep_dinh_kem';
+  const originalType = file.type || 'application/octet-stream';
+  const dataUrl = await readFileAsDataUrl(file);
+  if(/^image\//i.test(originalType) && !/gif/i.test(originalType)){
+    try{
+      const img = await loadImageFromDataUrl(dataUrl);
+      const maxSide = 1800;
+      const scale = Math.min(1, maxSide / Math.max(img.width || maxSide, img.height || maxSide));
+      const w = Math.max(1, Math.round((img.width || maxSide) * scale));
+      const h = Math.max(1, Math.round((img.height || maxSide) * scale));
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext('2d', {alpha:false});
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0,0,w,h);
+      ctx.drawImage(img,0,0,w,h);
+      const outType = 'image/jpeg';
+      const outUrl = canvas.toDataURL(outType, 0.78);
+      return {
+        fileName: originalName.replace(/\.[^.]+$/, '') + '.jpg',
+        mimeType: outType,
+        base64: outUrl.split(',')[1] || '',
+        size: Math.round((outUrl.length - outUrl.indexOf(',') - 1) * 3 / 4),
+        isImage: true,
+        previewDataUrl: outUrl
+      };
+    }catch(e){
+      if(file.size > 5 * 1024 * 1024) throw e;
+    }
+  }
+  if(file.size > 5 * 1024 * 1024) throw new Error('File "' + originalName + '" lớn hơn 5 MB. Vui lòng nén hoặc chọn file nhỏ hơn.');
+  return {
+    fileName: originalName,
+    mimeType: originalType,
+    base64: dataUrl.split(',')[1] || '',
+    size: file.size || 0,
+    isImage: /^image\//i.test(originalType),
+    previewDataUrl: /^image\//i.test(originalType) ? dataUrl : ''
+  };
+}
+async function uploadPendingTmAttachments(prefix, loai){
+  const input = document.getElementById(`${prefix}AttachmentInput`);
+  if(!input) return [];
+  const files = Array.from(input.files || []);
+  if(!files.length) return getTmAttachmentsFromForm(prefix);
+  const current = getTmAttachmentsFromForm(prefix);
+  for(const file of files){
+    const prepared = await optimizeTmAttachmentFile(file);
+    const res = await api('uploadTmAttachment', {
+      loaiPhieuTM: loai,
+      fileName: prepared.fileName,
+      mimeType: prepared.mimeType,
+      base64: prepared.base64,
+      size: prepared.size,
+      isImage: prepared.isImage
+    }, {timeoutMs: 180000});
+    current.push(res.data.attachment);
+  }
+  input.value = '';
+  setTmAttachmentsToForm(prefix, current);
+  return current;
+}
+function bindTmAttachmentUploader(prefix, loai){
+  const input = document.getElementById(`${prefix}AttachmentInput`);
+  const btn = document.getElementById(`${prefix}AttachmentUploadBtn`);
+  if(!input || !btn || btn.dataset.bound === '1') return;
+  btn.dataset.bound = '1';
+  btn.addEventListener('click', async () => {
+    const files = Array.from(input.files || []);
+    if(!files.length) return toast('Vui lòng chọn ảnh/file cần đính kèm.');
+    withButton(btn, 'Đang tải...', async () => {
+      await uploadPendingTmAttachments(prefix, loai);
+      toast('Đã tải file đính kèm');
+    });
+  });
+}
+async function loadTmAttachmentImages(root=document){
+  const scope = root && root.querySelectorAll ? root : document;
+  const imgs = Array.from(scope.querySelectorAll('img[data-tm-attachment-img]')).filter(img => img.dataset.loaded !== '1');
+  for(const img of imgs){
+    const fileId = img.dataset.tmAttachmentImg || '';
+    if(!fileId) continue;
+    img.dataset.loaded = '1';
+    try{
+      const res = await api('getTmAttachmentFileBase64', {fileId}, {timeoutMs: 120000});
+      const data = res.data || {};
+      if(data.base64) img.src = `data:${data.mimeType || 'image/jpeg'};base64,${data.base64}`;
+      const loading = img.parentElement?.querySelector('.tm-attachment-loading');
+      if(loading) loading.remove();
+    }catch(e){
+      const loading = img.parentElement?.querySelector('.tm-attachment-loading');
+      if(loading) loading.textContent = 'Không tải được ảnh';
+    }
+  }
+}
+window.openTmAttachmentFile = async function(fileId){
+  try{
+    const res = await api('getTmAttachmentFileBase64', {fileId}, {timeoutMs: 120000});
+    const d = res.data || {};
+    if(d.base64) downloadBase64File(d.name || 'tep_dinh_kem', d.mimeType || 'application/octet-stream', d.base64);
+  }catch(e){ toast(e.message || 'Không mở được file đính kèm'); }
+}
+function renderTmAttachmentViewHtml(d={}, title='Ảnh/tài liệu đính kèm'){
+  const items = tmAttachmentItems(d);
+  if(!items.length) return '';
+  return `<div class="tm-attachment-section"><div class="tm-attachment-section-title">${esc(title)}</div>${renderTmAttachmentListHtml(items, false, '')}</div>`;
+}
+function renderTmAttachmentInlineHtml(d={}, title='Ảnh/tài liệu đính kèm'){
+  const items = tmAttachmentItems(d);
+  if(!items.length) return '';
+  return `<div class="tm-attachment-inline"><div class="tm-attachment-section-title">${esc(title)}</div>${renderTmAttachmentListHtml(items, false, '')}</div>`;
+}
+function tmAttachmentNamesText(d={}){
+  return tmAttachmentItems(d).map((x,i) => `${i+1}. ${x.name || 'Tệp đính kèm'}${x.mimeType ? ' (' + x.mimeType + ')' : ''}`).join('\n');
+}
+
 function renderTmPhieuCreateForm(loai){
   const box = $('#tmPhieuBlock');
   if(!box) return;
@@ -5798,7 +6022,7 @@ function renderTmPhieuCreateForm(loai){
     <div class="btn-row"><button id="createTmBtn" class="btn primary">Tạo phiếu</button></div>`;
   $('#createTmBtn').addEventListener('click', submitCreatePhieu);
   bindTmPhieuFormEvents('tmCreate', loai);
-  setTimeout(() => $$('textarea').forEach(autoGrow), 0);
+  setTimeout(() => { $$('textarea').forEach(autoGrow); loadTmAttachmentImages(box); }, 0);
 }
 
 function renderTmPhieuFormHtml(loai, data={}, prefix='tmCreate'){
@@ -5834,7 +6058,8 @@ function renderTmXuTriFormHtml(d={}, prefix='tmCreate'){
       <div class="col-3"><label>Nhóm máu hệ Rh(D)</label><select id="${prefix}RhD" class="equal-control blood-rh">${optionHtml(rh, d.rhD || '')}</select></div>
       <div class="col-6"><label>Kháng thể bất thường</label><input id="${prefix}KhangThe" class="equal-control" value="${escAttr(d.khangTheBatThuong || '')}"></div>
       <div class="col-12"><label>Các lưu ý khác</label><textarea id="${prefix}LuuYKhac">${esc(d.luuYKhac || '')}</textarea></div>
-    </div>`;
+    </div>
+    ${renderTmAttachmentFieldHtml(d, prefix, '4. Ảnh/tài liệu đính kèm')}`;
 }
 
 function tdkmmLabRows(){
@@ -6024,6 +6249,9 @@ function renderTmTdkmmFormHtml(d={}, prefix='tmCreate'){
         <div class="col-12"><label>Kiến nghị (việc cần theo dõi, bàn giao tiếp,...)</label><textarea id="${prefix}TheoDoiBanGiao">${esc(d.noiDungTheoDoiBanGiao || '')}</textarea></div>
       </div>
     </div>
+    <div class="tdkmm-section-card">
+      ${renderTmAttachmentFieldHtml(d, prefix, '7.4. Ảnh/tài liệu đính kèm')}
+    </div>
     <div class="tdkmm-section-card tdkmm-sign-card">
       <h3 class="sub-title">Người ký</h3>
       <div class="tdkmm-signer-grid">
@@ -6192,6 +6420,7 @@ function bindTdkmmTimeMask(prefix){
 
 function bindTmPhieuFormEvents(prefix, loai){
   syncTdkmmLabScrollbars(document);
+  bindTmAttachmentUploader(prefix, loai);
   if(loai === LOAI_TM_TDKMM){
     bindTdkmmTimeMask(prefix);
     bindTdkmmSignerPicker(prefix, 'NguoiPhuTrachPhatMau', 'NguoiPhuTrachPhatMauMa');
@@ -6224,7 +6453,8 @@ function collectTmPhieuPayload(prefix, loai){
     loaiPhieuTM: loai,
     ngaySuKien: getDateInputIso('createDate'),
     namSinh: document.getElementById(`${prefix}NamSinh`)?.value || '',
-    chanDoan: document.getElementById(`${prefix}ChanDoan`)?.value || ''
+    chanDoan: document.getElementById(`${prefix}ChanDoan`)?.value || '',
+    attachments: getTmAttachmentsFromForm(prefix)
   };
   if(loai === LOAI_TM_XU_TRI){
     return Object.assign(base, {
@@ -6331,9 +6561,10 @@ function cssEscape(v){
 }
 
 async function submitCreateTmPhieu(loai){
-  const payload = collectTmPhieuPayload('tmCreate', loai);
-  if(!payload.ngaySuKien || !payload.maBenhNhan || !payload.hoTenBenhNhan) return toast('Vui lòng nhập ngày, mã bệnh nhân/PID và họ tên bệnh nhân.');
   withButton($('#createTmBtn'), 'Đang tạo phiếu...', async () => {
+    await uploadPendingTmAttachments('tmCreate', loai);
+    const payload = collectTmPhieuPayload('tmCreate', loai);
+    if(!payload.ngaySuKien || !payload.maBenhNhan || !payload.hoTenBenhNhan) throw new Error('Vui lòng nhập ngày, mã bệnh nhân/PID và họ tên bệnh nhân.');
     const res = await api('createTmPhieu', payload);
     clearListCaches();
     toast('Đã tạo phiếu chuyên môn Truyền máu');
@@ -6487,6 +6718,7 @@ function renderTmXutriDetailHtml(p, d){
       ${tmFieldHtml('1.2. Nội dung xử trí', xuTriInfo, 'tm-major-field')}
       ${tmFieldHtml('1.3. Thông tin nhóm máu/xét nghiệm liên quan', xetNghiemInfo, 'tm-major-field')}
     </div>
+    ${renderTmAttachmentViewHtml(d, '4. Ảnh/tài liệu đính kèm')}
   `;
 }
 
@@ -6687,6 +6919,8 @@ function tdkmmGiaoBanTextBlocks(p, d){
   if(x.tinhTrangHienTai) lines.push(`- Tình trạng hiện tại (tử vong, xin về, ...): ${x.tinhTrangHienTai}`);
   if(x.ketLuanTdkmm) lines.push(`- Kết luận: ${x.ketLuanTdkmm}`);
   if(x.noiDungTheoDoiBanGiao) lines.push(`- Kiến nghị (việc cần theo dõi, bàn giao tiếp,...): ${x.noiDungTheoDoiBanGiao}`);
+  const attachText = tmAttachmentNamesText(d);
+  if(attachText){ lines.push('g. Ảnh/tài liệu đính kèm'); lines.push(attachText); }
   return lines.filter(v => tmTxt(v));
 }
 
@@ -6699,6 +6933,7 @@ function renderTmTdkmmDetailHtml(p, d){
       <div class="tdkmm-template-note">Bản xem này được dựng trực tiếp trong app từ dữ liệu phiếu, không tạo Google Docs/PDF. File PDF chính thức chỉ được tạo khi nhấn nút <strong>Xuất PDF</strong>.</div>
       ${renderTdkmmTemplatePl11Html(p, x)}
       ${renderTdkmmTemplatePl12Html(p, x)}
+      ${renderTmAttachmentViewHtml(d, 'Trang ảnh/tài liệu đính kèm')}
     </div>
   `;
 }
@@ -6750,6 +6985,8 @@ function tmXuTriGiaoBanLines(items, includePatientNo=true){
     if(blood) lines.push('- ' + blood);
     if(d.khangTheBatThuong) lines.push(`- Sàng lọc kháng thể bất thường: ${d.khangTheBatThuong}`);
     if(d.luuYKhac) lines.push(`- Các lưu ý khác: ${d.luuYKhac}`);
+    const attachText = tmAttachmentNamesText(d);
+    if(attachText){ lines.push('d. Ảnh/tài liệu đính kèm'); lines.push(attachText); }
     return lines.filter(x => tmTxt(x)).join('\n');
   }).join('\n\n');
 }
@@ -6821,6 +7058,7 @@ function renderTmXuTriGiaoBanCardHtml(items){
       ${tmReportItemHtml('a. Thông tin người bệnh', patientInfo)}
       ${tmReportItemHtml('b. Nội dung xử trí', xuTriInfo)}
       ${tmReportItemHtml('c. Thông tin nhóm máu/xét nghiệm liên quan', xetNghiemInfo)}
+      ${renderTmAttachmentInlineHtml(d, 'd. Ảnh/tài liệu đính kèm')}
     `;
   }).join('') : '<div class="report-value">Không có bệnh nhân nào cần xử trí chuyên môn.</div>';
   return `<div class="report-day"><div class="report-day-title">1. Bệnh nhân cần xử trí chuyên môn</div>${body}</div>`;
@@ -6845,6 +7083,7 @@ function renderTmTdkmmGiaoBanCardHtml(items){
     if(currentTitle) htmlParts.push(tmReportItemHtml(currentTitle, tmDetailValue(current)));
     const labHtml = `<div class="tdkmm-gb-lab-table">${renderTdkmmLabViewTable(d)}</div>${renderTdkmmLabMobileSummary(d)}`;
     htmlParts.splice(htmlParts.length - 1, 0, `<div class="report-item"><div class="report-label">e. Kết quả xét nghiệm tai biến truyền máu</div><div class="report-value has-table">${labHtml}</div></div>`);
+    if(tmAttachmentItems(d).length) htmlParts.splice(htmlParts.length - 1, 0, renderTmAttachmentInlineHtml(d, 'g. Ảnh/tài liệu đính kèm'));
     return htmlParts.join('');
   }).join('') : '<div class="report-value">Không có bệnh nhân nào có tai biến liên quan đến truyền máu.</div>';
   return `<div class="report-day"><div class="report-day-title">2. Tác dụng không mong muốn liên quan đến truyền máu</div>${body}</div>`;
@@ -6882,6 +7121,7 @@ function showTmPhieuModal(p){
       <div class="btn-row sign-bottom-small">${isTdkmm ? `<button class="btn primary" onclick="openTdkmmPdfExportDialog('${escAttr(p.phieuTMID || p.id)}')">Xuất PDF</button>` : ''}<button class="btn secondary" onclick="closeModal()">Đóng</button></div>
     </div>
   `);
+  setTimeout(() => loadTmAttachmentImages(document.getElementById('modalRoot') || document), 0);
 }
 
 
@@ -7299,8 +7539,8 @@ window.editTmPhieu = async function(phieuTMID, btn){
   const data = Object.assign({}, p.data || {}, {maBenhNhan:p.maBenhNhan, hoTenBenhNhan:p.hoTenBenhNhan, namSinh:p.namSinh, khoaPhongDieuTri:p.khoaPhongDieuTri});
   openModal(`<div class="modal-card"><div class="modal-head"><div class="modal-title">Sửa phiếu</div><button class="close-btn" onclick="closeModal()">×</button></div>${renderTmPhieuFormHtml(p.loaiPhieuTM, data, 'tmEdit')}<div class="btn-row"><button id="saveTmEditBtn" class="btn primary">Lưu cập nhật</button><button class="btn secondary" onclick="closeModal()">Đóng</button></div></div>`);
   bindTmPhieuFormEvents('tmEdit', p.loaiPhieuTM);
-  $('#saveTmEditBtn').addEventListener('click', () => withButton($('#saveTmEditBtn'), 'Đang lưu...', async () => { await api('updateTmPhieu', Object.assign({phieuTMID}, collectTmPhieuPayload('tmEdit', p.loaiPhieuTM))); toast('Đã cập nhật phiếu'); closeModal(); await loadDsPhieuList(); }));
-  setTimeout(() => $$('textarea').forEach(autoGrow), 0);
+  $('#saveTmEditBtn').addEventListener('click', () => withButton($('#saveTmEditBtn'), 'Đang lưu...', async () => { await uploadPendingTmAttachments('tmEdit', p.loaiPhieuTM); await api('updateTmPhieu', Object.assign({phieuTMID}, collectTmPhieuPayload('tmEdit', p.loaiPhieuTM))); toast('Đã cập nhật phiếu'); closeModal(); await loadDsPhieuList(); }));
+  setTimeout(() => { $$('textarea').forEach(autoGrow); loadTmAttachmentImages(document.getElementById('modalRoot') || document); }, 0);
 }
 
 
@@ -8457,7 +8697,7 @@ function renderGiaoBanModal(){
       </div>
     </div>
   `, true);
-  setTimeout(() => { $$('textarea').forEach(autoGrow); setupSignaturePad(); normalizeChairInput(); syncSignModeWithChair(); scheduleViDatePickerEnhance(); }, 0);
+  setTimeout(() => { $$('textarea').forEach(autoGrow); setupSignaturePad(); normalizeChairInput(); syncSignModeWithChair(); scheduleViDatePickerEnhance(); loadTmAttachmentImages(document.getElementById('modalRoot') || document); }, 0);
 }
 
 
