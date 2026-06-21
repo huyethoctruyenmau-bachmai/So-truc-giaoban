@@ -4770,10 +4770,21 @@
 ========================================================= */
 
 // ===== MODULE: JS_CONFIG_STATE_START =====
-const APP_VERSION = 'INDEX-216.210626-MOBILE-BIENBANHOP-FULLWIDTH';
+const APP_VERSION = 'INDEX-217.210626-PHANQUYEN-SETUP-TAIKHOAN';
 
-function canOpenAdminSettings(){
-  return !!(state.user && (state.user.isAdmin || String(state.user.chucVu || '').trim()));
+function isSystemAdminAccount(user){
+  const u = user || state.user || state.accountInfo || {};
+  const ma = String(u.maNhanVien || u.maNV || u.ma || '').trim();
+  return ma === '12924' || !!u.isAdmin;
+}
+
+function hasEquipmentSettingsAccess(user){
+  const u = user || state.user || state.accountInfo || {};
+  return isSystemAdminAccount(u) || !!String(u.chucVu || '').trim();
+}
+
+function canOpenAdminSettings(user){
+  return isSystemAdminAccount(user || state.user || state.accountInfo || {});
 }
 const API_URL = 'https://script.google.com/macros/s/AKfycbxLHKUczat2WOH1R4W_YVVsUeBAmEuJ-4EjOEWNuBYXvX0oL4Dr6OhyO8f4lHPfn-8Nmg/exec';
 
@@ -9609,7 +9620,7 @@ function renderAccountTab(){
   const root = $('#tab-account');
   if(!root) return;
   const info = accountInfoFallback();
-  const isAdmin = !!(state.user?.isAdmin || info.isAdmin);
+  const isAdmin = isSystemAdminAccount(state.user || info) || isSystemAdminAccount(info);
   const view = state.accountView || 'info';
   const isMobile = isAccountMobileLayout();
   const setupButtons = view === 'setup' ? accountSetupButtonsHtml(state.accountSetupSection || '') : '';
@@ -9677,7 +9688,7 @@ function accountMenuButton(view, icon, label, active){
 function openAccountActionView(view){
   const target = view || 'info';
   const info = accountInfoFallback();
-  const isAdmin = !!(state.user?.isAdmin || info.isAdmin);
+  const isAdmin = isSystemAdminAccount(state.user || info) || isSystemAdminAccount(info);
 
   if(isAccountMobileLayout()){
     if(target === 'edit' || target === 'password'){
@@ -9808,19 +9819,45 @@ function renderAccountSetupPanel(){
 }
 
 function accountSetupButtonsHtml(active){
+  const items = getAllowedAccountSetupItems_();
+  if(!items.length) return '';
+  const safeActive = items.some(item => item[0] === active) ? active : '';
+  return `<div class="account-setup-buttons">${items.map(([key,icon,label]) => `<button class="btn ${safeActive === key ? 'primary' : 'secondary'} account-setup-btn" type="button" onclick="openAccountSetupSection('${key}')"><span class="btn-icon">${icon2d(icon)}</span><span class="btn-label">${esc(label)}</span></button>`).join('')}</div>`;
+}
+
+function getAllowedAccountSetupItems_(){
   const items = [
-    ['signature','signature','Chữ ký'],
-    ['equipment','equipment','Cấu hình trang thiết bị'],
-    ['templates','file','Mẫu phiếu họp/giao ban'],
-    ['global','puzzle','Cấu hình biến toàn cục'],
-    ['variables','book','Bảng biến mẫu'],
-    ['info','link','Thông tin chung']
+    ['signature','signature','Chữ ký']
   ];
-  return `<div class="account-setup-buttons">${items.map(([key,icon,label]) => `<button class="btn ${active === key ? 'primary' : 'secondary'} account-setup-btn" type="button" onclick="openAccountSetupSection('${key}')"><span class="btn-icon">${icon2d(icon)}</span><span class="btn-label">${esc(label)}</span></button>`).join('')}</div>`;
+  if(hasEquipmentSettingsAccess()){
+    items.push(['equipment','equipment','Cấu hình trang thiết bị']);
+  }
+  if(canOpenAdminSettings()){
+    items.push(
+      ['templates','file','Mẫu phiếu họp/giao ban'],
+      ['global','puzzle','Cấu hình biến toàn cục'],
+      ['variables','book','Bảng biến mẫu'],
+      ['info','link','Thông tin chung']
+    );
+  }
+  return items;
+}
+
+function canOpenAccountSetupSection(section){
+  const key = section || 'signature';
+  return getAllowedAccountSetupItems_().some(item => item[0] === key);
 }
 
 function openAccountSetupSection(section){
-  state.accountSetupSection = section || '';
+  section = section || 'signature';
+  if(!canOpenAccountSetupSection(section)){
+    state.accountSetupSection = 'signature';
+    state.accountView = 'setup';
+    toast('Tài khoản hiện tại không có quyền mở mục cấu hình này.');
+    renderAccountTab();
+    return;
+  }
+  state.accountSetupSection = section;
   state.accountView = 'setup';
   if(isAccountMobileLayout()){
     openModal(`
@@ -10074,11 +10111,15 @@ function renderSettingsTab(){
 }
 
 function renderAccountSetupSectionHtml(section){
-  if(section === 'equipment') return renderEquipmentSettingsSection();
-  if(section === 'templates') return renderPdfTemplateSettingsSection();
-  if(section === 'global') return renderPdfGlobalSettingsSection();
-  if(section === 'variables') return renderPdfVariablesSettingsSection();
-  if(section === 'info') return renderGeneralInfoSettingsSection();
+  const key = section || 'signature';
+  if(!canOpenAccountSetupSection(key)){
+    return `<div class="empty">Tài khoản hiện tại không có quyền xem mục cấu hình này.</div>`;
+  }
+  if(key === 'equipment') return renderEquipmentSettingsSection();
+  if(key === 'templates') return renderPdfTemplateSettingsSection();
+  if(key === 'global') return renderPdfGlobalSettingsSection();
+  if(key === 'variables') return renderPdfVariablesSettingsSection();
+  if(key === 'info') return renderGeneralInfoSettingsSection();
   return renderMySignatureSettingsCard();
 }
 
@@ -10090,8 +10131,8 @@ function bindAccountSetupSection(section){
 }
 
 function renderEquipmentSettingsSection(){
-  if(!canOpenAdminSettings()){
-    return `<div class="empty">Chỉ tài khoản quản trị hoặc nhân sự có Chức vụ được cấu hình trang thiết bị.</div>`;
+  if(!hasEquipmentSettingsAccess()){
+    return `<div class="empty">Chỉ nhân sự có Chức vụ hoặc admin tổng được cấu hình trang thiết bị.</div>`;
   }
   const dept = state.user?.khoaPhong || state.user?.phongLamViec || 'Khoa/phòng hiện tại';
   const isTM = isTruyenMauDept(dept);
@@ -10118,7 +10159,7 @@ function renderEquipmentSettingsSection(){
 
 function renderPdfTemplateSettingsSection(){
   if(!canOpenAdminSettings()){
-    return `<div class="empty">Chỉ tài khoản quản trị hoặc nhân sự có Chức vụ được cấu hình mẫu phiếu họp/giao ban.</div>`;
+    return `<div class="empty">Chỉ admin tổng được cấu hình mẫu phiếu họp/giao ban.</div>`;
   }
   return `
     <div class="card">
@@ -10136,7 +10177,7 @@ function renderPdfTemplateSettingsSection(){
 
 function renderPdfGlobalSettingsSection(){
   if(!canOpenAdminSettings()){
-    return `<div class="empty">Chỉ tài khoản quản trị hoặc nhân sự có Chức vụ được cấu hình biến toàn cục.</div>`;
+    return `<div class="empty">Chỉ admin tổng được cấu hình biến toàn cục.</div>`;
   }
   return `
     <div class="card">
@@ -10162,6 +10203,9 @@ function renderPdfGlobalSettingsSection(){
 }
 
 function renderPdfVariablesSettingsSection(){
+  if(!canOpenAdminSettings()){
+    return `<div class="empty">Chỉ admin tổng được xem bảng biến mẫu.</div>`;
+  }
   return `
     <div class="card">
       <h2 class="section-title">Bảng biến mẫu</h2>
@@ -10171,6 +10215,9 @@ function renderPdfVariablesSettingsSection(){
 }
 
 function renderGeneralInfoSettingsSection(){
+  if(!canOpenAdminSettings()){
+    return `<div class="empty">Chỉ admin tổng được xem thông tin chung cấu hình.</div>`;
+  }
   const user = state.user || {};
   return `
     <div class="card">
