@@ -4679,11 +4679,28 @@
     .tm-attachment-inline{border:1px solid var(--line);border-radius:12px;background:#fffafb;padding:10px;margin:8px 0 4px}
     .tm-attachment-inline .tm-attachment-list{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));margin-top:8px}
     .tm-attachment-inline .tm-attachment-thumb{height:110px}
+    .tm-attachment-thumb.is-image{cursor:pointer}
+    .tm-attachment-thumb.is-image:hover{background:#fff8fb}
+    .tm-attachment-preview-overlay{position:fixed;inset:0;z-index:101000;background:rgba(0,0,0,.86);display:flex;flex-direction:column;padding:env(safe-area-inset-top,0px) 10px env(safe-area-inset-bottom,0px)}
+    .tm-attachment-preview-head{height:48px;min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:10px;color:#fff}
+    .tm-attachment-preview-title{font-weight:700;font-size:14px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .tm-attachment-preview-close{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.16);color:#fff;font-size:24px;line-height:1;display:grid;place-items:center}
+    .tm-attachment-preview-body{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:auto}
+    .tm-attachment-preview-body img{max-width:100%;max-height:100%;object-fit:contain;background:#fff}
+    .tm-gb-tdkmm-line{margin:2px 0;line-height:1.45;white-space:normal}
+    .tm-gb-tdkmm-section{font-weight:700;color:var(--text);margin:8px 0 4px;line-height:1.45}
+    .tm-gb-gap{display:inline-block;width:28px;max-width:7vw}
+    .tm-gb-red{color:#d93025!important}
+    .tm-gb-red-bold{color:#d93025!important;font-weight:800!important}
+    .tm-gb-lab-block{margin-top:6px}
     @media(max-width:760px){
       .tm-attachment-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
       .tm-attachment-thumb{height:112px}
       .tm-attachment-actions .btn{width:auto!important;min-height:34px!important;height:34px!important;padding:0 12px!important}
       .tm-attachment-actions input[type="file"]{width:100%}
+      .tm-gb-gap{display:block;width:0;height:0}
+      .tm-attachment-preview-overlay{padding-left:0;padding-right:0}
+      .tm-attachment-preview-body img{width:100%;height:auto;max-height:none}
     }
 
 </style>
@@ -4728,7 +4745,7 @@
       <p><strong>PHẦN MỀM SỔ TRỰC - GIAO BAN</strong></p>
       <p>Developed by Nguyễn Văn Chính</p>
       <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
-      <p class="login-version">Version: INDEX-218.220626-ANH-FILE-DINHKEM-TM</p>
+      <p class="login-version">Version: INDEX-219.220626-TDKMM-GIAOBAN-ANH-INAPP</p>
     </div>
   </div>
 
@@ -4772,7 +4789,7 @@
       <button class="tab-btn" data-tab="meeting"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="6" r="2.1"/><circle cx="5.8" cy="9.3" r="1.9"/><circle cx="18.2" cy="9.3" r="1.9"/><path d="M8.6 13.2c.8-1.4 2-2.1 3.4-2.1s2.6.7 3.4 2.1"/><path d="M2.8 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><path d="M15.2 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><ellipse cx="12" cy="16.6" rx="6.3" ry="2.2"/><path d="M12 18.8v2.2M8.7 21h6.6"/></svg></span><span>Họp</span></button>
       <button class="tab-btn" data-tab="pdf"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h5M10 12h6M10 16h6"/></svg></span><span>DS phiếu</span></button>
     </nav>
-    <div class="app-version">Version: INDEX-218.220626-ANH-FILE-DINHKEM-TM</div>
+    <div class="app-version">Version: INDEX-219.220626-TDKMM-GIAOBAN-ANH-INAPP</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -4797,7 +4814,7 @@
 ========================================================= */
 
 // ===== MODULE: JS_CONFIG_STATE_START =====
-const APP_VERSION = 'INDEX-218.220626-ANH-FILE-DINHKEM-TM';
+const APP_VERSION = 'INDEX-219.220626-TDKMM-GIAOBAN-ANH-INAPP';
 
 function isSystemAdminAccount(user){
   const u = user || state.user || state.accountInfo || {};
@@ -5847,11 +5864,13 @@ function renderTmAttachmentListHtml(items=[], editable=false, prefix=''){
     const name = esc(it.name || 'Tệp đính kèm');
     const sub = [it.mimeType || '', tmAttachmentSizeText(it.size), it.uploadedByTen ? 'Tải lên: ' + it.uploadedByTen : ''].filter(Boolean).join(' · ');
     const thumb = it.isImage && it.fileId
-      ? `<img alt="${escAttr(it.name || 'Ảnh đính kèm')}" data-tm-attachment-img="${fileId}" loading="lazy"><span class="tm-attachment-loading">Đang tải ảnh...</span>`
-      : `<div><div class="tm-attachment-file-icon">📎</div><div>${esc(it.mimeType || 'Tài liệu')}</div></div>`;
-    const openBtn = it.fileId ? `<button class="btn secondary tm-attachment-remove" type="button" onclick="openTmAttachmentFile('${fileId}')">Mở file</button>` : '';
+      ? `<div class="tm-attachment-thumb is-image" onclick="previewTmAttachmentImage('${fileId}')" title="Xem ảnh trong app"><img alt="${escAttr(it.name || 'Ảnh đính kèm')}" data-tm-attachment-img="${fileId}" loading="lazy"><span class="tm-attachment-loading">Đang tải ảnh...</span></div>`
+      : `<div class="tm-attachment-thumb"><div><div class="tm-attachment-file-icon">📎</div><div>${esc(it.mimeType || 'Tài liệu')}</div></div></div>`;
+    const openBtn = it.fileId
+      ? (it.isImage ? `<button class="btn secondary tm-attachment-remove" type="button" onclick="previewTmAttachmentImage('${fileId}')">Xem ảnh</button>` : `<button class="btn secondary tm-attachment-remove" type="button" onclick="openTmAttachmentFile('${fileId}')">Mở/tải file</button>`)
+      : '';
     const removeBtn = editable ? `<button class="btn danger tm-attachment-remove" type="button" onclick="removeTmAttachment('${escAttr(prefix)}',${idx})">Xóa khỏi phiếu</button>` : '';
-    return `<div class="tm-attachment-item"><div class="tm-attachment-thumb">${thumb}</div><div class="tm-attachment-meta"><div class="tm-attachment-name">${name}</div><div class="tm-attachment-sub">${esc(sub)}</div>${openBtn}${removeBtn}</div></div>`;
+    return `<div class="tm-attachment-item">${thumb}<div class="tm-attachment-meta"><div class="tm-attachment-name">${name}</div><div class="tm-attachment-sub">${esc(sub)}</div>${openBtn}${removeBtn}</div></div>`;
   }).join('')}</div>`;
 }
 function renderTmAttachmentFieldHtml(d={}, prefix='tmCreate', title='4. Ảnh/tài liệu đính kèm'){
@@ -5993,6 +6012,25 @@ async function loadTmAttachmentImages(root=document){
       if(loading) loading.textContent = 'Không tải được ảnh';
     }
   }
+}
+window.closeTmAttachmentPreview = function(){
+  document.getElementById('tmAttachmentPreviewOverlay')?.remove();
+}
+window.previewTmAttachmentImage = async function(fileId){
+  try{
+    const res = await api('getTmAttachmentFileBase64', {fileId}, {timeoutMs: 120000});
+    const d = res.data || {};
+    if(!d.base64) throw new Error('Không có dữ liệu ảnh để hiển thị.');
+    const mime = d.mimeType || 'image/jpeg';
+    if(!/^image\//i.test(mime)) return openTmAttachmentFile(fileId);
+    closeTmAttachmentPreview();
+    const div = document.createElement('div');
+    div.id = 'tmAttachmentPreviewOverlay';
+    div.className = 'tm-attachment-preview-overlay';
+    div.innerHTML = `<div class="tm-attachment-preview-head"><div class="tm-attachment-preview-title">${esc(d.name || 'Ảnh đính kèm')}</div><button class="tm-attachment-preview-close" type="button" onclick="closeTmAttachmentPreview()">×</button></div><div class="tm-attachment-preview-body"><img alt="${escAttr(d.name || 'Ảnh đính kèm')}" src="data:${mime};base64,${d.base64}"></div>`;
+    div.addEventListener('click', e => { if(e.target === div) closeTmAttachmentPreview(); });
+    document.body.appendChild(div);
+  }catch(e){ toast(e.message || 'Không mở được ảnh đính kèm'); }
 }
 window.openTmAttachmentFile = async function(fileId){
   try{
@@ -6250,7 +6288,7 @@ function renderTmTdkmmFormHtml(d={}, prefix='tmCreate'){
       </div>
     </div>
     <div class="tdkmm-section-card">
-      ${renderTmAttachmentFieldHtml(d, prefix, '7.4. Ảnh/tài liệu đính kèm')}
+      ${renderTmAttachmentFieldHtml(d, prefix, '7. Ảnh/tài liệu đính kèm')}
     </div>
     <div class="tdkmm-section-card tdkmm-sign-card">
       <h3 class="sub-title">Người ký</h3>
@@ -6885,34 +6923,90 @@ function renderTdkmmTemplatePl12Html(p, x){
     ${tdkmmTemplateSignersHtml(x)}
   </div>`;
 }
+function tmGbSpan(value, cls=''){
+  const v = tmTxt(value);
+  return v ? `<span${cls ? ' class="' + cls + '"' : ''}>${esc(v)}</span>` : '';
+}
+function tmGbField(label, value, cls=''){
+  const v = tmGbSpan(value, cls);
+  return v ? `${esc(label)}: ${v}` : '';
+}
+function tmGbInline(parts){
+  return (parts || []).filter(Boolean).join('<span class="tm-gb-gap"></span>');
+}
+function tmGbLine(parts){
+  const html = Array.isArray(parts) ? tmGbInline(parts) : String(parts || '');
+  return html ? `<div class="tm-gb-tdkmm-line">- ${html}</div>` : '';
+}
+function tmGbSection(title){
+  return `<div class="tm-gb-tdkmm-section">${esc(title)}</div>`;
+}
+function tdkmmGiaoBanHeaderHtml(x){
+  return `<div class="tm-gb-tdkmm-line">${tmGbInline([tmGbField('Ngày ghi nhận', x.ngayGhiNhan), tmGbField('Người tạo phiếu', x.nguoiTaoPhieu)])}</div>`;
+}
+function tdkmmGiaoBanSectionHtml(p, d, includeExtra=true){
+  const x = tdkmmViewData(p, d);
+  const patientAge = tmTxt(x.tuoi) || tmAgeYearText(x, p);
+  const html = [];
+  html.push(tdkmmGiaoBanHeaderHtml(x));
+  html.push(tmGbSection('a. Thông tin người bệnh'));
+  html.push(tmGbLine([tmGbField('Họ tên', x.hoTenBenhNhan), tmGbField('Tuổi', patientAge), tmGbField('Giới', x.gioiTinh), tmGbField('PID', x.maBenhNhan)]));
+  html.push(tmGbLine(tmGbField('Chẩn đoán', x.chanDoan)));
+  html.push(tmGbLine([`Nhóm máu: ${tmGbField('ABO', x.nhomMauABO, 'tm-gb-red-bold')}`, tmGbField('Rh(D)', x.rhD, 'tm-gb-red')]));
+  html.push(tmGbLine([tmGbField('Khoa/phòng', x.khoaPhongDieuTriText), tmGbField('Giường', x.giuong)]));
+  html.push(tmGbSection('b. Thông tin truyền máu và đơn vị máu nghi ngờ'));
+  html.push(tmGbLine(tmGbField('Bắt đầu truyền', x.thoiDiemBatDauTruyenText)));
+  html.push(tmGbLine(tmGbField('Xuất hiện dấu hiệu đầu tiên', x.thoiDiemXuatHienDauHieuDauTienText)));
+  html.push(tmGbLine(tmGbField('Ngừng truyền', x.thoiDiemNgungTruyenText)));
+  html.push(tmGbLine([tmGbField('Mã đơn vị máu', x.maDonViMauNghiNgo || x.tenNguoiChoHoacMaDonVi), tmGbField('Loại chế phẩm', x.loaiMauChePhamNghiNgo), tmGbField('Thể tích', x.theTichDonViMau ? x.theTichDonViMau + ' ml' : '')]));
+  html.push(tmGbLine(tmGbInline([tmGbField('Tốc độ truyền', x.tocDoTruyen ? x.tocDoTruyen + ' giọt/ph' : ''), tmGbField('Thể tích đã truyền', x.theTichDonViMauDaTruyen ? x.theTichDonViMauDaTruyen + ' ml' : '')]).replace('<span class="tm-gb-gap"></span>', ' – ')));
+  html.push(tmGbLine([`Nhóm máu đơn vị máu: ${tmGbField('ABO', x.aboDonViMau, 'tm-gb-red-bold')}`, tmGbField('Rh', x.rhDonViMau, 'tm-gb-red')]));
+  html.push(tmGbLine([tmGbField('Ngày lấy máu', x.ngayLayMau ? dateVi(x.ngayLayMau) : ''), tmGbField('HSD', x.hanSuDung ? dateVi(x.hanSuDung) : '')]));
+  html.push(tmGbLine(tmGbField('Cơ sở lấy máu và điều chế', x.coSoLayMauDieuChe)));
+  html.push(tmGbSection('c. Thuốc/dịch truyền và diễn biến lâm sàng'));
+  html.push(tmGbLine(tmGbField('Dung dịch/thuốc dùng ngay trước phản ứng', x.dungDichThuocTruyenTruocPhanUng)));
+  html.push(tmGbLine(tmGbField('Dấu hiệu đầu tiên', x.dauHieuDauTien)));
+  html.push(tmGbLine(tmGbField('Thời điểm xuất hiện', x.thoiDiemXuatHienDauHieuDauTienText)));
+  html.push(tmGbLine(tmGbField('Mức độ phản ứng', x.mucDoPhanUng)));
+  html.push(tmGbLine(tmGbField('Diễn biến và xử trí đã thực hiện', x.dienBienVaXuTriDaThucHien)));
+  html.push(tmGbSection('d. Kiểm tra tại giường và lấy mẫu'));
+  html.push(tmGbLine(`Định nhóm ABO tại giường sau phản ứng: ${tmGbInline([tmGbField('Người bệnh', x.aboTaiGiuongNguoiBenhSauPhanUng, 'tm-gb-red-bold'), tmGbField('Đơn vị máu truyền', x.aboTaiGiuongDonViMauTruyen, 'tm-gb-red-bold')])}`));
+  html.push(tmGbLine(tmGbField('Thời điểm lấy mẫu máu người bệnh sau bất thường', tmDateTimeText(x.thoiDiemLayMauNguoiBenhSauBatThuong))));
+  html.push(tmGbLine(tmGbField('Thời điểm nhận thông báo và mẫu máu người bệnh', tmDateTimeText(x.thoiDiemNhanThongBaoVaMauNguoiBenh))));
+  if(includeExtra){
+    html.push(`<div class="report-item tm-gb-lab-block"><div class="report-label">e. Kết quả xét nghiệm tai biến truyền máu</div><div class="report-value has-table"><div class="tdkmm-gb-lab-table">${renderTdkmmLabViewTable(d)}</div>${renderTdkmmLabMobileSummary(d)}</div></div>`);
+    const fLines = [tmGbLine(tmGbField('Tình trạng hiện tại (tử vong, xin về, ...)', x.tinhTrangHienTai)), tmGbLine(tmGbField('Kết luận', x.ketLuanTdkmm)), tmGbLine(tmGbField('Kiến nghị (việc cần theo dõi, bàn giao tiếp,...)', x.noiDungTheoDoiBanGiao))].filter(Boolean).join('');
+    if(fLines) html.push(`<div class="report-item"><div class="report-label">f. Tình trạng hiện tại/Kết luận/Kiến nghị</div><div class="report-value">${fLines}</div></div>`);
+  }
+  return html.filter(Boolean).join('');
+}
 function tdkmmGiaoBanTextBlocks(p, d){
   const x = tdkmmViewData(p,d);
   const lines = [];
-  lines.push(tmJoinInline([x.ngayGhiNhan ? `Ngày ghi nhận: ${x.ngayGhiNhan}` : '', x.nguoiTaoPhieu ? `Người tạo phiếu: ${x.nguoiTaoPhieu}` : ''], ' – '));
+  const patientAge = tmTxt(x.tuoi) || tmAgeYearText(x, p);
+  lines.push(tmJoinInline([x.ngayGhiNhan ? `Ngày ghi nhận: ${x.ngayGhiNhan}` : '', x.nguoiTaoPhieu ? `Người tạo phiếu: ${x.nguoiTaoPhieu}` : '']));
   lines.push('a. Thông tin người bệnh');
-  lines.push('- ' + tmJoinInline([
-    x.hoTenBenhNhan ? `Họ tên: ${x.hoTenBenhNhan}` : '',
-    tmAgeYearText(x,p) ? `Tuổi/Năm sinh: ${tmAgeYearText(x,p)}` : '',
-    x.gioiTinh ? `Giới: ${x.gioiTinh}` : '',
-    x.maBenhNhan ? `PID: ${x.maBenhNhan}` : ''
-  ], ' – '));
+  lines.push('- ' + tmJoinInline([x.hoTenBenhNhan ? `Họ tên: ${x.hoTenBenhNhan}` : '', patientAge ? `Tuổi: ${patientAge}` : '', x.gioiTinh ? `Giới: ${x.gioiTinh}` : '', x.maBenhNhan ? `PID: ${x.maBenhNhan}` : '']));
   if(x.chanDoan) lines.push(`- Chẩn đoán: ${x.chanDoan}`);
-  lines.push('- ' + tmJoinInline([x.nhomMauABO ? `Nhóm máu: ABO ${x.nhomMauABO}` : '', x.rhD ? `Rh(D) ${x.rhD}` : ''], ' '));
-  if(x.khoaPhongDieuTriText || x.giuong) lines.push('- ' + tmJoinInline([x.khoaPhongDieuTriText ? `Khoa/phòng: ${x.khoaPhongDieuTriText}` : '', x.giuong ? `Giường: ${x.giuong}` : ''], ' – '));
+  lines.push('- ' + tmJoinInline([x.nhomMauABO ? `Nhóm máu: ABO: ${x.nhomMauABO}` : '', x.rhD ? `Rh(D): ${x.rhD}` : '']));
+  if(x.khoaPhongDieuTriText || x.giuong) lines.push('- ' + tmJoinInline([x.khoaPhongDieuTriText ? `Khoa/phòng: ${x.khoaPhongDieuTriText}` : '', x.giuong ? `Giường: ${x.giuong}` : '']));
   lines.push('b. Thông tin truyền máu và đơn vị máu nghi ngờ');
-  lines.push('- ' + tmJoinInline([x.thoiDiemBatDauTruyenText ? `Bắt đầu truyền: ${x.thoiDiemBatDauTruyenText}` : '', x.thoiDiemXuatHienDauHieuDauTienText ? `Xuất hiện dấu hiệu đầu tiên: ${x.thoiDiemXuatHienDauHieuDauTienText}` : '', x.thoiDiemNgungTruyenText ? `Ngừng truyền: ${x.thoiDiemNgungTruyenText}` : ''], ' – '));
-  lines.push('- ' + tmJoinInline([x.tenNguoiChoHoacMaDonVi ? `Tên người cho/Mã đơn vị máu: ${x.tenNguoiChoHoacMaDonVi}` : '', x.loaiMauChePhamNghiNgo ? `Loại chế phẩm: ${x.loaiMauChePhamNghiNgo}` : '', x.theTichDonViMau ? `Thể tích đơn vị: ${x.theTichDonViMau} ml` : ''], ' – '));
+  if(x.thoiDiemBatDauTruyenText) lines.push(`- Bắt đầu truyền: ${x.thoiDiemBatDauTruyenText}`);
+  if(x.thoiDiemXuatHienDauHieuDauTienText) lines.push(`- Xuất hiện dấu hiệu đầu tiên: ${x.thoiDiemXuatHienDauHieuDauTienText}`);
+  if(x.thoiDiemNgungTruyenText) lines.push(`- Ngừng truyền: ${x.thoiDiemNgungTruyenText}`);
+  lines.push('- ' + tmJoinInline([x.maDonViMauNghiNgo || x.tenNguoiChoHoacMaDonVi ? `Mã đơn vị máu: ${x.maDonViMauNghiNgo || x.tenNguoiChoHoacMaDonVi}` : '', x.loaiMauChePhamNghiNgo ? `Loại chế phẩm: ${x.loaiMauChePhamNghiNgo}` : '', x.theTichDonViMau ? `Thể tích: ${x.theTichDonViMau} ml` : '']));
   lines.push('- ' + tmJoinInline([x.tocDoTruyen ? `Tốc độ truyền: ${x.tocDoTruyen} giọt/ph` : '', x.theTichDonViMauDaTruyen ? `Thể tích đã truyền: ${x.theTichDonViMauDaTruyen} ml` : ''], ' – '));
-  lines.push('- ' + tmJoinInline([(x.aboDonViMau || x.rhDonViMau) ? `Nhóm máu đơn vị máu: ABO ${x.aboDonViMau || ''} Rh ${x.rhDonViMau || ''}` : '', x.ngayLayMau ? `Ngày lấy máu: ${dateVi(x.ngayLayMau)}` : '', x.hanSuDung ? `Hạn sử dụng: ${dateVi(x.hanSuDung)}` : ''], ' – '));
+  lines.push('- ' + tmJoinInline([(x.aboDonViMau || x.rhDonViMau) ? `Nhóm máu đơn vị máu: ABO: ${x.aboDonViMau || ''}` : '', x.rhDonViMau ? `Rh: ${x.rhDonViMau}` : '']));
+  lines.push('- ' + tmJoinInline([x.ngayLayMau ? `Ngày lấy máu: ${dateVi(x.ngayLayMau)}` : '', x.hanSuDung ? `HSD: ${dateVi(x.hanSuDung)}` : '']));
   if(x.coSoLayMauDieuChe) lines.push(`- Cơ sở lấy máu và điều chế: ${x.coSoLayMauDieuChe}`);
   lines.push('c. Thuốc/dịch truyền và diễn biến lâm sàng');
   if(x.dungDichThuocTruyenTruocPhanUng) lines.push(`- Dung dịch/thuốc dùng ngay trước phản ứng: ${x.dungDichThuocTruyenTruocPhanUng}`);
-  lines.push('- ' + tmJoinInline([x.dauHieuDauTien ? `Dấu hiệu đầu tiên: ${x.dauHieuDauTien}` : '', x.thoiDiemXuatHienDauHieuDauTienText ? `Thời điểm xuất hiện: ${x.thoiDiemXuatHienDauHieuDauTienText}` : ''], ' – '));
+  if(x.dauHieuDauTien) lines.push(`- Dấu hiệu đầu tiên: ${x.dauHieuDauTien}`);
+  if(x.thoiDiemXuatHienDauHieuDauTienText) lines.push(`- Thời điểm xuất hiện: ${x.thoiDiemXuatHienDauHieuDauTienText}`);
   if(x.mucDoPhanUng) lines.push(`- Mức độ phản ứng: ${x.mucDoPhanUng}`);
   if(x.dienBienVaXuTriDaThucHien) lines.push(`- Diễn biến và xử trí đã thực hiện: ${x.dienBienVaXuTriDaThucHien}`);
   lines.push('d. Kiểm tra tại giường và lấy mẫu');
-  lines.push('- Định nhóm ABO tại giường sau phản ứng:');
-  lines.push(`   Người bệnh ${x.aboTaiGiuongNguoiBenhSauPhanUng || ''} – Đơn vị máu truyền ${x.aboTaiGiuongDonViMauTruyen || ''}`);
+  lines.push('- Định nhóm ABO tại giường sau phản ứng: ' + tmJoinInline([x.aboTaiGiuongNguoiBenhSauPhanUng ? `Người bệnh: ${x.aboTaiGiuongNguoiBenhSauPhanUng}` : '', x.aboTaiGiuongDonViMauTruyen ? `Đơn vị máu truyền: ${x.aboTaiGiuongDonViMauTruyen}` : '']));
   if(x.thoiDiemLayMauNguoiBenhSauBatThuong) lines.push(`- Thời điểm lấy mẫu máu người bệnh sau bất thường: ${tmDateTimeText(x.thoiDiemLayMauNguoiBenhSauBatThuong)}`);
   if(x.thoiDiemNhanThongBaoVaMauNguoiBenh) lines.push(`- Thời điểm nhận thông báo và mẫu máu người bệnh: ${tmDateTimeText(x.thoiDiemNhanThongBaoVaMauNguoiBenh)}`);
   lines.push('f. Tình trạng hiện tại/Kết luận/Kiến nghị');
@@ -7066,25 +7160,10 @@ function renderTmXuTriGiaoBanCardHtml(items){
 
 function renderTmTdkmmGiaoBanCardHtml(items){
   const arr = items || [];
-  const body = arr.length ? arr.map((x, index) => {
-    const d = x.data || {};
-    const blocks = tdkmmGiaoBanTextBlocks(x, d);
-    const header = blocks.shift() || '';
-    const htmlParts = [tmReportItemHtml(tmPatientNo(2, index), header)];
-    let currentTitle = '';
-    let current = [];
-    blocks.forEach(line => {
-      if(/^[a-f]\.\s+/.test(line)){
-        if(currentTitle) htmlParts.push(tmReportItemHtml(currentTitle, tmDetailValue(current)));
-        currentTitle = line;
-        current = [];
-      }else current.push(line);
-    });
-    if(currentTitle) htmlParts.push(tmReportItemHtml(currentTitle, tmDetailValue(current)));
-    const labHtml = `<div class="tdkmm-gb-lab-table">${renderTdkmmLabViewTable(d)}</div>${renderTdkmmLabMobileSummary(d)}`;
-    htmlParts.splice(htmlParts.length - 1, 0, `<div class="report-item"><div class="report-label">e. Kết quả xét nghiệm tai biến truyền máu</div><div class="report-value has-table">${labHtml}</div></div>`);
-    if(tmAttachmentItems(d).length) htmlParts.splice(htmlParts.length - 1, 0, renderTmAttachmentInlineHtml(d, 'g. Ảnh/tài liệu đính kèm'));
-    return htmlParts.join('');
+  const body = arr.length ? arr.map((p, index) => {
+    const d = p.data || {};
+    const attachHtml = tmAttachmentItems(d).length ? renderTmAttachmentInlineHtml(d, 'g. Ảnh/tài liệu đính kèm') : '';
+    return `<div class="report-item tm-report-patient"><div class="report-label">${esc(tmPatientNo(2, index))}</div><div class="report-value">${tdkmmGiaoBanSectionHtml(p, d, true)}</div></div>${attachHtml}`;
   }).join('') : '<div class="report-value">Không có bệnh nhân nào có tai biến liên quan đến truyền máu.</div>';
   return `<div class="report-day"><div class="report-day-title">2. Tác dụng không mong muốn liên quan đến truyền máu</div>${body}</div>`;
 }
