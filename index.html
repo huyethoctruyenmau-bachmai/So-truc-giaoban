@@ -4942,7 +4942,7 @@
       <p><strong>MedOps Pro - Medical Operations Professional</strong></p>
       <p>Developed by Nguyễn Văn Chính</p>
       <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
-      <p class="login-version">Version: INDEX-235.230626-LOGIN-DESC-XANH-DUONG-THEM-KHOANG-CACH</p>
+      <p class="login-version">Version: INDEX-241.230626-DEVICE-CONFIG-FREE-TEXT</p>
     </div>
   </div>
 
@@ -4986,7 +4986,7 @@
       <button class="tab-btn" data-tab="meeting"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="6" r="2.1"/><circle cx="5.8" cy="9.3" r="1.9"/><circle cx="18.2" cy="9.3" r="1.9"/><path d="M8.6 13.2c.8-1.4 2-2.1 3.4-2.1s2.6.7 3.4 2.1"/><path d="M2.8 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><path d="M15.2 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><ellipse cx="12" cy="16.6" rx="6.3" ry="2.2"/><path d="M12 18.8v2.2M8.7 21h6.6"/></svg></span><span>Họp</span></button>
       <button class="tab-btn" data-tab="pdf"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h5M10 12h6M10 16h6"/></svg></span><span>DS phiếu</span></button>
     </nav>
-    <div class="app-version">Version: INDEX-235.230626-LOGIN-DESC-XANH-DUONG-THEM-KHOANG-CACH</div>
+    <div class="app-version">Version: INDEX-241.230626-DEVICE-CONFIG-FREE-TEXT</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -5011,7 +5011,7 @@
 ========================================================= */
 
 // ===== MODULE: JS_CONFIG_STATE_START =====
-const APP_VERSION = 'INDEX-240.230626-BO-GHI-CHU-FORM';
+const APP_VERSION = 'INDEX-241.230626-DEVICE-CONFIG-FREE-TEXT';
 const PWA_WINDOW_TITLE = 'MedOps Pro';
 function applyPwaWindowTitle(){
   try { document.title = PWA_WINDOW_TITLE; } catch(e) {}
@@ -5089,7 +5089,9 @@ const state = {
   initLoaded: false,
   personnel: [],
   khoaPhong: [],
-  tmEquipmentConfig: defaultTmEquipmentConfig(),
+  tmEquipmentConfig: [],
+  tmEquipmentConfigHasConfig: false,
+  equipmentConfigDept: '',
   pdfTemplateConfig: null,
   pdfContentTemplates: null,
   pdfTemplateVariables: [],
@@ -5365,6 +5367,8 @@ async function loadInitData(opts={}){
     state.personnel = res.data.personnel || [];
     state.khoaPhong = res.data.khoaPhong || [];
     state.tmEquipmentConfig = normalizeTmEquipmentConfig(res.data.tmEquipmentConfig || []);
+    state.tmEquipmentConfigHasConfig = !!res.data.tmEquipmentConfigHasConfig;
+    state.equipmentConfigDept = res.data.tmEquipmentConfigDept || state.user?.khoaPhong || state.user?.phongLamViec || '';
     state.pdfTemplateConfig = res.data.pdfTemplateConfig || null;
     state.mySignature = res.data.mySignature || state.mySignature || null;
     state.accountInfo = res.data.accountInfo || state.accountInfo || null;
@@ -5628,7 +5632,7 @@ function renderCreateTab(){
   state.selectedStaff = [];
   state.selectedStaffCandidate = null;
   $('#createLoai').addEventListener('change', updateCreateFormNumbering);
-  $('#createDept').addEventListener('change', updateCreateFormNumbering);
+  $('#createDept').addEventListener('change', handleCreateDeptChangeForEquipment);
   $('#addStaffBtn').addEventListener('click', addSelectedStaff);
   $('#staffSearch').addEventListener('input', handleStaffSearchInput);
   $('#staffSearch').addEventListener('focus', handleStaffSearchInput);
@@ -5639,6 +5643,10 @@ function renderCreateTab(){
   $('#createKhoMauBtn')?.addEventListener('click', submitCreatePhieu);
   updateCreateFormNumbering();
   refreshStaffList();
+  const currentCreateDept = $('#createDept')?.value || '';
+  if(currentCreateDept && (!state.equipmentConfigDept || !eqText(state.equipmentConfigDept, currentCreateDept))){
+    loadEquipmentConfigForDept(currentCreateDept).then(updateCreateFormNumbering);
+  }
   setTimeout(() => { $$('textarea').forEach(autoGrow); loadTmAttachmentImages(document.getElementById('modalRoot') || document); }, 0);
 }
 
@@ -5647,7 +5655,8 @@ function updateCreateFormNumbering(){
   const isReport = loai === LOAI_BAO_CAO;
   const isBloodStockReport = loai === LOAI_BAO_CAO_KHO_MAU;
   const isTmPhieu = isTmPhieuLoai(loai);
-  const isTM = isTruyenMauDept($('#createDept')?.value || '');
+  const createDeptValue = $('#createDept')?.value || '';
+  const isTM = isTruyenMauDept(createDeptValue);
   $('#reportBlock')?.classList.toggle('hidden', !isReport || isTmPhieu);
   $('#bloodStockReportBlock')?.classList.toggle('hidden', !isBloodStockReport);
   $('#regularPhieuBlock')?.classList.toggle('hidden', isTmPhieu || isBloodStockReport);
@@ -5666,7 +5675,7 @@ function updateCreateFormNumbering(){
   if($('#handoverLabel4')) $('#handoverLabel4').textContent = `${n}.4 Thời gian bàn giao`;
   if(isReport) ensureLoginUserInStaff();
   renderSoLieuTrucInput(isReport && isTM);
-  renderBanGiaoTaiSanInput(isTM);
+  renderBanGiaoTaiSanInput(hasConfiguredEquipmentForDept(createDeptValue));
   refreshStaffList();
   setTimeout(() => $$('textarea').forEach(autoGrow), 0);
 }
@@ -5923,10 +5932,10 @@ function updateTmPhatTong(){
   if(el) el.value = total;
 }
 
-function renderBanGiaoTaiSanInput(isTM){
+function renderBanGiaoTaiSanInput(useConfiguredEquipment){
   const box = $('#banGiaoTaiSanBox');
   if(!box) return;
-  if(!isTM){
+  if(!useConfiguredEquipment){
     if(!$('#banGiaoTaiSan')) box.innerHTML = `<textarea id="banGiaoTaiSan">Bình thường</textarea>`;
     return;
   }
@@ -6029,8 +6038,7 @@ function collectSoLieuTruc(){
 }
 
 function collectBanGiaoTaiSan(){
-  const isTM = isTruyenMauDept($('#createDept')?.value || '');
-  if(!isTM) return $('#banGiaoTaiSan')?.value || 'Bình thường';
+  if(!$('#tmCreateEquipmentBody')) return $('#banGiaoTaiSan')?.value || 'Bình thường';
   const items = $$('#tmCreateEquipmentBody .tm-eq-row').map((row, idx) => {
     const id = row.dataset.id || makeLocalId('eq');
     const name = row.querySelector('.tm-eq-name-input')?.value?.trim() || row.querySelector('.tm-eq-name-text')?.textContent?.trim() || '';
@@ -8405,9 +8413,9 @@ function collectEditSoLieuTruc(){
 }
 
 function renderEditBanGiaoTaiSanInput(p){
-  if(!isTruyenMauDept(p.khoaPhong || '')) return `<textarea id="editBGTaiSan">${esc(p.banGiaoTaiSan||'')}</textarea>`;
   const parsed = parseTmHandover(p.banGiaoTaiSan);
-  const items = parsed && parsed.length ? parsed : getTmEquipmentConfig();
+  if(!parsed || !parsed.length) return `<textarea id="editBGTaiSan">${esc(p.banGiaoTaiSan||'')}</textarea>`;
+  const items = parsed;
   const rows = items.map((it, idx) => renderEditTmEquipmentRow(it, idx, !!it.manual)).join('');
   return `
     <div class="tm-equip-wrap">
@@ -10831,18 +10839,29 @@ function renderEquipmentSettingsSection(){
   if(!hasEquipmentSettingsAccess()){
     return `<div class="empty">Chỉ nhân sự có Chức vụ hoặc admin tổng được cấu hình trang thiết bị.</div>`;
   }
-  const dept = state.user?.khoaPhong || state.user?.phongLamViec || 'Khoa/phòng hiện tại';
+  const defaultDept = state.user?.khoaPhong || state.user?.phongLamViec || '';
+  const dept = state.equipmentConfigDept || defaultDept || 'Khoa/phòng hiện tại';
   const isTM = isTruyenMauDept(dept);
+  const canChooseDept = Array.isArray(state.khoaPhong) && state.khoaPhong.length > 1;
+  const deptSelect = canChooseDept ? `
+        <div style="margin-bottom:10px">
+          <label>Chọn khoa/phòng cấu hình</label>
+          <select id="equipmentDeptSelect" class="equal-control">${state.khoaPhong.map(d => `<option value="${escAttr(d)}" ${eqText(d, dept) ? 'selected' : ''}>${esc(d)}</option>`).join('')}</select>
+        </div>` : '';
   const savedItems = getTmEquipmentConfig();
   const items = savedItems.length ? savedItems : emptyEquipmentPlaceholderRows_(2);
   const rows = items.map((it, idx) => renderSettingEquipmentRow(it, idx)).join('');
+  const note = state.tmEquipmentConfigHasConfig
+    ? 'Khoa/phòng này đang có cấu hình riêng. Khi tạo phiếu bàn giao sẽ dùng bảng thiết bị và lưu snapshot vào phiếu.'
+    : 'Khoa/phòng này chưa có cấu hình riêng. Khi tạo phiếu bàn giao sẽ dùng ô nhập tự do; nếu lưu danh mục tại đây thì các phiếu mới sẽ dùng bảng thiết bị.';
   return `
     <div class="card">
       <h2 class="section-title">Cấu hình trang thiết bị - ${esc(dept)}</h2>
-      <p class="meta">Danh mục này dùng để tự điền mục bàn giao tài sản cho khoa/phòng đang sử dụng. ${isTM ? 'Phòng Truyền máu có danh mục mặc định sẵn.' : 'Các phòng khác hiển thị bảng trống với 2 dòng chờ để tự thêm thiết bị.'}</p>
+      ${deptSelect}
+      <p class="meta">${esc(note)}</p>
       <div class="tm-equip-wrap">
         <table class="tm-equip-table">
-          <thead><tr><th rowspan="2">STT</th><th rowspan="2">Trang thiết bị, dụng cụ, hóa chất</th><th rowspan="2">Đơn vị</th><th colspan="2">Số lượng mặc định</th></tr><tr><th>HĐ BT</th><th>Hỏng</th></tr></thead>
+          <thead><tr><th rowspan="2">STT</th><th rowspan="2">Trang thiết bị, dụng cụ, hóa chất</th><th rowspan="2">Đơn vị</th><th colspan="2">Số lượng mặc định</th><th rowspan="2">Xóa</th></tr><tr><th>HĐ BT</th><th>Hỏng</th></tr></thead>
           <tbody id="tmEquipmentSettingsBody">${rows}</tbody>
         </table>
       </div>
@@ -11362,11 +11381,13 @@ function renderSettingEquipmentRow(it, idx){
       <td class="unit"><input class="setting-eq-unit unit-input" type="text" value="${escAttr(it.unit || '')}" placeholder="Đơn vị"></td>
       <td class="qty"><input class="setting-eq-ok-qty" type="number" min="0" step="1" inputmode="numeric" value="${escAttr(it.okQty ?? '')}"></td>
       <td class="qty"><input class="setting-eq-broken-qty" type="number" min="0" step="1" inputmode="numeric" value="${escAttr(it.brokenQty ?? '')}"></td>
+      <td><button class="btn danger" type="button" style="min-height:28px;height:28px;padding:0 8px" onclick="removeSettingTmEquipmentRow(this)">Xóa</button></td>
     </tr>
   `;
 }
 
 function bindSettingsEquipmentEvents(){
+  $('#equipmentDeptSelect')?.addEventListener('change', async e => { await loadEquipmentConfigForDept(e.target.value); renderSettingsTab(); });
   $$(`#tmEquipmentSettingsBody input[type="number"]`).forEach(el => el.addEventListener('input', () => cleanIntegerInput(el)));
   $('#addTmEquipmentBtn')?.addEventListener('click', addSettingTmEquipmentRow);
   $('#resetTmEquipmentBtn')?.addEventListener('click', resetDefaultTmEquipmentConfig);
@@ -11393,13 +11414,14 @@ window.removeSettingTmEquipmentRow = function(btn){
 }
 
 function resetDefaultTmEquipmentConfig(){
-  const dept = state.user?.khoaPhong || state.user?.phongLamViec || '';
+  const dept = state.equipmentConfigDept || state.user?.khoaPhong || state.user?.phongLamViec || '';
   const isTM = isTruyenMauDept(dept);
   const msg = isTM
     ? 'Khôi phục danh mục thiết bị mặc định? Các dòng đang sửa trên màn hình sẽ được thay bằng danh mục mặc định.'
     : 'Tạo lại 2 dòng trống để phòng tự thêm thiết bị? Các dòng đang sửa trên màn hình sẽ được thay bằng 2 dòng trống.';
   if(!confirm(msg)) return;
   state.tmEquipmentConfig = isTM ? defaultTmEquipmentConfig() : [];
+  state.tmEquipmentConfigHasConfig = isTM;
   renderSettingsTab();
 }
 
@@ -11425,12 +11447,17 @@ function collectSettingsTmEquipmentConfig(){
 
 async function saveTmEquipmentConfig(btn){
   const items = collectSettingsTmEquipmentConfig();
-  if(!items.length) return toast('Vui lòng nhập ít nhất một thiết bị.');
+  const dept = state.equipmentConfigDept || state.user?.khoaPhong || state.user?.phongLamViec || '';
+  if(!items.length){
+    const ok = confirm('Không có thiết bị nào trong danh sách. Lưu cấu hình trống sẽ bỏ cấu hình riêng của khoa/phòng này; khi tạo phiếu bàn giao sẽ chuyển sang ô nhập tự do. Tiếp tục?');
+    if(!ok) return;
+  }
   await withButton(btn, 'Đang lưu...', async () => {
-    const dept = state.user?.khoaPhong || state.user?.phongLamViec || '';
     const res = await api('saveTmEquipmentConfig', {items, khoaPhong: dept});
-    state.tmEquipmentConfig = normalizeTmEquipmentConfig(res.data.items || items);
-    toast('Đã lưu cấu hình thiết bị cho ' + (dept || 'khoa/phòng hiện tại'));
+    state.tmEquipmentConfig = normalizeTmEquipmentConfig(res.data.items || []);
+    state.tmEquipmentConfigHasConfig = !!res.data.hasConfig;
+    state.equipmentConfigDept = res.data.khoaPhong || dept;
+    toast(res.message || ('Đã lưu cấu hình thiết bị cho ' + (dept || 'khoa/phòng hiện tại')));
     renderSettingsTab();
     renderCreateTab();
   });
@@ -12067,7 +12094,7 @@ function defaultTmEquipmentConfig(){
 }
 
 function normalizeTmEquipmentConfig(items){
-  const source = Array.isArray(items) && items.length ? items : defaultTmEquipmentConfig();
+  const source = Array.isArray(items) ? items : [];
   const seen = {};
   return source.map((it, idx) => {
     const baseId = String(it.id || makeSlugId(it.name || ('eq_' + (idx + 1))));
@@ -12089,6 +12116,35 @@ function normalizeTmEquipmentConfig(items){
 
 function getTmEquipmentConfig(){
   return normalizeTmEquipmentConfig(state.tmEquipmentConfig || []);
+}
+
+function hasConfiguredEquipmentForDept(dept){
+  const d = String(dept || '').trim();
+  if(state.equipmentConfigDept && d && !eqText(state.equipmentConfigDept, d)) return false;
+  return !!state.tmEquipmentConfigHasConfig && getTmEquipmentConfig().length > 0;
+}
+
+async function loadEquipmentConfigForDept(dept){
+  const d = String(dept || '').trim();
+  if(!d) return;
+  if(state.equipmentConfigDept && eqText(state.equipmentConfigDept, d)) return;
+  try{
+    const res = await api('getTmEquipmentConfig', {khoaPhong:d});
+    state.tmEquipmentConfig = normalizeTmEquipmentConfig(res.data.items || []);
+    state.tmEquipmentConfigHasConfig = !!res.data.hasConfig;
+    state.equipmentConfigDept = res.data.khoaPhong || d;
+  }catch(e){
+    state.tmEquipmentConfig = [];
+    state.tmEquipmentConfigHasConfig = false;
+    state.equipmentConfigDept = d;
+    toast(e.message || 'Không tải được cấu hình thiết bị.');
+  }
+}
+
+async function handleCreateDeptChangeForEquipment(){
+  const dept = $('#createDept')?.value || '';
+  await loadEquipmentConfigForDept(dept);
+  updateCreateFormNumbering();
 }
 
 function getIntValue(id){
