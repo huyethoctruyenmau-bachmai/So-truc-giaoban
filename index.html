@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta id="viewportMeta" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-  <title>Sổ trực - Giao ban Phòng Truyền máu</title>
+  <title>MedOps Pro - Hệ thống quản lý hồ sơ nghiệp vụ y tế</title>
   <link rel="icon" type="image/png" sizes="64x64" href="./APP_ICON_SO_TRUC_64.png?v=130.070626-PWA-ICON-KHONG-VONG-TRANG">
   <link rel="shortcut icon" type="image/png" href="./APP_ICON_SO_TRUC_64.png?v=130.070626-PWA-ICON-KHONG-VONG-TRANG">
   <link rel="apple-touch-icon" sizes="180x180" href="./APP_ICON_SO_TRUC_180.png?v=130.070626-PWA-ICON-KHONG-VONG-TRANG">
-  <link rel="manifest" href="./manifest.json?v=130.070626-PWA-ICON-KHONG-VONG-TRANG">
+  <link rel="manifest" href="./manifest.json?v=223.230626-MEDOPS-PRO-BRANDING">
   <meta name="msapplication-TileImage" content="./APP_ICON_SO_TRUC_192.png?v=130.070626-PWA-ICON-KHONG-VONG-TRANG">
   <meta name="theme-color" content="#580824">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="Sổ trực">
+  <meta name="apple-mobile-web-app-title" content="MedOps Pro">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <!-- =========================================================
     INDEX CHUẨN HÓA 1 FILE - SỔ TRỰC/GIAO BAN
@@ -262,7 +262,8 @@
     .login-logo{width:76px;height:76px;border-radius:50%;background:#fff;display:grid;place-items:center;overflow:hidden;margin:0 auto 12px;box-shadow:0 2px 10px rgba(0,0,0,.12);position:relative}
     .login-hospital{font-family:"Segoe UI",Roboto,Arial,"Noto Sans",Tahoma,sans-serif;margin:0 0 5px;color:#1a73e8;font-size:15px;font-weight:600;text-align:center;letter-spacing:0;line-height:1.35}
     .login-center{font-family:"Segoe UI",Roboto,Arial,"Noto Sans",Tahoma,sans-serif;margin:0 0 5px;color:var(--wine);font-size:18px;font-weight:700;text-align:center;letter-spacing:0;line-height:1.35}
-    .login-title{font-family:"Segoe UI",Roboto,Arial,"Noto Sans",Tahoma,sans-serif;margin:0 0 16px;color:var(--wine-dark);font-size:25px;font-weight:800;text-align:center;letter-spacing:0;line-height:1.35}
+    .login-title{font-family:"Segoe UI",Roboto,Arial,"Noto Sans",Tahoma,sans-serif;margin:0 0 7px;color:var(--wine-dark);font-size:25px;font-weight:800;text-align:center;letter-spacing:0;line-height:1.35}
+    .login-app-desc{margin:0 0 16px;color:var(--g-muted);font-size:14px;font-weight:600;text-align:center;line-height:1.35}
     .login-version{margin:7px 0 0;color:#777;font-size:12px;text-align:center;line-height:1.4}
     .login-links{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:13px;font-size:13.5px;line-height:1.4}
     .login-links a{color:var(--g-blue);text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:6px}.login-links a:hover{text-decoration:underline}.login-links .forgot-link{color:var(--g-danger)}
@@ -4703,6 +4704,35 @@
       .tm-attachment-preview-body img{width:100%;height:auto;max-height:none}
     }
 
+
+    /* ===== PATCH 222: THÔNG BÁO TẠO PHIẾU THÀNH CÔNG TO HƠN, MÀU XANH, GIỮA MÀN HÌNH ===== */
+    .toast.toast-create-success{
+      left:50%!important;
+      top:50%!important;
+      bottom:auto!important;
+      transform:translate(-50%,-50%)!important;
+      z-index:100900!important;
+      background:#e8f7ef!important;
+      color:var(--g-ok)!important;
+      border:1px solid rgba(24,128,56,.28)!important;
+      border-radius:16px!important;
+      padding:16px 22px!important;
+      min-width:min(340px,calc(100vw - 40px))!important;
+      max-width:calc(100vw - 40px)!important;
+      text-align:center!important;
+      font-size:18px!important;
+      font-weight:800!important;
+      line-height:1.35!important;
+      box-shadow:0 12px 34px rgba(24,128,56,.22)!important;
+    }
+    @media (max-width:760px){
+      .toast.toast-create-success{
+        font-size:17px!important;
+        padding:15px 18px!important;
+        min-width:calc(100vw - 48px)!important;
+      }
+    }
+
 </style>
 </head>
 <body>
@@ -4710,7 +4740,7 @@
   <div id="bootScreen" class="boot-screen">
     <div class="boot-box">
       <div class="login-logo logo-frame"><span class="logo-fallback">BM</span><div class="brand-logo-safe"><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=87.050626-ACCOUNT-MOBILE-INFO-TOP-SETUP-LEFT" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div></div>
-      <p class="boot-title">Đang mở Sổ trực điện tử</p>
+      <p class="boot-title">Đang mở MedOps Pro</p>
       <p class="boot-sub">Đang khôi phục phiên đăng nhập</p>
     </div>
   </div>
@@ -4720,7 +4750,8 @@
       <div class="login-logo logo-frame"><span class="logo-fallback">BM</span><img class="logo-img" src="./LOGO%20TRON%20BVBM.png?v=87.050626-ACCOUNT-MOBILE-INFO-TOP-SETUP-LEFT" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async" onload="this.parentElement.classList.add('logo-loaded')" onerror="this.style.display='none';this.parentElement.classList.remove('logo-loaded')"></div>
       <p class="login-hospital">B&#7879;nh vi&#7879;n B&#7841;ch Mai</p>
       <p class="login-center">Trung t&#226;m Huy&#7871;t h&#7885;c v&#224; Truy&#7873;n m&#225;u</p>
-      <h1 class="login-title">S&#7893; Tr&#7921;c - Giao ban</h1>
+      <h1 class="login-title">MedOps Pro</h1>
+      <p class="login-app-desc">Hệ thống quản lý hồ sơ nghiệp vụ y tế</p>
       <div class="grid">
         <div class="col-12">
           <label>Mã nhân viên</label>
@@ -4742,10 +4773,11 @@
       </div>
     </div>
     <div class="login-author">
-      <p><strong>PHẦN MỀM SỔ TRỰC - GIAO BAN</strong></p>
+      <p><strong>MedOps Pro</strong></p>
+      <p>Hệ thống quản lý hồ sơ nghiệp vụ y tế</p>
       <p>Developed by Nguyễn Văn Chính</p>
       <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
-      <p class="login-version">Version: INDEX-221.230626-KHONG-VIEW-GIAOBAN-TM-FORMAT</p>
+      <p class="login-version">Version: INDEX-223.230626-MEDOPS-PRO-BRANDING</p>
     </div>
   </div>
 
@@ -4761,7 +4793,7 @@
       <div class="brand">
         <img class="brand-logo-plain" src="./LOGO%20TRON%20BVBM.png?v=87.050626-ACCOUNT-MOBILE-INFO-TOP-SETUP-LEFT" alt="Logo Bệnh viện Bạch Mai" referrerpolicy="no-referrer" loading="eager" decoding="async">
         <div>
-          <div id="brandTitle" class="brand-title">Trung t&#226;m Huy&#7871;t h&#7885;c v&#224; Truy&#7873;n m&#225;u</div>
+          <div id="brandTitle" class="brand-title">MedOps Pro</div>
           <div id="brandSub" class="brand-sub">Khoa</div>
         </div>
       </div>
@@ -4789,7 +4821,7 @@
       <button class="tab-btn" data-tab="meeting"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="6" r="2.1"/><circle cx="5.8" cy="9.3" r="1.9"/><circle cx="18.2" cy="9.3" r="1.9"/><path d="M8.6 13.2c.8-1.4 2-2.1 3.4-2.1s2.6.7 3.4 2.1"/><path d="M2.8 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><path d="M15.2 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><ellipse cx="12" cy="16.6" rx="6.3" ry="2.2"/><path d="M12 18.8v2.2M8.7 21h6.6"/></svg></span><span>Họp</span></button>
       <button class="tab-btn" data-tab="pdf"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h5M10 12h6M10 16h6"/></svg></span><span>DS phiếu</span></button>
     </nav>
-    <div class="app-version">Version: INDEX-221.230626-KHONG-VIEW-GIAOBAN-TM-FORMAT</div>
+    <div class="app-version">Version: INDEX-223.230626-MEDOPS-PRO-BRANDING</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -4814,7 +4846,7 @@
 ========================================================= */
 
 // ===== MODULE: JS_CONFIG_STATE_START =====
-const APP_VERSION = 'INDEX-221.230626-KHONG-VIEW-GIAOBAN-TM-FORMAT';
+const APP_VERSION = 'INDEX-223.230626-MEDOPS-PRO-BRANDING';
 
 function isSystemAdminAccount(user){
   const u = user || state.user || state.accountInfo || {};
@@ -5120,7 +5152,7 @@ function showApp(){
   $('#loginScreen').classList.add('hidden');
   $('#app').classList.remove('hidden');
   $('#userName').textContent = state.user?.tenNhanVien || 'Đang khôi phục phiên';
-  $('#brandTitle').innerHTML = 'Trung t&#226;m Huy&#7871;t h&#7885;c v&#224; Truy&#7873;n m&#225;u';
+  $('#brandTitle').textContent = 'MedOps Pro';
   $('#brandSub').textContent = 'Khoa/phòng: ' + (state.user?.khoaPhong || '');
   renderCreateTab();
   renderAccountTab();
@@ -9946,7 +9978,8 @@ function renderAccountTab(){
         ${actionPanel}
       </div>
       <div class="account-author">
-        <p style="margin:3px 0;font-weight:700;color:#5f3b49">PHẦN MỀM SỔ TRỰC - GIAO BAN</p>
+        <p style="margin:3px 0;font-weight:700;color:#5f3b49">MedOps Pro</p>
+        <p style="margin:3px 0">Hệ thống quản lý hồ sơ nghiệp vụ y tế</p>
         <p style="margin:3px 0">Developed by Nguyễn Văn Chính</p>
         <p style="margin:3px 0">Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
       </div>
@@ -9969,7 +10002,8 @@ function renderAccountTab(){
         </div>
       </div>
       <div class="account-author">
-        <p style="margin:3px 0;font-weight:700;color:#5f3b49">PHẦN MỀM SỔ TRỰC - GIAO BAN</p>
+        <p style="margin:3px 0;font-weight:700;color:#5f3b49">MedOps Pro</p>
+        <p style="margin:3px 0">Hệ thống quản lý hồ sơ nghiệp vụ y tế</p>
         <p style="margin:3px 0">Developed by Nguyễn Văn Chính</p>
         <p style="margin:3px 0">Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
       </div>
@@ -11703,10 +11737,15 @@ window.closeModal = function(){
 
 function toast(msg){
   const el = $('#toast');
+  const isCreateSuccess = String(msg || '').trim() === 'Tạo phiếu thành công';
   el.textContent = msg;
+  el.classList.toggle('toast-create-success', isCreateSuccess);
   el.classList.remove('hidden');
   clearTimeout(toast._t);
-  toast._t = setTimeout(() => el.classList.add('hidden'), 3500);
+  toast._t = setTimeout(() => {
+    el.classList.add('hidden');
+    el.classList.remove('toast-create-success');
+  }, isCreateSuccess ? 2200 : 3500);
 }
 
 function statusPill(status){
