@@ -4878,6 +4878,22 @@
       }
     }
 
+
+    /* ===== PATCH 236: LOGIN HERO XANH LÁ NHẠT + EXCEL HISTORY/CONFIG ===== */
+    .login-hero .login-hospital,
+    .login-hero .login-center{
+      color:#baf2c8!important;
+      text-shadow:0 1px 2px rgba(0,0,0,.28)!important;
+    }
+    .ds-toolbar-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    .excel-history-list{display:grid;gap:8px;margin-top:12px}
+    .excel-history-item{border:1px solid var(--line);border-radius:12px;background:#fff;padding:10px 12px;line-height:1.45}
+    .excel-history-title{font-weight:700;color:var(--wine-dark);margin-bottom:3px}
+    .excel-config-picker{max-width:760px}
+    .excel-config-picker .staff-list{margin-top:10px}
+    @media(max-width:760px){.ds-toolbar-actions{width:100%;justify-content:flex-end}}
+
+
 </style>
 </head>
 <body>
@@ -4992,7 +5008,7 @@
 ========================================================= */
 
 // ===== MODULE: JS_CONFIG_STATE_START =====
-const APP_VERSION = 'INDEX-235.230626-LOGIN-DESC-XANH-DUONG-THEM-KHOANG-CACH';
+const APP_VERSION = 'INDEX-236.230626-EXCEL-PERMISSION-LOGIN-GREEN';
 
 function isSystemAdminAccount(user){
   const u = user || state.user || state.accountInfo || {};
@@ -5007,6 +5023,14 @@ function hasEquipmentSettingsAccess(user){
 
 function canOpenAdminSettings(user){
   return isSystemAdminAccount(user || state.user || state.accountInfo || {});
+}
+
+function canCurrentUserExportExcel(){
+  return !!(state.permissions && state.permissions.canExportExcel) || canOpenAdminSettings();
+}
+
+function canConfigExcelExport(){
+  return !!(state.permissions && state.permissions.canConfigExcelExport) || canOpenAdminSettings();
 }
 const API_URL = 'https://script.google.com/macros/s/AKfycbxLHKUczat2WOH1R4W_YVVsUeBAmEuJ-4EjOEWNuBYXvX0oL4Dr6OhyO8f4lHPfn-8Nmg/exec';
 
@@ -5063,6 +5087,10 @@ const state = {
   accountInfo: null,
   accountOptions: {listPhongBan: [], listViTriTruc: [], listChucDanh: []},
   appSetup: {},
+  permissions: {canExportExcel:false, canConfigExcelExport:false},
+  excelExportAllowedUsers: [],
+  excelExportCandidate: null,
+  excelExportConfigLoaded: false,
   accountSetupOpen: false,
   accountView: 'info',
   accountSetupSection: '',
@@ -5331,6 +5359,7 @@ async function loadInitData(opts={}){
     state.accountInfo = res.data.accountInfo || state.accountInfo || null;
     state.accountOptions = res.data.accountOptions || state.accountOptions || {listPhongBan: [], listViTriTruc: [], listChucDanh: []};
     state.appSetup = res.data.appSetup || state.appSetup || {};
+    state.permissions = res.data.permissions || state.permissions || {canExportExcel:false, canConfigExcelExport:false};
     state.pdfContentTemplates = state.pdfTemplateConfig?.contentTemplates || null;
     state.pdfTemplateVariables = state.pdfTemplateConfig?.variables || [];
     state.initLoaded = true;
@@ -9974,8 +10003,10 @@ async function loadDsPhieuList(showRequiredToast=false){
     const res = await api('searchHoSo', payload);
     const items = sortDsPhieuByCreatedDesc(res.data.items || []);
     if(!items.length){ box.innerHTML = `<div class="empty">Không có phiếu phù hợp.</div>`; return; }
-    const exportBtn = canExportDsPhieuExcel(payload) ? `<button class="btn secondary" onclick="exportDsPhieuExcel(this)">Xuất Excel</button>` : '';
-    box.innerHTML = `<div class="ds-toolbar"><p class="meta">Tổng: ${items.length} phiếu</p>${exportBtn}</div>` + items.map(renderDsPhieuCard).join('');
+    const canExcel = canExportDsPhieuExcel(payload);
+    const exportBtn = canExcel ? `<button class="btn secondary" onclick="exportDsPhieuExcel(this)">Xuất Excel</button>` : '';
+    const historyBtn = canExcel ? `<button class="app-icon-btn" onclick="openExcelExportHistory(this)" title="Lịch sử xuất Excel" aria-label="Lịch sử xuất Excel">${icon2d('history')}</button>` : '';
+    box.innerHTML = `<div class="ds-toolbar"><p class="meta">Tổng: ${items.length} phiếu</p><div class="ds-toolbar-actions">${exportBtn}${historyBtn}</div></div>` + items.map(renderDsPhieuCard).join('');
   }catch(err){ box.innerHTML = `<div class="empty">${esc(err.message)}</div>`; }
 }
 
@@ -10126,7 +10157,7 @@ function renderDsPhieuCard(x){
 
 function canExportDsPhieuExcel(filters){
   const loai = String(filters?.loaiHoSo || '').trim();
-  return !!loai && loai !== 'Tất cả';
+  return canCurrentUserExportExcel() && !!loai && loai !== 'Tất cả';
 }
 
 function downloadBase64File(fileName, mimeType, base64){
@@ -10152,9 +10183,8 @@ function downloadBase64File(fileName, mimeType, base64){
 
 window.exportDsPhieuExcel = async function(btn){
   const payload = getDsPhieuFilters();
-  if(!canExportDsPhieuExcel(payload)){
-    return toast('Vui lòng chọn loại phiếu cụ thể trước khi xuất Excel.');
-  }
+  if(!payload.loaiHoSo || payload.loaiHoSo === 'Tất cả') return toast('Vui lòng chọn loại phiếu cụ thể trước khi xuất Excel.');
+  if(!canCurrentUserExportExcel()) return toast('Tài khoản chưa được cấp quyền xuất Excel.');
   await withButton(btn, 'Đang xuất Excel...', async () => {
     const res = await api('exportDsPhieuExcel', payload, {timeoutMs: 120000});
     const d = res.data || {};
@@ -10162,6 +10192,35 @@ window.exportDsPhieuExcel = async function(btn){
     downloadBase64File(d.fileName || 'DS_Phieu.xlsx', d.mimeType || 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', d.base64);
     toast('Đã tải file Excel');
   });
+}
+
+
+window.openExcelExportHistory = async function(btn){
+  const payload = getDsPhieuFilters();
+  if(!payload.loaiHoSo || payload.loaiHoSo === 'Tất cả') return toast('Vui lòng chọn loại phiếu cụ thể trước khi xem lịch sử xuất Excel.');
+  if(!canCurrentUserExportExcel()) return toast('Tài khoản chưa được cấp quyền xem lịch sử xuất Excel.');
+  const run = async () => {
+    const res = await api('getExcelExportHistory', payload);
+    const items = res.data?.items || [];
+    const filterLine = [payload.loaiHoSo, dateVi(payload.fromDate), dateVi(payload.toDate), payload.khoaPhong, payload.trangThai].filter(Boolean).join(' · ');
+    openModal(`
+      <div class="modal-card modal-small">
+        <div class="modal-head"><div class="modal-title">${icon2d('history')} Lịch sử xuất Excel</div><button class="close-btn" onclick="closeModal()">×</button></div>
+        <p class="meta" style="margin-top:10px">Bộ lọc: ${esc(filterLine)}</p>
+        ${items.length ? `<div class="excel-history-list">${items.map(renderExcelHistoryItem).join('')}</div>` : '<div class="empty" style="margin-top:12px">Chưa có lịch sử xuất Excel phù hợp với bộ lọc này.</div>'}
+        <p class="meta" style="margin-top:10px">File Excel được tải trực tiếp về máy khi xuất, không lưu trên Google Drive.</p>
+      </div>
+    `);
+  };
+  if(btn) return withButton(btn, 'Đang tải...', run);
+  try{ await run(); }catch(err){ toast(err.message); }
+}
+
+function renderExcelHistoryItem(item){
+  const time = item.thoiDiem ? dateTimeViColon(item.thoiDiem) : '';
+  const user = item.nguoiXuatTen || item.nguoiXuatMa || '';
+  const total = item.total ? `${item.total} dòng` : '';
+  return `<div class="excel-history-item"><div class="excel-history-title">${esc(time)} - ${esc(user)}</div><div class="meta">${esc(item.fileName || 'File Excel đã tải trực tiếp')}${total ? ' · ' + esc(total) : ''}</div></div>`;
 }
 
 // Giữ alias cũ để không lỗi nếu còn nút cũ trong DOM/cache trình duyệt.
@@ -10441,6 +10500,7 @@ function getAllowedAccountSetupItems_(){
       ['templates','file','Mẫu phiếu họp/giao ban'],
       ['global','puzzle','Cấu hình biến toàn cục'],
       ['variables','book','Bảng biến mẫu'],
+      ['excel','file','Cấu hình xuất Excel'],
       ['info','link','Thông tin chung']
     );
   }
@@ -10483,6 +10543,7 @@ function accountSetupSectionTitle(section){
     templates:'Mẫu phiếu họp/giao ban',
     global:'Cấu hình biến toàn cục',
     variables:'Bảng biến mẫu',
+    excel:'Cấu hình xuất Excel',
     info:'Thông tin chung'
   };
   return map[section] || 'Setup cấu hình';
@@ -10506,6 +10567,7 @@ async function loadAccountInfoSilently(){
     const res = await api('getAccountInfo', {});
     state.accountInfo = res.data.account || state.accountInfo;
     state.accountOptions = res.data.options || state.accountOptions;
+    state.permissions = res.data.permissions || state.permissions || {canExportExcel:false, canConfigExcelExport:false};
     if(state.activeTab === 'account') renderAccountTab();
   }catch(e){}
 }
@@ -10723,6 +10785,7 @@ function renderAccountSetupSectionHtml(section){
   if(key === 'templates') return renderPdfTemplateSettingsSection();
   if(key === 'global') return renderPdfGlobalSettingsSection();
   if(key === 'variables') return renderPdfVariablesSettingsSection();
+  if(key === 'excel') return renderExcelExportSettingsSection();
   if(key === 'info') return renderGeneralInfoSettingsSection();
   return renderMySignatureSettingsCard();
 }
@@ -10731,6 +10794,7 @@ function bindAccountSetupSection(section){
   if(section === 'equipment') return bindSettingsEquipmentEvents();
   if(section === 'templates') return bindPdfTemplateEvents();
   if(section === 'global') return bindPdfContentEvents();
+  if(section === 'excel') return bindExcelExportSettingsEvents();
   if(section === 'signature') return bindMySignatureEvents();
 }
 
@@ -10816,6 +10880,156 @@ function renderPdfVariablesSettingsSection(){
       <p class="meta">Copy đúng tên biến rồi dán vào file mẫu Word/Google Docs. Bảng này được lấy theo cấu hình biến của backend.</p>
       ${renderPdfVariableTable()}
     </div>`;
+}
+
+
+function renderExcelExportSettingsSection(){
+  if(!canConfigExcelExport()) return `<div class="empty">Chỉ admin tổng được cấu hình quyền xuất Excel.</div>`;
+  const rows = (state.excelExportAllowedUsers || []).map(p => {
+    const ma = p.maNhanVien || p.maNV || '';
+    const detail = [ma, p.khoaPhong || p.phongLamViec || '', p.chucDanh || p.chucVu || ''].filter(Boolean).join(' - ');
+    return `<span class="staff-chip">${esc(p.tenNhanVien || p.tenNV || ma)}${detail ? ` <span class="meta">(${esc(detail)})</span>` : ''}<button type="button" onclick="removeExcelExportAllowedStaff('${escAttr(ma)}')">×</button></span>`;
+  }).join('');
+  return `
+    <div class="card">
+      <h2 class="section-title">Cấu hình xuất Excel</h2>
+      <p class="meta">Admin tổng chọn nhân viên được quyền xuất Excel. Nhân viên chưa được cấp quyền sẽ không thấy nút Xuất Excel và backend cũng chặn thao tác xuất.</p>
+      <div class="excel-config-picker">
+        <label>Chọn nhân viên được quyền xuất Excel</label>
+        <div class="staff-picker autocomplete-container">
+          <div class="staff-input-row">
+            <input id="excelStaffSearch" class="autocomplete-input" autocomplete="off" placeholder="Gõ tên hoặc mã nhân viên">
+            <button id="addExcelStaffBtn" class="btn secondary staff-add-btn" type="button" title="Thêm nhân viên" aria-label="Thêm nhân viên">+</button>
+          </div>
+          <div id="excelStaffSuggestBox" class="staff-suggest autocomplete-dropdown hidden"></div>
+        </div>
+        <div id="excelAllowedStaffList" class="staff-list">${rows || '<span class="meta">Chưa cấp quyền xuất Excel cho nhân viên nào. Admin tổng mặc định luôn có quyền.</span>'}</div>
+      </div>
+      <div class="btn-row">
+        <button id="reloadExcelExportConfigBtn" class="btn secondary" type="button">Tải lại</button>
+        <button id="saveExcelExportConfigBtn" class="btn primary" type="button">Lưu cấu hình xuất Excel</button>
+      </div>
+    </div>`;
+}
+
+function bindExcelExportSettingsEvents(){
+  if(!canConfigExcelExport()) return;
+  $('#addExcelStaffBtn')?.addEventListener('click', addExcelExportAllowedStaff);
+  $('#excelStaffSearch')?.addEventListener('input', handleExcelStaffSearchInput);
+  $('#excelStaffSearch')?.addEventListener('focus', handleExcelStaffSearchInput);
+  $('#excelStaffSearch')?.addEventListener('keydown', handleExcelStaffSearchKeydown);
+  $('#reloadExcelExportConfigBtn')?.addEventListener('click', () => loadExcelExportConfig($('#reloadExcelExportConfigBtn'), true));
+  $('#saveExcelExportConfigBtn')?.addEventListener('click', () => saveExcelExportConfig($('#saveExcelExportConfigBtn')));
+  document.removeEventListener('click', closeExcelStaffSuggestOnOutsideClick);
+  document.addEventListener('click', closeExcelStaffSuggestOnOutsideClick);
+  if(!state.excelExportConfigLoaded) loadExcelExportConfig(null, false);
+}
+
+async function loadExcelExportConfig(btn, showToast){
+  const task = async () => {
+    const res = await api('getExcelExportConfig', {});
+    state.excelExportAllowedUsers = res.data?.allowedUsers || [];
+    state.excelExportConfigLoaded = true;
+    const box = $('#excelAllowedStaffList');
+    if(box) refreshExcelAllowedStaffList();
+    if(showToast) toast('Đã tải cấu hình xuất Excel.');
+  };
+  if(btn) return withButton(btn, 'Đang tải...', task);
+  try{ await task(); }catch(err){ toast(err.message); }
+}
+
+function handleExcelStaffSearchInput(){
+  const input = $('#excelStaffSearch');
+  const box = $('#excelStaffSuggestBox');
+  if(!input || !box) return;
+  const q = norm(input.value);
+  state.excelExportCandidate = null;
+  if(!q){ hideAutocompleteBox(box); box.innerHTML = ''; return; }
+  const matched = state.personnel.filter(p => {
+    const hay = norm([employeeCodeForAutocomplete(p), employeeNameForAutocomplete(p), p.chucDanh, p.chucVu, p.khoaPhong].filter(Boolean).join(' '));
+    return hay.includes(q);
+  }).slice(0, 8);
+  renderEmployeeAutocompleteItems(box, matched, 'chooseExcelExportStaffSuggestion');
+  showAutocompleteBox(input, box);
+  positionStaffSuggestBox(input, box);
+}
+
+function handleExcelStaffSearchKeydown(e){
+  const box = $('#excelStaffSuggestBox');
+  if(e.key === 'ArrowDown' || e.key === 'ArrowUp'){
+    if(box && !box.classList.contains('hidden')){ e.preventDefault(); moveAutocompleteActive(box, e.key === 'ArrowDown' ? 1 : -1); }
+    return;
+  }
+  if(e.key === 'Enter'){
+    e.preventDefault();
+    if(box && !box.classList.contains('hidden') && getAutocompleteItems(box).length) chooseActiveAutocompleteItem(box);
+    addExcelExportAllowedStaff();
+    return;
+  }
+  if(e.key === 'Escape') hideAutocompleteBox(box);
+}
+
+function closeExcelStaffSuggestOnOutsideClick(e){
+  const picker = e.target.closest('.staff-picker');
+  if(!picker) hideAutocompleteBox($('#excelStaffSuggestBox'));
+}
+
+window.chooseExcelExportStaffSuggestion = function(ma){
+  const person = state.personnel.find(p => norm(p.maNhanVien) === norm(ma));
+  if(!person) return;
+  state.excelExportCandidate = person;
+  const input = $('#excelStaffSearch');
+  if(input) input.value = person.tenNhanVien || '';
+  hideAutocompleteBox($('#excelStaffSuggestBox'));
+}
+
+function findExcelStaffFromInput(raw){
+  if(state.excelExportCandidate) return state.excelExportCandidate;
+  const q = norm(raw);
+  if(!q) return null;
+  return state.personnel.find(p => norm(p.maNhanVien) === q)
+    || state.personnel.find(p => norm(p.tenNhanVien) === q)
+    || state.personnel.find(p => norm([p.maNhanVien, p.tenNhanVien, p.chucDanh, p.khoaPhong].filter(Boolean).join(' ')).includes(q));
+}
+
+function addExcelExportAllowedStaff(){
+  const raw = $('#excelStaffSearch')?.value.trim() || '';
+  if(!raw) return;
+  const person = findExcelStaffFromInput(raw);
+  if(!person) return toast('Không tìm thấy nhân viên trong danh sách. Vui lòng chọn từ gợi ý.');
+  if(isSystemAdminAccount(person)) return toast('Admin tổng mặc định luôn có quyền xuất Excel.');
+  if((state.excelExportAllowedUsers || []).some(x => norm(x.maNhanVien) === norm(person.maNhanVien))) return toast('Nhân viên đã được cấp quyền xuất Excel.');
+  state.excelExportAllowedUsers = [...(state.excelExportAllowedUsers || []), person];
+  state.excelExportCandidate = null;
+  $('#excelStaffSearch').value = '';
+  hideAutocompleteBox($('#excelStaffSuggestBox'));
+  refreshExcelAllowedStaffList();
+}
+
+function refreshExcelAllowedStaffList(){
+  const box = $('#excelAllowedStaffList');
+  if(!box) return;
+  box.innerHTML = (state.excelExportAllowedUsers || []).length ? state.excelExportAllowedUsers.map(p => {
+    const ma = p.maNhanVien || p.maNV || '';
+    const detail = [ma, p.khoaPhong || p.phongLamViec || '', p.chucDanh || p.chucVu || ''].filter(Boolean).join(' - ');
+    return `<span class="staff-chip">${esc(p.tenNhanVien || p.tenNV || ma)}${detail ? ` <span class="meta">(${esc(detail)})</span>` : ''}<button type="button" onclick="removeExcelExportAllowedStaff('${escAttr(ma)}')">×</button></span>`;
+  }).join('') : '<span class="meta">Chưa cấp quyền xuất Excel cho nhân viên nào. Admin tổng mặc định luôn có quyền.</span>';
+}
+
+window.removeExcelExportAllowedStaff = function(ma){
+  state.excelExportAllowedUsers = (state.excelExportAllowedUsers || []).filter(p => norm(p.maNhanVien || p.maNV || '') !== norm(ma));
+  refreshExcelAllowedStaffList();
+}
+
+async function saveExcelExportConfig(btn){
+  const allowedUsers = (state.excelExportAllowedUsers || []).map(p => ({maNhanVien:p.maNhanVien || p.maNV || ''})).filter(p => p.maNhanVien);
+  await withButton(btn, 'Đang lưu...', async () => {
+    const res = await api('saveExcelExportConfig', {allowedUsers});
+    state.excelExportAllowedUsers = res.data?.allowedUsers || state.excelExportAllowedUsers || [];
+    state.excelExportConfigLoaded = true;
+    refreshExcelAllowedStaffList();
+    toast('Đã lưu cấu hình xuất Excel.');
+  });
 }
 
 function renderGeneralInfoSettingsSection(){
