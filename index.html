@@ -4850,7 +4850,7 @@
 ========================================================= */
 
 // ===== MODULE: JS_CONFIG_STATE_START =====
-const APP_VERSION = 'INDEX-227.230626-BAO-CAO-KHO-MAU-DS-7NGAY';
+const APP_VERSION = 'INDEX-229.230626-BOOT-CHO-INIT-XONG';
 
 function isSystemAdminAccount(user){
   const u = user || state.user || state.accountInfo || {};
@@ -5019,29 +5019,23 @@ async function boot(){
   bindGlobalEvents();
   renderAllTabsSkeleton();
 
-  // Nguyên tắc mới: khi trang vừa mở, KHÔNG BAO GIỜ hiện màn hình đăng nhập trước.
-  // Nếu còn token, mở app ngay bằng user đã lưu, rồi kiểm tra phiên ở nền.
+  // Khi còn phiên đăng nhập, giữ nguyên màn hình chờ cho tới khi dữ liệu khởi tạo tải xong.
+  // Không mở app sớm để tránh người dùng đang nhập phiếu bị render lại về phiếu mặc định.
   if(state.token){
-    if(state.user){
-      showApp();
-      loadInitData();
-      checkSessionInBackground();
-      return;
-    }
+    const bootToken = state.token;
+    const bootGuard = state.sessionGuard;
+    setBootStatus('Đang khôi phục phiên và tải dữ liệu...');
     try{
-      const bootToken = state.token;
-      const bootGuard = state.sessionGuard;
-      const res = await api('checkSession', {}, {token: bootToken});
+      await loadInitData({fromBoot:true, throwError:true});
       if(state.isLoggingOut || state.sessionGuard !== bootGuard || state.token !== bootToken) return;
-      state.user = res.data.user;
-      storeSession(state.token, state.user);
       showApp();
-      await loadInitData();
     }catch(err){
       clearStoredSession();
       state.token = '';
       state.user = null;
+      state.initLoaded = false;
       showLogin();
+      toast(err.message || 'Không tải được dữ liệu khởi tạo. Vui lòng đăng nhập lại.');
     }
     return;
   }
@@ -5058,7 +5052,8 @@ async function checkSessionInBackground(){
     if(state.isLoggingOut || state.sessionGuard !== checkingGuard || state.token !== checkingToken) return;
     state.user = res.data.user || state.user;
     storeSession(state.token, state.user);
-    showApp();
+    updateUserHeader();
+    if(state.activeTab === 'account') renderAccountTab();
   }catch(err){
     if(state.isLoggingOut || state.sessionGuard !== checkingGuard || state.token !== checkingToken) return;
     // Nếu API lỗi mạng tạm thời thì không đẩy người dùng về đăng nhập ngay.
@@ -5152,20 +5147,33 @@ function showLogin(){
   if(pw) pw.value = '';
 }
 
+function setBootStatus(text){
+  const el = $('#bootScreen .boot-sub');
+  if(el && text) el.textContent = text;
+}
+
+function updateUserHeader(){
+  const userNameEl = $('#userName');
+  const brandTitleEl = $('#brandTitle');
+  const brandSubEl = $('#brandSub');
+  if(userNameEl) userNameEl.textContent = state.user?.tenNhanVien || 'Đang khôi phục phiên';
+  if(brandTitleEl) brandTitleEl.textContent = 'Trung tâm Huyết học và Truyền máu';
+  if(brandSubEl) brandSubEl.textContent = 'Khoa/phòng: ' + (state.user?.khoaPhong || '');
+}
+
 function showApp(){
   $('#bootScreen').classList.add('hidden');
   $('#loginScreen').classList.add('hidden');
   $('#app').classList.remove('hidden');
-  $('#userName').textContent = state.user?.tenNhanVien || 'Đang khôi phục phiên';
-  $('#brandTitle').textContent = 'Trung tâm Huyết học và Truyền máu';
-  $('#brandSub').textContent = 'Khoa/phòng: ' + (state.user?.khoaPhong || '');
+  updateUserHeader();
   renderCreateTab();
   renderAccountTab();
 }
 
 async function loadInitData(opts={}){
-  if(state.initLoaded) return;
+  if(state.initLoaded) return true;
   try{
+    if(opts.fromBoot) setBootStatus('Đang tải dữ liệu khởi tạo...');
     if(opts.fromLogin) showLoginLoading(55, 'Đang tải dữ liệu...');
     const res = await api('getInitData', {});
     state.user = res.data.user || state.user;
@@ -5193,9 +5201,12 @@ async function loadInitData(opts={}){
       showLoginLoading(88, 'Đang tải dữ liệu...');
       await preloadStartupLists();
     }
+    return true;
   }catch(err){
     hideLoginLoading();
+    if(opts.throwError) throw err;
     toast(err.message);
+    return false;
   }
 }
 
