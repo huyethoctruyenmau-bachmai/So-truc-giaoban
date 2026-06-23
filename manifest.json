@@ -1,8 +1,8 @@
 {
-  "name": "MedOps Pro - Hệ thống quản lý hồ sơ nghiệp vụ y tế",
+  "name": "MedOps Pro",
   "short_name": "MedOps Pro",
-  "description": "MedOps Pro - Hệ thống quản lý hồ sơ nghiệp vụ y tế: sổ trực, bàn giao, giao ban và phiếu chuyên môn điện tử.",
-  "start_url": "./index.html?v=223.230626-MEDOPS-PRO-BRANDING",
+  "description": "MedOps Pro - Hệ thống quản lý hồ sơ nghiệp vụ y tế.",
+  "start_url": "./index.html?v=237.230626-PWA-TITLE-NO-DUP",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
