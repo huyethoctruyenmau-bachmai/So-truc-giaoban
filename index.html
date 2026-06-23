@@ -5008,7 +5008,7 @@
 ========================================================= */
 
 // ===== MODULE: JS_CONFIG_STATE_START =====
-const APP_VERSION = 'INDEX-237.230626-PWA-TITLE-NO-DUP';
+const APP_VERSION = 'INDEX-238.230626-EXCEL-HISTORY-NO-NOTE';
 const PWA_WINDOW_TITLE = 'MedOps Pro';
 function applyPwaWindowTitle(){
   try { document.title = PWA_WINDOW_TITLE; } catch(e) {}
@@ -10216,8 +10216,7 @@ window.openExcelExportHistory = async function(btn){
         <div class="modal-head"><div class="modal-title">${icon2d('history')} Lịch sử xuất Excel</div><button class="close-btn" onclick="closeModal()">×</button></div>
         <p class="meta" style="margin-top:10px">Bộ lọc: ${esc(filterLine)}</p>
         ${items.length ? `<div class="excel-history-list">${items.map(renderExcelHistoryItem).join('')}</div>` : '<div class="empty" style="margin-top:12px">Chưa có lịch sử xuất Excel phù hợp với bộ lọc này.</div>'}
-        <p class="meta" style="margin-top:10px">File Excel được tải trực tiếp về máy khi xuất, không lưu trên Google Drive.</p>
-      </div>
+              </div>
     `);
   };
   if(btn) return withButton(btn, 'Đang tải...', run);
