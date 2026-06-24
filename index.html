@@ -4942,7 +4942,7 @@
       <p><strong>MedOps Pro - Medical Operations Professional</strong></p>
       <p>Developed by Nguyễn Văn Chính</p>
       <p>Trung tâm Huyết học và Truyền máu - Bệnh viện Bạch Mai</p>
-      <p class="login-version">Version: INDEX-241.230626-DEVICE-CONFIG-FREE-TEXT</p>
+      <p class="login-version">Version: INDEX-242.230626-PRELOAD-EQUIPMENT-CONFIG-CACHE</p>
     </div>
   </div>
 
@@ -4986,7 +4986,7 @@
       <button class="tab-btn" data-tab="meeting"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="6" r="2.1"/><circle cx="5.8" cy="9.3" r="1.9"/><circle cx="18.2" cy="9.3" r="1.9"/><path d="M8.6 13.2c.8-1.4 2-2.1 3.4-2.1s2.6.7 3.4 2.1"/><path d="M2.8 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><path d="M15.2 15.7c.4-1.9 1.5-2.9 3-2.9s2.6 1 3 2.9"/><ellipse cx="12" cy="16.6" rx="6.3" ry="2.2"/><path d="M12 18.8v2.2M8.7 21h6.6"/></svg></span><span>Họp</span></button>
       <button class="tab-btn" data-tab="pdf"><span class="ico"><svg class="icon2d" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h5M10 12h6M10 16h6"/></svg></span><span>DS phiếu</span></button>
     </nav>
-    <div class="app-version">Version: INDEX-241.230626-DEVICE-CONFIG-FREE-TEXT</div>
+    <div class="app-version">Version: INDEX-242.230626-PRELOAD-EQUIPMENT-CONFIG-CACHE</div>
   </div>
   <datalist id="deptList"></datalist>
   <datalist id="staffDatalist"></datalist>
@@ -5011,7 +5011,7 @@
 ========================================================= */
 
 // ===== MODULE: JS_CONFIG_STATE_START =====
-const APP_VERSION = 'INDEX-241.230626-DEVICE-CONFIG-FREE-TEXT';
+const APP_VERSION = 'INDEX-242.230626-PRELOAD-EQUIPMENT-CONFIG-CACHE';
 const PWA_WINDOW_TITLE = 'MedOps Pro';
 function applyPwaWindowTitle(){
   try { document.title = PWA_WINDOW_TITLE; } catch(e) {}
@@ -5092,6 +5092,7 @@ const state = {
   tmEquipmentConfig: [],
   tmEquipmentConfigHasConfig: false,
   equipmentConfigDept: '',
+  equipmentConfigMap: {},
   pdfTemplateConfig: null,
   pdfContentTemplates: null,
   pdfTemplateVariables: [],
@@ -5311,6 +5312,10 @@ async function logout(){
   state.initLoaded = false;
   state.personnel = [];
   state.khoaPhong = [];
+  state.equipmentConfigMap = {};
+  state.tmEquipmentConfig = [];
+  state.tmEquipmentConfigHasConfig = false;
+  state.equipmentConfigDept = '';
   state.selectedStaff = [];
   state.currentGiaoBan = null;
   state.currentReports = [];
@@ -5366,9 +5371,11 @@ async function loadInitData(opts={}){
     if(state.token && state.user) storeSession(state.token, state.user);
     state.personnel = res.data.personnel || [];
     state.khoaPhong = res.data.khoaPhong || [];
+    state.equipmentConfigMap = normalizeEquipmentConfigMap(res.data.equipmentConfigMap || {});
     state.tmEquipmentConfig = normalizeTmEquipmentConfig(res.data.tmEquipmentConfig || []);
     state.tmEquipmentConfigHasConfig = !!res.data.tmEquipmentConfigHasConfig;
     state.equipmentConfigDept = res.data.tmEquipmentConfigDept || state.user?.khoaPhong || state.user?.phongLamViec || '';
+    syncEquipmentStateFromCache(state.equipmentConfigDept, {fallbackItems: state.tmEquipmentConfig, fallbackHasConfig: state.tmEquipmentConfigHasConfig});
     state.pdfTemplateConfig = res.data.pdfTemplateConfig || null;
     state.mySignature = res.data.mySignature || state.mySignature || null;
     state.accountInfo = res.data.accountInfo || state.accountInfo || null;
@@ -5644,8 +5651,9 @@ function renderCreateTab(){
   updateCreateFormNumbering();
   refreshStaffList();
   const currentCreateDept = $('#createDept')?.value || '';
-  if(currentCreateDept && (!state.equipmentConfigDept || !eqText(state.equipmentConfigDept, currentCreateDept))){
-    loadEquipmentConfigForDept(currentCreateDept).then(updateCreateFormNumbering);
+  if(currentCreateDept){
+    syncEquipmentStateFromCache(currentCreateDept);
+    renderBanGiaoTaiSanInput(hasConfiguredEquipmentForDept(currentCreateDept));
   }
   setTimeout(() => { $$('textarea').forEach(autoGrow); loadTmAttachmentImages(document.getElementById('modalRoot') || document); }, 0);
 }
@@ -11457,6 +11465,7 @@ async function saveTmEquipmentConfig(btn){
     state.tmEquipmentConfig = normalizeTmEquipmentConfig(res.data.items || []);
     state.tmEquipmentConfigHasConfig = !!res.data.hasConfig;
     state.equipmentConfigDept = res.data.khoaPhong || dept;
+    setCachedEquipmentEntryForDept(state.equipmentConfigDept, state.tmEquipmentConfig, state.tmEquipmentConfigHasConfig);
     toast(res.message || ('Đã lưu cấu hình thiết bị cho ' + (dept || 'khoa/phòng hiện tại')));
     renderSettingsTab();
     renderCreateTab();
@@ -12114,6 +12123,64 @@ function normalizeTmEquipmentConfig(items){
   }).filter(it => it.name);
 }
 
+function equipmentDeptKeyClient(dept){
+  return norm(dept || 'khoa_phong_khac') || 'khoa_phong_khac';
+}
+
+function normalizeEquipmentConfigMap(map){
+  const out = {};
+  const src = map && typeof map === 'object' && !Array.isArray(map) ? map : {};
+  Object.keys(src).forEach(key => {
+    const item = src[key] || {};
+    const dept = String(item.khoaPhong || item.dept || key || '').trim();
+    const mapKey = equipmentDeptKeyClient(dept || key);
+    out[mapKey] = {
+      khoaPhong: dept || key,
+      hasConfig: !!item.hasConfig,
+      items: normalizeTmEquipmentConfig(item.items || [])
+    };
+  });
+  return out;
+}
+
+function getCachedEquipmentEntryForDept(dept){
+  const d = String(dept || '').trim();
+  if(!d) return null;
+  const key = equipmentDeptKeyClient(d);
+  return state.equipmentConfigMap && state.equipmentConfigMap[key] ? state.equipmentConfigMap[key] : null;
+}
+
+function setCachedEquipmentEntryForDept(dept, items, hasConfig){
+  const d = String(dept || '').trim();
+  if(!d) return;
+  if(!state.equipmentConfigMap || typeof state.equipmentConfigMap !== 'object') state.equipmentConfigMap = {};
+  state.equipmentConfigMap[equipmentDeptKeyClient(d)] = {
+    khoaPhong: d,
+    hasConfig: !!hasConfig,
+    items: normalizeTmEquipmentConfig(items || [])
+  };
+}
+
+function syncEquipmentStateFromCache(dept, opts={}){
+  const d = String(dept || '').trim();
+  if(!d) return false;
+  const entry = getCachedEquipmentEntryForDept(d);
+  if(entry){
+    state.tmEquipmentConfig = normalizeTmEquipmentConfig(entry.items || []);
+    state.tmEquipmentConfigHasConfig = !!entry.hasConfig;
+    state.equipmentConfigDept = entry.khoaPhong || d;
+    return true;
+  }
+  if(opts && ('fallbackItems' in opts || 'fallbackHasConfig' in opts)){
+    state.tmEquipmentConfig = normalizeTmEquipmentConfig(opts.fallbackItems || []);
+    state.tmEquipmentConfigHasConfig = !!opts.fallbackHasConfig;
+    state.equipmentConfigDept = d;
+    setCachedEquipmentEntryForDept(d, state.tmEquipmentConfig, state.tmEquipmentConfigHasConfig);
+    return true;
+  }
+  return false;
+}
+
 function getTmEquipmentConfig(){
   return normalizeTmEquipmentConfig(state.tmEquipmentConfig || []);
 }
@@ -12124,27 +12191,34 @@ function hasConfiguredEquipmentForDept(dept){
   return !!state.tmEquipmentConfigHasConfig && getTmEquipmentConfig().length > 0;
 }
 
-async function loadEquipmentConfigForDept(dept){
+async function loadEquipmentConfigForDept(dept, opts={}){
   const d = String(dept || '').trim();
   if(!d) return;
-  if(state.equipmentConfigDept && eqText(state.equipmentConfigDept, d)) return;
+  if(!opts.force && syncEquipmentStateFromCache(d)) return;
+  if(!opts.force && state.equipmentConfigDept && eqText(state.equipmentConfigDept, d)) return;
   try{
     const res = await api('getTmEquipmentConfig', {khoaPhong:d});
     state.tmEquipmentConfig = normalizeTmEquipmentConfig(res.data.items || []);
     state.tmEquipmentConfigHasConfig = !!res.data.hasConfig;
     state.equipmentConfigDept = res.data.khoaPhong || d;
+    setCachedEquipmentEntryForDept(state.equipmentConfigDept, state.tmEquipmentConfig, state.tmEquipmentConfigHasConfig);
   }catch(e){
     state.tmEquipmentConfig = [];
     state.tmEquipmentConfigHasConfig = false;
     state.equipmentConfigDept = d;
+    setCachedEquipmentEntryForDept(d, [], false);
     toast(e.message || 'Không tải được cấu hình thiết bị.');
   }
 }
 
 async function handleCreateDeptChangeForEquipment(){
   const dept = $('#createDept')?.value || '';
-  await loadEquipmentConfigForDept(dept);
+  syncEquipmentStateFromCache(dept);
   updateCreateFormNumbering();
+  if(dept && !getCachedEquipmentEntryForDept(dept)){
+    await loadEquipmentConfigForDept(dept);
+    updateCreateFormNumbering();
+  }
 }
 
 function getIntValue(id){
