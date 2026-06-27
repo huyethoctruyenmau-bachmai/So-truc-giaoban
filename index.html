@@ -5011,7 +5011,7 @@
 ========================================================= */
 
 // ===== MODULE: JS_CONFIG_STATE_START =====
-const APP_VERSION = 'INDEX-243.230626-BANGIAO-1NGAY-HOP-4NGAY-REPORT-LINK';
+const APP_VERSION = 'INDEX-244.270626-EQUIPMENT-CONFIG-OWN-DEPT';
 const PWA_WINDOW_TITLE = 'MedOps Pro';
 function applyPwaWindowTitle(){
   try { document.title = PWA_WINDOW_TITLE; } catch(e) {}
@@ -5030,6 +5030,12 @@ function isSystemAdminAccount(user){
 function hasEquipmentSettingsAccess(user){
   const u = user || state.user || state.accountInfo || {};
   return isSystemAdminAccount(u) || !!String(u.chucVu || '').trim();
+}
+
+function getEquipmentManageDeptForCurrentUser(){
+  const own = String(state.user?.khoaPhong || state.user?.phongLamViec || state.accountInfo?.khoaPhong || state.accountInfo?.phongLamViec || '').trim();
+  if(canOpenAdminSettings()) return String(state.equipmentConfigDept || own || '').trim();
+  return own;
 }
 
 function canOpenAdminSettings(user){
@@ -10847,15 +10853,20 @@ function renderEquipmentSettingsSection(){
   if(!hasEquipmentSettingsAccess()){
     return `<div class="empty">Chỉ nhân sự có Chức vụ hoặc admin tổng được cấu hình trang thiết bị.</div>`;
   }
+  const isAdmin = canOpenAdminSettings();
   const defaultDept = state.user?.khoaPhong || state.user?.phongLamViec || '';
-  const dept = state.equipmentConfigDept || defaultDept || 'Khoa/phòng hiện tại';
+  const requestedDept = state.equipmentConfigDept || defaultDept || '';
+  const dept = isAdmin ? (requestedDept || defaultDept || 'Khoa/phòng hiện tại') : (defaultDept || 'Khoa/phòng hiện tại');
+  if(!isAdmin && dept && !eqText(state.equipmentConfigDept || '', dept)){
+    syncEquipmentStateFromCache(dept, {fallbackItems: state.tmEquipmentConfig, fallbackHasConfig: state.tmEquipmentConfigHasConfig});
+  }
   const isTM = isTruyenMauDept(dept);
-  const canChooseDept = Array.isArray(state.khoaPhong) && state.khoaPhong.length > 1;
+  const canChooseDept = isAdmin && Array.isArray(state.khoaPhong) && state.khoaPhong.length > 1;
   const deptSelect = canChooseDept ? `
         <div style="margin-bottom:10px">
           <label>Chọn khoa/phòng cấu hình</label>
           <select id="equipmentDeptSelect" class="equal-control">${state.khoaPhong.map(d => `<option value="${escAttr(d)}" ${eqText(d, dept) ? 'selected' : ''}>${esc(d)}</option>`).join('')}</select>
-        </div>` : '';
+        </div>` : `<div class="meta" style="margin-bottom:10px">Chỉ cấu hình trang thiết bị cố định của khoa/phòng: <b>${esc(dept)}</b></div>`;
   const savedItems = getTmEquipmentConfig();
   const items = savedItems.length ? savedItems : emptyEquipmentPlaceholderRows_(2);
   const rows = items.map((it, idx) => renderSettingEquipmentRow(it, idx)).join('');
@@ -11422,7 +11433,7 @@ window.removeSettingTmEquipmentRow = function(btn){
 }
 
 function resetDefaultTmEquipmentConfig(){
-  const dept = state.equipmentConfigDept || state.user?.khoaPhong || state.user?.phongLamViec || '';
+  const dept = getEquipmentManageDeptForCurrentUser() || state.user?.khoaPhong || state.user?.phongLamViec || '';
   const isTM = isTruyenMauDept(dept);
   const msg = isTM
     ? 'Khôi phục danh mục thiết bị mặc định? Các dòng đang sửa trên màn hình sẽ được thay bằng danh mục mặc định.'
@@ -11455,7 +11466,7 @@ function collectSettingsTmEquipmentConfig(){
 
 async function saveTmEquipmentConfig(btn){
   const items = collectSettingsTmEquipmentConfig();
-  const dept = state.equipmentConfigDept || state.user?.khoaPhong || state.user?.phongLamViec || '';
+  const dept = getEquipmentManageDeptForCurrentUser() || state.user?.khoaPhong || state.user?.phongLamViec || '';
   if(!items.length){
     const ok = confirm('Không có thiết bị nào trong danh sách. Lưu cấu hình trống sẽ bỏ cấu hình riêng của khoa/phòng này; khi tạo phiếu bàn giao sẽ chuyển sang ô nhập tự do. Tiếp tục?');
     if(!ok) return;
